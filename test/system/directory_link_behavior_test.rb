@@ -41,8 +41,8 @@ class DirectoryLinkBehaviorTest < ApplicationSystemTestCase
   test "entry titles in directory listing link to resource detail page" do
     visit entries_path
 
-    # Find the entry title link
-    entry_link = find("h3", text: "Directory Test Entry 1").find("a")
+    # Find the entry card link (the <a> wraps the entire card including the h3)
+    entry_link = find("h3", text: "Directory Test Entry 1").ancestor("a")
 
     # Verify it links to the resource detail page (check path includes slug), not external URL
     assert_includes entry_link[:href], "/resources/directory-test-entry-1"
@@ -52,7 +52,7 @@ class DirectoryLinkBehaviorTest < ApplicationSystemTestCase
   test "entry titles in category pages link to resource detail page" do
     visit category_path(@category.slug)
 
-    # Find the entry title link
+    # Find the entry title link (link is inside the h3 on category pages)
     entry_link = find("h3", text: "Directory Test Entry 1").find("a")
 
     # Verify it links to the resource detail page (check path includes slug), not external URL
@@ -63,7 +63,7 @@ class DirectoryLinkBehaviorTest < ApplicationSystemTestCase
   test "author profile pages still link titles to external URL" do
     visit author_path(@author.slug)
 
-    # Find the entry title link on author page
+    # Find the entry title link on author page (link is inside the h3 on author pages)
     entry_link = find("h3", text: "Directory Test Entry 1").find("a")
 
     # Verify it still links to external URL, not resource detail page
@@ -78,9 +78,9 @@ class DirectoryLinkBehaviorTest < ApplicationSystemTestCase
   test "links have correct href format for resource detail pages" do
     visit entries_path
 
-    # Check both entries
-    entry_1_link = find("h3", text: "Directory Test Entry 1").find("a")
-    entry_2_link = find("h3", text: "Directory Test Entry 2").find("a")
+    # Check both entries (the <a> wraps the entire card including the h3)
+    entry_1_link = find("h3", text: "Directory Test Entry 1").ancestor("a")
+    entry_2_link = find("h3", text: "Directory Test Entry 2").ancestor("a")
 
     # Verify correct format /resources/:slug (checking the path portion)
     assert_includes entry_1_link[:href], "/resources/directory-test-entry-1"
