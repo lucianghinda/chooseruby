@@ -2,6 +2,23 @@
 
 A comprehensive directory for Ruby ecosystem resources built with Rails 8.1.
 
+
+# A bit more about this project
+
+I built the initial release entirely with Claude Code and Codex CLI. My goal was to experiment with what it means to develop an end-to-end product using these tools with Ruby on Rails.
+
+There were no manual edits. I intentionally did not review the code in detail, only asked the LLMs to summarize changes and the general approach.
+
+This repository will serve three purposes:
+
+1. To build a real directory for the Ruby community with ChooseRuby
+
+2. To have code that is a mix of working and buggy implementations so we can learn from refactoring it
+
+3. To experiment with generative AI workflows and discover what works and what does not. It is best to do this with a real project that gets deployed.
+
+# Technical and product Overview
+
 ## Overview
 
 ChooseRuby is a curated platform for discovering and managing Ruby ecosystem resources including gems, books, courses, tutorials, articles, tools, podcasts, and communities. The platform uses Rails DelegatedTypes for flexible resource management and includes an admin interface built with Avo.
@@ -61,6 +78,8 @@ Access the admin interface at `/avo`
 - Image upload or external URL
 - Category and author multi-select
 - Tag management
+
+This will not be public but only used by me to review submissions or update existing entries.
 
 ## Getting Started
 
@@ -175,4 +194,5 @@ See `docs/DEVELOPER_GUIDE.md` for detailed instructions on extending the system.
 
 ## License
 
-This project is available as open source under the terms of the MIT License.
+This project is available as open source under the terms of the Apache 2.0 License.
+
