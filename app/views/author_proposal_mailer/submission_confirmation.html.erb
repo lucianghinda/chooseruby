@@ -1,0 +1,48 @@
+<h1>Thanks for your author proposal!</h1>
+
+<p>Hi <%= @proposal.submitter_name || "there" %>,</p>
+
+<p>
+  We've received your proposal to improve author information on ChooseRuby. Your proposal has been assigned ID #<%= @proposal.id %>.
+</p>
+
+<% if @proposal.new_author_proposal? %>
+  <p><strong>New Author Proposal:</strong> <%= @proposal.author_name %></p>
+<% elsif @author.present? %>
+  <p><strong>Author:</strong> <%= @author.name %></p>
+<% end %>
+
+<p><strong>What you proposed:</strong></p>
+<ul>
+  <% if @proposal.has_resource_proposal? %>
+    <li>Resource suggestion: <%= @proposal.original_resource_url || @proposal.resource_url %></li>
+  <% end %>
+  <% if @proposal.has_link_updates? %>
+    <li>Link updates (<%= @proposal.link_updates.keys.size %> changes)</li>
+  <% end %>
+  <% if @proposal.has_bio_changes? %>
+    <li>
+      <% if @proposal.bio_text.present? && @proposal.description_text.present? %>
+        Bio and description updates
+      <% elsif @proposal.bio_text.present? %>
+        Bio update
+      <% else %>
+        Description update
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<p>
+  Our editorial team reviews every proposal to ensure quality and accuracy. You can expect an update within the next few business days.
+</p>
+
+<p>
+  If we have any questions, we'll reach out to <%= @proposal.submitter_email %>.
+</p>
+
+<p>
+  In the meantime, feel free to explore the latest additions on <%= link_to "chooseruby.com", root_url %>.
+</p>
+
+<p>— The ChooseRuby team</p>

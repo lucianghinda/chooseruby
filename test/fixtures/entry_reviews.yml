@@ -1,0 +1,40 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# Sample approved review
+# approved_review:
+#   entry: test_entry
+#   status: 0  # approved
+#   comment: null
+#   reviewer_id: null
+
+# Sample rejected review with comment
+# rejected_review:
+#   entry: test_entry
+#   status: 1  # rejected
+#   comment: "Missing required documentation and description needs more detail."
+#   reviewer_id: null
+
+# This file is intentionally left empty to avoid conflicts
+# Tests create their own entry review records as needed
+
+# == Schema Information
+#
+# Table name: entry_reviews
+#
+#  id          :integer          not null, primary key
+#  comment     :text
+#  reviewer_id :integer
+#  status      :integer          default("approved"), not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  entry_id    :integer          not null
+#
+# Indexes
+#
+#  index_entry_reviews_on_entry_id  (entry_id)
+#  index_entry_reviews_on_status    (status)
+#
+# Foreign Keys
+#
+#  entry_id  (entry_id => entries.id)
+#

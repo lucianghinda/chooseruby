@@ -1,0 +1,39 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :integer          not null, primary key
+#  email_address   :string           not null
+#  name            :string           not null
+#  password_digest :string           not null
+#  role            :string           default("editor"), not null
+#  status          :string           default("active"), not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_users_on_email_address  (email_address) UNIQUE
+#
+admin:
+  email_address: admin@test.com
+  password_digest: <%= BCrypt::Password.create('password', cost: 4) %>
+  name: Admin User
+  role: admin
+  status: active
+
+editor:
+  email_address: editor@test.com
+  password_digest: <%= BCrypt::Password.create('password', cost: 4) %>
+  name: Editor User
+  role: editor
+  status: active
+
+suspended:
+  email_address: suspended@test.com
+  password_digest: <%= BCrypt::Password.create('password', cost: 4) %>
+  name: Suspended User
+  role: editor
+  status: suspended

@@ -1,0 +1,103 @@
+---
+- id: '1'
+  created_at: '2022-09-12 13:25:56.707793'
+  updated_at: '2022-09-12 13:26:08.640344'
+  entry:
+    title: Go Rails
+    slug: go-rails
+- id: '2'
+  created_at: '2022-09-12 13:26:47.445012'
+  updated_at: '2022-09-12 13:26:47.445012'
+  entry:
+    title: Hotwired
+    slug: hotwired
+- id: '3'
+  created_at: '2022-09-12 13:27:11.178851'
+  updated_at: '2022-09-12 13:27:20.950995'
+  entry:
+    title: Ruby on Rails
+    slug: ruby-on-rails
+- id: '4'
+  created_at: '2022-09-12 13:27:40.339333'
+  updated_at: '2022-09-12 13:27:47.00976'
+  entry:
+    title: Stimulus Reflex
+    slug: stimulus-reflex
+- id: '6'
+  created_at: '2022-09-12 13:28:33.752233'
+  updated_at: '2022-09-12 13:28:41.167915'
+  entry:
+    title: Bullet Train
+    slug: bullet-train
+- id: '7'
+  created_at: '2022-09-12 13:29:06.969901'
+  updated_at: '2022-09-12 13:29:11.554462'
+  entry:
+    title: Bridgetown
+    slug: bridgetown
+- id: '8'
+  created_at: '2022-09-12 13:29:43.883871'
+  updated_at: '2022-09-12 13:29:43.883871'
+  entry:
+    title: Ruby/Rails Modularity
+    slug: ruby-rails-modularity
+- id: '9'
+  created_at: '2022-09-12 13:30:16.615875'
+  updated_at: '2022-09-12 13:30:16.615875'
+  entry:
+    title: Ruby on Rails
+    slug: ruby-on-rails-b7fae3e6-d8e7-4e5c-9074-3456e6cc8820
+- id: '10'
+  created_at: '2022-09-12 13:31:28.139764'
+  updated_at: '2022-09-12 13:31:28.139764'
+  entry:
+    title: Hotwire
+    slug: hotwire
+- id: '11'
+  created_at: '2022-09-12 13:32:25.232581'
+  updated_at: '2022-09-12 13:32:25.232581'
+  entry:
+    title: Kasper helps your Ruby&Rails
+    slug: kasper-helps-your-ruby-rails
+- id: '13'
+  created_at: '2022-09-12 14:59:49.251106'
+  updated_at: '2022-09-12 14:59:49.251106'
+  entry:
+    title: Ruby on Rails
+    slug: ruby-on-rails-157f68fa-5839-434c-90d1-a7a2cd6001e8
+- id: '5'
+  created_at: '2022-09-12 13:28:17.1637'
+  updated_at: '2022-09-12 15:01:31.897936'
+  entry:
+    title: Ruby
+    slug: ruby
+- id: '14'
+  created_at: '2022-09-12 15:00:19.250225'
+  updated_at: '2022-09-12 15:03:18.951008'
+  entry:
+    title: Ruby
+    slug: ruby-031c257a-f40d-4608-856b-97aec82179d1
+- id: '15'
+  created_at: '2022-09-12 15:06:32.957631'
+  updated_at: '2022-09-12 15:06:32.957631'
+  entry:
+    title: Ruby on Rails
+    slug: ruby-on-rails-436f72af-f875-4e4e-aa9b-de8f25754375
+- id: '16'
+  created_at: '2022-09-12 15:07:38.102228'
+  updated_at: '2022-09-12 15:07:38.102228'
+  entry:
+    title: Go Rails forum
+    slug: go-rails-forum
+- id: '17'
+  created_at: '2023-03-23 05:33:42.986106'
+  updated_at: '2023-03-23 11:55:02.804559'
+  entry:
+    title: RDDS Duck Pond
+    slug: rdds-duck-pond
+- id: '18'
+  created_at: '2023-09-13 03:21:10.325706'
+  updated_at: '2023-09-13 07:51:04.645342'
+  entry:
+    title: Ruby on Rails Link
+    slug: ruby-on-rails-link

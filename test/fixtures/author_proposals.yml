@@ -1,0 +1,105 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+#
+# Comprehensive fixtures for common author proposal test scenarios
+# Tests may also create their own proposal records as needed
+#
+# == Schema Information
+#
+# Table name: author_proposals
+#
+#  id                    :integer          not null, primary key
+#  admin_comment         :text
+#  author_name           :string
+#  bio_text              :text
+#  description_text      :text
+#  link_updates          :text
+#  original_resource_url :text
+#  resource_url          :text
+#  reviewed_at           :datetime
+#  status                :integer          default("pending"), not null
+#  submission_notes      :text
+#  submitter_email       :string           not null
+#  submitter_name        :string
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  author_id             :integer
+#  matched_entry_id      :integer
+#  reviewer_id           :integer
+#
+# Indexes
+#
+#  index_author_proposals_on_author_id         (author_id)
+#  index_author_proposals_on_created_at        (created_at)
+#  index_author_proposals_on_matched_entry_id  (matched_entry_id)
+#  index_author_proposals_on_status            (status)
+#  index_author_proposals_on_submitter_email   (submitter_email)
+#
+# Foreign Keys
+#
+#  author_id         (author_id => authors.id) ON DELETE => cascade
+#  matched_entry_id  (matched_entry_id => entries.id) ON DELETE => nullify
+#
+
+# Pending proposal with all change types (resource, links, bio, description)
+pending_comprehensive:
+  submitter_email: comprehensive@example.com
+  submitter_name: Comprehensive Contributor
+  status: 0  # pending
+  bio_text: Updated bio text for comprehensive testing
+  description_text: Updated description text
+  link_updates: '{"github_url":"https://github.com/testuser","website_url":"https://example.com"}'
+  resource_url: http://example.com/resource
+  original_resource_url: https://example.com/resource
+  submission_notes: This proposal includes all types of changes
+  created_at: <%= 1.day.ago %>
+  updated_at: <%= 1.day.ago %>
+
+# Approved proposal with created author
+approved_with_author:
+  submitter_email: approved@example.com
+  submitter_name: Approved Contributor
+  status: 1  # approved
+  bio_text: Approved author bio
+  link_updates: '{"github_url":"https://github.com/approved"}'
+  reviewed_at: <%= 6.hours.ago %>
+  created_at: <%= 2.days.ago %>
+  updated_at: <%= 6.hours.ago %>
+
+# Rejected proposal with admin comment
+rejected_with_feedback:
+  submitter_email: rejected@example.com
+  status: 2  # rejected
+  bio_text: Incomplete bio
+  admin_comment: Bio needs more detail about Ruby community contributions
+  reviewed_at: <%= 12.hours.ago %>
+  created_at: <%= 3.days.ago %>
+  updated_at: <%= 12.hours.ago %>
+
+# Proposal with matched entry (for resource URL matching tests)
+with_matched_entry:
+  submitter_email: matcher@example.com
+  status: 0  # pending
+  resource_url: http://example.com/matched
+  original_resource_url: https://example.com/matched
+  created_at: <%= 4.hours.ago %>
+  updated_at: <%= 4.hours.ago %>
+
+# Proposal with unmatched resource URL (no matching entry)
+with_unmatched_resource:
+  submitter_email: unmatched@example.com
+  status: 0  # pending
+  resource_url: http://unmatched-url.com/resource
+  original_resource_url: https://unmatched-url.com/resource
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 2.hours.ago %>
+
+# New author proposal (author_id is nil)
+new_author_pending:
+  author_name: New Author Name
+  submitter_email: newauthor@example.com
+  status: 0  # pending
+  bio_text: Bio for new author
+  link_updates: '{"github_url":"https://github.com/newauthor"}'
+  submission_notes: Proposing a brand new author
+  created_at: <%= 8.hours.ago %>
+  updated_at: <%= 8.hours.ago %>

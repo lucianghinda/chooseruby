@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This file is intentionally empty to avoid conflicts
+# Tests create their own resource records as needed
+# == Schema Information
+#
+# Table name: entries
+#
+#  id               :integer          not null, primary key
+#  description      :text
+#  entryable_type   :string
+#  experience_level :integer
+#  featured_at      :datetime
+#  image_url        :string
+#  published        :boolean          default(FALSE), not null
+#  slug             :string
+#  status           :integer          default("pending"), not null
+#  submitter_email  :string
+#  submitter_name   :string
+#  tags             :text
+#  title            :string
+#  url              :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  entryable_id     :integer
+#
+# Indexes
+#
+#  index_entries_on_entryable_type_and_entryable_id  (entryable_type,entryable_id)
+#  index_entries_on_experience_level                 (experience_level)
+#  index_entries_on_published                        (published)
+#  index_entries_on_slug                             (slug) UNIQUE
+#  index_entries_on_status                           (status)
+#  index_entries_on_title                            (title)
+#

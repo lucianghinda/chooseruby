@@ -1,0 +1,28 @@
+<h1>Congratulations! Your author proposal has been approved</h1>
+
+<p>Hi <%= @proposal.submitter_name || "there" %>,</p>
+
+<p>
+  Great news! Your proposal to improve author information on ChooseRuby has been approved and the changes are now live on the site.
+</p>
+
+<% if @author.present? %>
+  <p>
+    <strong>Author:</strong> <%= @author.name %>
+  </p>
+
+  <p>
+    You can view the updated author profile on ChooseRuby at:<br>
+    <%= link_to author_url(@author.slug), author_url(@author.slug) %>
+  </p>
+<% end %>
+
+<p>
+  Thank you for contributing to the Ruby community and helping keep ChooseRuby accurate and comprehensive!
+</p>
+
+<p>
+  If you notice other author information that could be improved, we'd love to hear about it. Feel free to submit another proposal anytime.
+</p>
+
+<p>— The ChooseRuby team</p>

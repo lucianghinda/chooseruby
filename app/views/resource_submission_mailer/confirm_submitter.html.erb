@@ -1,0 +1,30 @@
+<h1>Thanks for sharing a Ruby resource!</h1>
+
+<p>Hi <%= @submission.try(:contact_name) || @submission.try(:submitter_name) || "there" %>,</p>
+
+<p>
+  We're excited to review your submission:
+</p>
+
+<ul>
+  <li><strong>Title:</strong> <%= @submission.title %></li>
+  <li><strong>URL:</strong> <%= @submission.url %></li>
+  <li><strong>Type:</strong> <%= (@submission.try(:resource_type) || @submission.entryable_type).humanize %></li>
+  <% if @submission.experience_level.present? %>
+    <li><strong>Experience level:</strong> <%= @submission.experience_level.capitalize %></li>
+  <% end %>
+</ul>
+
+<p>
+  Our editorial team reviews every submission for quality and freshness. You can expect an update within the next few business days.
+</p>
+
+<p>
+  If we have any questions, we'll reach out to <%= @submission.try(:contact_email) || @submission.try(:submitter_email) %>.
+</p>
+
+<p>
+  In the meantime, feel free to explore the latest additions on <%= link_to "chooseruby.com", root_url %>.
+</p>
+
+<p>— The ChooseRuby team</p>

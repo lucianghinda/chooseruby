@@ -1,0 +1,96 @@
+<%# Type-specific metadata partial for entry cards %>
+<%# Displays metadata based on the entry's delegated type %>
+<%# Local variables: entry %>
+
+<% if entry.entryable.present? %>
+  <div class="text-xs text-slate-500">
+    <% case entry.entryable_type %>
+    <% when "RubyGem" %>
+      <%# For RubyGem: show author from authors association (already shown in card), no extra metadata %>
+
+    <% when "Book" %>
+      <%# For Book: show publication_year, publisher, format %>
+      <% metadata_parts = [] %>
+      <% if entry.entryable.publication_year.present? %>
+        <% metadata_parts << entry.entryable.publication_year.to_s %>
+      <% end %>
+      <% if entry.entryable.publisher.present? %>
+        <% metadata_parts << entry.entryable.publisher %>
+      <% end %>
+      <% if entry.entryable.format.present? %>
+        <% format_text = entry.entryable.format.humanize %>
+        <% metadata_parts << format_text %>
+      <% end %>
+      <% if metadata_parts.any? %>
+        <span><%= metadata_parts.join(" • ") %></span>
+      <% end %>
+
+    <% when "Course" %>
+      <%# For Course: show platform, instructor, duration (if present) %>
+      <% metadata_parts = [] %>
+      <% if entry.entryable.platform.present? %>
+        <% metadata_parts << entry.entryable.platform %>
+      <% end %>
+      <% if entry.entryable.instructor.present? %>
+        <% metadata_parts << "with #{entry.entryable.instructor}" %>
+      <% end %>
+      <% if entry.entryable.duration_hours.present? %>
+        <% duration_text = "#{entry.entryable.duration_hours} hours" %>
+        <% metadata_parts << duration_text %>
+      <% end %>
+      <% if metadata_parts.any? %>
+        <span><%= metadata_parts.join(" • ") %></span>
+      <% end %>
+
+    <% when "Tutorial" %>
+      <%# For Tutorial: show platform, publication_date, reading_time (if present) %>
+      <% metadata_parts = [] %>
+      <% if entry.entryable.platform.present? %>
+        <% metadata_parts << entry.entryable.platform %>
+      <% end %>
+      <% if entry.entryable.publication_date.present? %>
+        <% metadata_parts << entry.entryable.publication_date.strftime("%B %Y") %>
+      <% end %>
+      <% if entry.entryable.reading_time_minutes.present? %>
+        <% metadata_parts << "#{entry.entryable.reading_time_minutes} min read" %>
+      <% end %>
+      <% if metadata_parts.any? %>
+        <span><%= metadata_parts.join(" • ") %></span>
+      <% end %>
+
+    <% when "Article" %>
+      <%# For Article: show platform, publication_date, reading_time (if present) %>
+      <% metadata_parts = [] %>
+      <% if entry.entryable.platform.present? %>
+        <% metadata_parts << entry.entryable.platform %>
+      <% end %>
+      <% if entry.entryable.publication_date.present? %>
+        <% metadata_parts << entry.entryable.publication_date.strftime("%B %Y") %>
+      <% end %>
+      <% if entry.entryable.reading_time_minutes.present? %>
+        <% metadata_parts << "#{entry.entryable.reading_time_minutes} min read" %>
+      <% end %>
+      <% if metadata_parts.any? %>
+        <span><%= metadata_parts.join(" • ") %></span>
+      <% end %>
+
+    <% when "Tool" %>
+      <%# For Tool: minimal metadata - tool_type if present %>
+      <% if entry.entryable.tool_type.present? %>
+        <span><%= entry.entryable.tool_type %></span>
+      <% end %>
+
+    <% when "Podcast" %>
+      <%# For Podcast: show host name only %>
+      <% if entry.entryable.host.present? %>
+        <span>Hosted by <%= entry.entryable.host %></span>
+      <% end %>
+
+    <% when "Community" %>
+      <%# For Community: show platform only %>
+      <% if entry.entryable.platform.present? %>
+        <span><%= entry.entryable.platform %> community</span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

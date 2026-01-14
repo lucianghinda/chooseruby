@@ -1,0 +1,34 @@
+<h1>Update on your author proposal</h1>
+
+<p>Hi <%= @proposal.submitter_name || "there" %>,</p>
+
+<p>
+  Thank you for taking the time to submit an author proposal to ChooseRuby. After reviewing your submission (ID #<%= @proposal.id %>), we're unable to approve it at this time.
+</p>
+
+<% if @author.present? %>
+  <p><strong>Author:</strong> <%= @author.name %></p>
+<% elsif @proposal.author_name.present? %>
+  <p><strong>Proposed Author:</strong> <%= @proposal.author_name %></p>
+<% end %>
+
+<% if @admin_comment.present? %>
+<p>
+  <strong>Feedback from our team:</strong><br>
+  <%= simple_format(@admin_comment) %>
+</p>
+<% else %>
+<p>
+  While we don't have specific feedback to share at this time, we carefully review all proposals to ensure quality and accuracy for the Ruby community.
+</p>
+<% end %>
+
+<p>
+  We appreciate your interest in contributing to ChooseRuby. If you'd like to revise and resubmit this proposal based on the feedback above, or if you have other improvements to suggest, please feel free to submit again.
+</p>
+
+<p>
+  You can view author profiles and submit proposals at <%= link_to "chooseruby.com", root_url %>.
+</p>
+
+<p>— The ChooseRuby team</p>

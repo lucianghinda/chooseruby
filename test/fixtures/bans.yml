@@ -1,0 +1,34 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: bans
+#
+#  id         :integer          not null, primary key
+#  expires_at :datetime
+#  ip_address :string
+#  reason     :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :integer
+#
+# Indexes
+#
+#  index_bans_on_expires_at  (expires_at)
+#  index_bans_on_ip_address  (ip_address)
+#  index_bans_on_user_id     (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id) ON DELETE => cascade
+#
+active_ban:
+  user: suspended
+  ip_address: "192.168.1.100"
+  reason: "Test ban"
+  expires_at: <%= 7.days.from_now %>
+
+expired_ban:
+  ip_address: "192.168.1.200"
+  reason: "Test ban - expired"
+  expires_at: <%= 1.day.ago %>

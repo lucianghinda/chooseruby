@@ -1,0 +1,180 @@
+New resource submission
+========================
+
+Title: <%= @submission.title %>
+URL: <%= @submission.url %>
+Resource type: <%= (@submission.try(:resource_type) || @submission.entryable_type).humanize %>
+<% if @submission.experience_level.present? %>
+Experience level: <%= @submission.experience_level.titleize %>
+<% end %>
+<% if @categories.any? %>
+Suggested categories: <%= @categories.map(&:name).to_sentence %>
+<% end %>
+<% if @submission.description.present? %>
+Description:
+<%= @submission.description.to_s %>
+<% end %>
+
+<% if @submission.entryable_type == "RubyGem" && @submission.entryable.present? %>
+RubyGem Details
+---------------
+Gem name: <%= @submission.entryable.gem_name %>
+<% if @submission.entryable.github_url.present? %>
+GitHub URL: <%= @submission.entryable.github_url %>
+<% end %>
+<% if @submission.entryable.documentation_url.present? %>
+Documentation URL: <%= @submission.entryable.documentation_url %>
+<% end %>
+<% if @submission.entryable.rubygems_url.present? %>
+RubyGems URL: <%= @submission.entryable.rubygems_url %>
+<% end %>
+<% if @submission.entryable.current_version.present? %>
+Current version: <%= @submission.entryable.current_version %>
+<% end %>
+
+<% end %>
+<% if @submission.entryable_type == "Book" && @submission.entryable.present? %>
+Book Details
+------------
+<% if @submission.entryable.isbn.present? %>
+ISBN: <%= @submission.entryable.isbn %>
+<% end %>
+<% if @submission.entryable.publisher.present? %>
+Publisher: <%= @submission.entryable.publisher %>
+<% end %>
+<% if @submission.entryable.publication_year.present? %>
+Publication year: <%= @submission.entryable.publication_year %>
+<% end %>
+<% if @submission.entryable.page_count.present? %>
+Page count: <%= @submission.entryable.page_count %>
+<% end %>
+<% if @submission.entryable.format.present? %>
+Format: <%= @submission.entryable.format.humanize %>
+<% end %>
+<% if @submission.entryable.purchase_url.present? %>
+Purchase URL: <%= @submission.entryable.purchase_url %>
+<% end %>
+
+<% end %>
+<% if @submission.entryable_type == "Course" && @submission.entryable.present? %>
+Course Details
+--------------
+<% if @submission.entryable.platform.present? %>
+Platform: <%= @submission.entryable.platform %>
+<% end %>
+<% if @submission.entryable.instructor.present? %>
+Instructor: <%= @submission.entryable.instructor %>
+<% end %>
+<% if @submission.entryable.duration_hours.present? %>
+Duration: <%= @submission.entryable.duration_hours %> hours
+<% end %>
+<% if @submission.entryable.is_free %>
+Free course
+<% elsif @submission.entryable.price_cents.present? %>
+Price: <%= number_to_currency(@submission.entryable.price_cents / 100.0, unit: @submission.entryable.currency || "USD") %>
+<% end %>
+<% if @submission.entryable.enrollment_url.present? %>
+Enrollment URL: <%= @submission.entryable.enrollment_url %>
+<% end %>
+
+<% end %>
+<% if @submission.entryable_type == "Tutorial" && @submission.entryable.present? %>
+Tutorial Details
+----------------
+<% if @submission.entryable.reading_time_minutes.present? %>
+Reading time: <%= @submission.entryable.reading_time_minutes %> minutes
+<% end %>
+<% if @submission.entryable.publication_date.present? %>
+Publication date: <%= @submission.entryable.publication_date.to_formatted_s(:long) %>
+<% end %>
+<% if @submission.entryable.author_name.present? %>
+Author: <%= @submission.entryable.author_name %>
+<% end %>
+<% if @submission.entryable.platform.present? %>
+Platform: <%= @submission.entryable.platform %>
+<% end %>
+
+<% end %>
+<% if @submission.entryable_type == "Article" && @submission.entryable.present? %>
+Article Details
+---------------
+<% if @submission.entryable.reading_time_minutes.present? %>
+Reading time: <%= @submission.entryable.reading_time_minutes %> minutes
+<% end %>
+<% if @submission.entryable.publication_date.present? %>
+Publication date: <%= @submission.entryable.publication_date.to_formatted_s(:long) %>
+<% end %>
+<% if @submission.entryable.author_name.present? %>
+Author: <%= @submission.entryable.author_name %>
+<% end %>
+<% if @submission.entryable.platform.present? %>
+Platform: <%= @submission.entryable.platform %>
+<% end %>
+
+<% end %>
+<% if @submission.entryable_type == "Tool" && @submission.entryable.present? %>
+Tool Details
+------------
+<% if @submission.entryable.tool_type.present? %>
+Tool type: <%= @submission.entryable.tool_type %>
+<% end %>
+<% if @submission.entryable.github_url.present? %>
+GitHub URL: <%= @submission.entryable.github_url %>
+<% end %>
+<% if @submission.entryable.documentation_url.present? %>
+Documentation URL: <%= @submission.entryable.documentation_url %>
+<% end %>
+<% if @submission.entryable.license.present? %>
+License: <%= @submission.entryable.license %>
+<% end %>
+<% if @submission.entryable.is_open_source %>
+Open source
+<% end %>
+
+<% end %>
+<% if @submission.entryable_type == "Podcast" && @submission.entryable.present? %>
+Podcast Details
+---------------
+<% if @submission.entryable.host.present? %>
+Host: <%= @submission.entryable.host %>
+<% end %>
+<% if @submission.entryable.episode_count.present? %>
+Episode count: <%= @submission.entryable.episode_count %>
+<% end %>
+<% if @submission.entryable.frequency.present? %>
+Frequency: <%= @submission.entryable.frequency %>
+<% end %>
+<% if @submission.entryable.rss_feed_url.present? %>
+RSS feed URL: <%= @submission.entryable.rss_feed_url %>
+<% end %>
+<% if @submission.entryable.spotify_url.present? %>
+Spotify URL: <%= @submission.entryable.spotify_url %>
+<% end %>
+<% if @submission.entryable.apple_podcasts_url.present? %>
+Apple Podcasts URL: <%= @submission.entryable.apple_podcasts_url %>
+<% end %>
+
+<% end %>
+<% if @submission.entryable_type == "Community" && @submission.entryable.present? %>
+Community Details
+-----------------
+<% if @submission.entryable.platform.present? %>
+Platform: <%= @submission.entryable.platform %>
+<% end %>
+<% if @submission.entryable.join_url.present? %>
+Join URL: <%= @submission.entryable.join_url %>
+<% end %>
+<% if @submission.entryable.member_count.present? %>
+Member count: <%= number_with_delimiter(@submission.entryable.member_count) %>
+<% end %>
+<% if @submission.entryable.is_official %>
+Official community
+<% end %>
+
+<% end %>
+<% if @submission.try(:notes).present? %>
+Notes:
+<%= @submission.notes %>
+<% end %>
+
+Submitted by: <%= @submission.try(:contact_name) || @submission.try(:submitter_name) || "Anonymous" %> (<%= @submission.try(:contact_email) || @submission.try(:submitter_email) %>)

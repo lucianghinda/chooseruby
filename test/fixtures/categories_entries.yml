@@ -1,0 +1,29 @@
+# CategoriesEntry fixtures for testing
+#
+# This file is intentionally empty to avoid conflicts
+# Tests create their own categories_entries records as needed
+#
+# == Schema Information
+#
+# Table name: categories_entries
+#
+#  id          :integer          not null, primary key
+#  is_featured :boolean          default(FALSE), not null
+#  is_primary  :boolean          default(FALSE), not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  category_id :integer          not null
+#  entry_id    :integer          not null
+#
+# Indexes
+#
+#  index_categories_entries_on_category_id               (category_id)
+#  index_categories_entries_on_category_id_and_entry_id  (category_id,entry_id) UNIQUE
+#  index_categories_entries_on_entry_id                  (entry_id)
+#  index_categories_entries_on_entry_id_primary          (entry_id) UNIQUE WHERE is_primary = 1
+#
+# Foreign Keys
+#
+#  category_id  (category_id => categories.id) ON DELETE => cascade
+#  entry_id     (entry_id => entries.id) ON DELETE => cascade
+#

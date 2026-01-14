@@ -1,0 +1,194 @@
+<% content_for :title, "Propose New Author | ChooseRuby" %>
+<% content_for :meta_description, "Suggest a new Ruby author to be added to ChooseRuby's directory." %>
+
+<div class="space-y-16 pb-16">
+  <section class="rounded-3xl bg-slate-900 px-6 py-16 text-white shadow-2xl sm:px-10 lg:px-16">
+    <div class="mx-auto flex max-w-5xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+      <div class="max-w-3xl space-y-4">
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+          Propose a New Author
+        </h1>
+        <p class="text-base text-slate-100 sm:text-lg">
+          Help us expand our directory of Ruby contributors. Suggest a new author along with their social links and bio.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid gap-10 lg:grid-cols-[1.2fr,1fr]">
+    <div class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+      <% if @author_proposal.errors.any? %>
+        <div class="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+          <p class="font-semibold">We couldn't save the proposal.</p>
+          <p>Please review the highlighted fields:</p>
+          <ul class="mt-2 list-disc pl-5 space-y-1">
+            <% @author_proposal.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @author_proposal, url: author_proposals_path, class: "space-y-6" do |form| %>
+        <!-- Author Name Section -->
+        <div class="space-y-6">
+          <h2 class="text-xl font-semibold text-slate-900">Author Information</h2>
+          <div class="space-y-2">
+            <%= form.label :author_name, "Author name (required)", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :author_name, required: true, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., Yukihiro Matsumoto" %>
+            <p class="text-xs text-slate-500">Full name of the Ruby contributor.</p>
+          </div>
+        </div>
+
+        <!-- Resource URL Section -->
+        <div class="space-y-6 border-t border-slate-200 pt-6">
+          <h2 class="text-xl font-semibold text-slate-900">Suggest a Resource (Optional)</h2>
+          <div class="space-y-2">
+            <%= form.label :resource_url, "Resource URL", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.url_field :resource_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com/resource" %>
+            <p class="text-xs text-slate-500">Suggest a gem, tutorial, article, or other resource created by this author.</p>
+          </div>
+        </div>
+
+        <!-- Social Links Section -->
+        <div class="space-y-6 border-t border-slate-200 pt-6">
+          <h2 class="text-xl font-semibold text-slate-900">Social & Web Links (Optional)</h2>
+          <p class="text-sm text-slate-600">Add any known social media and web links for this author.</p>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <!-- GitHub URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_github_url" class="text-sm font-semibold text-slate-700">GitHub URL</label>
+              <%= url_field_tag "author_proposal[link_updates][github_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://github.com/username" %>
+            </div>
+
+            <!-- GitLab URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_gitlab_url" class="text-sm font-semibold text-slate-700">GitLab URL</label>
+              <%= url_field_tag "author_proposal[link_updates][gitlab_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://gitlab.com/username" %>
+            </div>
+
+            <!-- Website URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_website_url" class="text-sm font-semibold text-slate-700">Website URL</label>
+              <%= url_field_tag "author_proposal[link_updates][website_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com" %>
+            </div>
+
+            <!-- Bluesky URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_bluesky_url" class="text-sm font-semibold text-slate-700">Bluesky URL</label>
+              <%= url_field_tag "author_proposal[link_updates][bluesky_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://bsky.app/profile/username" %>
+            </div>
+
+            <!-- Ruby.social URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_ruby_social_url" class="text-sm font-semibold text-slate-700">Ruby.social URL</label>
+              <%= url_field_tag "author_proposal[link_updates][ruby_social_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://ruby.social/@username" %>
+            </div>
+
+            <!-- Twitter URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_twitter_url" class="text-sm font-semibold text-slate-700">Twitter URL</label>
+              <%= url_field_tag "author_proposal[link_updates][twitter_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://twitter.com/username" %>
+            </div>
+
+            <!-- LinkedIn URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_linkedin_url" class="text-sm font-semibold text-slate-700">LinkedIn URL</label>
+              <%= url_field_tag "author_proposal[link_updates][linkedin_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://linkedin.com/in/username" %>
+            </div>
+
+            <!-- YouTube URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_youtube_url" class="text-sm font-semibold text-slate-700">YouTube URL</label>
+              <%= url_field_tag "author_proposal[link_updates][youtube_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://youtube.com/@username" %>
+            </div>
+
+            <!-- Twitch URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_twitch_url" class="text-sm font-semibold text-slate-700">Twitch URL</label>
+              <%= url_field_tag "author_proposal[link_updates][twitch_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://twitch.tv/username" %>
+            </div>
+
+            <!-- Blog URL -->
+            <div class="space-y-2">
+              <label for="author_proposal_link_updates_blog_url" class="text-sm font-semibold text-slate-700">Blog URL</label>
+              <%= url_field_tag "author_proposal[link_updates][blog_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://blog.example.com" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bio and Description Section -->
+        <div class="space-y-6 border-t border-slate-200 pt-6">
+          <h2 class="text-xl font-semibold text-slate-900">Bio & Description (Optional)</h2>
+
+          <div class="space-y-2">
+            <%= form.label :bio_text, "Bio (max 500 characters)", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_area :bio_text, rows: 3, maxlength: 500, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "A brief bio about this author's work in the Ruby community" %>
+            <p class="text-xs text-slate-500">Keep it concise and factual.</p>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :description_text, "Description", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_area :description_text, rows: 4, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Additional details about the author's contributions and expertise" %>
+          </div>
+        </div>
+
+        <!-- Submitter Information Section -->
+        <div class="space-y-6 border-t border-slate-200 pt-6">
+          <h2 class="text-xl font-semibold text-slate-900">Your Contact Information</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :submitter_name, "Your name (optional)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :submitter_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "How should we address you?" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :submitter_email, "Email (required)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.email_field :submitter_email, required: true, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "you@example.com" %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :submission_notes, "Additional notes (optional)", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_area :submission_notes, rows: 3, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Any additional context for the review team" %>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t border-slate-200 pt-6">
+          <p class="text-xs text-slate-500">
+            Your proposal will be reviewed by our team. You'll receive an email notification when it's processed.
+          </p>
+          <%= form.submit "Submit New Author Proposal", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Tips Sidebar -->
+    <aside class="space-y-6 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+      <h2 class="text-xl font-semibold text-slate-900">Tips for a quick review</h2>
+      <ul class="space-y-4 text-sm text-slate-600">
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Make sure the author is an active contributor to the Ruby community.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Include at least one social link (GitHub, website, etc.) to help us verify the author.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Provide complete URLs including the http:// or https:// protocol.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Bio should focus on the author's Ruby-related contributions and expertise.</span>
+        </li>
+      </ul>
+      <p class="text-xs text-slate-500">
+        Reviews typically take 5-7 days. You'll receive a confirmation email and another notification when your proposal is reviewed.
+      </p>
+    </aside>
+  </section>
+</div>

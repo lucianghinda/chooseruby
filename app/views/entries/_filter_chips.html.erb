@@ -1,0 +1,38 @@
+<% base_params = params.permit(:q, :level, :category, :sort).to_h.symbolize_keys %>
+<% build_url = ->(overrides = {}) do
+  merged = base_params.merge(overrides)
+  filtered = merged.each_with_object({}) { |(key, value), h| h[key] = value if value.present? }
+  query_string = filtered.to_query
+  query_string.present? ? "#{base_path}?#{query_string}" : base_path
+end %>
+
+<% chips = [] %>
+<% if @query.present? %>
+  <% chips << { label: "Search: “#{@query}”", url: build_url.call(q: nil) } %>
+<% end %>
+
+<% if @active_level.present? %>
+  <% chips << { label: "Level: #{@active_level.titleize}", url: build_url.call(level: nil) } %>
+<% end %>
+
+<% if @active_category.present? %>
+  <% chips << { label: "Category: #{@active_category.name}", url: build_url.call(category: nil) } %>
+<% end %>
+
+<% if @active_sort.present? && @active_sort != "recent" %>
+  <% chips << { label: "Sort: #{@active_sort.humanize}", url: build_url.call(sort: nil) } %>
+<% end %>
+
+<% if chips.any? %>
+  <div class="mt-6 flex flex-wrap items-center gap-3">
+    <% chips.each do |chip| %>
+      <% chip_icon = tag.svg(xmlns: "http://www.w3.org/2000/svg", class: "h-3.5 w-3.5", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor") do %>
+        <%= tag.path(stroke_linecap: "round", stroke_linejoin: "round", stroke_width: "2", d: "M6 18L18 6M6 6l12 12") %>
+      <% end %>
+      <%= link_to safe_join([content_tag(:span, chip[:label]), chip_icon]), chip[:url], class: "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-200" %>
+    <% end %>
+
+    <%= link_to "Clear all", build_url.call(q: nil, level: nil, category: nil, sort: nil),
+                class: "inline-flex items-center gap-1 text-xs font-semibold text-rose-600 hover:text-rose-500" %>
+  </div>
+<% end %>

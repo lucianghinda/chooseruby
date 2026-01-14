@@ -1,0 +1,182 @@
+<% content_for :title, "#{type_name(@type)} Directory | ChooseRuby" %>
+<% content_for :meta_description, "Explore curated #{type_name(@type).downcase} for Ruby on Rails. Filter by category or experience level to find the perfect resource for your next project." %>
+
+<div class="space-y-12 pb-16">
+  <!-- Directory hero -->
+  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
+    <div class="mx-auto max-w-3xl text-center">
+      <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+        <%= type_emoji(@type) %> <%= type_name(@type) %> Directory
+      </h1>
+      <p class="mt-4 text-base text-slate-600 sm:text-lg">
+        <%= @entries.total_count %> <%= type_description(@type) %>
+      </p>
+
+      <%= form_with url: resource_type_path(@type), method: :get, local: true, class: "mt-8" do |form| %>
+        <%= form.hidden_field :level, value: @active_level if @active_level.present? %>
+        <%= form.hidden_field :category, value: @active_category&.slug if @active_category.present? %>
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9 4a5 5 0 013.995 8.326l3.84 3.84a1 1 0 01-1.414 1.415l-3.84-3.84A5 5 0 119 4zm0 2a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <%= form.text_field :q,
+            value: @query,
+            class: "h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-base text-slate-900 placeholder:text-slate-400 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300 focus:outline-none",
+            placeholder: "Search #{type_name(@type).downcase}…" %>
+        </div>
+      <% end %>
+
+      <% if @query.present? %>
+        <p class="mt-4 text-sm text-slate-500">
+          Showing results for
+          <span class="font-semibold text-slate-700">"<%= @query %>"</span>
+          <%= link_to "Clear search", resource_type_path(@type, level: @active_level, category: @active_category&.slug), class: "ml-2 text-rose-500 hover:text-rose-400" %>
+        </p>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- Stats Panel -->
+  <%= render "resource_types/stats_panel", category_stats: @category_stats %>
+
+  <!-- Featured Entries -->
+  <%= render "resource_types/featured_entries", featured_entries: @featured_entries, type: @type %>
+
+  <!-- Filters -->
+  <section class="space-y-8">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-slate-900">Experience level</h2>
+        <div class="flex flex-wrap gap-3">
+          <% base_params = { q: @query.presence, category: @active_category&.slug }.compact %>
+          <% active_level = @active_level.presence %>
+          <%= link_to resource_type_path(@type, base_params),
+                      class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active_level ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-rose-500 text-white shadow-sm hover:bg-rose-400"}" do %>
+            All levels
+          <% end %>
+          <% Entry.experience_levels.keys.each do |level| %>
+            <% level_label = level.capitalize %>
+            <% level_params = base_params.merge(level:) %>
+            <% active = active_level == level %>
+            <%= link_to resource_type_path(@type, level_params),
+                        class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active ? "bg-rose-500 text-white shadow-sm hover:bg-rose-400" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}" do %>
+              <span class="mr-2 h-2 w-2 rounded-full <%= active ? "bg-white" : "bg-rose-400" %>"></span>
+              <%= level_label %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="space-y-4 lg:max-w-xl">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold text-slate-900">Categories</h2>
+          <% if @active_category.present? %>
+            <% cleared_params = base_params.except(:category).merge(level: active_level) %>
+            <%= link_to "Clear category", resource_type_path(@type, cleared_params), class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
+          <% end %>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <% @categories.first(12).each do |category| %>
+            <% category_params = base_params.merge(level: active_level, category: category.slug).compact %>
+            <% active = @active_category == category %>
+            <%= link_to category.name,
+                        resource_type_path(@type, category_params),
+                        class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active ? "bg-slate-900 text-white shadow-sm hover:bg-slate-800" : "bg-white text-slate-600 ring-1 ring-slate-200 hover:text-rose-500"}" %>
+          <% end %>
+        </div>
+        <% if @categories.size > 12 %>
+          <p class="text-sm text-slate-500">
+            Looking for a specific topic?
+            <%= link_to "View the full category index", categories_path, class: "font-semibold text-rose-500 hover:text-rose-400" %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results with View Toggle -->
+  <section class="space-y-6">
+    <div class="flex items-center justify-between">
+      <% total_count = @entries.total_count %>
+      <p class="text-sm text-slate-500">
+        <%= pluralize(total_count, "resource") %> curated for you
+        <% if active_level %>
+          · <span class="font-medium text-slate-700"><%= active_level.capitalize %> friendly</span>
+        <% end %>
+        <% if @active_category.present? %>
+          · <span class="font-medium text-slate-700"><%= @active_category.name %></span>
+        <% end %>
+      </p>
+
+      <!-- View Toggle Buttons -->
+      <% if @entries.any? %>
+        <div class="flex items-center gap-2" data-controller="view-toggle" data-view-toggle-key-value="resource-type-view" data-view-toggle-grid-class-value="grid gap-6 lg:grid-cols-3" data-view-toggle-list-class-value="space-y-6">
+          <button type="button" data-view="grid" data-action="click->view-toggle#switch" data-view-toggle-target="button" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+            Grid
+          </button>
+          <button type="button" data-view="list" data-action="click->view-toggle#switch" data-view-toggle-target="button" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            List
+          </button>
+        </div>
+      <% end %>
+
+      <div class="flex items-center gap-2">
+        <%= link_to new_resource_submission_path,
+                    class: "inline-flex items-center gap-2 rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400" do %>
+          <span>Submit a new resource</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14m-7-7v14" />
+          </svg>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @entries.any? %>
+      <div data-view-toggle-target="container" data-view-mode="grid" class="grid gap-6 lg:grid-cols-3">
+        <% @entries.each do |entry| %>
+          <article class="border-gray-200">
+            <div class="grid-view-item">
+              <%= render "resource_types/entry_grid", entry: entry %>
+            </div>
+            <div class="list-view-item hidden">
+              <%= render "resource_types/entry_list", entry: entry %>
+            </div>
+          </article>
+        <% end %>
+      </div>
+
+      <div class="mt-8 flex justify-center">
+        <%= paginate @entries %>
+      </div>
+    <% else %>
+      <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">
+        <% if @query.present? %>
+          <p class="text-lg font-semibold text-slate-700">No results found</p>
+          <p class="mt-2 text-sm text-slate-500">
+            Know a great Ruby resource? <%= link_to "Submit a resource", new_resource_submission_path, class: "font-semibold text-rose-500 hover:text-rose-400" %> to share it with the community!
+          </p>
+        <% else %>
+          <p class="text-lg font-semibold text-slate-700">No curated matches yet</p>
+          <p class="mt-2 text-sm text-slate-500">
+            Try broadening your filters or <%= link_to "request a resource", new_resource_submission_path, class: "font-semibold text-rose-500 hover:text-rose-400" %>.
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+</div>
+
+<style>
+  [data-view-mode="grid"] .grid-view-item { display: block; }
+  [data-view-mode="grid"] .list-view-item { display: none; }
+  [data-view-mode="list"] .grid-view-item { display: none; }
+  [data-view-mode="list"] .list-view-item { display: block; }
+</style>

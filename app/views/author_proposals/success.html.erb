@@ -1,0 +1,84 @@
+<% content_for :title, "Proposal Submitted Successfully | ChooseRuby" %>
+<% content_for :meta_description, "Your author proposal has been submitted successfully." %>
+
+<div class="max-w-3xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+  <div class="rounded-3xl bg-white p-8 sm:p-12 shadow-sm ring-1 ring-slate-100 text-center">
+    <!-- Success Icon -->
+    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mb-6">
+      <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+
+    <!-- Success Message -->
+    <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
+      Thank You!
+    </h1>
+
+    <p class="text-lg text-slate-600 mb-8">
+      Your author proposal has been successfully submitted.
+    </p>
+
+    <!-- Proposal ID -->
+    <div class="rounded-2xl bg-slate-50 p-6 mb-8">
+      <p class="text-sm font-semibold text-slate-700 mb-2">Proposal ID</p>
+      <p class="text-2xl font-mono font-bold text-slate-900">#<%= @author_proposal.id %></p>
+      <p class="text-xs text-slate-500 mt-2">Save this ID for your records</p>
+    </div>
+
+    <!-- What Happens Next -->
+    <div class="text-left mb-8">
+      <h2 class="text-xl font-semibold text-slate-900 mb-4">What happens next?</h2>
+      <div class="space-y-4">
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-xs font-semibold text-rose-700">1</span>
+          <div>
+            <p class="font-medium text-slate-900">Email Confirmation</p>
+            <p class="text-sm text-slate-600">You'll receive a confirmation email at <strong><%= @author_proposal.submitter_email %></strong> shortly.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-xs font-semibold text-rose-700">2</span>
+          <div>
+            <p class="font-medium text-slate-900">Review Process</p>
+            <p class="text-sm text-slate-600">Our team will review your proposal within 5-7 days. We may contact you if we need clarification.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-xs font-semibold text-rose-700">3</span>
+          <div>
+            <p class="font-medium text-slate-900">Decision Notification</p>
+            <p class="text-sm text-slate-600">You'll receive an email when your proposal is approved or if we need any changes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 mb-8 text-left">
+      <h3 class="text-sm font-semibold text-slate-900 mb-2">Keep in mind</h3>
+      <ul class="space-y-2 text-sm text-slate-600">
+        <li class="flex items-start gap-2">
+          <span class="text-rose-500 mt-1">•</span>
+          <span>All proposals are carefully reviewed to ensure accuracy and relevance</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="text-rose-500 mt-1">•</span>
+          <span>We may make minor edits for clarity or formatting</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="text-rose-500 mt-1">•</span>
+          <span>Check your spam folder if you don't receive confirmation within 24 hours</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <%= link_to "View Authors Directory", authors_path, class: "inline-flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 px-6 py-3 text-sm font-semibold text-slate-900 transition" %>
+      <%= link_to "Submit Another Proposal", new_author_proposal_path, class: "inline-flex items-center justify-center rounded-full bg-rose-500 hover:bg-rose-400 px-6 py-3 text-sm font-semibold text-white transition" %>
+    </div>
+  </div>
+</div>

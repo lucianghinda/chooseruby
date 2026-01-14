@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Chooseruby" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Chooseruby">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <% if content_for?(:meta_description) %>
+      <meta name="description" content="<%= content_for(:meta_description) %>">
+    <% end %>
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-slate-50 text-slate-900 antialiased" data-controller="scroll-to-top">
+    <div class="flex min-h-screen flex-col">
+      <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur" data-controller="mobile-nav" data-action="keydown@window->mobile-nav#handleKeydown">
+        <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
+          <%= link_to root_path, class: "flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900" do %>
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-rose-500 text-white shadow-lg shadow-rose-500/40">CR</span>
+            <span>ChooseRuby</span>
+          <% end %>
+          <nav aria-label="Primary" class="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex">
+            <%= link_to "Directory", entries_path, class: "transition hover:text-rose-500" %>
+            <%= link_to "Start Here", start_path, class: "transition hover:text-rose-500" %>
+            <% nav_categories = Category.order(:display_order, :name).limit(6) %>
+            <el-popover-group class="relative">
+              <button popovertarget="browse-menu" class="inline-flex items-center gap-1 transition hover:text-rose-500">
+                Browse
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <el-popover id="browse-menu"
+                          anchor="bottom"
+                          popover
+                          class="absolute left-1/2 top-full z-50 mt-3 w-[min(90vw,52rem)] -translate-x-1/2 rounded-3xl bg-white shadow-2xl outline outline-1 outline-slate-100 transition transition-discrete backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-150 data-enter:ease-out data-leave:duration-100 data-leave:ease-in">
+                <div class="grid gap-6 p-6 sm:grid-cols-3">
+                  <div class="space-y-3">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Categories</p>
+                    <div class="space-y-2">
+                      <% nav_categories.each do |category| %>
+                        <%= link_to category_path(category.slug), class: "flex items-start gap-2 rounded-2xl px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50" do %>
+                          <span class="text-base">•</span>
+                          <div>
+                            <span><%= category.name %></span>
+                            <% if category.description.present? %>
+                              <p class="text-xs font-normal text-slate-500"><%= truncate(category.description, length: 64) %></p>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      <% end %>
+                      <%= link_to "View all categories", categories_path, class: "inline-flex items-center gap-2 text-xs font-semibold text-rose-600 hover:text-rose-500" %>
+                    </div>
+                  </div>
+
+                  <div class="space-y-3">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Types</p>
+                    <div class="grid grid-cols-2 gap-2">
+                      <% Entry::VALID_TYPES.each do |type_slug, _type_class| %>
+                        <%= link_to resource_type_path(type_slug), class: "flex items-center gap-2 rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-800 transition hover:bg-slate-100" do %>
+                          <span class="text-base"><%= type_emoji(type_slug) %></span>
+                          <span><%= type_name(type_slug) %></span>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </div>
+
+                  <div class="space-y-3">
+                    <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Collections</p>
+                    <div class="space-y-2">
+                      <%= link_to "Curated collections", collections_path, class: "flex items-center gap-2 rounded-xl bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700 ring-1 ring-rose-100 transition hover:bg-rose-100" %>
+                      <%= link_to "Why Ruby", why_ruby_path, class: "block rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50" %>
+                      <%= link_to "Community", communities_path, class: "block rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50" %>
+                      <%= link_to authors_path, class: "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50" do %>
+                        <span class="text-base">👤</span>
+                        <span>Authors</span>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </el-popover>
+            </el-popover-group>
+            <%= link_to "Collections", collections_path, class: "transition hover:text-rose-500" %>
+            <%= link_to "Why Ruby", why_ruby_path, class: "transition hover:text-rose-500" %>
+            <%= link_to "Community", communities_path, class: "transition hover:text-rose-500" %>
+          </nav>
+          <div class="hidden items-center gap-3 md:flex">
+            <%= link_to "Log in", "#", class: "text-sm font-semibold text-slate-600 transition hover:text-rose-500" %>
+            <%= link_to "Submit resource", new_resource_submission_path, class: "inline-flex items-center rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
+          </div>
+          <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 shadow-sm md:hidden" aria-label="Toggle navigation" data-mobile-nav-target="toggle" data-action="click->mobile-nav#toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
+        </div>
+        <div data-mobile-nav-target="overlay" data-action="click->mobile-nav#close" class="fixed inset-0 z-30 hidden bg-slate-900/60"></div>
+        <div data-mobile-nav-target="menu" class="fixed inset-x-4 top-20 z-40 hidden max-h-[calc(100vh-6rem)] overflow-y-auto rounded-3xl bg-white p-6 shadow-xl ring-1 ring-slate-200 md:hidden">
+          <div class="flex items-center justify-between">
+            <span class="text-base font-semibold text-slate-900">Navigate</span>
+            <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-100 text-slate-600" aria-label="Close navigation" data-action="click->mobile-nav#close">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <nav class="mt-6 space-y-4 text-base font-semibold text-slate-700">
+            <%= link_to "Directory", entries_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Start Here", start_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Categories", categories_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+
+            <%# Browse by Type section in mobile menu (Task 6.3) %>
+            <div class="space-y-2">
+              <div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Browse by Type</div>
+              <% Entry::VALID_TYPES.each do |type_slug, _type_class| %>
+                <%= link_to resource_type_path(type_slug), class: "flex items-center gap-2 rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } do %>
+                  <span class="text-base"><%= type_emoji(type_slug) %></span>
+                  <span><%= type_name(type_slug) %></span>
+                <% end %>
+              <% end %>
+            </div>
+
+            <%= link_to "Collections", collections_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Why Ruby", why_ruby_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Community", communities_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Authors", authors_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Mission", mission_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Roadmap", roadmap_path, class: "block rounded-2xl bg-slate-100 px-4 py-3 transition hover:bg-slate-200", data: { action: "click->mobile-nav#close" } %>
+          </nav>
+          <div class="mt-8 grid gap-3">
+            <%= link_to "Submit resource", new_resource_submission_path, class: "inline-flex items-center justify-center rounded-2xl bg-rose-500 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Log in", "#", class: "inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700", data: { action: "click->mobile-nav#close" } %>
+          </div>
+        </div>
+      </header>
+
+      <main class="flex-1">
+        <div class="mx-auto w-full max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+          <% flash.each do |type, message| %>
+            <% next if message.blank? %>
+            <% tone = type.to_sym == :notice ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-rose-50 text-rose-700 border-rose-200" %>
+            <div class="mb-8 rounded-3xl border px-5 py-4 text-sm font-medium <%= tone %>">
+              <%= message %>
+            </div>
+          <% end %>
+          <%= yield %>
+        </div>
+      </main>
+
+      <footer class="border-t border-slate-200 bg-white">
+        <div class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <p>&copy; <%= Time.current.year %> ChooseRuby. Curating the Ruby on Rails ecosystem.</p>
+          <div class="flex items-center gap-4">
+            <%= link_to "Mission", mission_path, class: "transition hover:text-rose-500" %>
+            <%= link_to "Roadmap", roadmap_path, class: "transition hover:text-rose-500" %>
+            <%= link_to "Contact", "mailto:hello@chooseruby.com", class: "transition hover:text-rose-500" %>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <button type="button"
+            class="fixed bottom-6 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-rose-500 text-white shadow-xl shadow-rose-500/30 transition duration-200 ease-out opacity-0 translate-y-3 pointer-events-none md:bottom-8 md:right-8"
+            aria-label="Back to top and focus search"
+            data-scroll-to-top-target="button"
+            data-action="click->scroll-to-top#scrollToTop">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 01.832.445l5 7a1 1 0 01-1.664 1.11L10 5.882 5.832 11.555a1 1 0 01-1.664-1.11l5-7A1 1 0 0110 3z" clip-rule="evenodd" />
+        <path d="M10 3a1 1 0 01.832.445l5 7a1 1 0 01-1.664 1.11L10 5.882 5.832 11.555a1 1 0 01-1.664-1.11l5-7A1 1 0 0110 3z" />
+      </svg>
+    </button>
+  </body>
+</html>
