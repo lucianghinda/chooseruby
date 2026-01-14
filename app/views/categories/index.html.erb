@@ -1,0 +1,52 @@
+<% content_for :title, "Ruby on Rails Categories | ChooseRuby" %>
+<% content_for :meta_description, "Browse curated Ruby and Rails topics including testing, authentication, background jobs, and more." %>
+
+<div class="space-y-12 pb-16">
+  <section class="rounded-3xl bg-white p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
+    <div class="mx-auto max-w-4xl text-center space-y-6">
+      <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+        Discover the Ruby ecosystem by topic
+      </h1>
+      <p class="text-lg text-slate-600">
+        Each category groups trusted gems, tutorials, and tools so you can move from question to solution faster.
+      </p>
+    </div>
+  </section>
+
+  <section class="space-y-8">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <h2 class="text-2xl font-semibold text-slate-900">All categories</h2>
+      <%= link_to "Search the directory", entries_path, class: "inline-flex items-center gap-2 text-sm font-semibold text-rose-500 hover:text-rose-400" %>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+      <% @categories.each do |category| %>
+        <article class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+          <div class="space-y-3">
+            <div class="flex items-center gap-3">
+              <span class="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-xl">
+                <%= category.icon.presence || "💎" %>
+              </span>
+              <h3 class="text-xl font-semibold text-slate-900"><%= category.name %></h3>
+            </div>
+            <% if category.description.present? %>
+              <p class="text-sm text-slate-600"><%= truncate(category.description, length: 140) %></p>
+            <% end %>
+            <% resource_count = category.entries_count %>
+            <p class="text-sm font-medium text-slate-500">
+              <%= pluralize(resource_count, 'resource') %>
+            </p>
+          </div>
+          <div class="mt-6">
+            <%= link_to category_path(category.slug), class: "group inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-500" do %>
+              View resources
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            <% end %>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  </section>
+</div>

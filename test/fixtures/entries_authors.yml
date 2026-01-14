@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This file is intentionally empty to avoid conflicts
+# Tests create their own association records as needed
+# == Schema Information
+#
+# Table name: entries_authors
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  author_id  :integer          not null
+#  entry_id   :integer          not null
+#
+# Indexes
+#
+#  index_entries_authors_on_author_id               (author_id)
+#  index_entries_authors_on_author_id_and_entry_id  (author_id,entry_id) UNIQUE
+#  index_entries_authors_on_entry_id                (entry_id)
+#
+# Foreign Keys
+#
+#  author_id  (author_id => authors.id) ON DELETE => cascade
+#  entry_id   (entry_id => entries.id) ON DELETE => cascade
+#

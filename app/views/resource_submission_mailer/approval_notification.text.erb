@@ -1,0 +1,19 @@
+Congratulations! Your submission has been approved
+===================================================
+
+Hi <%= @entry.submitter_name || "there" %>,
+
+Great news! Your submission to ChooseRuby has been approved and is now live on the site.
+
+- Title: <%= @entry.title %>
+- Type: <%= @entry.entryable_type.humanize %>
+- URL: <%= @entry.url %>
+
+You can view your published resource on ChooseRuby at:
+<%= resource_url(@entry) %>
+
+Thank you for contributing to the Ruby community and helping others discover valuable resources!
+
+If you have more resources to share, we'd love to hear about them. Feel free to submit another resource anytime.
+
+— The ChooseRuby team

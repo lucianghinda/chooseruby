@@ -1,0 +1,187 @@
+<% content_for :title, "Ruby on Rails Resource Directory | ChooseRuby" %>
+<% content_for :meta_description, "Explore curated Ruby on Rails gems, tools, tutorials, and guides. Filter by category or experience level to find the perfect resource for your next project." %>
+
+<div class="space-y-12 pb-16">
+  <!-- Directory hero -->
+  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
+    <div class="mx-auto max-w-3xl text-center">
+      <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+        Find the right Rails resource in minutes, not hours
+      </h1>
+      <p class="mt-4 text-base text-slate-600 sm:text-lg">
+        Search the curated directory for modern Ruby gems, production-ready guides, and deep-dive tutorials tailored to your skill level.
+      </p>
+
+      <%= form_with url: entries_path, method: :get, local: true, class: "mt-8", data: { controller: "typeahead", typeahead_url_value: entries_suggestions_path, typeahead_popular_value: @popular_queries, action: "submit->typeahead#recordSearch" } do |form| %>
+        <%= form.hidden_field :level, value: @active_level if @active_level.present? %>
+        <%= form.hidden_field :category, value: @active_category&.slug if @active_category.present? %>
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M9 4a5 5 0 013.995 8.326l3.84 3.84a1 1 0 01-1.414 1.415l-3.84-3.84A5 5 0 119 4zm0 2a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
+            </svg>
+          </div>
+            <%= form.text_field :q,
+              value: @query,
+              class: "h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-base text-slate-900 placeholder:text-slate-400 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300 focus:outline-none",
+              placeholder: "Search by keyword, gem, or problem…",
+              data: { typeahead_target: "input", action: "input->typeahead#search focus->typeahead#focus blur->typeahead#blur keydown->typeahead#navigate", aria: { controls: "entries-typeahead" } } %>
+          <div data-typeahead-target="panel" class="absolute inset-x-0 top-14 z-20 hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+            <div id="entries-typeahead" role="listbox" data-typeahead-target="results"></div>
+          </div>
+          <span class="sr-only" aria-live="polite" data-typeahead-target="status"></span>
+        </div>
+      <% end %>
+
+      <% if @query.present? %>
+        <p class="mt-4 text-sm text-slate-500">
+          Showing results for
+          <span class="font-semibold text-slate-700">"<%= @query %>"</span>
+          <%= link_to "Clear search", entries_path(level: @active_level, category: @active_category&.slug), class: "ml-2 text-rose-500 hover:text-rose-400" %>
+        </p>
+      <% end %>
+
+      <%= render partial: "entries/filter_chips", locals: { base_path: entries_path } %>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="space-y-8">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+      <div class="space-y-4">
+        <h2 class="text-xl font-semibold text-slate-900">Experience level</h2>
+        <div class="flex flex-wrap gap-3">
+          <% base_params = { q: @query.presence, category: @active_category&.slug }.compact %>
+          <% active_level = @active_level.presence %>
+          <%= link_to entries_path(base_params),
+                      class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active_level ? "bg-slate-100 text-slate-600 hover:bg-slate-200" : "bg-rose-500 text-white shadow-sm hover:bg-rose-400"}" do %>
+            Any level
+          <% end %>
+          <% Entry.experience_levels.keys.reject { |level| level == "all_levels" }.each do |level| %>
+            <% level_label = level.to_s.humanize %>
+            <% level_params = base_params.merge(level:) %>
+            <% active = active_level == level %>
+            <%= link_to entries_path(level_params),
+                        class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active ? "bg-rose-500 text-white shadow-sm hover:bg-rose-400" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}" do %>
+              <span class="mr-2 h-2 w-2 rounded-full <%= active ? "bg-white" : "bg-rose-400" %>"></span>
+              <%= level_label %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="space-y-4 lg:max-w-xl">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold text-slate-900">Categories</h2>
+          <% if @active_category.present? %>
+            <% cleared_params = base_params.except(:category).merge(level: active_level) %>
+            <%= link_to "Clear category", entries_path(cleared_params), class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
+          <% end %>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <% @categories.first(12).each do |category| %>
+            <% category_params = base_params.merge(level: active_level, category: category.slug).compact %>
+            <% active = @active_category == category %>
+            <%= link_to category.name,
+                        entries_path(category_params),
+                        class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active ? "bg-slate-900 text-white shadow-sm hover:bg-slate-800" : "bg-white text-slate-600 ring-1 ring-slate-200 hover:text-rose-500"}" %>
+          <% end %>
+        </div>
+        <% if @categories.size > 12 %>
+          <p class="text-sm text-slate-500">
+            Looking for a specific topic?
+            <%= link_to "View the full category index", categories_path, class: "font-semibold text-rose-500 hover:text-rose-400" %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="space-y-6">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <% total_count = @entries.total_count %>
+      <p class="text-sm text-slate-500">
+        <%= pluralize(total_count, "resource") %> curated for you
+        <% if active_level %>
+          · <span class="font-medium text-slate-700"><%= active_level.humanize %> friendly</span>
+        <% end %>
+        <% if @active_category.present? %>
+          · <span class="font-medium text-slate-700"><%= @active_category.name %></span>
+        <% end %>
+      </p>
+      <span class="sr-only" aria-live="polite"><%= "#{total_count} resources available" %></span>
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <%= form_with url: entries_path, method: :get, local: true, class: "flex items-center gap-2" do |form| %>
+          <%= form.hidden_field :q, value: @query if @query.present? %>
+          <%= form.hidden_field :level, value: @active_level if @active_level.present? %>
+          <%= form.hidden_field :category, value: @active_category&.slug if @active_category.present? %>
+          <label for="sort" class="text-xs font-semibold text-slate-600">Sort by</label>
+          <%= form.select :sort,
+                          options_for_select([["Most recent", "recent"], ["Most popular", "popular"], ["Beginner friendly", "beginner_first"], ["Oldest first", "oldest"]], @active_sort),
+                          {},
+                          class: "rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300",
+                          onchange: "this.form.submit()" %>
+        <% end %>
+        <%= link_to new_resource_submission_path,
+                    class: "inline-flex items-center gap-2 rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400" do %>
+          <span>Submit a new resource</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14m-7-7v14" />
+          </svg>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @entries.any? %>
+      <div data-controller="view-toggle"
+           data-view-toggle-key-value="entries_view"
+           data-view-toggle-grid-class-value="grid gap-6 lg:grid-cols-3"
+           data-view-toggle-list-class-value="space-y-4"
+           data-view-toggle-default-view-value="grid">
+        <div class="mb-3 flex items-center gap-2 justify-end">
+          <span class="text-xs font-semibold text-slate-600">View</span>
+          <div class="inline-flex rounded-full bg-slate-100 p-1">
+            <button type="button"
+                    data-action="click->view-toggle#switch"
+                    data-view-toggle-target="button"
+                    data-view="grid"
+                    class="inline-flex items-center gap-1 rounded-full bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
+              Grid
+            </button>
+            <button type="button"
+                    data-action="click->view-toggle#switch"
+                    data-view-toggle-target="button"
+                    data-view="list"
+                    class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
+              List
+            </button>
+          </div>
+        </div>
+
+        <div data-view-toggle-target="container"
+             class="grid gap-6 lg:grid-cols-3">
+          <%= render partial: "entries/card", collection: @entries, as: :entry, locals: { variant: :compact } %>
+        </div>
+      </div>
+
+      <div class="mt-8 flex justify-center">
+        <%= paginate @entries %>
+      </div>
+    <% else %>
+      <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">
+        <% if @query.present? %>
+          <p class="text-lg font-semibold text-slate-700">No results found</p>
+          <p class="mt-2 text-sm text-slate-500">
+            Know a great Ruby resource? <%= link_to "Submit a resource", new_resource_submission_path, class: "font-semibold text-rose-500 hover:text-rose-400" %> to share it with the community!
+          </p>
+        <% else %>
+          <p class="text-lg font-semibold text-slate-700">No curated matches yet</p>
+          <p class="mt-2 text-sm text-slate-500">
+            Try broadening your filters or <%= link_to "request a resource", new_resource_submission_path, class: "font-semibold text-rose-500 hover:text-rose-400" %>.
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+</div>

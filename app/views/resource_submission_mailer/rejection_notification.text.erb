@@ -1,0 +1,22 @@
+Update on your ChooseRuby submission
+=====================================
+
+Hi <%= @entry.submitter_name || "there" %>,
+
+Thank you for taking the time to submit a resource to ChooseRuby. After reviewing your submission, we're unable to publish it at this time.
+
+- Title: <%= @entry.title %>
+- Type: <%= @entry.entryable_type.humanize %>
+
+<% if @comment.present? %>
+Feedback from our team:
+<%= @comment %>
+<% else %>
+While we don't have specific feedback to share at this time, we carefully review all submissions to ensure quality and relevance for the Ruby community.
+<% end %>
+
+We appreciate your interest in contributing to ChooseRuby. If you'd like to revise and resubmit this resource, or if you have other resources to share, please feel free to submit again.
+
+You can submit resources at <%= root_url %>.
+
+— The ChooseRuby team

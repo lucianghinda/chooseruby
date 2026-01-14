@@ -1,0 +1,206 @@
+---
+- id: '1'
+  title: Ruby on Rails 7
+  created_at: '2022-06-19 09:25:01.836774'
+  updated_at: '2022-06-19 20:30:46.889638'
+  slug: ruby-on-rails-7
+- id: '2'
+  title: Hotwire
+  created_at: '2022-06-19 09:25:07.218372'
+  updated_at: '2022-06-19 20:30:46.898046'
+  slug: hotwire
+- id: '3'
+  title: Stimulus
+  created_at: '2022-06-19 09:25:11.820102'
+  updated_at: '2022-06-19 20:30:46.904485'
+  slug: stimulus
+- id: '4'
+  title: Turbo
+  created_at: '2022-06-19 09:25:16.493389'
+  updated_at: '2022-06-19 20:30:46.911039'
+  slug: turbo
+- id: '5'
+  title: Tailwind CSS
+  created_at: '2022-06-19 09:25:22.29048'
+  updated_at: '2022-06-19 20:30:46.917494'
+  slug: tailwind-css
+- id: '6'
+  title: React with Rails
+  created_at: '2022-06-19 09:25:26.650853'
+  updated_at: '2022-06-19 20:30:46.924995'
+  slug: react-with-rails
+- id: '7'
+  title: Ruby on Rails 5
+  created_at: '2022-06-19 09:28:16.128425'
+  updated_at: '2022-06-19 20:30:46.931188'
+  slug: ruby-on-rails-5
+- id: '12'
+  title: Ruby on Rails 6
+  created_at: '2022-06-19 09:39:09.609758'
+  updated_at: '2022-06-19 20:30:46.962055'
+  slug: ruby-on-rails-6
+- id: '17'
+  title: Deployment
+  created_at: '2022-06-19 10:17:56.355667'
+  updated_at: '2022-06-19 20:30:46.999621'
+  slug: deployment
+- id: '18'
+  title: Testing
+  created_at: '2022-06-19 10:18:01.06112'
+  updated_at: '2022-06-19 20:30:47.00574'
+  slug: testing
+- id: '19'
+  title: Ruby
+  created_at: '2022-06-19 10:34:45.477196'
+  updated_at: '2022-06-19 20:30:47.011906'
+  slug: ruby
+- id: '21'
+  title: Design Patterns
+  created_at: '2022-06-19 10:45:40.202694'
+  updated_at: '2022-06-19 20:30:47.024163'
+  slug: design-patterns
+- id: '22'
+  title: Ruby on Rails 3
+  created_at: '2022-06-19 11:01:15.072641'
+  updated_at: '2022-06-19 20:30:47.030305'
+  slug: ruby-on-rails-3
+- id: '23'
+  title: Regexp
+  created_at: '2022-06-19 11:34:30.781025'
+  updated_at: '2022-06-19 20:30:47.03662'
+  slug: regexp
+- id: '24'
+  title: Command Line Apps & Scripts
+  created_at: '2022-06-19 11:35:05.943997'
+  updated_at: '2022-06-19 20:30:47.043047'
+  slug: command-line-apps-scripts
+- id: '25'
+  title: API
+  created_at: '2022-06-19 12:01:14.063134'
+  updated_at: '2022-06-19 20:30:47.050497'
+  slug: api
+- id: '26'
+  title: Ruby on Rails
+  created_at: '2022-06-19 12:05:47.143532'
+  updated_at: '2022-06-19 20:30:47.059391'
+  slug: ruby-on-rails
+- id: '30'
+  title: BDD
+  created_at: '2022-06-19 12:06:45.402178'
+  updated_at: '2022-06-19 20:30:47.089911'
+  slug: bdd
+- id: '31'
+  title: Perfomance
+  created_at: '2022-06-19 12:25:24.113763'
+  updated_at: '2022-06-19 20:30:47.095908'
+  slug: perfomance
+- id: '36'
+  title: StimulusReflex
+  created_at: '2022-06-19 12:36:34.022995'
+  updated_at: '2022-06-19 20:30:47.126484'
+  slug: stimulusreflex
+- id: '38'
+  title: Vue with Rails
+  created_at: '2022-07-05 07:34:00.761836'
+  updated_at: '2022-07-05 07:34:00.761836'
+  slug: vue-with-rails
+- id: '39'
+  title: Metaprogramming
+  created_at: '2022-08-06 11:20:08.47863'
+  updated_at: '2022-08-06 11:20:08.47863'
+  slug: metaprogramming
+- id: '40'
+  title: Debugging
+  created_at: '2022-08-16 10:54:35.333097'
+  updated_at: '2022-08-16 10:54:35.333097'
+  slug: debugging
+- id: '16'
+  title: Data Base
+  created_at: '2022-06-19 10:17:43.942003'
+  updated_at: '2022-08-16 10:55:20.042796'
+  slug: postgresql
+- id: '41'
+  title: Chat bot
+  created_at: '2022-08-16 11:32:50.000799'
+  updated_at: '2022-08-16 11:32:50.000799'
+  slug: chat-bot
+- id: '42'
+  title: Geocoding
+  created_at: '2022-08-16 11:46:22.861299'
+  updated_at: '2022-08-16 11:46:22.861299'
+  slug: geocoding
+- id: '43'
+  title: Strings and Encodings
+  created_at: '2022-08-16 11:47:37.608753'
+  updated_at: '2022-08-16 11:47:37.608753'
+  slug: strings-and-encodings
+- id: '44'
+  title: Payments
+  created_at: '2022-08-30 19:58:34.931726'
+  updated_at: '2022-08-30 19:58:34.931726'
+  slug: payments
+- id: '20'
+  title: Object-Oriented Programming
+  created_at: '2022-06-19 10:43:34.328505'
+  updated_at: '2022-09-01 17:13:19.04004'
+  slug: object-oriented-design
+- id: '45'
+  title: ActiveSupport
+  created_at: '2022-09-03 12:17:16.324469'
+  updated_at: '2022-09-03 12:17:16.324469'
+  slug: activesupport
+- id: '46'
+  title: CableReady
+  created_at: '2022-09-03 13:50:43.210703'
+  updated_at: '2022-09-03 13:50:43.210703'
+  slug: cableready
+- id: '29'
+  title: TDD (Test Driven Development)
+  created_at: '2022-06-19 12:06:41.953082'
+  updated_at: '2022-09-03 20:53:36.640075'
+  slug: tdd
+- id: '47'
+  title: DDD (Domain-Driven Design)
+  created_at: '2022-09-04 07:36:12.766969'
+  updated_at: '2022-09-04 07:36:12.766969'
+  slug: ddd-domain-driven-design
+- id: '48'
+  title: Search
+  created_at: '2022-09-04 07:44:55.203582'
+  updated_at: '2022-09-04 07:44:55.203582'
+  slug: search
+- id: '49'
+  title: Refactoring
+  created_at: '2022-09-04 18:37:58.431114'
+  updated_at: '2022-09-04 18:37:58.431114'
+  slug: refactoring
+- id: '50'
+  title: Sidekiq
+  created_at: '2022-09-07 12:53:37.606109'
+  updated_at: '2022-09-07 12:53:37.606109'
+  slug: sidekiq
+- id: '51'
+  title: Error and exception handling
+  created_at: '2022-09-07 12:59:15.779443'
+  updated_at: '2022-09-07 12:59:15.779443'
+  slug: error-and-exception-handling
+- id: '52'
+  title: RSpec
+  created_at: '2023-04-20 03:42:13.969191'
+  updated_at: '2023-04-20 03:42:13.969191'
+  slug: rspec
+- id: '53'
+  title: Ruby 3
+  created_at: '2023-05-09 03:10:19.467976'
+  updated_at: '2023-05-09 03:10:19.467976'
+  slug: ruby-3
+- id: '54'
+  title: Object-Oriented Programming
+  created_at: '2023-05-09 03:11:53.52753'
+  updated_at: '2023-05-09 03:11:53.52753'
+  slug: object-oriented-programming
+- id: '55'
+  title: Interview
+  created_at: '2023-05-09 03:57:56.783623'
+  updated_at: '2023-05-09 03:57:56.783623'
+  slug: interview

@@ -1,0 +1,76 @@
+<% variant = local_assigns[:variant] || :default %>
+<% type_slug = entry.type_slug %>
+<% type_classes = {
+  "gems" => "bg-amber-50 text-amber-800",
+  "books" => "bg-indigo-50 text-indigo-800",
+  "courses" => "bg-teal-50 text-teal-800",
+  "tutorials" => "bg-blue-50 text-blue-800",
+  "articles" => "bg-sky-50 text-sky-800",
+  "tools" => "bg-slate-100 text-slate-800",
+  "podcasts" => "bg-purple-50 text-purple-800",
+  "communities" => "bg-emerald-50 text-emerald-800"
+}[type_slug] || "bg-slate-100 text-slate-800" %>
+
+<% card_classes = +"relative block h-full rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400" %>
+<% card_classes << (variant == :compact ? " p-4" : " p-6") %>
+
+<a href="<%= resource_path(entry.slug) %>" class="<%= card_classes %>">
+  <div class="space-y-3 sm:space-y-4">
+    <% if entry.categories.any? %>
+      <div class="flex flex-wrap gap-2">
+        <% entry.categories.first(2).each do |category| %>
+          <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-600"><%= category.name %></span>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="space-y-2">
+      <h3 class="text-base sm:text-lg font-semibold text-slate-900 leading-snug"><%= entry.title %></h3>
+      <% description_text = entry.description.to_plain_text.presence || entry.tags&.join(", ") %>
+      <% if description_text.present? %>
+        <p class="text-sm text-slate-600 leading-relaxed"><%= truncate(description_text, length: 140) %></p>
+      <% end %>
+      <%= render "entries/type_metadata", entry: entry %>
+    </div>
+  </div>
+
+  <div class="mt-5 flex items-center justify-between gap-3 text-xs text-slate-600 sm:text-sm">
+    <div class="flex flex-wrap items-center gap-2">
+      <% if type_slug.present? %>
+        <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-semibold <%= type_classes %>">
+          <span><%= type_emoji(type_slug) %></span>
+          <span><%= type_name(type_slug) %></span>
+        </span>
+      <% end %>
+
+      <% if entry.experience_level.present? %>
+        <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+          <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(entry.experience_level) %>"></span>
+          <%= entry.experience_level.capitalize %>
+        </span>
+      <% end %>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="flex items-center gap-1 text-[11px] text-slate-500">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+          Updated <%= entry.updated_at.strftime("%b %-d") %>
+        </span>
+
+        <% if entry.authors.any? %>
+          <span class="text-[11px] sm:text-xs">
+            by <%= entry.authors.first(2).map(&:name).to_sentence %>
+            <% remaining = entry.authors.size - 2 %>
+            <%= "+#{remaining}" if remaining.positive? %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1 text-rose-500 whitespace-nowrap">
+      <span class="text-xs font-semibold">Details</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+      </svg>
+    </div>
+  </div>
+</a>

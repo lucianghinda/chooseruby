@@ -1,0 +1,92 @@
+<% content_for :title, "#{@author.name} | ChooseRuby Authors" %>
+<% content_for :meta_description, @author.bio.present? ? @author.bio.truncate(160) : "View profile and resources by #{@author.name}" %>
+
+<div class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <!-- Author Header Section -->
+  <div class="text-center mb-8">
+    <!-- Avatar -->
+    <div class="flex justify-center mb-4">
+      <% if @author.avatar.attached? %>
+        <%= image_tag @author.avatar, alt: @author.name, class: "w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shadow-lg" %>
+      <% elsif @author.avatar_url.present? %>
+        <%= image_tag @author.avatar_url, alt: @author.name, class: "w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shadow-lg", onerror: "this.src='https://via.placeholder.com/150?text=No+Avatar'" %>
+      <% else %>
+        <%= image_tag "https://via.placeholder.com/150?text=No+Avatar", alt: @author.name, class: "w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover shadow-lg" %>
+      <% end %>
+    </div>
+
+    <!-- Name -->
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3"><%= @author.name %></h1>
+
+    <!-- Bio -->
+    <% if @author.bio.present? %>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-6"><%= @author.bio %></p>
+    <% end %>
+
+    <!-- Propose Edit Button -->
+    <div class="mb-6">
+      <%= link_to propose_author_edit_path(author_id: @author.id), class: "inline-flex items-center gap-2 px-5 py-2.5 bg-rose-500 hover:bg-rose-400 text-white rounded-full text-sm font-semibold transition-colors duration-200 shadow-sm" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        <span>Propose Edit</span>
+      <% end %>
+    </div>
+
+    <!-- Social Links -->
+    <% social_links = [
+      { name: 'GitHub', url: @author.github_url, icon: '⚡' },
+      { name: 'GitLab', url: @author.gitlab_url, icon: '🦊' },
+      { name: 'Website', url: @author.website_url, icon: '🌐' },
+      { name: 'Bluesky', url: @author.bluesky_url, icon: '☁️' },
+      { name: 'Ruby.social', url: @author.ruby_social_url, icon: '💎' },
+      { name: 'Twitter', url: @author.twitter_url, icon: '🐦' },
+      { name: 'LinkedIn', url: @author.linkedin_url, icon: '💼' },
+      { name: 'YouTube', url: @author.youtube_url, icon: '📺' },
+      { name: 'Twitch', url: @author.twitch_url, icon: '🎮' },
+      { name: 'Blog', url: @author.blog_url, icon: '✍️' }
+    ].select { |link| link[:url].present? } %>
+
+    <% if social_links.any? %>
+      <div class="flex flex-wrap justify-center gap-3 mt-6">
+        <% social_links.each do |link| %>
+          <%= link_to link[:url], target: "_blank", rel: "noopener", class: "inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 text-gray-700 hover:text-gray-900" do %>
+            <span class="text-xl"><%= link[:icon] %></span>
+            <span class="text-sm font-medium"><%= link[:name] %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Resources Section -->
+  <div class="mt-12">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">Resources by <%= @author.name %></h2>
+
+    <% if @entries.any? %>
+      <div class="space-y-4">
+        <% @entries.each do |resource| %>
+          <div class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+              <%= link_to resource.title, resource.url, class: "hover:text-blue-600 transition-colors", target: "_blank", rel: "noopener" %>
+            </h3>
+            <% if resource.description.present? %>
+              <p class="text-gray-600"><%= resource.description %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Pagination -->
+      <% if @entries.total_pages > 1 %>
+        <div class="mt-8 flex justify-center">
+          <%= paginate @entries %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-12 bg-gray-50 rounded-lg">
+        <p class="text-gray-600 text-lg">No resources yet</p>
+      </div>
+    <% end %>
+  </div>
+</div>

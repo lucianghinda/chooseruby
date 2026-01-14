@@ -1,0 +1,521 @@
+---
+- id: '2'
+  youtube_id: '1'
+  created_at: '2022-09-14 17:39:06.589419'
+  updated_at: '2022-09-14 17:39:06.592033'
+  entry:
+    title: New Ruby on Rails application and Static pages
+    slug: new-ruby-on-rails-application-and-static-pages
+    url: MwbmKqdDsyI
+- id: '1'
+  youtube_id: '1'
+  created_at: '2022-09-14 17:37:05.684184'
+  updated_at: '2022-09-14 17:39:16.612124'
+  entry:
+    title: What we'll build
+    slug: what-we-ll-build-part-1
+    url: uuHtuR2FFS4
+- id: '3'
+  youtube_id: '1'
+  created_at: '2022-09-14 17:39:45.112327'
+  updated_at: '2022-09-14 17:39:45.114767'
+  entry:
+    title: Devise authentication styled with Tailwind UI
+    slug: devise-authentication-styled-with-tailwind-ui
+    url: COFI93NySUw
+- id: '4'
+  youtube_id: '2'
+  created_at: '2022-09-14 17:41:38.982877'
+  updated_at: '2022-09-14 17:41:38.985443'
+  entry:
+    title: Data modeling with ActiveRecord for Video Automation tool
+    slug: data-modeling-with-activerecord-for-video-automation-tool
+    url: n_5z4FDBbqI
+- id: '5'
+  youtube_id: '2'
+  created_at: '2022-09-14 17:42:23.297506'
+  updated_at: '2022-09-14 17:42:23.300396'
+  entry:
+    title: ActionView basics - list and edit custom video descriptions
+    slug: actionview-basics-list-and-edit-custom-video-descriptions
+    url: JispE3mZtXg
+- id: '6'
+  youtube_id: '1'
+  created_at: '2022-09-14 17:49:05.558013'
+  updated_at: '2022-09-14 17:49:05.560486'
+  entry:
+    title: Landing page for Ruby on Rails with Tailwind UI
+    slug: landing-page-for-ruby-on-rails-with-tailwind-ui
+    url: U5mU38Avdhw
+- id: '7'
+  youtube_id: '1'
+  created_at: '2022-10-09 06:56:35.820275'
+  updated_at: '2022-10-09 06:56:35.829212'
+  entry:
+    title: Postgres enums in Ruby on Rails
+    slug: postgres-enums-in-ruby-on-rails
+    url: H9W5dwHbY3Y
+- id: '8'
+  youtube_id: '1'
+  created_at: '2022-10-09 06:58:00.116995'
+  updated_at: '2022-10-09 06:58:00.120505'
+  entry:
+    title: Handle webhooks and process async with Rails
+    slug: handle-webhooks-and-process-async-with-rails
+    url: ZkHOC8Ebk0A
+- id: '9'
+  youtube_id: '1'
+  created_at: '2022-10-09 06:58:54.238493'
+  updated_at: '2022-10-09 06:58:54.241278'
+  entry:
+    title: Dashboard view with Tailwind UI
+    slug: dashboard-view-with-tailwind-ui
+    url: STZtfs6RR-E
+- id: '10'
+  youtube_id: '1'
+  created_at: '2022-10-09 06:59:27.8481'
+  updated_at: '2022-10-09 06:59:27.851055'
+  entry:
+    title: Stripe Connect onboarding with Ruby on Rails
+    slug: stripe-connect-onboarding-with-ruby-on-rails
+    url: M1_JCZxhlRA
+- id: '11'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:00:00.626041'
+  updated_at: '2022-10-09 07:00:00.630055'
+  entry:
+    title: Create Stripe Financial Accounts to store money
+    slug: create-stripe-financial-accounts-to-store-money
+    url: ZDF1DdWIl18
+- id: '12'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:00:29.1411'
+  updated_at: '2022-10-09 07:00:29.144966'
+  entry:
+    title: Financial Account balances and Payments balances
+    slug: financial-account-balances-and-payments-balances
+    url: h0BTwafCgiY
+- id: '13'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:00:55.773887'
+  updated_at: '2022-10-09 07:00:55.776562'
+  entry:
+    title: Stripe Payouts
+    slug: stripe-payouts
+    url: pfVHg4pNG7c
+- id: '14'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:01:24.688168'
+  updated_at: '2022-10-09 07:01:24.69084'
+  entry:
+    title: Annotate gem
+    slug: annotate-gem
+    url: 9xAXtUv7c8
+- id: '15'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:01:52.009295'
+  updated_at: '2022-10-09 07:01:52.011966'
+  entry:
+    title: Faker gem
+    slug: faker-gem
+    url: r25pFfLLF_c
+- id: '16'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:02:25.40268'
+  updated_at: '2022-10-09 07:02:25.406954'
+  entry:
+    title: Enable creators to create Stripe Products with localized prices
+    slug: enable-creators-to-create-stripe-products-with-localized-prices
+    url: rl8AOfEep5Q
+- id: '17'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:02:55.566701'
+  updated_at: '2022-10-09 07:02:55.569309'
+  entry:
+    title: Upload Product images with ActiveStorage
+    slug: upload-product-images-with-activestorage
+    url: ihGRv-0E6K0
+- id: '18'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:03:27.247288'
+  updated_at: '2022-10-09 07:03:27.250231'
+  entry:
+    title: AWS S3 Uploads with Ruby on Rails
+    slug: aws-s3-uploads-with-ruby-on-rails
+    url: wbiXR7VGWYo
+- id: '19'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:03:54.35652'
+  updated_at: '2022-10-09 07:03:54.359571'
+  entry:
+    title: Stores Subdomain Routing with Ruby on Rails
+    slug: stores-subdomain-routing-with-ruby-on-rails
+    url: U2C7e0sA8kg
+- id: '20'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:04:18.2619'
+  updated_at: '2022-10-09 07:04:18.265232'
+  entry:
+    title: Product listing pages with Tailwind UI
+    slug: product-listing-pages-with-tailwind-ui
+    url: Y0DPSD1uSz8
+- id: '21'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:04:40.107634'
+  updated_at: '2022-10-09 07:04:40.11111'
+  entry:
+    title: Customer Payment Flow with Stripe Checkout
+    slug: customer-payment-flow-with-stripe-checkout
+    url: UUL7NUGljXE
+- id: '22'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:05:08.574802'
+  updated_at: '2022-10-09 07:05:08.577791'
+  entry:
+    title: Order Confirmation Page with Tailwind UI
+    slug: order-confirmation-page-with-tailwind-ui
+    url: QWUvuRwpZLU
+- id: '23'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:05:44.547597'
+  updated_at: '2022-10-09 07:05:44.55037'
+  entry:
+    title: Order Fulfillment with Webhooks
+    slug: order-fulfillment-with-webhooks
+    url: _7gH6G5vo2cv
+- id: '24'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:06:11.483904'
+  updated_at: '2022-10-09 07:06:11.486683'
+  entry:
+    title: Modeling Attachments and using Counter Caches
+    slug: modeling-attachments-and-using-counter-caches
+    url: sFSprEVFhc4
+- id: '25'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:06:35.755917'
+  updated_at: '2022-10-09 07:06:35.759069'
+  entry:
+    title: Deploy Rails 7 to Heroku
+    slug: deploy-rails-7-to-heroku
+    url: 7eb_GzX3Gys
+- id: '26'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:06:59.541152'
+  updated_at: '2022-10-09 07:06:59.544144'
+  entry:
+    title: SSL for Custom Subdomains with Cloudflare, Heroku, and Rails
+    slug: ssl-for-custom-subdomains-with-cloudflare-heroku-and-rails
+    url: 8c6Z9SXqoF0
+- id: '27'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:07:21.039328'
+  updated_at: '2022-10-09 07:07:21.045015'
+  entry:
+    title: Gravatars
+    slug: gravatars
+    url: quLHxF0jjr4
+- id: '28'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:07:39.749232'
+  updated_at: '2022-10-09 07:07:39.751974'
+  entry:
+    title: Custom layout for devise views
+    slug: custom-layout-for-devise-views
+    url: N86tF2RnMgM
+- id: '29'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:08:00.006733'
+  updated_at: '2022-10-09 07:08:00.010006'
+  entry:
+    title: Custom attributes for devise onboarding
+    slug: custom-attributes-for-devise-onboarding
+    url: "-_AlWZ67SOk"
+- id: '30'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:08:23.568588'
+  updated_at: '2022-10-09 07:08:23.572395'
+  entry:
+    title: Branding with DALL-E generated logo
+    slug: branding-with-dall-e-generated-logo
+    url: EUri3jjbq1s
+- id: '31'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:08:48.524746'
+  updated_at: '2022-10-09 07:08:48.527652'
+  entry:
+    title: Stripe Treasury flows explained
+    slug: stripe-treasury-flows-explained
+    url: l46UPAxtztE
+- id: '32'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:09:20.744319'
+  updated_at: '2022-10-09 07:09:20.747642'
+  entry:
+    title: Create cardholders and issue cards to creators
+    slug: create-cardholders-and-issue-cards-to-creators
+    url: YXrYyv8GbJA
+- id: '33'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:09:41.911465'
+  updated_at: '2022-10-09 07:09:41.914443'
+  entry:
+    title: Display virtual card details with Issuing Elements
+    slug: display-virtual-card-details-with-issuing-elements
+    url: 9dPRhPsZSm0
+- id: '34'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:10:01.214057'
+  updated_at: '2022-10-09 07:10:01.218642'
+  entry:
+    title: Sending email with Ruby on Rails
+    slug: sending-email-with-ruby-on-rails
+    url: zq57C07xCSE
+- id: '35'
+  youtube_id: '1'
+  created_at: '2022-10-09 07:10:24.442094'
+  updated_at: '2022-10-09 07:10:24.444933'
+  entry:
+    title: Attachment downloads for end customers
+    slug: attachment-downloads-for-end-customers
+    url: Qa45n84IN3E
+- id: '36'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:41:09.468841'
+  updated_at: '2022-10-10 07:41:09.478132'
+  entry:
+    title: Render custom descriptions with ERB
+    slug: render-custom-descriptions-with-erb
+    url: Br6nk3gFjDE
+- id: '37'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:41:49.329582'
+  updated_at: '2022-10-10 07:41:49.332817'
+  entry:
+    title: YouTube API Authentication with Rails
+    slug: youtube-api-authentication-with-rails
+    url: KDkLQAcsCXg
+- id: '38'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:42:12.340839'
+  updated_at: '2022-10-10 07:42:12.343787'
+  entry:
+    title: List YouTube videos with the Data API and Ruby
+    slug: list-youtube-videos-with-the-data-api-and-ruby
+    url: hVfyqmN6ILE
+- id: '39'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:42:37.66855'
+  updated_at: '2022-10-10 07:42:37.671657'
+  entry:
+    title: Update Videos with the YouTube API
+    slug: update-videos-with-the-youtube-api
+    url: ae-azSl5-EI
+- id: '40'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:43:05.489562'
+  updated_at: '2022-10-10 07:43:05.492851'
+  entry:
+    title: Tagging videos with the YouTube API
+    slug: tagging-videos-with-the-youtube-api
+    url: zDx41b54UWs
+- id: '41'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:43:32.535674'
+  updated_at: '2022-10-10 07:43:32.53883'
+  entry:
+    title: Convert SVG to PNG with JavaScript
+    slug: convert-svg-to-png-with-javascript
+    url: "-oXRpzLyz6Q"
+- id: '42'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:43:57.937388'
+  updated_at: '2022-10-10 07:43:57.940413'
+  entry:
+    title: Upload YouTube thumbnail with the YouTube Data API and Rails
+    slug: upload-youtube-thumbnail-with-the-youtube-data-api-and-rails
+    url: r5PIzDmRups
+- id: '43'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:44:22.198021'
+  updated_at: '2022-10-10 07:44:22.201337'
+  entry:
+    title: Adding a Categories feature
+    slug: adding-a-categories-feature
+    url: WJXLwQGwqDI
+- id: '44'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:44:51.018154'
+  updated_at: '2022-10-10 07:44:51.021162'
+  entry:
+    title: Dynamically render SVG with Rails
+    slug: dynamically-render-svg-with-rails
+    url: Ij7l-yOWaso
+- id: '45'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:45:14.349829'
+  updated_at: '2022-10-10 07:45:14.35314'
+  entry:
+    title: How to deploy a Rails 6 application to Heroku
+    slug: how-to-deploy-a-rails-6-application-to-heroku
+    url: 3wmMtHz2zpY
+- id: '46'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:45:37.393025'
+  updated_at: '2022-10-10 07:45:37.396'
+  entry:
+    title: Devise authentication with Rails 6
+    slug: devise-authentication-with-rails-6
+    url: zl6iJLlmUog
+- id: '47'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:46:01.411861'
+  updated_at: '2022-10-10 07:46:01.414979'
+  entry:
+    title: Limit access to data to authorized users Rails 6
+    slug: limit-access-to-data-to-authorized-users-rails-6
+    url: LU1g0pTMXhk
+- id: '48'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:46:24.999629'
+  updated_at: '2022-10-10 07:46:25.00256'
+  entry:
+    title: Record a video with JavaScript in a Ruby on Rails app
+    slug: record-a-video-with-javascript-in-a-ruby-on-rails-app
+    url: fqgnOEjakDg
+- id: '49'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:47:09.1138'
+  updated_at: '2022-10-10 07:47:09.116632'
+  entry:
+    title: Upload a video to YouTube with the YouTube Data API
+    slug: upload-a-video-to-youtube-with-the-youtube-data-api
+    url: I5EvTSytDIM
+- id: '50'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:47:30.608264'
+  updated_at: '2022-10-10 07:47:30.61159'
+  entry:
+    title: Setting up Background Jobs in Ruby on Rails
+    slug: setting-up-background-jobs-in-ruby-on-rails
+    url: 5Z21WARO7P8
+- id: '51'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:47:51.386078'
+  updated_at: '2022-10-10 07:47:51.389034'
+  entry:
+    title: Running Rails background jobs on Heroku with Resque and Redis
+    slug: running-rails-background-jobs-on-heroku-with-resque-and-redis
+    url: seC6MnKvbnI
+- id: '52'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:48:11.141552'
+  updated_at: '2022-10-10 07:48:11.145642'
+  entry:
+    title: Refresh YouTube API OAuth Tokens with Ruby
+    slug: refresh-youtube-api-oauth-tokens-with-ruby
+    url: KCsw_eTVpIM
+- id: '53'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:48:34.91836'
+  updated_at: '2022-10-10 07:48:34.921448'
+  entry:
+    title: Take a photo and remove greenscreen with JavaScript
+    slug: take-a-photo-and-remove-greenscreen-with-javascript
+    url: 6cwsNpvp6vo
+- id: '54'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:48:56.925207'
+  updated_at: '2022-10-10 07:48:56.928722'
+  entry:
+    title: Add bitmoji sticker to canvas with JavaScript using the bitmoji kit
+    slug: add-bitmoji-sticker-to-canvas-with-javascript-using-the-bitmoji-kit
+    url: DQKIcWvXNLk
+- id: '55'
+  youtube_id: '2'
+  created_at: '2022-10-10 07:49:19.105406'
+  updated_at: '2022-10-10 07:49:19.10905'
+  entry:
+    title: Drag image on HTML Canvas with JavaScript
+    slug: drag-image-on-html-canvas-with-javascript
+    url: 6dpxrBTESvQ
+- id: '56'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:42:55.028009'
+  updated_at: '2023-05-09 02:43:36.696682'
+  entry:
+    title: 'Searls After Dark #1 - ChatJPN'
+    slug: searls-after-dark-lesson-1
+    url: https://www.youtube.com/watch?v=HU4uBJ3UJPk&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa&index=1&t=1523s
+- id: '57'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:44:55.949977'
+  updated_at: '2023-05-09 02:44:55.953734'
+  entry:
+    title: 'Searls After Dark #2 - the Root Route'
+    slug: searls-after-dark-2
+    url: https://www.youtube.com/watch?v=97RAXgKsjNA&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa&
+- id: '58'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:45:35.082554'
+  updated_at: '2023-05-09 02:45:35.086757'
+  entry:
+    title: 'Searls After Dark #3 - Going end-to-end'
+    slug: searls-after-dark-3
+    url: https://www.youtube.com/watch?v=_xE--HDp-Tw&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa
+- id: '59'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:46:12.8769'
+  updated_at: '2023-05-09 02:46:12.88042'
+  entry:
+    title: 'Searls After Dark #4 - Refactoring vs. Testing'
+    slug: searls-after-dark-4
+    url: https://www.youtube.com/watch?v=ICBpN13nK7Y&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa
+- id: '60'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:48:03.465072'
+  updated_at: '2023-05-09 02:48:03.469016'
+  entry:
+    title: 'Searls After Dark #5 - Tailwind on Rails'
+    slug: searls-after-dark-5
+    url: https://www.youtube.com/watch?v=FbiofRQu9qM&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa
+- id: '61'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:48:44.909428'
+  updated_at: '2023-05-09 02:48:44.913193'
+  entry:
+    title: 'Searls After Dark #6 - GPT 4 and Beyond!'
+    slug: seals-after-dark-6
+    url: https://www.youtube.com/watch?v=wdZjVaWgSlI&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa
+- id: '62'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:49:26.591469'
+  updated_at: '2023-05-09 02:49:26.595127'
+  entry:
+    title: 'Searls After Dark #7 - Slash Commands over Shochu'
+    slug: searls-after-dark-7
+    url: https://www.youtube.com/watch?v=Lx51AZKIraY&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa
+- id: '63'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:50:04.422565'
+  updated_at: '2023-05-09 02:50:04.426271'
+  entry:
+    title: 'Searls After Dark #8 - Real Artists Tinker'
+    slug: searls-after-dark-8
+    url: https://www.youtube.com/watch?v=rsvNC2eQhkg&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa
+- id: '64'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:50:54.930854'
+  updated_at: '2023-05-09 02:50:54.934376'
+  entry:
+    title: 'Searls After Dark #9 - Real-time Chat with Turbo Streams'
+    slug: searls-after-dark-9
+    url: https://www.youtube.com/watch?v=cEzvU4PJq-A&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa
+- id: '65'
+  youtube_id: '3'
+  created_at: '2023-05-09 02:51:27.219431'
+  updated_at: '2023-05-09 02:51:27.222984'
+  entry:
+    title: 'Searls After Dark #10 - Stimulus and Chill'
+    slug: searls-after-dark-10
+    url: https://www.youtube.com/watch?v=Z5oWy9PKpAc&list=PLIuJbrOVyGjkRj7UM_whr-CPoqcXTOsZa

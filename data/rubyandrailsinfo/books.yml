@@ -1,0 +1,1063 @@
+---
+- id: '1'
+  amazon_url: ''
+  website_url: https://pragprog.com/titles/nrclient2/modern-front-end-development-for-rails-second-edition/
+  free: f
+  featured: t
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: Modern Front-End Development for Rails, Second Edition
+    slug: modern-front-end-development-for-rails-second-edition
+    website_url: https://pragprog.com/titles/nrclient2/modern-front-end-development-for-rails-second-edition/
+- id: '2'
+  amazon_url: https://www.amazon.com/Rails-Test-Prescriptions-Healthy-Codebase/dp/1680502506
+  website_url: https://pragprog.com/titles/nrtest3/rails-5-test-prescriptions/
+  free: f
+  featured: f
+  created_at: '2022-06-19 09:28:02.372177'
+  updated_at: '2022-08-15 18:32:34.960706'
+  entry:
+    title: Rails 5 Test Prescriptions
+    slug: rails-5-test-prescriptions
+    website_url: https://pragprog.com/titles/nrtest3/rails-5-test-prescriptions/
+- id: '3'
+  amazon_url: https://www.amazon.com/gp/product/1680507214
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-06-19 09:38:58.3527'
+  updated_at: '2022-08-15 18:32:20.03689'
+  entry:
+    title: Modern Front-End Development for Rails, First Edition
+    slug: modern-front-end-development-for-rails-first-edition
+    website_url: ''
+- id: '4'
+  amazon_url: ''
+  website_url: https://www.codewithjason.com/complete-guide-to-rails-testing/
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:12:15.973556'
+  updated_at: '2022-08-15 18:32:08.217522'
+  entry:
+    title: The Complete Guide to Rails Testing
+    slug: the-complete-guide-to-rails-testing
+    website_url: https://www.codewithjason.com/complete-guide-to-rails-testing/
+- id: '5'
+  amazon_url: ''
+  website_url: https://strzibny.gumroad.com/l/deploymentfromscratch
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:17:31.274995'
+  updated_at: '2022-08-15 18:31:51.346867'
+  entry:
+    title: Deployment from Scratch
+    slug: deployment-from-scratch
+    website_url: https://strzibny.gumroad.com/l/deploymentfromscratch
+- id: '6'
+  amazon_url: ''
+  website_url: https://bookshop.org/books/ruby-on-rails-the-ultimate-beginner-s-guide-to-learn-ruby-on-rails-step-by-step/9781704415987
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:28:11.705053'
+  updated_at: '2022-08-15 18:31:40.497811'
+  entry:
+    title: 'Ruby on Rails: The Ultimate Beginner''s Guide to Learn Ruby on Rails Step
+      by Step'
+    slug: ruby-on-rails-the-ultimate-beginner-s-guide-to-learn-ruby-on-rails-step-by-step
+    website_url: https://bookshop.org/books/ruby-on-rails-the-ultimate-beginner-s-guide-to-learn-ruby-on-rails-step-by-step/9781704415987
+- id: '7'
+  amazon_url: https://www.amazon.com/Eloquent-Ruby-Addison-Wesley-Professional/dp/0321584104/
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:34:37.223761'
+  updated_at: '2022-08-15 18:31:07.059012'
+  entry:
+    title: Eloquent Ruby
+    slug: eloquent-ruby
+    website_url: ''
+- id: '111'
+  amazon_url: ''
+  website_url: https://rails-refactoring.com
+  free: f
+  featured: f
+  created_at: '2022-09-04 07:38:13.162831'
+  updated_at: '2022-09-04 07:38:13.166079'
+  entry:
+    title: 'Fearless Refactoring: Rails controllers'
+    slug: fearless-refactoring-rails-controllers
+    website_url: https://rails-refactoring.com
+- id: '112'
+  amazon_url: ''
+  website_url: https://products.arkency.com/responsible-rails/
+  free: f
+  featured: f
+  created_at: '2022-09-04 07:39:38.305563'
+  updated_at: '2022-09-04 07:39:50.68048'
+  entry:
+    title: Responsible Rails
+    slug: responsible-rails
+    website_url: https://products.arkency.com/responsible-rails/
+- id: '113'
+  amazon_url: ''
+  website_url: https://products.arkency.com/frontend-friendly-rails/
+  free: f
+  featured: f
+  created_at: '2022-09-04 07:41:36.860188'
+  updated_at: '2022-09-04 07:41:51.313384'
+  entry:
+    title: Frontend Friendly Rails
+    slug: frontend-friendly-rails
+    website_url: https://products.arkency.com/frontend-friendly-rails/
+- id: '8'
+  amazon_url: https://www.amazon.com/Design-Patterns-Ruby-Russ-Olsen/dp/0321490452
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:36:13.362758'
+  updated_at: '2022-08-15 18:30:54.355871'
+  entry:
+    title: Design Patterns in Ruby
+    slug: design-patterns-in-ruby
+    website_url: ''
+- id: '19'
+  amazon_url: ''
+  website_url: https://learnbyexample.github.io/learn_ruby_oneliners/buy.html
+  free: t
+  featured: f
+  created_at: '2022-06-19 11:33:15.112085'
+  updated_at: '2022-08-15 18:13:46.357272'
+  entry:
+    title: Ruby one-liners cookbook
+    slug: ruby-one-liners-cookbook
+    website_url: https://learnbyexample.github.io/learn_ruby_oneliners/buy.html
+- id: '77'
+  amazon_url: ''
+  website_url: https://pragprog.com/titles/ppmetr2/metaprogramming-ruby-2/
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:20:59.432629'
+  updated_at: '2022-08-15 15:49:39.672494'
+  entry:
+    title: Metaprogramming Ruby 2
+    slug: metaprogramming-ruby-2
+    website_url: https://pragprog.com/titles/ppmetr2/metaprogramming-ruby-2/
+- id: '9'
+  amazon_url: ''
+  website_url: https://sandimetz.com/99bottles
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:43:17.562865'
+  updated_at: '2022-08-15 18:30:43.364897'
+  entry:
+    title: 99 Bottles of OOP
+    slug: 99-bottles-of-oop
+    website_url: https://sandimetz.com/99bottles
+- id: '10'
+  amazon_url: https://www.amazon.com/gp/product/0134456475/
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:50:31.04805'
+  updated_at: '2022-08-15 18:30:30.383125'
+  entry:
+    title: Practical Object-Oriented Design (POODR)
+    slug: practical-object-oriented-design-poodr
+    website_url: ''
+- id: '11'
+  amazon_url: https://www.amazon.co.uk/dp/1449372651
+  website_url: https://headfirstruby.com
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:55:14.33056'
+  updated_at: '2022-08-15 18:30:18.07042'
+  entry:
+    title: Head First Ruby
+    slug: head-first-ruby
+    website_url: https://headfirstruby.com
+- id: '37'
+  year: '2019'
+  amazon_url: https://www.amazon.co.uk/dp/1484251156
+  website_url: https://www.oreilly.com/library/view/vue-on-rails/9781484251164/
+  free: f
+  featured: f
+  created_at: '2022-07-05 07:33:43.333831'
+  updated_at: '2022-08-15 16:04:35.261954'
+  entry:
+    title: Vue on Rails
+    slug: vue-on-rails
+    website_url: https://www.oreilly.com/library/view/vue-on-rails/9781484251164/
+- id: '38'
+  year: '2014'
+  amazon_url: ''
+  website_url: https://leanpub.com/growing-rails
+  free: f
+  featured: f
+  created_at: '2022-07-05 07:45:59.959068'
+  updated_at: '2022-08-15 16:04:21.825961'
+  entry:
+    title: Growing Rails Applications in Practice
+    slug: growing-rails-applications-in-practice
+    website_url: https://leanpub.com/growing-rails
+- id: '34'
+  year: '2016'
+  amazon_url: https://www.amazon.co.uk/dp/1491926198
+  website_url: https://www.oreilly.com/library/view/learning-rails-5/9781491926185/
+  free: f
+  featured: f
+  created_at: '2022-07-05 07:13:24.224512'
+  updated_at: '2022-08-15 16:04:57.657323'
+  entry:
+    title: Learning Rails 5
+    slug: learning-rails-5
+    website_url: https://www.oreilly.com/library/view/learning-rails-5/9781491926185/
+- id: '74'
+  year: '2019'
+  amazon_url: ''
+  website_url: https://leanpub.com/everydayrailsrspec
+  free: f
+  featured: f
+  created_at: '2022-08-06 07:10:59.339139'
+  updated_at: '2022-08-15 15:50:27.114518'
+  entry:
+    title: Everyday Rails Testing with RSpec
+    slug: everyday-rails-testing-with-rspec
+    website_url: https://leanpub.com/everydayrailsrspec
+- id: '40'
+  year: '2015'
+  amazon_url: ''
+  website_url: https://www.justinweiss.com/practicing-rails/
+  free: f
+  featured: f
+  created_at: '2022-07-05 07:55:02.752993'
+  updated_at: '2022-08-15 16:04:00.100192'
+  entry:
+    title: Practicing Rails
+    slug: practicing-rails
+    website_url: https://www.justinweiss.com/practicing-rails/
+- id: '23'
+  amazon_url: ''
+  website_url: https://www.railstutorial.org
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:50:56.582066'
+  updated_at: '2022-08-15 18:12:55.144119'
+  entry:
+    title: The Ruby on Rails Tutorial
+    slug: the-ruby-on-rails-tutorial
+    website_url: https://www.railstutorial.org
+- id: '12'
+  amazon_url: https://www.amazon.com/Programming-Ruby-1-9-2-0-Programmers-dp-1937785491/dp/1937785491/ref=dp_ob_title_bk
+  website_url: https://pragprog.com/titles/ruby4/programming-ruby-1-9-2-0-4th-edition/
+  free: f
+  featured: f
+  created_at: '2022-06-19 10:59:54.213142'
+  updated_at: '2022-08-15 18:30:07.420487'
+  entry:
+    title: Programming Ruby 1.9 & 2.0
+    slug: programming-ruby-1-9-2-0
+    website_url: https://pragprog.com/titles/ruby4/programming-ruby-1-9-2-0-4th-edition/
+- id: '39'
+  amazon_url: https://www.amazon.com/Ruby-Way-Second-Techniques-Programming/dp/0672328844
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-07-05 07:51:09.076302'
+  updated_at: '2022-08-15 16:04:11.064358'
+  entry:
+    title: The Ruby Way
+    slug: the-ruby-way
+    website_url: ''
+- id: '31'
+  amazon_url: ''
+  website_url: https://www.railsspeed.com
+  free: f
+  featured: f
+  created_at: '2022-06-19 12:28:18.468261'
+  updated_at: '2022-08-15 16:05:23.944455'
+  entry:
+    title: The Complete Guide to Rails Performance
+    slug: the-complete-guide-to-rails-performance
+    website_url: https://www.railsspeed.com
+- id: '21'
+  amazon_url: https://www.amazon.com/dp/0990702847
+  website_url: https://sustainable-rails.com
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:42:34.991896'
+  updated_at: '2022-08-15 18:13:21.828729'
+  entry:
+    title: Sustainable Web Development
+    slug: sustainable-web-development
+    website_url: https://sustainable-rails.com
+- id: '17'
+  amazon_url: https://www.amazon.com/Rails-Way-Addison-Wesley-Professional-Ruby/dp/0134657675
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:27:19.857982'
+  updated_at: '2022-08-15 18:29:25.04323'
+  entry:
+    title: The Rails 5 Way
+    slug: the-rails-5-way
+    website_url: ''
+- id: '76'
+  amazon_url: ''
+  website_url: http://rebuilding-rails.com
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:17:30.72816'
+  updated_at: '2022-08-15 15:49:55.767997'
+  entry:
+    title: Rebuilding Rails
+    slug: rebuilding-rails
+    website_url: http://rebuilding-rails.com
+- id: '24'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://i-love-ruby.gitlab.io/book.html
+  free: t
+  featured: f
+  created_at: '2022-06-19 11:56:01.203987'
+  updated_at: '2023-05-09 08:07:57.360757'
+  entry:
+    title: I love Ruby
+    slug: i-love-ruby
+    website_url: https://i-love-ruby.gitlab.io/book.html
+- id: '20'
+  amazon_url: ''
+  website_url: https://learnbyexample.github.io/Ruby_Regexp/cover.html
+  free: t
+  featured: f
+  created_at: '2022-06-19 11:34:21.37702'
+  updated_at: '2022-08-15 18:13:36.924527'
+  entry:
+    title: Ruby Regexp
+    slug: ruby-regexp
+    website_url: https://learnbyexample.github.io/Ruby_Regexp/cover.html
+- id: '18'
+  amazon_url: ''
+  website_url: https://leanpub.com/rubyisforfun
+  free: t
+  featured: t
+  created_at: '2022-06-19 11:28:45.397281'
+  updated_at: '2022-08-15 15:40:28.644827'
+  entry:
+    title: Ruby Is For Fun
+    slug: ruby-is-for-fun
+    website_url: https://leanpub.com/rubyisforfun
+- id: '29'
+  amazon_url: ''
+  website_url: https://leanpub.com/multi-tenancy-rails-2
+  free: f
+  featured: f
+  created_at: '2022-06-19 12:09:13.717618'
+  updated_at: '2022-08-15 18:11:44.082213'
+  entry:
+    title: Multitenancy with Rails
+    slug: multitenancy-with-rails
+    website_url: https://leanpub.com/multi-tenancy-rails-2
+- id: '30'
+  amazon_url: ''
+  website_url: https://leanpub.com/rails
+  free: f
+  featured: f
+  created_at: '2022-06-19 12:13:44.276371'
+  updated_at: '2022-08-15 16:05:34.659163'
+  entry:
+    title: Active Rails
+    slug: active-rails
+    website_url: https://leanpub.com/rails
+- id: '28'
+  amazon_url: ''
+  website_url: https://leanpub.com/toyrobot/
+  free: f
+  featured: f
+  created_at: '2022-06-19 12:07:56.012472'
+  updated_at: '2022-08-15 18:11:56.329049'
+  entry:
+    title: A walkthrough for Toy Robot
+    slug: a-walkthrough-for-toy-robot
+    website_url: https://leanpub.com/toyrobot/
+- id: '27'
+  amazon_url: ''
+  website_url: https://leanpub.com/maintain-rails
+  free: f
+  featured: f
+  created_at: '2022-06-19 12:05:37.000378'
+  updated_at: '2022-08-15 18:12:09.568879'
+  entry:
+    title: Maintainable Rails
+    slug: maintainable-rails
+    website_url: https://leanpub.com/maintain-rails
+- id: '26'
+  amazon_url: ''
+  website_url: https://chriskottom.com/developing-rails-apis/
+  free: f
+  featured: f
+  created_at: '2022-06-19 12:01:06.545873'
+  updated_at: '2022-08-15 18:12:26.467151'
+  entry:
+    title: Developing Rails API Application
+    slug: developing-rails-api-application
+    website_url: https://chriskottom.com/developing-rails-apis/
+- id: '25'
+  amazon_url: ''
+  website_url: https://chriskottom.com/minitestcookbook/
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:59:05.512969'
+  updated_at: '2022-08-15 18:12:41.270484'
+  entry:
+    title: The Minitest Cookbook
+    slug: the-minitest-cookbook
+    website_url: https://chriskottom.com/minitestcookbook/
+- id: '14'
+  amazon_url: ''
+  website_url: https://www.learnenough.com/ruby
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:11:15.277567'
+  updated_at: '2022-08-15 18:29:40.282849'
+  entry:
+    title: Learn Enough Ruby
+    slug: learn-enough-ruby
+    website_url: https://www.learnenough.com/ruby
+- id: '13'
+  amazon_url: https://www.amazon.com/Rails-Recipes-3-Chad-Fowler-dp-1934356778/dp/1934356778/ref=dp_ob_title_bk
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:01:04.841244'
+  updated_at: '2022-08-15 18:29:54.318339'
+  entry:
+    title: Rails Recipes
+    slug: rails-recipes
+    website_url: ''
+- id: '99'
+  amazon_url: ''
+  website_url: https://leanpub.com/therails7way?ref=rubyhuntdev
+  free: f
+  featured: f
+  created_at: '2022-08-16 11:23:10.059947'
+  updated_at: '2022-08-16 12:03:22.783527'
+  entry:
+    title: The Rails 7 Way
+    slug: the-rails-7-way
+    website_url: https://leanpub.com/therails7way?ref=rubyhuntdev
+- id: '82'
+  amazon_url: https://www.amazon.com/dp/B08JHSF6GT
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:39:21.953283'
+  updated_at: '2022-08-15 15:39:54.735072'
+  entry:
+    title: Black Hat Ruby
+    slug: black-hat-ruby
+    website_url: ''
+- id: '79'
+  amazon_url: ''
+  website_url: https://pragprog.com/titles/ltp3/learn-to-program-third-edition
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:29:47.494'
+  updated_at: '2022-08-15 15:49:06.314807'
+  entry:
+    title: Learn to Program
+    slug: learn-to-program
+    website_url: https://pragprog.com/titles/ltp3/learn-to-program-third-edition
+- id: '94'
+  amazon_url: ''
+  website_url: http://www.efficientrails.com/
+  free: f
+  featured: f
+  created_at: '2022-08-16 10:53:23.395704'
+  updated_at: '2022-08-16 11:14:21.458385'
+  entry:
+    title: Efficient Rails
+    slug: efficient-rails
+    website_url: http://www.efficientrails.com/
+- id: '101'
+  amazon_url: ''
+  website_url: https://pragprog.com/titles/dpchat/build-chatbot-interactions
+  free: f
+  featured: f
+  created_at: '2022-08-16 11:32:41.638565'
+  updated_at: '2022-08-16 12:03:58.437382'
+  entry:
+    title: Build Chatbot Interactions
+    slug: build-chatbot-interactions
+    website_url: https://pragprog.com/titles/dpchat/build-chatbot-interactions
+- id: '100'
+  amazon_url: ''
+  website_url: https://aaronlasseigne.com/books/mastering-ruby/strings-and-encodings/
+  free: t
+  featured: f
+  created_at: '2022-08-16 11:28:34.370792'
+  updated_at: '2022-08-16 12:03:39.861764'
+  entry:
+    title: Mastering Ruby strings and encodings
+    slug: mastering-ruby-strings-and-encodings
+    website_url: https://aaronlasseigne.com/books/mastering-ruby/strings-and-encodings/
+- id: '95'
+  amazon_url: https://www.amazon.com/Beginning-Rails-6-Novice-Professional/dp/1484257154
+  website_url: https://link.springer.com/book/10.1007/978-1-4842-5716-6
+  free: f
+  featured: f
+  created_at: '2022-08-16 10:58:45.097662'
+  updated_at: '2022-08-16 11:15:17.719347'
+  entry:
+    title: Beginning Rails 6
+    slug: beginning-rails-6
+    website_url: https://link.springer.com/book/10.1007/978-1-4842-5716-6
+- id: '91'
+  amazon_url: ''
+  website_url: https://leanpub.com/quickrubytricks
+  free: f
+  featured: f
+  created_at: '2022-08-06 12:05:18.425353'
+  updated_at: '2022-08-15 14:57:31.78242'
+  entry:
+    title: Quick Ruby Tricks
+    slug: quick-ruby-tricks
+    website_url: https://leanpub.com/quickrubytricks
+- id: '92'
+  amazon_url: https://www.amazon.com/Clean-Ruby-Crafting-Better-Rubyists-ebook/dp/B0825PGLR2/
+  website_url: ''
+  free: f
+  featured: f
+  created_at: '2022-08-06 12:07:43.772283'
+  updated_at: '2022-08-15 14:42:52.530807'
+  entry:
+    title: Clean Ruby
+    slug: clean-ruby
+    website_url: ''
+- id: '96'
+  amazon_url: ''
+  website_url: https://effectiveruby.com
+  free: f
+  featured: f
+  created_at: '2022-08-16 11:05:45.331444'
+  updated_at: '2022-08-16 11:15:33.20195'
+  entry:
+    title: Effective Ruby
+    slug: effective-ruby
+    website_url: https://effectiveruby.com
+- id: '90'
+  amazon_url: ''
+  website_url: https://leanpub.com/selenium-recipes-in-ruby
+  free: f
+  featured: f
+  created_at: '2022-08-06 12:02:57.164819'
+  updated_at: '2022-08-15 14:56:51.416364'
+  entry:
+    title: Selenium WebDriver Recipes in Ruby
+    slug: selenium-webdriver-recipes-in-ruby
+    website_url: https://leanpub.com/selenium-recipes-in-ruby
+- id: '89'
+  amazon_url: ''
+  website_url: https://leanpub.com/apionrails6
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:59:58.073167'
+  updated_at: '2022-08-15 15:36:41.899738'
+  entry:
+    title: API on Rails 6
+    slug: api-on-rails-6
+    website_url: https://leanpub.com/apionrails6
+- id: '88'
+  amazon_url: ''
+  website_url: https://cblunt.gumroad.com/l/IqRIZ
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:58:19.735892'
+  updated_at: '2022-08-15 15:36:59.1776'
+  entry:
+    title: Keep Your Ruby on Rails App Healthy
+    slug: keep-your-ruby-on-rails-app-healthy
+    website_url: https://cblunt.gumroad.com/l/IqRIZ
+- id: '87'
+  amazon_url: ''
+  website_url: https://cblunt.gumroad.com/l/TLnG
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:55:26.966747'
+  updated_at: '2022-08-15 15:37:16.282957'
+  entry:
+    title: Rails on Docker
+    slug: rails-on-docker
+    website_url: https://cblunt.gumroad.com/l/TLnG
+- id: '86'
+  amazon_url: ''
+  website_url: https://leanpub.com/fastfeedbackusingruby
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:53:00.0024'
+  updated_at: '2022-08-15 15:37:28.732727'
+  entry:
+    title: Fast Feedback Using Ruby
+    slug: fast-feedback-using-ruby
+    website_url: https://leanpub.com/fastfeedbackusingruby
+- id: '85'
+  amazon_url: https://www.amazon.com/Beginning-Ruby-3-Beginner-Pro-ebook/dp/B08Q2V14ZR
+  website_url: https://link.springer.com/book/10.1007/978-1-4842-6324-2
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:47:46.138192'
+  updated_at: '2022-08-15 15:37:43.071038'
+  entry:
+    title: Beginning Ruby 3
+    slug: beginning-ruby-3
+    website_url: https://link.springer.com/book/10.1007/978-1-4842-6324-2
+- id: '84'
+  amazon_url: https://www.amazon.com/Component-Based-Rails-Applications-Addison-Wesley-Professional/dp/0134774582
+  website_url: https://cbra.info/book/index.html
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:45:30.450926'
+  updated_at: '2022-08-15 15:38:04.989464'
+  entry:
+    title: Component-based Rails Applications
+    slug: component-based-rails-applications
+    website_url: https://cbra.info/book/index.html
+- id: '97'
+  amazon_url: https://www.amazon.com/dp/1787280640
+  website_url: https://www.packtpub.com/product/comprehensive-ruby-programming/9781787280649
+  free: f
+  featured: f
+  created_at: '2022-08-16 11:11:09.243779'
+  updated_at: '2022-08-16 11:15:47.87301'
+  entry:
+    title: Comprehensive Ruby Programming
+    slug: comprehensive-ruby-programming
+    website_url: https://www.packtpub.com/product/comprehensive-ruby-programming/9781787280649
+- id: '16'
+  amazon_url: ''
+  website_url: https://books.goalkicker.com/RubyOnRailsBook/
+  free: t
+  featured: f
+  created_at: '2022-06-19 11:18:30.446656'
+  updated_at: '2022-08-15 14:56:10.269402'
+  entry:
+    title: Ruby on Rails Notes for Professionals book
+    slug: ruby-on-rails-notes-for-professionals-book
+    website_url: https://books.goalkicker.com/RubyOnRailsBook/
+- id: '81'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://rubyfu.net/
+  free: t
+  featured: f
+  created_at: '2022-08-06 11:38:25.598168'
+  updated_at: '2023-05-09 07:47:38.80448'
+  entry:
+    title: Ruby Kung Fu
+    slug: ruby-kung-fu
+    website_url: https://rubyfu.net/
+- id: '75'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://flurly.com/p/ruby-garbage-collection
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:13:24.526356'
+  updated_at: '2023-05-09 07:49:16.250646'
+  entry:
+    title: Ruby Garbage Collection in Under Two Hours
+    slug: ruby-garbage-collection-in-under-two-hours
+    website_url: https://flurly.com/p/ruby-garbage-collection
+- id: '80'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://playbookthirtynine.com/
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:33:55.248228'
+  updated_at: '2023-05-09 07:48:39.68831'
+  entry:
+    title: Playbook Thirty-nine
+    slug: playbook-thirty-nine
+    website_url: https://playbookthirtynine.com/
+- id: '41'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://nateberk.gumroad.com/l/apocrypha
+  free: f
+  featured: f
+  created_at: '2022-08-05 15:39:37.393847'
+  updated_at: '2023-05-09 08:04:59.639911'
+  entry:
+    title: The Ruby on Rails Performance Apocrypha
+    slug: the-ruby-on-rails-performance-apocrypha
+    website_url: https://nateberk.gumroad.com/l/apocrypha
+- id: '22'
+  amazon_url: ''
+  website_url: https://pragprog.com/titles/rails6/agile-web-development-with-rails-6/
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:44:52.356244'
+  updated_at: '2022-08-15 18:13:09.564945'
+  entry:
+    title: Agile Web Development with Rails 6
+    slug: agile-web-development-with-rails-6
+    website_url: https://pragprog.com/titles/rails6/agile-web-development-with-rails-6/
+- id: '35'
+  amazon_url: ''
+  website_url: http://nicholasjohnson.com/ruby/book/
+  free: t
+  featured: f
+  created_at: '2022-07-05 07:21:02.580933'
+  updated_at: '2022-08-15 14:43:36.126317'
+  entry:
+    title: The Ruby Book
+    slug: the-ruby-book
+    website_url: http://nicholasjohnson.com/ruby/book/
+- id: '36'
+  amazon_url: https://www.amazon.com/Rails-Novice-Ninja-Build-Website/dp/0994347006/
+  website_url: https://www.sitepoint.com/premium/books/rails-novice-to-ninja
+  free: f
+  featured: f
+  created_at: '2022-07-05 07:31:11.900548'
+  updated_at: '2022-08-15 16:04:45.674972'
+  entry:
+    title: 'Rails: Novice to Ninja'
+    slug: rails-novice-to-ninja
+    website_url: https://www.sitepoint.com/premium/books/rails-novice-to-ninja
+- id: '78'
+  amazon_url: https://www.amazon.com/Polished-Ruby-Programming-maintainable-high-performance/dp/1801072728
+  website_url: https://www.packtpub.com/product/polished-ruby-programming/9781801072724
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:26:13.273909'
+  updated_at: '2022-08-15 15:49:21.21322'
+  entry:
+    title: Polished Ruby Programming
+    slug: polished-ruby-programming
+    website_url: https://www.packtpub.com/product/polished-ruby-programming/9781801072724
+- id: '115'
+  amazon_url: ''
+  website_url: https://nateberk.gumroad.com/l/sidekiqinpractice
+  free: f
+  featured: f
+  created_at: '2022-09-07 12:53:28.508219'
+  updated_at: '2022-09-07 12:53:28.514987'
+  entry:
+    title: Sidekiq in Practice
+    slug: sidekiq-in-practice
+    website_url: https://nateberk.gumroad.com/l/sidekiqinpractice
+- id: '108'
+  amazon_url: ''
+  website_url: https://paweldabrowski.gumroad.com/l/rails-console
+  free: t
+  featured: f
+  created_at: '2022-08-22 12:46:15.757826'
+  updated_at: '2022-08-22 12:49:44.97916'
+  entry:
+    title: Effective development with Rails console
+    slug: effective-development-with-rails-console
+    website_url: https://paweldabrowski.gumroad.com/l/rails-console
+- id: '109'
+  amazon_url: ''
+  website_url: https://products.arkency.com/rails-react/
+  free: f
+  featured: f
+  created_at: '2022-09-03 21:28:22.196126'
+  updated_at: '2022-09-04 07:25:36.11275'
+  entry:
+    title: Rails meets React.js
+    slug: rails-meets-react-js
+    website_url: https://products.arkency.com/rails-react/
+- id: '110'
+  amazon_url: ''
+  website_url: https://products.arkency.com/domain-driven-rails/
+  free: f
+  featured: f
+  created_at: '2022-09-04 07:29:11.006394'
+  updated_at: '2022-09-04 07:31:09.24269'
+  entry:
+    title: Domain-Driven Rails
+    slug: domain-driven-rails
+    website_url: https://products.arkency.com/domain-driven-rails/
+- id: '122'
+  amazon_url: ''
+  website_url: https://markm208.github.io/rubybook/
+  free: t
+  featured: f
+  created_at: '2022-09-15 07:02:55.624532'
+  updated_at: '2022-09-15 07:02:55.631294'
+  entry:
+    title: A Brief Introduction to Ruby
+    slug: a-brief-introduction-to-ruby
+    website_url: https://markm208.github.io/rubybook/
+- id: '15'
+  amazon_url: https://www.amazon.com/Effective-Testing-RSpec-Build-Confidence/dp/1680501984
+  website_url: https://pragprog.com/titles/rspec3/effective-testing-with-rspec-3/
+  free: f
+  featured: f
+  created_at: '2022-06-19 11:13:02.38936'
+  updated_at: '2022-08-15 18:29:14.031703'
+  entry:
+    title: Effective Testing with RSpec 3
+    slug: effective-testing-with-rspec-3
+    website_url: https://pragprog.com/titles/rspec3/effective-testing-with-rspec-3/
+- id: '102'
+  amazon_url: ''
+  website_url: https://books.thoughtbot.com/books/testing-rails.html
+  free: t
+  featured: f
+  created_at: '2022-08-16 11:36:10.616084'
+  updated_at: '2022-08-16 12:04:18.694247'
+  entry:
+    title: Testing Rails
+    slug: testing-rails
+    website_url: https://books.thoughtbot.com/books/testing-rails.html
+- id: '103'
+  amazon_url: ''
+  website_url: https://books.thoughtbot.com/books/ruby-science.html
+  free: t
+  featured: f
+  created_at: '2022-08-16 11:39:40.64387'
+  updated_at: '2022-08-16 12:04:35.887759'
+  entry:
+    title: Ruby Science
+    slug: ruby-science
+    website_url: https://books.thoughtbot.com/books/ruby-science.html
+- id: '104'
+  amazon_url: ''
+  website_url: https://books.thoughtbot.com/books/geocoding-on-rails.html
+  free: t
+  featured: f
+  created_at: '2022-08-16 11:45:45.356909'
+  updated_at: '2022-08-16 12:04:53.794613'
+  entry:
+    title: Geocoding on Rails
+    slug: geocoding-on-rails
+    website_url: https://books.thoughtbot.com/books/geocoding-on-rails.html
+- id: '105'
+  amazon_url: ''
+  website_url: https://devblast.com/c/master-ruby-web-apis?ref=rubyhuntdev
+  free: t
+  featured: f
+  created_at: '2022-08-16 11:53:06.322904'
+  updated_at: '2022-08-16 12:05:09.654795'
+  entry:
+    title: Master Ruby Web APIs
+    slug: master-ruby-web-apis
+    website_url: https://devblast.com/c/master-ruby-web-apis?ref=rubyhuntdev
+- id: '106'
+  amazon_url: ''
+  website_url: https://leanpub.com/programmingforkids
+  free: f
+  featured: f
+  created_at: '2022-08-16 11:55:23.14711'
+  updated_at: '2022-08-16 12:05:28.147058'
+  entry:
+    title: Programming for Kids
+    slug: programming-for-kids
+    website_url: https://leanpub.com/programmingforkids
+- id: '107'
+  amazon_url: ''
+  website_url: https://paweldabrowski.gumroad.com/l/csv-ruby
+  free: t
+  featured: f
+  created_at: '2022-08-22 12:44:20.209738'
+  updated_at: '2022-08-22 12:50:05.14176'
+  entry:
+    title: Mastering CSV in Ruby
+    slug: mastering-csv-in-ruby
+    website_url: https://paweldabrowski.gumroad.com/l/csv-ruby
+- id: '124'
+  amazon_url: ''
+  website_url: https://railsandhotwirecodex.com
+  free: f
+  featured: f
+  created_at: '2022-10-06 12:10:20.38742'
+  updated_at: '2022-12-05 15:17:50.286109'
+  entry:
+    title: The Rails and Hotwire Codex
+    slug: the-rails-and-hotwire-codex
+    website_url: https://railsandhotwirecodex.com
+- id: '119'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://bhserna.com/n-plus-1-queries-basics.html
+  free: t
+  featured: f
+  created_at: '2022-09-09 14:00:57.923039'
+  updated_at: '2023-05-09 05:15:48.116186'
+  entry:
+    title: N+1 Queries Basics
+    slug: n-1-queries-basics
+    website_url: https://bhserna.com/n-plus-1-queries-basics.html
+- id: '125'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://www.pier22.eu/ebooks/rspec
+  created_at: '2023-04-20 03:37:17.093026'
+  updated_at: '2023-04-20 03:38:56.30242'
+  entry:
+    title: The little RSpec book
+    slug: the-little-rspec-book
+    website_url: https://www.pier22.eu/ebooks/rspec
+- id: '123'
+  isbn: ''
+  year: '2022'
+  amazon_url: ''
+  website_url: https://julianrubisch.gumroad.com/l/acr
+  free: f
+  featured: f
+  created_at: '2022-10-06 12:04:35.620968'
+  updated_at: '2023-05-09 05:13:56.147116'
+  entry:
+    title: Advanced CableReady
+    slug: advanced-cableready
+    website_url: https://julianrubisch.gumroad.com/l/acr
+- id: '126'
+  isbn: '9781680509823'
+  year: '2023'
+  amazon_url: https://www.amazon.com/Programming-Ruby-3-2-Pragmatic-Programmers/dp/1680509829
+  website_url: https://pragprog.com/titles/ruby5/programming-ruby-3-2-5th-edition/
+  free: f
+  featured: f
+  created_at: '2023-05-09 03:03:51.31161'
+  updated_at: '2023-05-09 04:00:35.443211'
+  entry:
+    title: Programming Ruby 3.2 (5th Edition)
+    slug: programming-ruby-3-2-5th-edition
+    website_url: https://pragprog.com/titles/ruby5/programming-ruby-3-2-5th-edition/
+- id: '127'
+  isbn: ''
+  year: '2023'
+  amazon_url: ''
+  website_url: https://nezirzahirovic.gumroad.com/l/bible
+  free: f
+  featured: f
+  created_at: '2023-05-09 03:51:48.53677'
+  updated_at: '2023-05-09 04:00:54.686296'
+  entry:
+    title: The Ruby on Rails Interview Bible
+    slug: the-ruby-on-rails-interview-bible
+    website_url: https://nezirzahirovic.gumroad.com/l/bible
+- id: '117'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://avdi.gumroad.com/l/rrWapR
+  free: f
+  featured: f
+  created_at: '2022-09-07 13:00:25.550495'
+  updated_at: '2023-05-09 05:14:53.782003'
+  entry:
+    title: Confident Ruby
+    slug: confident-ruby
+    website_url: https://avdi.gumroad.com/l/rrWapR
+- id: '120'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://bhserna.com/avoid-n-plus-1-queries-on-rails.html
+  free: f
+  featured: f
+  created_at: '2022-09-09 14:01:53.529623'
+  updated_at: '2023-05-09 05:14:34.985968'
+  entry:
+    title: Avoid n+1 queries on Rails
+    slug: avoid-n-1-queries-on-rails
+    website_url: https://bhserna.com/avoid-n-plus-1-queries-on-rails.html
+- id: '118'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://avdi.gumroad.com/l/chatbotinruby
+  free: f
+  featured: f
+  created_at: '2022-09-07 13:03:29.652427'
+  updated_at: '2023-05-09 05:15:35.948379'
+  entry:
+    title: Let's Make a Chatbot in Ruby!
+    slug: let-s-make-a-chatbot-in-ruby
+    website_url: https://avdi.gumroad.com/l/chatbotinruby
+- id: '116'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://avdi.gumroad.com/l/NWtnk
+  free: f
+  featured: f
+  created_at: '2022-09-07 12:58:20.309772'
+  updated_at: '2023-05-09 05:15:18.25759'
+  entry:
+    title: Exceptional Ruby
+    slug: exceptional-ruby-ebook
+    website_url: https://avdi.gumroad.com/l/NWtnk
+- id: '93'
+  isbn: ''
+  year: '2022'
+  amazon_url: ''
+  website_url: https://pganalyze.com/ebooks/advanced-database-programming-rails-postgres
+  free: t
+  featured: f
+  created_at: '2022-08-11 19:58:40.117616'
+  updated_at: '2023-05-09 07:46:52.261658'
+  entry:
+    title: Advanced Database Programming with Rails and Postgres
+    slug: advanced-database-programming-with-rails-and-postgres
+    website_url: https://pganalyze.com/ebooks/advanced-database-programming-rails-postgres
+- id: '98'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://leanpub.com/soon-to-be-ror-programmer?ref=rubyhuntdev
+  free: f
+  featured: f
+  created_at: '2022-08-16 11:19:32.06857'
+  updated_at: '2023-05-09 07:46:14.557189'
+  entry:
+    title: Soon to be Ruby on Rails --API programmer
+    slug: soon-to-be-ruby-on-rails-api-programmer
+    website_url: https://leanpub.com/soon-to-be-ror-programmer?ref=rubyhuntdev
+- id: '83'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://leanpub.com/package-based-rails-applications
+  free: f
+  featured: f
+  created_at: '2022-08-06 11:42:31.039448'
+  updated_at: '2023-05-09 07:47:22.487744'
+  entry:
+    title: Gradual Modularization for Ruby and Rails
+    slug: gradual-modularization-for-ruby-and-rails
+    website_url: https://leanpub.com/package-based-rails-applications
+- id: '33'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://www.bigbinary.com/books/learn-rubyonrails-book
+  free: t
+  featured: f
+  created_at: '2022-06-19 20:40:51.167605'
+  updated_at: '2023-05-09 08:06:06.405732'
+  entry:
+    title: Learn Ruby on Rails Book
+    slug: learn-ruby-on-rails-book
+    website_url: https://www.bigbinary.com/books/learn-rubyonrails-book
+- id: '32'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://book.hotwiringrails.com/
+  free: t
+  featured: f
+  created_at: '2022-06-19 12:36:04.816392'
+  updated_at: '2023-05-09 08:07:23.805433'
+  entry:
+    title: 'Hotwired ATS: Modern, full-stack Rails 7 development'
+    slug: hotwired-ats-modern-full-stack-rails-7-development
+    website_url: https://book.hotwiringrails.com/
+- id: '114'
+  isbn: ''
+  amazon_url: ''
+  website_url: https://mixandgo.com/lp/bulletproof-ruby-on-rails-applications-ebook
+  free: f
+  featured: f
+  created_at: '2022-09-04 18:06:09.67915'
+  updated_at: '2023-05-09 08:09:19.696279'
+  entry:
+    title: Bulletproof Ruby on Rails Applications
+    slug: bullet-proof-ruby-on-rails-applications
+    website_url: https://mixandgo.com/lp/bulletproof-ruby-on-rails-applications-ebook

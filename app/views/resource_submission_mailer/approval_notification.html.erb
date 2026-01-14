@@ -1,0 +1,28 @@
+<h1>Congratulations! Your submission has been approved</h1>
+
+<p>Hi <%= @entry.submitter_name || "there" %>,</p>
+
+<p>
+  Great news! Your submission to ChooseRuby has been approved and is now live on the site.
+</p>
+
+<ul>
+  <li><strong>Title:</strong> <%= @entry.title %></li>
+  <li><strong>Type:</strong> <%= @entry.entryable_type.humanize %></li>
+  <li><strong>URL:</strong> <%= link_to @entry.url, @entry.url %></li>
+</ul>
+
+<p>
+  You can view your published resource on ChooseRuby at:<br>
+  <%= link_to resource_url(@entry), resource_url(@entry) %>
+</p>
+
+<p>
+  Thank you for contributing to the Ruby community and helping others discover valuable resources!
+</p>
+
+<p>
+  If you have more resources to share, we'd love to hear about them. Feel free to submit another resource anytime.
+</p>
+
+<p>— The ChooseRuby team</p>

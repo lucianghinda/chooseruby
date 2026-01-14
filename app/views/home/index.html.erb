@@ -1,0 +1,409 @@
+<% content_for :title, "ChooseRuby | Discover the best Ruby on Rails resources" %>
+<% content_for :meta_description, "Curated directory of Ruby gems, tutorials, guides, and communities to help developers learn, build, and scale with Ruby on Rails." %>
+
+<div class="space-y-24 pb-16">
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden rounded-3xl bg-slate-950 px-6 py-16 text-slate-100 shadow-2xl sm:px-10 lg:px-16">
+    <div class="absolute inset-0 -z-10 opacity-70">
+      <div class="absolute -left-32 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-rose-500/60 blur-3xl"></div>
+      <div class="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-emerald-500/50 blur-3xl"></div>
+    </div>
+
+    <div class="mx-auto max-w-4xl text-center">
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-medium ring-1 ring-white/30 backdrop-blur">
+        <span class="text-rose-300">New</span>
+        Rails 8 ready, curated by Ruby experts
+      </span>
+      <h1 class="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+        Build world-class Rails experiences with trusted resources
+      </h1>
+      <p class="mt-6 text-lg text-slate-300 sm:text-xl">
+        ChooseRuby is your home for discovering the best gems, tutorials, books, and tools in the Ruby ecosystem. Search by problem, filter by experience level, and stay ahead of the Rails curve.
+      </p>
+
+      <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
+        <%= form_with url: entries_path, method: :get, local: true, class: "relative w-full sm:w-[28rem]", data: { controller: "typeahead", typeahead_url_value: entries_suggestions_path, typeahead_popular_value: @popular_queries, action: "submit->typeahead#recordSearch" } do |form| %>
+          <%= form.label :q, "Search resources", class: "sr-only" %>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M9 4a5 5 0 013.995 8.326l3.84 3.84a1 1 0 01-1.414 1.415l-3.84-3.84A5 5 0 119 4zm0 2a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <%= form.text_field :q,
+              class: "h-14 w-full rounded-2xl border-0 bg-white/10 pl-12 pr-4 text-base text-white placeholder:text-slate-400 shadow-inner focus:ring-2 focus:ring-rose-400 focus:outline-none",
+              id: "home-search-input",
+              placeholder: "Search gems, topics, or questions…",
+              data: { typeahead_target: "input", action: "input->typeahead#search focus->typeahead#focus blur->typeahead#blur keydown->typeahead#navigate", aria: { controls: "home-typeahead" } } %>
+            <div data-typeahead-target="panel" class="absolute inset-x-0 top-14 z-30 hidden rounded-2xl border border-rose-200/60 bg-white text-slate-900 shadow-2xl">
+              <div id="home-typeahead" role="listbox" data-typeahead-target="results"></div>
+            </div>
+            <span class="sr-only" aria-live="polite" data-typeahead-target="status"></span>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <%= link_to start_path, class: "group flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/10 px-6 py-5 text-left shadow-lg shadow-black/10 transition hover:-translate-y-1 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-300" do %>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-4xl" aria-hidden="true">🚀</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-white">I'm brand new to Rails</h3>
+            <p class="text-sm text-slate-200">Start with beginner-friendly guides and curated getting-started picks.</p>
+          </div>
+        <% end %>
+
+        <button type="button" class="group flex h-full flex-col justify-between rounded-2xl border border-white/30 bg-white/10 px-6 py-5 text-left shadow-inner shadow-black/10 transition hover:-translate-y-1 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-300" data-action="click->scroll-to-top#focusSearch">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-4xl" aria-hidden="true">🔍</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-white">I need a specific solution</h3>
+            <p class="text-sm text-slate-200">Jump to search for gems, tools, tutorials, or example code.</p>
+          </div>
+        </button>
+
+        <%= link_to entries_path, class: "group flex h-full flex-col justify-between rounded-2xl border border-white/30 bg-white/10 px-6 py-5 text-left shadow-inner shadow-black/10 transition hover:-translate-y-1 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-300" do %>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-4xl" aria-hidden="true">🧭</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-white">I want to explore</h3>
+            <p class="text-sm text-slate-200">Browse the full directory by category or resource type.</p>
+          </div>
+        <% end %>
+      </div>
+
+      <dl class="mt-10 flex flex-wrap items-center justify-center gap-6 text-left">
+        <% resource_count = @entry_stats[:resources] || 0 %>
+        <% category_count = @entry_stats[:categories] || 0 %>
+        <% author_count = @entry_stats[:authors] || 0 %>
+        <% stats = [
+          { label: "Curated", value: resource_count.positive? ? number_with_delimiter(resource_count) : "Fresh" },
+          { label: "Categories", value: category_count.positive? ? number_with_delimiter(category_count) : "Growing" },
+          { label: "Contributors", value: author_count.positive? ? number_with_delimiter(author_count) : "Open" }
+        ] %>
+        <% stats.each do |stat| %>
+          <div class="rounded-2xl border border-white/5 bg-white/5 px-5 py-4 shadow-none">
+            <dt class="text-xs font-medium text-slate-300"><%= stat[:label] %></dt>
+            <dd class="mt-1 text-2xl font-semibold text-white"><%= stat[:value] %></dd>
+          </div>
+        <% end %>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Beginner CTA section -->
+  <section class="rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-rose-50 p-8 ring-1 ring-slate-100 shadow-sm sm:p-12">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-2xl font-semibold text-slate-900 sm:text-3xl">New to Rails? Start here</h2>
+      <p class="mt-4 text-base text-slate-600 sm:text-lg">
+        Jump into beginner-friendly resources curated specifically for those starting their Rails journey.
+      </p>
+      <div class="mt-6">
+        <%= link_to "Explore beginner resources", start_path, class: "inline-flex items-center gap-2 rounded-2xl bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-rose-500/20 transition hover:-translate-y-0.5 hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400" %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Browse mini-hub -->
+  <section id="browse" class="grid gap-4 sm:grid-cols-3">
+    <% featured_categories = @highlight_categories.first(3) %>
+    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+          <span aria-hidden="true">🗂️</span>
+          Categories
+        </div>
+        <%= link_to "View all", categories_path, class: "text-xs font-semibold text-rose-600 hover:text-rose-500" %>
+      </div>
+      <p class="text-sm text-slate-600">Browse by problem space. Quick picks to jump in:</p>
+      <div class="space-y-2">
+        <% if featured_categories.any? %>
+          <% featured_categories.each do |category| %>
+            <%= link_to category_path(category.slug), class: "flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50" do %>
+              <span class="text-base"><%= category.icon.presence || "•" %></span>
+              <span><%= category.name %></span>
+            <% end %>
+          <% end %>
+        <% else %>
+          <p class="text-sm text-slate-500">Category highlights coming soon.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+          <span aria-hidden="true">🧰</span>
+          Types
+        </div>
+        <%= link_to "Jump to types", "#resource-types", class: "text-xs font-semibold text-rose-600 hover:text-rose-500" %>
+      </div>
+      <p class="text-sm text-slate-600">See every resource format from gems to videos. Start with the essentials:</p>
+      <div class="flex flex-wrap gap-2">
+        <% ["gems", "tutorials", "tools", "books"].each do |type_slug| %>
+          <%= link_to resource_type_path(type_slug), class: "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-200" do %>
+            <span><%= type_emoji(type_slug) %></span>
+            <span><%= type_name(type_slug) %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+          <span aria-hidden="true">🧭</span>
+          Collections
+        </div>
+        <%= link_to "View all", collections_path, class: "text-xs font-semibold text-rose-600 hover:text-rose-500" %>
+      </div>
+      <p class="text-sm text-slate-600">Follow curated journeys and themed playlists.</p>
+      <div class="space-y-2">
+        <% @curated_collections.first(2).each do |collection| %>
+          <%= link_to collection_path(collection[:slug]), class: "flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-50" do %>
+            <span class="text-base"><%= collection[:icon] %></span>
+            <span><%= collection[:title] %></span>
+          <% end %>
+        <% end %>
+        <%= link_to "Browse directory", entries_path, class: "inline-flex items-center gap-2 text-xs font-semibold text-rose-600 hover:text-rose-500" %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured resources -->
+  <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-50/50 via-amber-50/30 to-rose-50/50 px-8 py-12 ring-2 ring-rose-100 shadow-xl">
+    <div class="absolute -left-10 top-10 h-40 w-40 rounded-full bg-rose-200/50 blur-3xl"></div>
+    <div class="absolute -right-16 bottom-6 h-48 w-48 rounded-full bg-amber-200/50 blur-3xl"></div>
+    <div class="relative space-y-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div class="space-y-3">
+          <span class="inline-flex w-fit items-center rounded-full bg-rose-500 px-4 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-md shadow-rose-500/30">Featured</span>
+          <div>
+            <h2 class="text-3xl font-semibold text-slate-900">Freshly curated resources</h2>
+            <p class="mt-2 max-w-2xl text-base text-slate-700">
+              Hand-picked additions from the last curation cycle. Every entry is reviewed for quality, relevance, and currency before it lands here.
+            </p>
+          </div>
+        </div>
+        <%= link_to "Browse directory", entries_path, class: "inline-flex items-center gap-2 text-sm font-semibold text-rose-700 hover:text-rose-600" %>
+      </div>
+
+      <% if @featured_entries.any? %>
+        <div class="grid gap-8 lg:grid-cols-2">
+          <% @featured_entries.each do |entry| %>
+            <a href="<%= resource_path(entry.slug) %>" class="relative block h-full rounded-3xl border-2 border-rose-200 bg-white p-8 shadow-lg shadow-rose-500/10 ring-1 ring-rose-100 transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-rose-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400">
+              <span class="absolute -right-3 -top-3 inline-flex items-center gap-1 rounded-full bg-rose-500 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white shadow-md shadow-rose-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.966a1 1 0 00.95.69h4.173c.969 0 1.371 1.24.588 1.81l-3.379 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.379-2.455a1 1 0 00-1.176 0l-3.379 2.455c-.784.57-1.838-.196-1.539-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.393c-.783-.57-.38-1.81.588-1.81h4.173a1 1 0 00.95-.69l1.287-3.966z" />
+                </svg>
+                Featured
+              </span>
+              <div>
+                <% if entry.categories.any? %>
+                  <div class="mb-4 flex flex-wrap gap-2">
+                    <% entry.categories.first(3).each do |category| %>
+                      <span class="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-xs font-medium text-rose-700"><%= category.name %></span>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <h3 class="text-2xl font-semibold text-slate-900"><%= entry.title %></h3>
+
+                <% description_text = entry.description.to_plain_text.presence || entry.tags&.join(", ") %>
+                <% if description_text.present? %>
+                  <p class="mt-3 text-sm text-slate-600"><%= truncate(description_text, length: 180) %></p>
+                <% end %>
+              </div>
+
+              <div class="mt-6 flex items-center justify-between text-sm text-slate-600">
+                <div class="flex items-center gap-2">
+                  <% if entry.experience_level.present? %>
+                    <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                      <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(entry.experience_level) %>"></span>
+                      <%= entry.experience_level.capitalize %>
+                    </span>
+                  <% end %>
+                  <% if entry.authors.any? %>
+                    <span>
+                      by
+                      <%= entry.authors.first(2).map(&:name).to_sentence %>
+                      <% remaining = entry.authors.size - 2 %>
+                      <%= "+#{remaining}" if remaining.positive? %>
+                    </span>
+                  <% end %>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="rounded-3xl border-2 border-dashed border-rose-200 bg-rose-50/80 p-12 text-center text-rose-700 shadow-inner shadow-rose-500/10">
+          We're curating the first batch of featured resources. Check back soon or submit your favorite gem to kick things off.
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <div id="resource-types" data-controller="type-sections-toggle" data-type-sections-toggle-initial-count-value="4" class="space-y-10">
+    <div class="space-y-24" data-type-sections-toggle-target="container">
+      <%# Task 5.5: Type sections - positioned AFTER \"Freshly curated resources\" %>
+      <%# Existing 8 types %>
+      <%= render "home/type_section", type: "gems", entries: @recent_gems, emoji: type_emoji("gems"), title: type_name("gems"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "books", entries: @recent_books, emoji: type_emoji("books"), title: type_name("books"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "courses", entries: @recent_courses, emoji: type_emoji("courses"), title: type_name("courses"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "tutorials", entries: @recent_tutorials, emoji: type_emoji("tutorials"), title: type_name("tutorials"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "articles", entries: @recent_articles, emoji: type_emoji("articles"), title: type_name("articles"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "tools", entries: @recent_tools, emoji: type_emoji("tools"), title: type_name("tools"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "podcasts", entries: @recent_podcasts, emoji: type_emoji("podcasts"), title: type_name("podcasts"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "communities", entries: @recent_communities, emoji: type_emoji("communities"), title: type_name("communities"), section_data: { type_sections_toggle_target: "section" } %>
+
+      <%# Task 4.13: New type sections in alphabetical order %>
+      <%= render "home/type_section", type: "blogs", entries: @recent_blogs, emoji: type_emoji("blogs"), title: type_name("blogs"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "channels", entries: @recent_channels, emoji: type_emoji("channels"), title: type_name("channels"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "directories", entries: @recent_directories, emoji: type_emoji("directories"), title: type_name("directories"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "documentations", entries: @recent_documentations, emoji: type_emoji("documentations"), title: type_name("documentations"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "development-environments", entries: @recent_development_environments, emoji: type_emoji("development-environments"), title: type_name("development-environments"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "frameworks", entries: @recent_frameworks, emoji: type_emoji("frameworks"), title: type_name("frameworks"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "jobs", entries: @recent_jobs, emoji: type_emoji("jobs"), title: type_name("jobs"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "newsletters", entries: @recent_newsletters, emoji: type_emoji("newsletters"), title: type_name("newsletters"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "products", entries: @recent_products, emoji: type_emoji("products"), title: type_name("products"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "testing-resources", entries: @recent_testing_resources, emoji: type_emoji("testing-resources"), title: type_name("testing-resources"), section_data: { type_sections_toggle_target: "section" } %>
+      <%= render "home/type_section", type: "videos", entries: @recent_videos, emoji: type_emoji("videos"), title: type_name("videos"), section_data: { type_sections_toggle_target: "section" } %>
+    </div>
+
+    <div class="flex justify-center">
+      <button type="button" class="group inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400" data-type-sections-toggle-target="toggle" data-action="click->type-sections-toggle#toggle">
+        <span data-type-sections-toggle-target="label">Show more types</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" data-type-sections-toggle-target="icon">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Curated collections -->
+  <section class="space-y-8">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2 class="text-3xl font-semibold text-slate-900">Curated learning journeys</h2>
+        <p class="mt-2 max-w-2xl text-base text-slate-600">
+          Step-by-step guides that group resources into actionable playbooks so you can move from idea to shipped feature faster.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid gap-5 lg:grid-cols-2">
+      <% @curated_collections.each do |collection| %>
+        <div class="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-gradient-to-br from-white to-slate-50 p-8 shadow-sm">
+          <span class="text-3xl"><%= collection[:icon] %></span>
+          <h3 class="text-2xl font-semibold text-slate-900"><%= collection[:title] %></h3>
+          <p class="text-base text-slate-600"><%= collection[:description] %></p>
+          <div>
+            <%= link_to collection_path(collection[:slug]), class: "inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-500" do %>
+              View the collection
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- Experience tracks -->
+  <section class="space-y-8">
+    <div>
+      <h2 class="text-3xl font-semibold text-slate-900">Find resources for every stage of your Ruby journey</h2>
+      <p class="mt-2 max-w-2xl text-base text-slate-600">
+        ChooseRuby balances the needs of curious newcomers and seasoned Rails entrepreneurs. Filter by experience level to get the advice that fits you now.
+      </p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      <% @experience_tracks.each do |track| %>
+        <div class="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+          <span class="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold <%= track[:accent] %>">
+            <span class="h-2 w-2 rounded-full bg-current"></span>
+            <%= track[:level] %>
+          </span>
+          <h3 class="text-xl font-semibold text-slate-900"><%= track[:tagline] %></h3>
+          <p class="text-sm text-slate-600"><%= track[:description] %></p>
+          <%= link_to entries_path(level: track[:level].downcase), class: "inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-500" do %>
+            Browse <%= track[:level].downcase %> picks
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+            </svg>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- Community -->
+  <section class="space-y-8">
+    <div>
+      <h2 class="text-3xl font-semibold text-slate-900">Plug into the Ruby community</h2>
+      <p class="mt-2 max-w-2xl text-base text-slate-600">
+        Learn alongside mentors, maintainers, and Rails teams keeping the ecosystem vibrant. These communities welcome questions, show-and-tell, and collaboration.
+      </p>
+    </div>
+
+    <% if @community_channels.any? %>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <% @community_channels.each do |community| %>
+          <div class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+            <div class="space-y-3">
+              <span class="inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                <%= community.platform %>
+              </span>
+              <h3 class="text-xl font-semibold text-slate-900"><%= community.platform %> community</h3>
+              <p class="text-sm text-slate-600">
+                <%= community.is_official? ? "Official" : "Community-led" %> Ruby space with
+                <%= community.member_count.present? ? number_with_delimiter(community.member_count) : "growing" %> members.
+              </p>
+            </div>
+            <div class="mt-6">
+              <%= link_to "Join now", community.join_url, target: "_blank", rel: "noopener", class: "inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-500" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center text-slate-600">
+        We're mapping the best Ruby communities. Have a favorite? <%= mail_to "hello@chooseruby.com", "Let us know", class: "text-rose-600 hover:text-rose-500 font-semibold" %>.
+      </div>
+    <% end %>
+  </section>
+
+  <!-- CTA -->
+  <section class="overflow-hidden rounded-3xl bg-gradient-to-br from-rose-500 via-rose-400 to-amber-300 px-6 py-16 text-white sm:px-10 lg:px-16">
+    <div class="mx-auto flex max-w-5xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-semibold sm:text-4xl">Contribute to the Ruby ecosystem's living directory</h2>
+        <p class="mt-4 text-base text-rose-50">
+          Submit your favorite gem, share a tutorial, or suggest an update. Together, we keep the Rails ecosystem transparent, modern, and welcoming.
+        </p>
+      </div>
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <%= link_to "Submit a resource", new_resource_submission_path, class: "inline-flex h-12 items-center justify-center rounded-2xl bg-black/80 px-6 text-sm font-semibold shadow-lg shadow-black/30 transition hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" %>
+        <%= link_to "View contribution guide", resource_submission_guide_path, class: "inline-flex h-12 items-center justify-center rounded-2xl bg-white/20 px-6 text-sm font-semibold text-white ring-1 ring-white/60 transition hover:bg-white/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" %>
+      </div>
+    </div>
+  </section>
+</div>

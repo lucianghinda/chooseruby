@@ -1,0 +1,84 @@
+<% has_results = @entries.any? || @categories.any? || @types.any? || @popular_queries.present? %>
+
+<% unless has_results %>
+  <div class="px-4 py-3 text-sm text-slate-500">No suggestions yet</div>
+  <% return %>
+<% end %>
+
+<div class="divide-y divide-slate-100" role="listbox">
+  <% if @entries.any? %>
+    <div class="px-4 py-3">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Resources</p>
+      <ul class="mt-2 space-y-1.5">
+        <% @entries.each_with_index do |entry, idx| %>
+          <li>
+            <%= link_to resource_path(entry.slug),
+                        class: "flex items-center justify-between rounded-xl px-2 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-50 focus:bg-slate-50 focus:outline-none",
+                        role: "option",
+                        data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown", index: idx } do %>
+              <span class="truncate"><%= entry.title %></span>
+              <% if entry.type_slug.present? %>
+                <span class="ml-3 inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600">
+                  <span><%= type_emoji(entry.type_slug) %></span>
+                  <span><%= type_name(entry.type_slug) %></span>
+                </span>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @categories.any? %>
+    <div class="px-4 py-3">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Categories</p>
+      <ul class="mt-2 flex flex-wrap gap-2">
+        <% @categories.each do |category| %>
+          <li>
+            <%= link_to category.name,
+                        category_path(category.slug),
+                        class: "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-200 focus:bg-slate-200 focus:outline-none",
+                        role: "option",
+                        data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown" } %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @types.any? %>
+    <div class="px-4 py-3">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Browse by type</p>
+      <ul class="mt-2 flex flex-wrap gap-2">
+        <% @types.each do |type_slug| %>
+          <li>
+            <%= link_to resource_type_path(type_slug),
+                        class: "inline-flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1 text-[11px] font-semibold text-rose-600 ring-1 ring-rose-100 transition hover:bg-rose-100 focus:bg-rose-100 focus:outline-none",
+                        role: "option",
+                        data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown" } do %>
+              <span><%= type_emoji(type_slug) %></span>
+              <span><%= type_name(type_slug) %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @popular_queries.present? %>
+    <div class="px-4 py-3">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Popular searches</p>
+      <div class="mt-2 flex flex-wrap gap-2">
+        <% @popular_queries.each do |query| %>
+          <%= link_to entries_path(q: query),
+                      class: "inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-semibold text-white transition hover:bg-slate-800 focus:bg-slate-800 focus:outline-none",
+                      role: "option",
+                      data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown", query: query } do %>
+            <span><%= query %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

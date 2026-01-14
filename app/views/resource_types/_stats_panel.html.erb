@@ -1,0 +1,15 @@
+<% if category_stats.any? %>
+  <div class="stats-panel rounded-2xl bg-slate-50 p-6 ring-1 ring-slate-100">
+    <h2 class="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">Category Breakdown</h2>
+    <div class="flex flex-wrap gap-3">
+      <% category_stats.each do |stat| %>
+        <div class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm shadow-sm ring-1 ring-slate-200">
+          <span class="font-medium text-slate-900"><%= stat[:category].name %></span>
+          <span class="flex h-6 w-6 items-center justify-center rounded-full bg-rose-500 text-xs font-semibold text-white">
+            <%= stat[:count] %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

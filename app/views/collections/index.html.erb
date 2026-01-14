@@ -1,0 +1,87 @@
+<% content_for :title, "Curated Ruby on Rails Collections | ChooseRuby" %>
+<% content_for :meta_description, "Browse curated Ruby and Rails learning paths, toolkits, and playbooks tailored to the problems developers solve most often." %>
+
+<div class="space-y-16 pb-16">
+  <section class="rounded-3xl bg-slate-900 px-6 py-16 text-white shadow-2xl sm:px-10 lg:px-16">
+    <div class="mx-auto max-w-4xl text-center space-y-6">
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-semibold ring-1 ring-white/30 backdrop-blur">
+        Curated Playbooks
+      </span>
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+        Opinionated resource roadmaps for building with Rails
+      </h1>
+      <p class="text-lg text-slate-200">
+        Skip the endless tabs. Each collection bundles the gems, guides, and community wisdom we recommend when tackling common Rails challenges.
+      </p>
+      <%= link_to "Search the full directory", entries_path, class: "inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-base font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100" %>
+    </div>
+  </section>
+
+  <section class="space-y-10">
+    <div class="space-y-3 text-center">
+      <h2 class="text-3xl font-semibold text-slate-900">Featured collections</h2>
+      <p class="text-base text-slate-600">
+        Dive into focused guides that combine learning material, recommended gems, and implementation examples.
+      </p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-2">
+      <% @collections.each do |collection| %>
+        <a id="<%= collection[:slug] %>" href="<%= collection_path(collection[:slug]) %>" class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400">
+          <div class="space-y-4">
+            <span class="text-3xl"><%= collection[:icon] %></span>
+            <h3 class="text-2xl font-semibold text-slate-900"><%= collection[:title] %></h3>
+            <p class="text-base text-slate-600"><%= collection[:description] %></p>
+          </div>
+          <div class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rose-600">
+            View recommended resources
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="space-y-10">
+    <div class="space-y-3 text-center">
+      <h2 class="text-3xl font-semibold text-slate-900">Choose your learning lane</h2>
+      <p class="text-base text-slate-600">
+        Match your experience level with the resources that make the next leap possible.
+      </p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      <% @experience_tracks.each do |track| %>
+        <div class="flex h-full flex-col gap-4 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+          <span class="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold <%= track[:accent] %>">
+            <span class="h-2 w-2 rounded-full bg-current"></span>
+            <%= track[:level] %>
+          </span>
+          <h3 class="text-xl font-semibold text-slate-900"><%= track[:tagline] %></h3>
+          <p class="text-sm text-slate-600"><%= track[:description] %></p>
+          <%= link_to entries_path(level: track[:level].downcase), class: "inline-flex items-center gap-2 text-sm font-semibold text-rose-600 hover:text-rose-500" do %>
+            Browse <%= track[:level].downcase %> picks
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+            </svg>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="rounded-3xl bg-gradient-to-br from-rose-500 via-rose-400 to-amber-300 px-6 py-14 text-white shadow-lg sm:px-10 lg:px-16">
+    <div class="mx-auto flex max-w-5xl flex-col gap-6 text-center">
+      <h2 class="text-3xl font-semibold sm:text-4xl">Have a go-to stack we should highlight?</h2>
+      <p class="text-base text-rose-50">
+        Suggest a new collection or contribute the resources you’d include. Every submission is reviewed to keep the directory trusted and fresh.
+      </p>
+      <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
+        <%= link_to "Submit a collection idea", new_resource_submission_path, class: "inline-flex h-12 items-center justify-center rounded-2xl bg-black/80 px-6 text-sm font-semibold shadow-lg shadow-black/30 transition hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" %>
+        <%= link_to "Read the contribution guide", resource_submission_guide_path, class: "inline-flex h-12 items-center justify-center rounded-2xl bg-white/20 px-6 text-sm font-semibold text-white ring-1 ring-white/60 transition hover:bg-white/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" %>
+      </div>
+    </div>
+  </section>
+</div>

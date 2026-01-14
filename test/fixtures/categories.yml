@@ -1,0 +1,49 @@
+# Category fixtures for testing
+# == Schema Information
+#
+# Table name: categories
+#
+#  id            :integer          not null, primary key
+#  description   :text
+#  display_order :integer          default(0), not null
+#  icon          :string
+#  name          :string           not null
+#  slug          :string           not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_categories_on_name  (name) UNIQUE
+#  index_categories_on_slug  (slug) UNIQUE
+#
+
+testing:
+  name: Testing
+  slug: testing
+  description: Testing frameworks, tools, and best practices
+  display_order: 1
+
+authentication:
+  name: Authentication
+  slug: authentication
+  description: User authentication and authorization solutions
+  display_order: 2
+
+background_jobs:
+  name: Background Jobs
+  slug: background-jobs
+  description: Background job processing and task queues
+  display_order: 3
+
+web_development:
+  name: Web Development
+  slug: web-development
+  description: Web frameworks and web development tools
+  display_order: 4
+
+learning_resources:
+  name: Learning Resources
+  slug: learning-resources
+  description: Educational materials for learning Ruby
+  display_order: 5

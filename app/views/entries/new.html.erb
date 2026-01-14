@@ -1,0 +1,472 @@
+<% content_for :title, "Submit a Resource | ChooseRuby" %>
+<% content_for :meta_description, "Share your favorite Ruby gems, tutorials, books, courses, and tools with the ChooseRuby community." %>
+
+<div class="space-y-16 pb-16">
+  <section class="rounded-3xl bg-slate-900 px-6 py-16 text-white shadow-2xl sm:px-10 lg:px-16">
+    <div class="mx-auto flex max-w-5xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+      <div class="max-w-3xl space-y-4">
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">
+          Submit a gem, book, course, tutorial, or resource the Ruby world should know about
+        </h1>
+        <p class="text-base text-slate-100 sm:text-lg">
+          Fill out the form and our editorial team will review your submission. We'll reach out if we have questions and notify you once it's published.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid gap-10 lg:grid-cols-[1.2fr,1fr]">
+    <div class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+      <% if @entry.errors.any? %>
+        <div class="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
+          <p class="font-semibold">We couldn't save the submission.</p>
+          <p>Please review the highlighted fields:</p>
+          <ul class="mt-2 list-disc pl-5 space-y-1">
+            <% @entry.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @entry, url: entries_path, class: "space-y-6", data: { controller: "entry-form hashcash", action: "submit->hashcash#generateToken" } do |form| %>
+        <!-- Hashcash hidden field for spam protection -->
+        <%= hidden_field_tag :hashcash_token, "", data: { hashcash_target: "token" } %>
+
+        <!-- Common Fields Section -->
+        <div class="space-y-6">
+          <h2 class="text-xl font-semibold text-slate-900">Resource Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :title, "Resource name", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :title, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., RSpec Testing Framework" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :url, "Primary link", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.url_field :url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com" %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :description, "Why this resource matters", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_area :description, rows: 5, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Tell us about the audience, the problems it solves, and anything we should highlight." %>
+            <p class="text-xs text-slate-500">Rich text formatting supported.</p>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :resource_type, "Resource type", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.select :resource_type,
+                              options_for_select([
+                                ["Ruby Gem", "RubyGem"],
+                                ["Book", "Book"],
+                                ["Course", "Course"],
+                                ["Tutorial", "Tutorial"],
+                                ["Article", "Article"],
+                                ["Tool", "Tool"],
+                                ["Podcast", "Podcast"],
+                                ["Community", "Community"]
+                              ], @entry.entryable_type),
+                              { prompt: "Choose one" },
+                              class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300",
+                              data: { entry_form_target: "typeSelect", action: "change->entry-form#showFieldsForType" } %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :experience_level, "Best suited for", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.select :experience_level,
+                              experience_level_options_for_select(@entry.experience_level),
+                              { include_blank: "Any level" },
+                              class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :image_url, "Image URL (optional)", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :image_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com/image.png (external URL only)" %>
+            <p class="text-xs text-slate-500">Provide an external URL to an image for this resource.</p>
+          </div>
+
+          <!-- Categories Section -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <%= form.label :category_ids, "Suggested categories", class: "text-sm font-semibold text-slate-700" %>
+              <span class="text-xs text-slate-500">Pick up to 3</span>
+            </div>
+            <div class="grid gap-2 sm:grid-cols-2" data-controller="category-limit">
+              <% selected_ids = Array(@entry.category_ids).map(&:to_i) %>
+              <% @categories.each do |category| %>
+                <label class="flex items-center gap-3 rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-700 shadow-sm transition hover:border-rose-300">
+                  <%= check_box_tag "entry[category_ids][]", category.id, selected_ids.include?(category.id), class: "h-4 w-4 rounded border-slate-300 text-rose-500 focus:ring-rose-400", data: { category_limit_target: "checkbox", action: "change->category-limit#checkLimit" } %>
+                  <span><%= category.name %></span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Author Attribution Section -->
+          <div class="space-y-3" data-controller="author-search">
+            <h3 class="text-sm font-semibold text-slate-700">Author Attribution (optional)</h3>
+            <p class="text-xs text-slate-500">Search for an existing author or enter a name manually.</p>
+
+            <div class="space-y-2 relative">
+              <label for="author_search_input" class="text-sm font-semibold text-slate-700">Search for existing author</label>
+              <input type="text"
+                     id="author_search_input"
+                     class="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300"
+                     placeholder="Type to search for an author..."
+                     data-author-search-target="input"
+                     data-action="input->author-search#handleInput">
+
+              <!-- Hidden field for selected author ID -->
+              <%= hidden_field_tag "entry[author_id]", "", data: { author_search_target: "authorId" } %>
+
+              <!-- Search results dropdown -->
+              <div class="hidden absolute z-10 mt-1 w-full bg-white rounded-2xl border border-slate-200 shadow-lg max-h-60 overflow-y-auto"
+                   data-author-search-target="results">
+                <!-- Results populated by JavaScript -->
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label for="entry_manual_author_name" class="text-sm font-semibold text-slate-700">Or enter author name manually</label>
+              <%= form.text_field :manual_author_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., Yukihiro Matsumoto", data: { author_search_target: "manualInput", action: "input->author-search#handleManualInput" } %>
+              <p class="text-xs text-slate-500">If the author isn't in our database, enter their name here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Type-Specific Fields Sections -->
+
+        <!-- RubyGem Fields -->
+        <div class="space-y-6 hidden" data-entry-type="RubyGem" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Gem Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :gem_name, "Gem name", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :gem_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., rspec" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :current_version, "Current version", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :current_version, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., 3.12.0" %>
+            </div>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :github_url, "GitHub URL", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :github_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://github.com/..." %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :documentation_url, "Documentation URL", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :documentation_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://rspec.info" %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :rubygems_url, "RubyGems.org URL", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :rubygems_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://rubygems.org/gems/..." %>
+          </div>
+        </div>
+
+        <!-- Book Fields -->
+        <div class="space-y-6 hidden" data-entry-type="Book" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Book Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :isbn, "ISBN", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :isbn, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "10 or 13 digits" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :publisher, "Publisher", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :publisher, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., O'Reilly Media" %>
+            </div>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-3">
+            <div class="space-y-2">
+              <%= form.label :publication_year, "Publication year", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :publication_year, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "2024", min: 1990, max: Date.current.year %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :page_count, "Page count", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :page_count, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "300", min: 1 %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :format, "Format", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.select :format, [["Physical", "physical"], ["eBook", "ebook"], ["Both", "both"]], { prompt: "Select format" }, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :purchase_url, "Purchase URL", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :purchase_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://..." %>
+          </div>
+        </div>
+
+        <!-- Course Fields -->
+        <div class="space-y-6 hidden" data-entry-type="Course" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Course Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :platform, "Platform", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :platform, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., Udemy, Coursera" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :instructor, "Instructor", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :instructor, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Instructor name" %>
+            </div>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-3">
+            <div class="space-y-2">
+              <%= form.label :duration_hours, "Duration (hours)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :duration_hours, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "10", min: 0, step: 0.5 %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :price, "Price (USD)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :price, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "99.00", min: 0, step: 0.01 %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :currency, "Currency", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :currency, value: "USD", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="flex items-center gap-3 text-sm text-slate-700">
+              <%= form.check_box :is_free, class: "h-4 w-4 rounded border-slate-300 text-rose-500 focus:ring-rose-400" %>
+              <span class="font-semibold">This course is free</span>
+            </label>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :enrollment_url, "Enrollment URL", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :enrollment_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://..." %>
+          </div>
+        </div>
+
+        <!-- Tutorial Fields -->
+        <div class="space-y-6 hidden" data-entry-type="Tutorial" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Tutorial Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :reading_time_minutes, "Reading time (minutes)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :reading_time_minutes, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "15", min: 1 %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :publication_date, "Publication date", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.date_field :publication_date, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", max: Date.current %>
+            </div>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :author_name, "Author name", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :author_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Author name" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :platform, "Platform", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :platform, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., Personal Blog, Dev.to" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article Fields -->
+        <div class="space-y-6 hidden" data-entry-type="Article" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Article Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :reading_time_minutes, "Reading time (minutes)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :reading_time_minutes, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "10", min: 1 %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :publication_date, "Publication date", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.date_field :publication_date, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", max: Date.current %>
+            </div>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :author_name, "Author name", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :author_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Author name" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :platform, "Platform", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :platform, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., Medium, Dev.to" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool Fields -->
+        <div class="space-y-6 hidden" data-entry-type="Tool" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Tool Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :tool_type, "Tool type", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :tool_type, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., CLI, Web App, Editor Plugin" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :license, "License", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :license, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., MIT, Apache 2.0" %>
+            </div>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :github_url, "GitHub URL", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :github_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://github.com/..." %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :documentation_url, "Documentation URL", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :documentation_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://..." %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="flex items-center gap-3 text-sm text-slate-700">
+              <%= form.check_box :is_open_source, checked: true, class: "h-4 w-4 rounded border-slate-300 text-rose-500 focus:ring-rose-400" %>
+              <span class="font-semibold">This tool is open source</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Podcast Fields -->
+        <div class="space-y-6 hidden" data-entry-type="Podcast" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Podcast Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :host, "Host(s)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :host, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Podcast host name(s)" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :episode_count, "Episode count", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :episode_count, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "50", min: 1 %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :frequency, "Frequency", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :frequency, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., Weekly, Monthly" %>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :rss_feed_url, "RSS Feed URL", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :rss_feed_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://..." %>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :spotify_url, "Spotify URL", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :spotify_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://open.spotify.com/..." %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :apple_podcasts_url, "Apple Podcasts URL", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :apple_podcasts_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://podcasts.apple.com/..." %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Community Fields -->
+        <div class="space-y-6 hidden" data-entry-type="Community" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Community Details</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :platform, "Platform", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :platform, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "e.g., Discord, Slack, Reddit" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :member_count, "Member count", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.number_field :member_count, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "1000", min: 1 %>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <%= form.label :join_url, "Join URL", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.text_field :join_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://..." %>
+          </div>
+
+          <div class="space-y-2">
+            <label class="flex items-center gap-3 text-sm text-slate-700">
+              <%= form.check_box :is_official, class: "h-4 w-4 rounded border-slate-300 text-rose-500 focus:ring-rose-400" %>
+              <span class="font-semibold">This is an official Ruby community</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submitter Details Section -->
+        <div class="space-y-6 border-t border-slate-200 pt-6">
+          <h2 class="text-xl font-semibold text-slate-900">Your Contact Information</h2>
+
+          <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+              <%= form.label :submitter_name, "Your name (optional)", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.text_field :submitter_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "How should we greet you?" %>
+            </div>
+            <div class="space-y-2">
+              <%= form.label :submitter_email, "Email for updates", class: "text-sm font-semibold text-slate-700" %>
+              <%= form.email_field :submitter_email, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "you@example.com" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t border-slate-200 pt-6">
+          <p class="text-xs text-slate-500">
+            By submitting, you agree we may contact you for clarification and publish the resource after review.
+          </p>
+          <%= form.submit "Submit for review", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400", data: { hashcash_target: "submitButton" } %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Tips Sidebar -->
+    <aside class="space-y-6 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+      <h2 class="text-xl font-semibold text-slate-900">Tips for a quick review</h2>
+      <ul class="space-y-4 text-sm text-slate-600">
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Provide accurate URLs for all relevant links (homepage, documentation, GitHub, etc.)</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Select categories that match the problems the resource tackles. We aim to keep each topic page tight and actionable.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Include detailed descriptions about what makes this resource valuable and who it's for.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
+          <span>Fill in type-specific fields when available - they help us provide richer information to the community.</span>
+        </li>
+      </ul>
+      <p class="text-xs text-slate-500">
+        Reviews typically take 5–7 days. You'll receive a confirmation email when we start the review and another once the resource is published.
+      </p>
+    </aside>
+  </section>
+</div>
+
+<!-- Screen reader only class for accessibility announcements -->
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+</style>

@@ -1,0 +1,190 @@
+<% content_for :title, "#{@entry.title} | ChooseRuby Resources" %>
+
+<% content_for :meta_description do %>
+  <%= truncate(@entry.description.to_plain_text, length: 160) %>
+<% end %>
+
+<% content_for :head do %>
+  <%# Open Graph tags %>
+  <meta property="og:title" content="<%= @entry.title %>" />
+  <meta property="og:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="<%= request.original_url %>" />
+  <meta property="og:site_name" content="ChooseRuby" />
+  <% if @entry.image.attached? %>
+    <meta property="og:image" content="<%= url_for(@entry.image) %>" />
+  <% elsif @entry.image_url.present? %>
+    <meta property="og:image" content="<%= @entry.image_url %>" />
+  <% end %>
+
+  <%# Twitter Card tags %>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= @entry.title %>" />
+  <meta name="twitter:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>" />
+  <% if @entry.image.attached? %>
+    <meta name="twitter:image" content="<%= url_for(@entry.image) %>" />
+  <% elsif @entry.image_url.present? %>
+    <meta name="twitter:image" content="<%= @entry.image_url %>" />
+  <% end %>
+<% end %>
+
+<div class="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+  <!-- Breadcrumbs -->
+  <%= breadcrumbs([
+    { text: "Home", url: root_path },
+    { text: "Resources", url: entries_path },
+    { text: @entry.title, url: nil }
+  ]) %>
+
+  <!-- Main Content Section -->
+  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
+    <div class="space-y-6">
+      <!-- Entry Title (linked to external URL) -->
+      <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+        <%= link_to @entry.title, @entry.url, target: "_blank", rel: "noopener noreferrer", class: "hover:text-rose-500 transition-colors" %>
+      </h1>
+
+      <!-- Categories -->
+      <% if @entry.categories.any? %>
+        <div class="category-badges flex flex-wrap gap-2">
+          <% primary_category = @entry.primary_category %>
+          <% remaining_categories = @entry.categories.reject { |c| c.id == primary_category&.id } %>
+
+          <%# Display primary category first with rose-500 background %>
+          <% if primary_category %>
+            <%= link_to category_path(primary_category.slug), class: "inline-flex items-center gap-1.5 rounded-full bg-rose-500 px-3 py-1 text-xs font-medium text-white hover:bg-rose-600 transition-colors" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <%= primary_category.name %>
+            <% end %>
+          <% end %>
+
+          <%# Display remaining categories with slate-100 background %>
+          <% remaining_categories.each do |category| %>
+            <%= link_to category.name, category_path(category.slug), class: "inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-200 transition-colors" %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-- Full ActionText Description -->
+      <div class="prose prose-slate max-w-none">
+        <%= @entry.description %>
+      </div>
+
+      <!-- Metadata: Experience Level, Resource Type, Date -->
+      <div class="flex flex-wrap items-center gap-4 text-sm">
+        <!-- Experience Level Badge -->
+        <% if @entry.experience_level.present? %>
+          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+            <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(@entry.experience_level) %>"></span>
+            <%= @entry.experience_level.capitalize %>
+          </span>
+        <% end %>
+
+        <!-- Resource Type Badge -->
+        <% if @entry.entryable_type.present? %>
+          <span class="inline-flex items-center rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-600">
+            <%= @entry.entryable_type.titleize %>
+          </span>
+        <% end %>
+
+        <!-- Created Date -->
+        <span class="text-slate-500">
+          <%= @entry.created_at.strftime("Added on %B %-d, %Y") %>
+        </span>
+      </div>
+
+      <!-- Visit Resource CTA Button -->
+      <div class="pt-4">
+        <%= link_to @entry.url, target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" do %>
+          Visit Resource
+          <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Author Information Section -->
+  <% if @entry.authors.any? %>
+    <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+      <h2 class="mb-6 text-xl font-semibold text-slate-900">
+        <%= @entry.authors.size > 1 ? "Authors" : "Author" %>
+      </h2>
+      <div class="flex flex-wrap gap-6">
+        <% @entry.authors.each do |author| %>
+          <div class="flex items-center gap-4">
+            <!-- Author Avatar -->
+            <div class="h-12 w-12 flex-shrink-0">
+              <% if author.avatar.attached? %>
+                <%= image_tag author.avatar, alt: author.name, class: "h-12 w-12 rounded-full object-cover shadow-md" %>
+              <% elsif author.avatar_url.present? %>
+                <%= image_tag author.avatar_url, alt: author.name, class: "h-12 w-12 rounded-full object-cover shadow-md", onerror: "this.src='https://via.placeholder.com/48?text=#{author.name[0]}'" %>
+              <% else %>
+                <div class="h-12 w-12 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-semibold">
+                  <%= author.name[0].upcase %>
+                </div>
+              <% end %>
+            </div>
+            <!-- Author Name Link -->
+            <div>
+              <span class="text-sm text-slate-500">by</span>
+              <%= link_to author.name, author_path(author.slug), class: "ml-1 text-base font-medium text-slate-900 hover:text-rose-500 transition-colors" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Related Resources Section -->
+  <% related = @entry.related_resources(limit: 6) %>
+  <% if related.any? %>
+    <section class="space-y-6">
+      <h2 class="text-2xl font-semibold text-slate-900">Related Resources</h2>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <% related.each do |entry| %>
+          <article class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <div class="space-y-4">
+              <!-- Categories -->
+              <div class="flex flex-wrap gap-2">
+                <% entry.categories.first(3).each do |category| %>
+                  <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"><%= category.name %></span>
+                <% end %>
+              </div>
+
+              <!-- Title -->
+              <div>
+                <h3 class="text-lg font-semibold text-slate-900">
+                  <%= link_to entry.title, resource_path(entry.slug), class: "hover:text-rose-500 transition-colors" %>
+                </h3>
+                <% description_text = entry.description.to_plain_text.presence %>
+                <% if description_text.present? %>
+                  <p class="mt-3 text-sm text-slate-600"><%= truncate(description_text, length: 150) %></p>
+                <% end %>
+              </div>
+            </div>
+
+            <!-- Experience Level -->
+            <div class="mt-6 flex items-center justify-between text-sm text-slate-500">
+              <div class="flex flex-wrap items-center gap-2">
+                <% if entry.experience_level.present? %>
+                  <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                    <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(entry.experience_level) %>"></span>
+                    <%= entry.experience_level.capitalize %>
+                  </span>
+                <% end %>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+</div>

@@ -1,0 +1,31 @@
+Thanks for your author proposal!
+===================================
+
+Hi <%= @proposal.submitter_name || "there" %>,
+
+We've received your proposal to improve author information on ChooseRuby. Your proposal has been assigned ID #<%= @proposal.id %>.
+
+<% if @proposal.new_author_proposal? %>
+New Author Proposal: <%= @proposal.author_name %>
+<% elsif @author.present? %>
+Author: <%= @author.name %>
+<% end %>
+
+What you proposed:
+<% if @proposal.has_resource_proposal? %>
+- Resource suggestion: <%= @proposal.original_resource_url || @proposal.resource_url %>
+<% end %>
+<% if @proposal.has_link_updates? %>
+- Link updates (<%= @proposal.link_updates.keys.size %> changes)
+<% end %>
+<% if @proposal.has_bio_changes? %>
+- <% if @proposal.bio_text.present? && @proposal.description_text.present? %>Bio and description updates<% elsif @proposal.bio_text.present? %>Bio update<% else %>Description update<% end %>
+<% end %>
+
+Our editorial team reviews every proposal to ensure quality and accuracy. You can expect an update within the next few business days.
+
+If we have any questions, we'll reach out to <%= @proposal.submitter_email %>.
+
+In the meantime, explore the latest additions on <%= root_url %>.
+
+— The ChooseRuby team

@@ -1,0 +1,1157 @@
+---
+- id: '23'
+  name: Kieran Andrews
+  twitter_url: https://twitter.com/Kieran_Andy
+  github_url: https://github.com/TigerWolf
+  website_url: http://kieranandrews.com.au
+  created_at: '2022-06-19 12:14:28.172832'
+  updated_at: '2022-06-19 20:23:12.355858'
+  slug: kieran-andrews
+- id: '24'
+  name: Rebecca Le
+  twitter_url: https://twitter.com/sevenseacat
+  github_url: https://github.com/sevenseacat
+  website_url: http://sevensea.cat
+  created_at: '2022-06-19 12:15:22.650732'
+  updated_at: '2022-06-19 20:23:12.364052'
+  slug: rebecca-le
+- id: '25'
+  name: Robin Klaus
+  twitter_url: https://twitter.com/RMKWrites
+  github_url: https://github.com/rmklaus12
+  website_url: ''
+  created_at: '2022-06-19 12:15:59.711842'
+  updated_at: '2022-06-19 20:23:12.369633'
+  slug: robin-klaus
+- id: '26'
+  name: Nate Berkopec
+  twitter_url: https://www.twitter.com/nateberkopec
+  github_url: https://www.github.com/nateberkopec
+  website_url: https://www.nateberkopec.com
+  created_at: '2022-06-19 12:26:38.711846'
+  updated_at: '2022-06-19 20:23:12.37519'
+  slug: nate-berkopec
+- id: '27'
+  name: David Colby
+  twitter_url: https://mobile.twitter.com/davidcolbyatx
+  github_url: ''
+  website_url: https://www.colby.so
+  created_at: '2022-06-19 12:35:14.580828'
+  updated_at: '2022-06-19 20:23:12.381034'
+  slug: david-colby
+- id: '28'
+  name: BigBinary
+  twitter_url: https://twitter.com/bigbinary
+  github_url: https://github.com/bigbinary
+  website_url: https://www.bigbinary.com
+  created_at: '2022-06-19 20:39:16.297623'
+  updated_at: '2022-06-19 20:39:16.309301'
+  slug: bigbinary
+- id: '16'
+  name: Sundeep Agarwal
+  twitter_url: https://twitter.com/learn_byexample
+  github_url: https://github.com/learnbyexample
+  website_url: https://learnbyexample.github.io/books/
+  created_at: '2022-06-19 11:32:01.009502'
+  updated_at: '2022-06-22 05:26:19.238665'
+  slug: sundeep-agarwal
+- id: '29'
+  name: Mark Locklear
+  twitter_url: https://twitter.com/marklocklear
+  github_url: http://www.github.com/marklocklear
+  website_url: http://locklear.me
+  created_at: '2022-07-05 07:14:53.119155'
+  updated_at: '2022-07-05 07:14:53.15353'
+  slug: mark-locklear
+- id: '34'
+  name: Richard LaFranchi
+  twitter_url: https://twitter.com/ralafranchi
+  github_url: https://github.com/rlafranchi
+  website_url: https://rlafranchi.github.io
+  created_at: '2022-07-05 07:37:08.576323'
+  updated_at: '2022-07-05 07:37:08.581176'
+  slug: richard-lafranchi
+- id: '30'
+  name: Eric Gruber
+  twitter_url: https://twitter.com/ericjgruber
+  github_url: ''
+  website_url: https://ericjgruber.com/blog/
+  created_at: '2022-07-05 07:17:53.595322'
+  updated_at: '2022-07-05 07:17:53.600289'
+  slug: eric-gruber
+- id: '31'
+  name: Nicholas Johnson
+  twitter_url: https://twitter.com/superluminary
+  github_url: ''
+  website_url: http://nicholasjohnson.com
+  created_at: '2022-07-05 07:25:19.254886'
+  updated_at: '2022-07-05 07:25:19.261488'
+  slug: nicholas-johnson
+- id: '32'
+  name: Patrick Lenz
+  twitter_url: https://twitter.com/patricklenz
+  github_url: ''
+  website_url: ''
+  created_at: '2022-07-05 07:29:14.500009'
+  updated_at: '2022-07-05 07:29:14.504701'
+  slug: patrick-lenz
+- id: '33'
+  name: Bryan Lim
+  twitter_url: https://twitter.com/ytbryan
+  github_url: https://github.com/ytbryan
+  website_url: ''
+  created_at: '2022-07-05 07:35:37.605354'
+  updated_at: '2022-07-05 07:35:37.610918'
+  slug: bryan-lim
+- id: '35'
+  name: Henning Koch
+  twitter_url: https://twitter.com/triskweline
+  github_url: ''
+  website_url: ''
+  created_at: '2022-07-05 07:41:34.415344'
+  updated_at: '2022-07-05 07:41:34.421488'
+  slug: henning-koch
+- id: '36'
+  name: Thomas Eisenbarth
+  twitter_url: https://twitter.com/fnordonaut
+  github_url: ''
+  website_url: ''
+  created_at: '2022-07-05 07:42:29.167945'
+  updated_at: '2022-07-05 07:42:29.17539'
+  slug: thomas-eisenbarth
+- id: '37'
+  name: Hal Fulton
+  twitter_url: https://twitter.com/hal_fulton
+  github_url: https://github.com/hal9000
+  website_url: https://rubyhacker.com/
+  created_at: '2022-07-05 07:49:02.979686'
+  updated_at: '2022-07-05 07:49:02.985582'
+  slug: hal-fulton
+- id: '2'
+  name: Jason Swett
+  twitter_url: https://twitter.com/JasonSwett
+  github_url: ''
+  website_url: https://www.codewithjason.com/about/
+  created_at: '2022-06-19 10:13:29.873564'
+  updated_at: '2022-06-19 20:23:12.21719'
+  slug: jason-swett
+- id: '3'
+  name: Josef Strzibny
+  twitter_url: https://twitter.com/strzibnyj
+  github_url: https://github.com/strzibny
+  website_url: https://strzibny.name
+  created_at: '2022-06-19 10:19:19.82906'
+  updated_at: '2022-06-19 20:23:12.224129'
+  slug: josef-strzibny
+- id: '4'
+  name: Max Beerbohm
+  twitter_url: ''
+  github_url: ''
+  website_url: ''
+  created_at: '2022-06-19 10:29:54.583041'
+  updated_at: '2022-06-19 20:23:12.230936'
+  slug: max-beerbohm
+- id: '5'
+  name: Moaml Mohmmed
+  twitter_url: ''
+  github_url: ''
+  website_url: ''
+  created_at: '2022-06-19 10:31:05.250046'
+  updated_at: '2022-06-19 20:23:12.237083'
+  slug: moaml-mohmmed
+- id: '6'
+  name: Russ Olsen
+  twitter_url: https://twitter.com/russolsen
+  github_url: https://github.com/russolsen
+  website_url: http://russolsen.com
+  created_at: '2022-06-19 10:33:28.025953'
+  updated_at: '2022-06-19 20:23:12.243611'
+  slug: russ-olsen
+- id: '7'
+  name: Sandi Metz
+  twitter_url: https://twitter.com/sandimetz
+  github_url: ''
+  website_url: https://sandimetz.com
+  created_at: '2022-06-19 10:40:09.711691'
+  updated_at: '2022-06-19 20:23:12.250099'
+  slug: sandi-metz
+- id: '8'
+  name: Jay McGavren
+  twitter_url: http://twitter.com/jaymcgavren
+  github_url: http://github.com/jaymcgavren
+  website_url: https://jay.mcgavren.com
+  created_at: '2022-06-19 10:54:05.327'
+  updated_at: '2022-06-19 20:23:12.25667'
+  slug: jay-mcgavren
+- id: '9'
+  name: Chad Fowler
+  twitter_url: https://twitter.com/chadfowler
+  github_url: ''
+  website_url: http://chadfowler.com
+  created_at: '2022-06-19 10:57:33.984906'
+  updated_at: '2022-06-19 20:23:12.264785'
+  slug: chad-fowler
+- id: '10'
+  name: Michael Hartl
+  twitter_url: https://twitter.com/mhartl
+  github_url: ''
+  website_url: https://www.michaelhartl.com
+  created_at: '2022-06-19 11:10:30.79134'
+  updated_at: '2022-06-19 20:23:12.270774'
+  slug: michael-hartl
+- id: '11'
+  name: Myron Marston
+  twitter_url: https://twitter.com/myronmarston
+  github_url: https://github.com/myronmarston
+  website_url: http://myronmars.to/n/dev-blog
+  created_at: '2022-06-19 11:13:38.375728'
+  updated_at: '2022-06-19 20:23:12.276736'
+  slug: myron-marston
+- id: '13'
+  name: GoalKicker Books
+  twitter_url: ''
+  github_url: ''
+  website_url: https://books.goalkicker.com
+  created_at: '2022-06-19 11:19:31.117936'
+  updated_at: '2022-06-19 20:23:12.294644'
+  slug: goalkicker-books
+- id: '14'
+  name: Obie Fernandez
+  twitter_url: https://twitter.com/obie
+  github_url: https://github.com/obie
+  website_url: https://obiefernandez.com
+  created_at: '2022-06-19 11:24:47.219208'
+  updated_at: '2022-06-19 20:23:12.3022'
+  slug: obie-fernandez
+- id: '15'
+  name: Roman Pushkin
+  twitter_url: https://twitter.com/romanpushkin
+  github_url: https://github.com/ro31337
+  website_url: ''
+  created_at: '2022-06-19 11:29:59.962785'
+  updated_at: '2022-06-19 20:23:12.307956'
+  slug: roman-pushkin
+- id: '17'
+  name: David B. Copeland
+  twitter_url: https://twitter.com/davetron5000
+  github_url: https://github.com/davetron5000
+  website_url: https://naildrivin5.com
+  created_at: '2022-06-19 11:37:40.70542'
+  updated_at: '2022-06-19 20:23:12.319807'
+  slug: david-b-copeland
+- id: '18'
+  name: Sam Ruby
+  twitter_url: https://twitter.com/samruby
+  github_url: ''
+  website_url: http://www.intertwingly.net/blog/
+  created_at: '2022-06-19 11:45:54.862728'
+  updated_at: '2022-06-19 20:23:12.325786'
+  slug: sam-ruby
+- id: '20'
+  name: Karthikeyan A K
+  twitter_url: https://twitter.com/karthik_ak
+  github_url: ''
+  website_url: https://mindaslab.github.io
+  created_at: '2022-06-19 11:55:02.73069'
+  updated_at: '2022-06-19 20:23:12.338175'
+  slug: karthikeyan-a-k
+- id: '21'
+  name: Chris Kottom
+  twitter_url: https://twitter.com/chriskottom
+  github_url: https://github.com/chriskottom
+  website_url: https://chriskottom.com
+  created_at: '2022-06-19 12:00:03.941288'
+  updated_at: '2022-06-19 20:23:12.344051'
+  slug: chris-kottom
+- id: '22'
+  name: Ryan Bigg
+  twitter_url: https://twitter.com/ryanbigg
+  github_url: https://github.com/radar
+  website_url: http://ryanbigg.com
+  created_at: '2022-06-19 12:04:01.526675'
+  updated_at: '2022-06-19 20:23:12.349893'
+  slug: ryan-bigg
+- id: '38'
+  name: André Arko
+  twitter_url: http://twitter.com/indirect
+  github_url: http://github.com/indirect
+  website_url: https://arko.net
+  created_at: '2022-07-05 07:50:10.975607'
+  updated_at: '2022-07-05 07:50:10.984709'
+  slug: andre-arko
+- id: '39'
+  name: Justin Weiss
+  twitter_url: https://twitter.com/justinweiss
+  github_url: https://github.com/justinweiss
+  website_url: https://www.justinweiss.com
+  created_at: '2022-07-05 07:52:57.890084'
+  updated_at: '2022-07-05 07:52:57.900391'
+  slug: justin-weiss
+- id: '40'
+  name: Aaron Sumner
+  twitter_url: https://twitter.com/everydayrails
+  github_url: https://github.com/everydayrails
+  website_url: https://everydayrails.com/
+  created_at: '2022-08-06 07:11:47.386405'
+  updated_at: '2022-08-06 07:11:47.395536'
+  slug: aaron-sumner
+- id: '41'
+  name: Jemma Issroff
+  twitter_url: https://twitter.com/JemmaIssroff
+  github_url: ''
+  website_url: https://jemma.dev/about-me/
+  created_at: '2022-08-06 11:14:32.245896'
+  updated_at: '2022-08-06 11:14:32.252119'
+  slug: jemma-issroff
+- id: '42'
+  name: Noah Gibbs
+  twitter_url: https://twitter.com/codefolio
+  github_url: https://github.com/noahgibbs
+  website_url: https://codefol.io/
+  created_at: '2022-08-06 11:19:05.970606'
+  updated_at: '2022-08-06 11:19:05.974271'
+  slug: noah-gibbs
+- id: '43'
+  name: Paolo Perrotta
+  twitter_url: https://twitter.com/nusco
+  github_url: ''
+  website_url: https://t.co/FcJoDXw0Ea
+  created_at: '2022-08-06 11:23:37.611191'
+  updated_at: '2022-08-06 11:23:37.614727'
+  slug: paolo-perrotta
+- id: '44'
+  name: Jeremy Evans
+  twitter_url: https://twitter.com/jeremyevans0
+  github_url: https://github.com/jeremyevans
+  website_url: http://code.jeremyevans.net/
+  created_at: '2022-08-06 11:27:28.959829'
+  updated_at: '2022-08-06 11:27:28.96336'
+  slug: jeremy-evans
+- id: '45'
+  name: Chris Pine
+  twitter_url: https://twitter.com/OtherChrisPine
+  github_url: ''
+  website_url: https://pine.fm/LearnToProgram/
+  created_at: '2022-08-06 11:31:09.72668'
+  updated_at: '2022-08-06 11:31:09.729984'
+  slug: chris-pine
+- id: '46'
+  name: Nick Haskins
+  twitter_url: ''
+  github_url: ''
+  website_url: https://nphaskins.com/
+  created_at: '2022-08-06 11:35:37.160527'
+  updated_at: '2022-08-06 11:35:37.16505'
+  slug: nick-haskins
+- id: '47'
+  name: Sabri Saleh Hassanyah
+  twitter_url: https://twitter.com/KINGSABRI
+  github_url: https://github.com/KINGSABRI
+  website_url: http://sabri.hassanyah.com/
+  created_at: '2022-08-06 11:40:48.13909'
+  updated_at: '2022-08-06 11:40:48.142431'
+  slug: sabri-saleh-hassanyah
+- id: '48'
+  name: Stephan Hagemann
+  twitter_url: https://twitter.com/shageman
+  github_url: https://github.com/shageman
+  website_url: https://stephanhagemann.com/
+  created_at: '2022-08-06 11:43:23.231482'
+  updated_at: '2022-08-06 11:43:23.235346'
+  slug: stephan-hagemann
+- id: '12'
+  name: Erin Dees
+  twitter_url: https://twitter.com/undees
+  github_url: https://github.com/undees
+  website_url: https://www.erindees.me
+  created_at: '2022-06-19 11:15:29.241631'
+  updated_at: '2022-08-06 17:08:25.96959'
+  slug: erin-dees
+- id: '49'
+  name: Carleton DiLeo
+  twitter_url: ''
+  github_url: https://github.com/cbdileo
+  website_url: ''
+  created_at: '2022-08-06 11:50:15.251017'
+  updated_at: '2022-08-06 11:50:15.254375'
+  slug: carleton-dileo
+- id: '50'
+  name: Peter Cooper
+  twitter_url: https://twitter.com/cooperx86
+  github_url: https://github.com/peterc
+  website_url: ''
+  created_at: '2022-08-06 11:51:07.303496'
+  updated_at: '2022-08-06 11:51:07.306997'
+  slug: peter-cooper
+- id: '51'
+  name: Stephan Kämper
+  twitter_url: https://twitter.com/S_2K
+  github_url: https://github.com/s2k
+  website_url: https://seasidetesting.com/
+  created_at: '2022-08-06 11:53:57.558651'
+  updated_at: '2022-08-06 11:53:57.562322'
+  slug: stephan-kamper
+- id: '52'
+  name: Chris Blunt
+  twitter_url: https://twitter.com/cblunt
+  github_url: https://github.com/cblunt
+  website_url: https://www.chrisblunt.com/
+  created_at: '2022-08-06 11:56:27.046196'
+  updated_at: '2022-08-06 11:56:27.050174'
+  slug: chris-blunt
+- id: '53'
+  name: Alexandre Rousseau
+  twitter_url: ''
+  github_url: https://github.com/madeindjs
+  website_url: https://rsseau.fr/
+  created_at: '2022-08-06 12:01:08.625517'
+  updated_at: '2022-08-06 12:01:08.62902'
+  slug: alexandre-rousseau
+- id: '54'
+  name: Zhimin Zhan
+  twitter_url: https://twitter.com/zhiminzhan
+  github_url: https://github.com/testwisely
+  website_url: https://zhiminzhan.medium.com/
+  created_at: '2022-08-06 12:03:38.802334'
+  updated_at: '2022-08-06 12:03:38.806308'
+  slug: zhimin-zhan
+- id: '55'
+  name: Daniel Huckstep
+  twitter_url: https://twitter.com/darkhelmetlive
+  github_url: https://github.com/darkhelmet
+  website_url: https://verboselogging.com/
+  created_at: '2022-08-06 12:06:00.91759'
+  updated_at: '2022-08-06 12:06:00.924363'
+  slug: daniel-huckstep
+- id: '56'
+  name: Andrew Allen
+  twitter_url: https://twitter.com/allenan_
+  github_url: ''
+  website_url: ''
+  created_at: '2022-08-16 10:54:10.881312'
+  updated_at: '2022-08-16 10:54:10.891611'
+  slug: andrew-allen
+- id: '57'
+  name: Brady Somerville
+  twitter_url: ''
+  github_url: ''
+  website_url: ''
+  created_at: '2022-08-16 11:01:36.402301'
+  updated_at: '2022-08-16 11:01:36.405487'
+  slug: brady-somerville
+- id: '58'
+  name: Adam Gamble
+  twitter_url: ''
+  github_url: ''
+  website_url: ''
+  created_at: '2022-08-16 11:01:56.707763'
+  updated_at: '2022-08-16 11:01:56.711424'
+  slug: adam-gamble
+- id: '59'
+  name: Cloves Carneiro Jr
+  twitter_url: ''
+  github_url: ''
+  website_url: ''
+  created_at: '2022-08-16 11:02:11.642987'
+  updated_at: '2022-08-16 11:02:11.64659'
+  slug: cloves-carneiro-jr
+- id: '60'
+  name: Rida Al Barazi
+  twitter_url: ''
+  github_url: ''
+  website_url: ''
+  created_at: '2022-08-16 11:02:24.865198'
+  updated_at: '2022-08-16 11:02:24.868249'
+  slug: rida-al-barazi
+- id: '61'
+  name: Peter J. Jones
+  twitter_url: ''
+  github_url: https://github.com/pjones
+  website_url: https://devalot.com/about/pjones.html
+  created_at: '2022-08-16 11:07:07.321424'
+  updated_at: '2022-08-16 11:07:07.325316'
+  slug: peter-j-jones
+- id: '62'
+  name: Jordan Hudgens
+  twitter_url: ''
+  github_url: https://github.com/jordanhudgens
+  website_url: https://www.crondose.com/
+  created_at: '2022-08-16 11:12:01.665994'
+  updated_at: '2022-08-16 11:12:01.671976'
+  slug: jordan-hudgens
+- id: '63'
+  name: SaKKo Sama
+  twitter_url: https://twitter.com/SaKKosama
+  github_url: https://github.com/sakko
+  website_url: ''
+  created_at: '2022-08-16 11:20:20.827251'
+  updated_at: '2022-08-16 11:20:20.835417'
+  slug: sakko-sama
+- id: '64'
+  name: Lucas Dohmen
+  twitter_url: https://twitter.com/moonbeamlabs
+  github_url: https://github.com/moonglum
+  website_url: ''
+  created_at: '2022-08-16 11:23:35.284678'
+  updated_at: '2022-08-16 11:23:35.291361'
+  slug: lucas-dohmen
+- id: '65'
+  name: Tom Henrik Aadland
+  twitter_url: https://twitter.com/tomhenrik
+  github_url: https://github.com/tomaadland
+  website_url: ''
+  created_at: '2022-08-16 11:23:55.999766'
+  updated_at: '2022-08-16 11:23:56.004457'
+  slug: tom-henrik-aadland
+- id: '66'
+  name: Obie Fernandez
+  twitter_url: https://twitter.com/obie
+  github_url: https://github.com/obie
+  website_url: ''
+  created_at: '2022-08-16 11:24:24.198654'
+  updated_at: '2022-08-16 11:24:24.203742'
+  slug: obie-fernandez-9cc4c1f0-3f10-4d3b-aea8-a754c39b09c3
+- id: '67'
+  name: Aaron Lasseigne
+  twitter_url: https://twitter.com/AaronLasseigne
+  github_url: https://github.com/AaronLasseigne
+  website_url: https://aaronlasseigne.com
+  created_at: '2022-08-16 11:27:14.64828'
+  updated_at: '2022-08-16 11:27:14.652759'
+  slug: aaron-lasseigne
+- id: '68'
+  name: Daniel Pritchett
+  twitter_url: https://twitter.com/dpritchett
+  github_url: https://github.com/dpritchett
+  website_url: https://dpritchett.net
+  created_at: '2022-08-16 11:31:09.190649'
+  updated_at: '2022-08-16 11:31:09.19704'
+  slug: daniel-pritchett
+- id: '69'
+  name: Thoughbot
+  twitter_url: ''
+  github_url: ''
+  website_url: https://thoughtbot.com
+  created_at: '2022-08-16 11:37:18.362253'
+  updated_at: '2022-08-16 11:37:18.365611'
+  slug: thoughbot
+- id: '70'
+  name: Thibault Denizet
+  twitter_url: https://twitter.com/t_dnzt
+  github_url: https://github.com/T-Dnzt
+  website_url: https://devblast.com
+  created_at: '2022-08-16 11:50:59.322394'
+  updated_at: '2022-08-16 11:50:59.32694'
+  slug: thibault-denizet
+- id: '71'
+  name: Peter Armstrong
+  twitter_url: https://twitter.com/peterarmstrong
+  github_url: https://github.com/peterarmstrong
+  website_url: ''
+  created_at: '2022-08-16 11:54:36.395805'
+  updated_at: '2022-08-16 11:54:36.40001'
+  slug: peter-armstrong
+- id: '72'
+  name: Paweł Dąbrowski
+  twitter_url: https://twitter.com/pdabrowski6
+  github_url: ''
+  website_url: https://paweldabrowski.com
+  created_at: '2022-08-22 12:45:02.480886'
+  updated_at: '2022-08-22 12:45:02.487218'
+  slug: pawel-dabrowski
+- id: '73'
+  name: Sebastien Auriault
+  twitter_url: https://twitter.com/websebdev
+  github_url: https://github.com/websebdev
+  website_url: https://www.rubycompanion.dev/
+  created_at: '2022-09-03 12:20:36.046526'
+  updated_at: '2022-09-03 12:20:36.052963'
+  slug: sebastien-auriault
+- id: '74'
+  name: Jason Charnes
+  twitter_url: https://twitter.com/jmcharnes
+  github_url: ''
+  website_url: https://jasoncharnes.com/
+  created_at: '2022-09-03 13:51:48.828496'
+  updated_at: '2022-09-03 13:51:48.833292'
+  slug: jason-charnes
+- id: '75'
+  name: Chris Oliver
+  twitter_url: https://twitter.com/excid3
+  github_url: https://github.com/excid3
+  website_url: https://excid3.com/
+  created_at: '2022-09-03 20:39:48.979335'
+  updated_at: '2022-09-03 20:39:48.983105'
+  slug: chris-oliver
+- id: '76'
+  name: Sebastian Wilgosz
+  twitter_url: https://twitter.com/sebwilgosz
+  github_url: https://github.com/swilgosz
+  website_url: https://hanamimastery.com/
+  created_at: '2022-09-03 20:49:33.216576'
+  updated_at: '2022-09-03 20:52:23.439606'
+  slug: seb-wilgosz
+- id: '77'
+  name: Yaroslav Shmarov
+  twitter_url: https://twitter.com/yarotheslav
+  github_url: https://github.com/yshmarov
+  website_url: http://blog.corsego.com/
+  created_at: '2022-09-03 21:21:37.841028'
+  updated_at: '2022-09-03 21:21:37.84849'
+  slug: yaroslav-shmarov
+- id: '78'
+  name: Marcin Grzywaczewski
+  twitter_url: https://twitter.com/killavus
+  github_url: https://github.com/Killavus
+  website_url: ''
+  created_at: '2022-09-03 21:30:01.988852'
+  updated_at: '2022-09-03 21:30:01.993559'
+  slug: marcin-grzywaczewski
+- id: '79'
+  name: Robert Pankowecki
+  twitter_url: https://twitter.com/pankowecki
+  github_url: https://github.com/paneq
+  website_url: http://robert.pankowecki.pl
+  created_at: '2022-09-04 07:27:14.62223'
+  updated_at: '2022-09-04 07:27:14.627969'
+  slug: robert-pankowecki
+- id: '80'
+  name: Andrzej Krzywda
+  twitter_url: https://twitter.com/andrzejkrzywda
+  github_url: https://github.com/andrzejkrzywda
+  website_url: https://arkency.com/newsletter/
+  created_at: '2022-09-04 07:33:29.296894'
+  updated_at: '2022-09-04 07:33:29.303116'
+  slug: andrzej-krzywda
+- id: '81'
+  name: Avdi Grimm
+  twitter_url: https://twitter.com/avdi
+  github_url: ''
+  website_url: https://avdi.codes
+  created_at: '2022-09-04 15:19:03.947611'
+  updated_at: '2022-09-04 15:19:03.95169'
+  slug: avdi-grimm
+- id: '82'
+  name: Brittany Martin
+  twitter_url: https://twitter.com/brittjmartin
+  github_url: ''
+  website_url: https://brittanymartin.dev/
+  created_at: '2022-09-04 15:58:51.957768'
+  updated_at: '2022-09-04 15:58:51.961665'
+  slug: brittany-martin
+- id: '83'
+  name: Brian Mariani
+  twitter_url: ''
+  github_url: ''
+  website_url: https://www.mirrorplacement.com
+  created_at: '2022-09-04 16:01:23.843569'
+  updated_at: '2022-09-04 16:01:23.849175'
+  slug: brian-mariani
+- id: '84'
+  name: Nick Schwaderer
+  twitter_url: https://twitter.com/schwad_rb
+  github_url: https://github.com/schwad
+  website_url: https://schwad.github.io/about/
+  created_at: '2022-09-04 16:03:11.825548'
+  updated_at: '2022-09-04 16:03:11.829522'
+  slug: nick-schwaderer
+- id: '85'
+  name: Cezar Halmagean
+  twitter_url: https://twitter.com/chalmagean
+  github_url: ''
+  website_url: https://mixandgo.com/
+  created_at: '2022-09-04 18:04:02.572037'
+  updated_at: '2022-09-04 18:04:02.576141'
+  slug: cezar-halmagean
+- id: '86'
+  name: Nikola Đuza
+  twitter_url: https://twitter.com/nikolalsvk
+  github_url: https://nikolalsvk.github.io
+  website_url: https://nikolalsvk.github.io
+  created_at: '2022-09-05 15:23:25.76004'
+  updated_at: '2022-09-05 15:23:25.765749'
+  slug: nikola-duza
+- id: '87'
+  name: Jonathan Rochkind
+  twitter_url: ''
+  github_url: https://github.com/jrochkind
+  website_url: ''
+  created_at: '2022-09-05 15:25:04.8969'
+  updated_at: '2022-09-05 15:25:04.899891'
+  slug: jonathan-rochkind
+- id: '89'
+  name: Richard Schneeman
+  twitter_url: https://twitter.com/schneems
+  github_url: https://github.com/schneems
+  website_url: https://www.schneems.com
+  created_at: '2022-09-05 15:29:01.192742'
+  updated_at: '2022-09-05 15:29:01.196706'
+  slug: richard-schneeman
+- id: '90'
+  name: Ross Kaffenberger
+  twitter_url: https://twitter.com/rossta
+  github_url: https://github.com/rossta
+  website_url: https://rossta.net/
+  created_at: '2022-09-05 15:30:32.159424'
+  updated_at: '2022-09-05 15:30:32.163142'
+  slug: ross-kaffenberger
+- id: '91'
+  name: Justin Palmer
+  twitter_url: https://twitter.com/Caged
+  github_url: ''
+  website_url: https://t.co/1EUeSnjilP
+  created_at: '2022-09-07 08:05:52.633917'
+  updated_at: '2022-09-07 08:05:52.643925'
+  slug: justin-palmer
+- id: '92'
+  name: Dean DeHart
+  twitter_url: https://twitter.com/deaniocom
+  github_url: ''
+  website_url: https://linktr.ee/deanin
+  created_at: '2022-09-07 12:52:11.782894'
+  updated_at: '2022-09-07 12:52:11.788643'
+  slug: dean-dehart
+- id: '93'
+  name: Jared White
+  twitter_url: https://twitter.com/jaredcwhite
+  github_url: https://github.com/jaredcwhite
+  website_url: https://jaredwhite.com/
+  created_at: '2022-09-07 16:20:03.745708'
+  updated_at: '2022-09-07 16:20:03.778563'
+  slug: jared-white
+- id: '94'
+  name: Steve Polito
+  twitter_url: https://twitter.com/stevepolitodsgn
+  github_url: ''
+  website_url: https://stevepolito.design/
+  created_at: '2022-09-08 07:18:17.680587'
+  updated_at: '2022-09-08 07:18:17.686587'
+  slug: steve-polito
+- id: '95'
+  name: David Young
+  twitter_url: https://twitter.com/dcyoung_dev
+  github_url: https://github.com/dcyoung-dev
+  website_url: https://dcyoung.dev/
+  created_at: '2022-09-08 07:30:08.699649'
+  updated_at: '2022-09-08 07:30:08.704593'
+  slug: david-young
+- id: '88'
+  name: Emmanuel Hayford
+  twitter_url: https://twitter.com/siaw23
+  github_url: https://github.com/siaw23
+  website_url: https://hayford.dev
+  created_at: '2022-09-05 15:26:23.550926'
+  updated_at: '2023-03-20 04:55:51.051828'
+  slug: emmanuel-hayford
+- id: '97'
+  name: Women on Rails
+  twitter_url: ''
+  github_url: ''
+  website_url: https://substack.com/profile/40298138-women-on-rails
+  created_at: '2022-09-08 10:15:54.944188'
+  updated_at: '2022-09-08 10:15:54.94929'
+  slug: women-on-rails
+- id: '98'
+  name: Ana Nunes da Silva
+  twitter_url: https://twitter.com/anakbns
+  github_url: https://github.com/anansilva
+  website_url: https://www.ananunesdasilva.com
+  created_at: '2022-09-08 10:19:49.69452'
+  updated_at: '2022-09-08 10:19:49.699581'
+  slug: ana-nunes-da-silva
+- id: '99'
+  name: Arkency
+  twitter_url: ''
+  github_url: ''
+  website_url: https://arkency.com
+  created_at: '2022-09-08 10:22:07.331036'
+  updated_at: '2022-09-08 10:22:07.335334'
+  slug: arkency
+- id: '100'
+  name: thoughtbot
+  twitter_url: https://twitter.com/thoughtbot
+  github_url: https://github.com/thoughtbot
+  website_url: https://thoughtbot.com
+  created_at: '2022-09-08 10:23:26.659958'
+  updated_at: '2022-09-08 10:23:26.663632'
+  slug: thoughtbot
+- id: '101'
+  name: Speedshop
+  twitter_url: ''
+  github_url: ''
+  website_url: https://www.speedshop.co
+  created_at: '2022-09-08 10:24:32.838333'
+  updated_at: '2022-09-08 10:24:32.842937'
+  slug: speedshop
+- id: '102'
+  name: Matt Swanson
+  twitter_url: https://twitter.com/_swanson
+  github_url: ''
+  website_url: https://boringrails.com/
+  created_at: '2022-09-08 10:26:14.797862'
+  updated_at: '2022-09-08 10:26:14.807235'
+  slug: matt-swanson
+- id: '103'
+  name: Shino Kouda
+  twitter_url: https://twitter.com/ShinoKouda
+  github_url: ''
+  website_url: https://www.bootrails.com/
+  created_at: '2022-09-08 10:27:48.769721'
+  updated_at: '2022-09-08 10:27:48.772997'
+  slug: shino-kouda
+- id: '104'
+  name: Andy Croll
+  twitter_url: https://twitter.com/andycroll
+  github_url: ''
+  website_url: https://andycroll.com
+  created_at: '2022-09-08 10:29:59.621638'
+  updated_at: '2022-09-08 10:29:59.6257'
+  slug: andy-croll
+- id: '105'
+  name: Andrew Mason
+  twitter_url: https://twitter.com/andrewmcodes/
+  github_url: https://github.com/andrewmcodes
+  website_url: https://andrewm.codes/
+  created_at: '2022-09-08 10:31:52.254324'
+  updated_at: '2022-09-08 10:31:52.259281'
+  slug: andrew-mason
+- id: '106'
+  name: Collin Jilbert
+  twitter_url: https://twitter.com/collin_jilbert
+  github_url: https://github.com/cjilbert504
+  website_url: ''
+  created_at: '2022-09-08 10:32:42.859688'
+  updated_at: '2022-09-08 10:32:42.8706'
+  slug: collin-jilbert
+- id: '107'
+  name: Joe Masilotti
+  twitter_url: https://twitter.com/joemasilotti
+  github_url: https://github.com/joemasilotti
+  website_url: https://masilotti.com
+  created_at: '2022-09-08 10:35:28.092135'
+  updated_at: '2022-09-08 10:35:28.100018'
+  slug: joe-masilotti
+- id: '109'
+  name: Pedro Schmitt
+  twitter_url: https://twitter.com/mastersilvio
+  github_url: ''
+  website_url: ''
+  created_at: '2022-09-08 10:51:59.480151'
+  updated_at: '2022-09-08 10:51:59.485043'
+  slug: pedro-schmitt
+- id: '110'
+  name: Drew Bragg
+  twitter_url: https://twitter.com/DRBragg
+  github_url: https://github.com/DRBragg
+  website_url: http://www.drbragg.dev/
+  created_at: '2022-09-08 10:55:20.790313'
+  updated_at: '2022-09-08 10:55:20.8121'
+  slug: drew-bragg
+- id: '111'
+  name: Nate Hopkins
+  twitter_url: https://twitter.com/hopsoft
+  github_url: ''
+  website_url: https://docs.stimulusreflex.com/
+  created_at: '2022-09-08 10:57:26.697533'
+  updated_at: '2022-09-08 10:57:26.700999'
+  slug: nate-hopkins
+- id: '112'
+  name: Brasco
+  twitter_url: https://twitter.com/brascoder
+  github_url: ''
+  website_url: ''
+  created_at: '2022-09-08 10:58:12.356291'
+  updated_at: '2022-09-08 10:58:12.360763'
+  slug: brasco
+- id: '113'
+  name: Chris Toomey
+  twitter_url: https://twitter.com/christoomey
+  github_url: https://github.com/christoomey
+  website_url: https://ctoomey.com/
+  created_at: '2022-09-08 11:00:11.810641'
+  updated_at: '2022-09-08 11:00:11.815277'
+  slug: chris-toomey
+- id: '114'
+  name: Steph Viccari
+  twitter_url: https://twitter.com/SViccari
+  github_url: https://github.com/sviccari
+  website_url: https://sviccari.github.io/
+  created_at: '2022-09-08 11:01:51.413923'
+  updated_at: '2022-09-08 11:01:51.417648'
+  slug: steph-viccari
+- id: '115'
+  name: Nick Janetakis
+  twitter_url: https://twitter.com/nickjanetakis
+  github_url: ''
+  website_url: https://nickjanetakis.com/
+  created_at: '2022-09-08 11:05:39.305909'
+  updated_at: '2022-09-08 11:05:39.311024'
+  slug: nick-janetakis
+- id: '116'
+  name: Charles Max Wood
+  twitter_url: https://twitter.com/cmaxw?lang=en
+  github_url: ''
+  website_url: ''
+  created_at: '2022-09-08 11:07:05.002591'
+  updated_at: '2022-09-08 11:07:05.006226'
+  slug: charles-max-wood
+- id: '117'
+  name: Dave Kimura
+  twitter_url: https://twitter.com/kobaltz
+  github_url: ''
+  website_url: https://www.driftingruby.com/
+  created_at: '2022-09-08 11:07:57.800548'
+  updated_at: '2022-09-08 11:07:57.806689'
+  slug: dave-kimura
+- id: '118'
+  name: Valentino Stoll
+  twitter_url: https://twitter.com/thecodenamev
+  github_url: ''
+  website_url: https://blog.codenamev.com/
+  created_at: '2022-09-08 11:08:56.062813'
+  updated_at: '2022-09-08 11:08:56.066635'
+  slug: valentino-stoll
+- id: '119'
+  name: Luke Stutters
+  twitter_url: ''
+  github_url: https://github.com/lukestuts
+  website_url: ''
+  created_at: '2022-09-08 11:09:47.04654'
+  updated_at: '2022-09-08 11:09:47.049564'
+  slug: luke-stutters
+- id: '108'
+  name: Lucian Ghinda
+  twitter_url: https://twitter.com/lucianghinda
+  github_url: ''
+  website_url: https://ghinda.com
+  created_at: '2022-09-08 10:37:07.400744'
+  updated_at: '2022-09-09 18:20:18.442089'
+  slug: lucian-ghinda
+  photo: lucian_ghinda.jpg
+- id: '120'
+  name: John Epperson
+  twitter_url: https://twitter.com/kirillian
+  github_url: https://github.com/kirillian
+  website_url: ''
+  created_at: '2022-09-08 11:10:22.169823'
+  updated_at: '2022-09-08 11:11:03.451873'
+  slug: john-epperson
+- id: '121'
+  name: Gregory Brown
+  twitter_url: https://twitter.com/practicingdev
+  github_url: https://github.com/PracticingDeveloper/practicingruby.com
+  website_url: https://practicingruby.com/
+  created_at: '2022-09-08 11:12:17.413283'
+  updated_at: '2022-09-08 11:12:17.41772'
+  slug: gregory-brown
+- id: '124'
+  name: Jeremy Lincoln
+  twitter_url: https://twitter.com/mrjeremylincoln
+  github_url: ''
+  website_url: ''
+  created_at: '2022-09-08 11:21:37.271892'
+  updated_at: '2022-09-08 11:21:37.275608'
+  slug: jeremy-lincoln
+- id: '125'
+  name: Robby Russell
+  twitter_url: https://twitter.com/robbyrussell
+  github_url: https://github.com/robbyrussell
+  website_url: https://www.planetargon.com/about/robby-russell
+  created_at: '2022-09-08 11:24:02.418167'
+  updated_at: '2022-09-08 11:24:02.422248'
+  slug: robby-russell
+- id: '126'
+  name: Julie
+  twitter_url: https://twitter.com/codewithjulie
+  github_url: https://github.com/codewithjulie
+  website_url: https://codewithjulie.com/
+  created_at: '2022-09-08 11:27:48.884081'
+  updated_at: '2022-09-08 11:27:48.890682'
+  slug: julie
+- id: '127'
+  name: Rails Girls
+  twitter_url: https://twitter.com/railsgirls
+  github_url: https://github.com/railsgirls
+  website_url: http://railsgirls.com/
+  created_at: '2022-09-08 12:00:47.708822'
+  updated_at: '2022-09-08 12:00:47.715168'
+  slug: rails-girls
+- id: '128'
+  name: Benito Serna
+  twitter_url: https://twitter.com/bhserna
+  github_url: https://github.com/bhserna
+  website_url: https://bhserna.com/
+  created_at: '2022-09-09 13:59:40.130775'
+  updated_at: '2022-09-09 13:59:40.137558'
+  slug: benito-serna
+- id: '129'
+  name: CJ Avilla
+  twitter_url: https://twitter.com/cjav_dev
+  github_url: https://github.com/cjavdev
+  website_url: https://cjav.dev
+  created_at: '2022-09-14 17:38:06.421774'
+  updated_at: '2022-09-14 17:38:21.261903'
+  slug: cj-avilla
+  photo: cj_avilla.jpg
+- id: '130'
+  name: Mark Mahoney
+  twitter_url: https://twitter.com/markm208
+  github_url: https://github.com/markm208/
+  website_url: https://markm208.github.io/
+  created_at: '2022-09-15 07:03:54.447619'
+  updated_at: '2022-09-15 07:03:54.457995'
+  slug: mark-mahoney
+  photo: ''
+- id: '96'
+  name: Drifting Ruby
+  twitter_url: ''
+  github_url: ''
+  website_url: https://www.driftingruby.com
+  created_at: '2022-09-08 09:55:15.899831'
+  updated_at: '2022-09-20 11:35:26.221866'
+  slug: drifting-ruby
+  photo: ''
+- id: '131'
+  name: Julian Rubisch
+  twitter_url: https://twitter.com/julian_rubisch
+  github_url: ''
+  website_url: https://www.minthesize.com/
+  created_at: '2022-10-06 12:06:00.009062'
+  updated_at: '2022-10-06 12:06:00.014686'
+  slug: julian-rubisch
+  photo: ''
+- id: '132'
+  name: Ayush Newatia
+  twitter_url: https://twitter.com/ayushn21
+  github_url: https://github.com/ayushn21
+  website_url: https://radioactivetoy.tech/
+  created_at: '2022-10-06 12:11:08.453351'
+  updated_at: '2022-10-06 12:11:08.457258'
+  slug: ayush-newatia
+  photo: ''
+- id: '134'
+  name: Sierra Rails
+  twitter_url: https://twitter.com/sierrarails
+  github_url: ''
+  website_url: https://www.sierrarails.com
+  created_at: '2022-10-21 07:28:59.091196'
+  updated_at: '2022-10-21 07:28:59.12869'
+  slug: sierra-rails
+  photo: ''
+- id: '135'
+  name: Jess Brown
+  twitter_url: https://twitter.com/bjessbrown
+  github_url: ''
+  website_url: https://www.brownwebdesign.com
+  created_at: '2023-03-22 07:43:44.284101'
+  updated_at: '2023-03-22 07:43:44.289772'
+  slug: jess-brown
+  photo: ''
+- id: '133'
+  name: Jeremy Smith
+  twitter_url: https://twitter.com/jeremysmithco
+  github_url: https://github.com/jeremysmithco
+  website_url: https://jeremysmith.co/
+  created_at: '2022-10-06 12:14:09.62118'
+  updated_at: '2023-03-22 07:44:54.58489'
+  slug: jeremy-smith
+  photo: ''
+- id: '138'
+  name: Pete Hawkins
+  twitter_url: https://twitter.com/peteyhawkins
+  github_url: ''
+  website_url: https://www.polywork.com/petey
+  created_at: '2023-04-04 03:10:01.917566'
+  updated_at: '2023-04-04 03:16:51.734886'
+  slug: pete-hawkins
+  photo: pete-hawkins.jpg
+  mastodon_url: https://ruby.social/@petey
+- id: '139'
+  name: Mina Slater
+  twitter_url: https://www.twitter.com/Minar528
+  github_url: https://github.com/minaslater
+  website_url: https://minaslater.blog
+  created_at: '2023-04-04 03:36:22.161479'
+  updated_at: '2023-04-04 03:36:22.170567'
+  slug: mina-slater
+  photo: mina-slater.jpg
+  mastodon_url: https://ruby.social/@Minaswan
+- id: '140'
+  name: Ajina Slater
+  twitter_url: ''
+  github_url: https://github.com/DoodlingDev
+  website_url: https://doodling.dev
+  created_at: '2023-04-04 03:39:12.835749'
+  updated_at: '2023-04-04 03:39:12.84221'
+  slug: aji-slater
+  photo: aji-slater.jpg
+  mastodon_url: https://thoughtbot.social/@aji
+- id: '136'
+  name: Joel Drapper
+  twitter_url: ''
+  github_url: https://github.com/joeldrapper
+  website_url: https://www.theabstraction.space
+  created_at: '2023-03-23 04:44:27.084708'
+  updated_at: '2023-03-23 04:55:08.275569'
+  slug: joel-drapper
+  photo: joel-drapper.jpg
+  mastodon_url: https://ruby.social/@joeldrapper
+- id: '137'
+  name: Collin Donnell
+  twitter_url: ''
+  github_url: https://github.com/collindonnell
+  website_url: https://collin.linefeed.app
+  created_at: '2023-03-23 04:50:52.675867'
+  updated_at: '2023-03-23 04:55:31.873289'
+  slug: collin-donnell
+  photo: collin-donnell.jpg
+  mastodon_url: https://ruby.social/@collin
+- id: '142'
+  name: Thomas Riboulet
+  twitter_url: ''
+  github_url: https://github.com/mcansky
+  website_url: https://www.pier22.eu
+  created_at: '2023-04-20 03:34:30.688908'
+  updated_at: '2023-04-20 03:34:30.703302'
+  slug: thomas-riboulet
+  photo: thomas-riboulet.jpg
+  mastodon_url: https://ruby.social/@thomas_riboulet
+- id: '147'
+  name: Kevin Murphy
+  twitter_url: https://twitter.com/kevin_j_m
+  github_url: https://github.com/kevin-j-m
+  website_url: https://kevinjmurphy.com/
+  created_at: '2023-05-09 03:37:01.469126'
+  updated_at: '2023-05-09 04:04:16.231792'
+  slug: kevin-murphy
+  photo: kevin-murphy.jpg
+  mastodon_url: https://ruby.social/@kevin_j_m
+- id: '1'
+  name: Noel Rappin
+  twitter_url: https://twitter.com/noelrap
+  github_url: https://github.com/noelrappin
+  website_url: https://noelrappin.com
+  created_at: '2022-06-19 09:24:50.780219'
+  updated_at: '2023-05-09 04:05:02.007836'
+  slug: noel-rappin
+  photo: noel-rappin.jpg
+  mastodon_url: https://ruby.social/@noelrap
+- id: '143'
+  name: Justin Searls
+  twitter_url: https://twitter.com/searls
+  github_url: https://github.com/searls
+  website_url: https://justin.searls.co/
+  created_at: '2023-05-09 02:38:34.257459'
+  updated_at: '2023-05-09 04:03:52.495737'
+  slug: justin-searls
+  photo: justin-searls.jpg
+  mastodon_url: https://mastodon.social/@searls
+- id: '151'
+  name: Radan Skoric
+  twitter_url: https://twitter.com/radanskoric
+  github_url: https://github.com/radanskoric
+  website_url: https://radanskoric.com
+  created_at: '2025-11-21 15:45:21.80159'
+  updated_at: '2025-11-21 15:45:21.815312'
+  slug: radan-skoric
+  photo: radan-skoric.webp

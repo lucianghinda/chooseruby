@@ -1,0 +1,113 @@
+---
+- id: '14'
+  free: f
+  created_at: '2022-08-30 20:14:13.120182'
+  updated_at: '2022-08-30 20:14:13.123202'
+  entry:
+    title: HELLO RAILS
+    slug: hello-rails
+    website_url: https://hellorails.io/
+- id: '1'
+  free: t
+  created_at: '2022-08-30 14:57:41.178141'
+  updated_at: '2022-08-30 17:25:55.07637'
+  entry:
+    title: Turbo Rails Tutorial
+    slug: turbo-rails-tutorial
+    website_url: https://www.hotrails.dev
+- id: '2'
+  free: t
+  created_at: '2022-08-30 18:14:30.964182'
+  updated_at: '2022-08-30 18:14:30.968843'
+  entry:
+    title: Learn Hotwire by Building a Forum
+    slug: learn-hotwire-by-building-a-forum
+    website_url: https://store.afomera.dev/learn-hotwire
+- id: '3'
+  free: f
+  created_at: '2022-08-30 18:15:24.900043'
+  updated_at: '2022-08-30 18:15:24.902771'
+  entry:
+    title: Modern Application Development with Rails
+    slug: modern-application-development-with-rails
+    website_url: https://www.learnrailshotwire.com/
+- id: '4'
+  free: t
+  created_at: '2022-08-30 18:17:16.616003'
+  updated_at: '2022-08-30 18:17:16.618896'
+  entry:
+    title: Ruby on Rails for Beginners Tutorial
+    slug: ruby-on-rails-for-beginners-tutorial
+    website_url: https://gorails.com/start
+- id: '9'
+  free: f
+  created_at: '2022-08-30 18:54:57.594553'
+  updated_at: '2022-08-30 18:54:57.597372'
+  entry:
+    title: 'The Pragmatic Studio: Rails & Vue SPA'
+    slug: the-pragmatic-studio-rails-vue-spa
+    website_url: https://pragmaticstudio.com/unpacked-single-page-app-with-vue-rails
+- id: '10'
+  free: f
+  created_at: '2022-08-30 18:55:39.535573'
+  updated_at: '2022-08-30 18:55:39.538474'
+  entry:
+    title: 'The Pragmatic Studio: Ruby on Rails 6'
+    slug: the-pragmatic-studio-ruby-on-rails-6
+    website_url: https://pragmaticstudio.com/rails6
+- id: '8'
+  free: f
+  created_at: '2022-08-30 18:53:44.860504'
+  updated_at: '2022-08-30 18:55:59.820027'
+  entry:
+    title: 'The Pragmatic Studio: Ruby Blocks'
+    slug: the-pragmatic-stuido-ruby-blocks
+    website_url: https://pragmaticstudio.com/ruby-blocks
+- id: '7'
+  free: f
+  created_at: '2022-08-30 18:46:24.679308'
+  updated_at: '2022-08-30 18:56:11.884596'
+  entry:
+    title: 'The Pragmatic Studio: Ruby'
+    slug: the-pragmatic-stuido-ruby
+    website_url: https://pragmaticstudio.com/ruby
+- id: '6'
+  free: f
+  created_at: '2022-08-30 18:45:29.701199'
+  updated_at: '2022-08-30 18:56:22.971201'
+  entry:
+    title: 'The Pragmatic Studio: Hotwire for Rails Developers'
+    slug: hotwire-for-rails-developers
+    website_url: https://pragmaticstudio.com/hotwire-rails
+- id: '5'
+  free: f
+  created_at: '2022-08-30 18:44:51.820225'
+  updated_at: '2022-08-30 18:56:33.096358'
+  entry:
+    title: 'The Pragmatic Studio: Ruby on Rails 7'
+    slug: the-pragmatic-stuido-ruby-on-rails-7
+    website_url: https://pragmaticstudio.com/rails
+- id: '11'
+  free: f
+  created_at: '2022-08-30 19:58:16.998592'
+  updated_at: '2022-08-30 20:03:34.810813'
+  entry:
+    title: Payments with Ruby on Rails Master Class
+    slug: payments-with-ruby-on-rails-master-class
+    website_url: https://courses.gorails.com/payments-with-rails-master-class
+- id: '12'
+  free: t
+  created_at: '2022-08-30 20:12:52.195263'
+  updated_at: '2022-08-30 20:12:52.199393'
+  entry:
+    title: Rails & Vue.js Trello Clone
+    slug: rails-vue-js-trello-clone
+    website_url: https://gorails.com/episodes/rails-vuejs-trello-clone-part-1
+- id: '13'
+  free: f
+  created_at: '2022-08-30 20:13:33.172693'
+  updated_at: '2022-08-30 20:13:33.17522'
+  entry:
+    title: 'Advanced Ruby: Behind the Magic'
+    slug: advanced-ruby-behind-the-magic
+    website_url: https://courses.gorails.com/advanced-ruby-for-rails-devs

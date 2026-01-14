@@ -1,0 +1,163 @@
+---
+- id: '2'
+  created_at: '2022-08-15 14:08:18.566173'
+  updated_at: '2022-08-15 14:08:18.569613'
+  entry:
+    title: "⚡️ Hotwire dev newsletter"
+    slug: hotwire-dev-newsletter
+- id: '3'
+  created_at: '2022-08-15 14:08:52.801767'
+  updated_at: '2022-08-15 14:08:52.804939'
+  entry:
+    title: Ruby Weekly
+    slug: ruby-weekly
+- id: '4'
+  created_at: '2022-08-15 14:09:23.340564'
+  updated_at: '2022-08-15 14:09:23.343939'
+  entry:
+    title: Awesome Ruby Newsletter
+    slug: awesome-ruby-newsletter
+- id: '6'
+  created_at: '2022-08-15 14:10:36.78018'
+  updated_at: '2022-08-15 14:10:36.783991'
+  entry:
+    title: One Ruby Thing
+    slug: one-ruby-thing
+- id: '7'
+  created_at: '2022-08-15 14:11:10.126998'
+  updated_at: '2022-08-15 14:11:10.129795'
+  entry:
+    title: This Week in Rails
+    slug: this-week-in-rails
+- id: '8'
+  created_at: '2022-08-15 14:11:33.759847'
+  updated_at: '2022-08-15 14:11:33.763044'
+  entry:
+    title: BootRails
+    slug: bootrails
+- id: '9'
+  created_at: '2022-08-15 14:12:23.363353'
+  updated_at: '2022-08-15 14:12:23.366573'
+  entry:
+    title: Boring Rails
+    slug: boring-rails
+- id: '10'
+  created_at: '2022-08-15 14:12:48.055947'
+  updated_at: '2022-08-15 14:12:48.059286'
+  entry:
+    title: Code with Jason
+    slug: code-with-jason
+- id: '11'
+  created_at: '2022-08-15 14:13:17.435103'
+  updated_at: '2022-08-15 14:13:17.438387'
+  entry:
+    title: Speedshopblog
+    slug: speedshopblog
+- id: '12'
+  created_at: '2022-08-15 14:13:39.512471'
+  updated_at: '2022-08-15 14:13:39.515717'
+  entry:
+    title: Ruby Articles
+    slug: ruby-articles
+- id: '13'
+  created_at: '2022-08-15 14:14:03.538323'
+  updated_at: '2022-08-15 14:14:03.541449'
+  entry:
+    title: arkency
+    slug: arkency
+- id: '14'
+  created_at: '2022-08-15 14:14:26.201615'
+  updated_at: '2022-08-15 14:14:26.205856'
+  entry:
+    title: BigBinary
+    slug: bigbinary
+- id: '15'
+  created_at: '2022-08-15 14:14:47.276153'
+  updated_at: '2022-08-15 14:14:47.279539'
+  entry:
+    title: Hotwiring Rails
+    slug: hotwiring-rails
+- id: '16'
+  created_at: '2022-08-15 14:15:11.886841'
+  updated_at: '2022-08-15 14:15:11.890538'
+  entry:
+    title: Ana Nunes da Silva
+    slug: ana-nunes-da-silva
+- id: '17'
+  created_at: '2022-08-15 14:15:36.905334'
+  updated_at: '2022-08-15 14:15:36.909472'
+  entry:
+    title: rossta.net
+    slug: rossta-net
+- id: '18'
+  created_at: '2022-08-15 14:16:45.037765'
+  updated_at: '2022-08-15 14:16:45.045669'
+  entry:
+    title: Richard Schneema’s Newsletter
+    slug: richard-schneema-s-newsletter
+- id: '19'
+  created_at: '2022-08-15 14:17:58.340769'
+  updated_at: '2022-08-15 14:18:42.979306'
+  entry:
+    title: Jemma’s Newsletter
+    slug: jemma-s-newsletter
+- id: '20'
+  created_at: '2022-08-15 14:19:54.675712'
+  updated_at: '2022-08-15 14:19:54.678584'
+  entry:
+    title: Emmanuel Hayford’s Newsletter
+    slug: emmanuel-hayford-s-newsletter
+- id: '21'
+  created_at: '2022-08-15 14:20:57.007949'
+  updated_at: '2022-08-15 14:20:57.011694'
+  entry:
+    title: Noah Gibbs's Newsletter
+    slug: noah-gibbs-s-newsletter
+- id: '22'
+  created_at: '2022-08-15 14:21:20.063483'
+  updated_at: '2022-08-15 14:21:20.066219'
+  entry:
+    title: Jonathan Rochkind's Newsletter
+    slug: jonathan-rochkind-s-newsletter
+- id: '23'
+  created_at: '2022-08-15 14:21:43.945651'
+  updated_at: '2022-08-15 14:21:43.948485'
+  entry:
+    title: Nikola Đuza's Newsletter
+    slug: nikola-duza-s-newsletter
+- id: '25'
+  created_at: '2022-09-03 12:18:38.706929'
+  updated_at: '2022-09-03 12:21:09.094389'
+  entry:
+    title: Websebdev
+    slug: websebdev
+- id: '5'
+  created_at: '2022-08-15 14:09:49.048618'
+  updated_at: '2022-09-04 08:41:00.302263'
+  entry:
+    title: Ruby Radar
+    slug: ruby-radar
+- id: '26'
+  created_at: '2022-09-07 16:14:23.872524'
+  updated_at: '2022-09-07 16:22:40.652599'
+  entry:
+    title: Fullstack Ruby
+    slug: fullstack-ruby
+- id: '27'
+  created_at: '2022-09-08 07:29:06.100304'
+  updated_at: '2022-09-08 07:29:06.106266'
+  entry:
+    title: Weekly bookmarks
+    slug: weekly-bookmarks
+- id: '28'
+  created_at: '2022-09-09 14:03:17.285129'
+  updated_at: '2022-09-09 14:03:17.289834'
+  entry:
+    title: Weekly tips and articles for Ruby on Rails developers
+    slug: weekly-tips-and-articles-for-ruby-on-rails-developers
+- id: '1'
+  created_at: '2022-08-15 14:07:40.352635'
+  updated_at: '2022-09-09 18:24:50.786641'
+  entry:
+    title: Short Ruby Learnings
+    slug: short-ruby-learnings

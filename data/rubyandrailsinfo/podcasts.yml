@@ -1,0 +1,145 @@
+---
+- id: '19'
+  created_at: '2022-10-21 07:28:06.557171'
+  updated_at: '2022-10-21 07:33:14.476877'
+  entry:
+    title: Sierra Rails
+    slug: sierra-rails
+- id: '2'
+  created_at: '2022-08-15 14:33:38.228704'
+  updated_at: '2022-08-15 14:33:38.231741'
+  entry:
+    title: iteration
+    slug: iteration
+- id: '3'
+  created_at: '2022-08-15 14:33:59.186934'
+  updated_at: '2022-08-15 14:33:59.19119'
+  entry:
+    title: Maintainable
+    slug: maintainable
+- id: '4'
+  created_at: '2022-08-15 14:34:25.76476'
+  updated_at: '2022-08-15 14:34:25.767115'
+  entry:
+    title: My Ruby on Rails Journey
+    slug: my-ruby-on-rails-journey
+- id: '5'
+  created_at: '2022-08-15 14:34:52.580807'
+  updated_at: '2022-08-15 14:34:52.583206'
+  entry:
+    title: My Ruby Story
+    slug: my-ruby-story
+- id: '6'
+  created_at: '2022-08-15 14:35:16.636336'
+  updated_at: '2022-08-15 14:35:16.638957'
+  entry:
+    title: Remote Ruby
+    slug: remote-ruby
+- id: '8'
+  created_at: '2022-08-15 14:35:59.97806'
+  updated_at: '2022-08-15 14:35:59.980586'
+  entry:
+    title: Ruby Rogues
+    slug: ruby-rogues
+- id: '9'
+  created_at: '2022-08-15 14:36:21.36823'
+  updated_at: '2022-08-15 14:36:21.371523'
+  entry:
+    title: Running in Production
+    slug: running-in-production
+- id: '10'
+  created_at: '2022-08-15 14:36:39.605279'
+  updated_at: '2022-08-15 14:36:39.607811'
+  entry:
+    title: Sidekiq in Practice
+    slug: sidekiq-in-practice
+- id: '12'
+  created_at: '2022-08-15 14:37:20.116337'
+  updated_at: '2022-08-15 14:37:20.118768'
+  entry:
+    title: The Bike Shed
+    slug: the-bike-shed
+- id: '13'
+  created_at: '2022-08-15 14:37:43.09487'
+  updated_at: '2022-08-15 14:37:43.097155'
+  entry:
+    title: The Code with Jason Podcast
+    slug: the-code-with-jason-podcast
+- id: '14'
+  created_at: '2022-08-15 14:38:01.519071'
+  updated_at: '2022-08-15 14:38:01.521486'
+  entry:
+    title: The Ruby Blend
+    slug: the-ruby-blend
+- id: '15'
+  created_at: '2022-08-15 17:47:33.65107'
+  updated_at: '2022-08-15 17:47:33.656647'
+  entry:
+    title: Code and the Coding Coders who Code it
+    slug: code-and-the-coding-coders-who-code-it
+- id: '1'
+  created_at: '2022-08-15 14:32:59.951262'
+  updated_at: '2022-08-31 17:22:14.907562'
+  entry:
+    title: Ruby for All
+    slug: ruby-for-all
+- id: '16'
+  created_at: '2022-08-31 17:21:47.843532'
+  updated_at: '2022-08-31 17:26:20.705529'
+  entry:
+    title: Rubber Duck Dev Show
+    slug: rubber-duck-dev-show
+- id: '17'
+  created_at: '2022-09-03 13:20:35.73947'
+  updated_at: '2022-09-03 13:27:44.462272'
+  entry:
+    title: Bullet Rails
+    slug: bullet-rails
+- id: '7'
+  created_at: '2022-08-15 14:35:34.663803'
+  updated_at: '2022-09-04 15:56:00.879211'
+  entry:
+    title: Ruby on Rails Podcast with Brittany Martin
+    slug: ruby-on-rails-podcast-with-brittany-martin
+- id: '18'
+  created_at: '2022-09-07 16:16:32.786709'
+  updated_at: '2022-09-07 16:21:09.399271'
+  entry:
+    title: Fullstack Ruby
+    slug: fullstack-ruby
+- id: '11'
+  created_at: '2022-08-15 14:37:00.192122'
+  updated_at: '2022-09-08 11:03:54.259451'
+  entry:
+    title: 'Start Here: Ruby on Rails'
+    slug: start-here-ruby-on-rails
+- id: '21'
+  created_at: '2023-01-31 21:02:52.489184'
+  updated_at: '2023-03-22 04:49:42.495539'
+  entry:
+    title: content_for devs
+    slug: content_for-devs
+- id: '22'
+  created_at: '2023-03-22 04:11:24.441283'
+  updated_at: '2023-03-22 04:50:16.674619'
+  entry:
+    title: The Rails Changelog
+    slug: the-rails-changelog
+- id: '23'
+  created_at: '2023-03-22 07:41:19.363928'
+  updated_at: '2023-03-22 07:47:07.961956'
+  entry:
+    title: IndieRails
+    slug: indie-rails
+- id: '24'
+  created_at: '2023-03-22 11:17:10.72609'
+  updated_at: '2023-03-22 12:49:29.372557'
+  entry:
+    title: Rooftop Ruby
+    slug: rooftop-ruby
+- id: '25'
+  created_at: '2023-04-04 03:44:00.064482'
+  updated_at: '2023-04-04 03:44:00.070183'
+  entry:
+    title: The Tightly Coupled Book Club
+    slug: tightly-coupled-book-club

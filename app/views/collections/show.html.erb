@@ -1,0 +1,100 @@
+<% content_for :title, "#{@collection[:title]} | ChooseRuby Collections" %>
+<% content_for :meta_description, @collection[:description] %>
+
+<% icon = @collection[:icon] %>
+<% active_level = @directory_query.level %>
+<% active_category = @directory_query.category %>
+<% query = @directory_query.query %>
+
+<div class="space-y-12 pb-16">
+  <section class="rounded-3xl bg-white p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
+    <div class="mx-auto max-w-4xl text-center space-y-6">
+      <div class="flex justify-center">
+        <span class="inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-rose-500/10 text-4xl"><%= icon %></span>
+      </div>
+      <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+        <%= @collection[:title] %>
+      </h1>
+      <p class="text-lg text-slate-600">
+        <%= @collection[:description] %>
+      </p>
+    </div>
+  </section>
+
+  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+    <div class="space-y-6">
+      <header class="space-y-2 text-center sm:text-left">
+        <h2 class="text-2xl font-semibold text-slate-900">Fine-tune this collection</h2>
+        <p class="text-sm text-slate-600">
+          Adjust the search or experience level to tailor the recommendations further.
+        </p>
+      </header>
+
+      <%= form_with url: collection_path(@collection[:slug]), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
+        <div class="space-y-2">
+          <%= form.label :q, "Search within this collection", class: "text-sm font-semibold text-slate-700" %>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M9 4a5 5 0 013.995 8.326l3.84 3.84a1 1 0 01-1.414 1.415l-3.84-3.84A5 5 0 119 4zm0 2a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <%= form.text_field :q, value: query, class: "w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-sm text-slate-900 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Filter by keyword, gem, or problem…" %>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <%= form.label :level, "Experience level", class: "text-sm font-semibold text-slate-700" %>
+          <%= form.select :level,
+                          experience_level_options_for_select(active_level),
+                          { include_blank: "Any level" },
+                          class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
+        </div>
+        <div class="space-y-2 md:col-span-2">
+          <div class="flex items-center justify-between">
+            <%= form.label :category, "Focus on a category", class: "text-sm font-semibold text-slate-700" %>
+            <% if active_category.present? %>
+              <%= link_to "Clear category", collection_path(@collection[:slug], params.permit(:q, :level).to_h), class: "text-xs font-semibold text-rose-500 hover:text-rose-400" %>
+            <% end %>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <% @categories.each do |category| %>
+              <% selected = active_category == category %>
+              <%= link_to category.name,
+                          collection_path(@collection[:slug], params.permit(:q, :level).to_h.merge(category: selected ? nil : category.slug).compact_blank),
+                          class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{selected ? "bg-slate-900 text-white shadow-sm hover:bg-slate-800" : "bg-slate-100 text-slate-600 hover:bg-rose-100"}" %>
+            <% end %>
+          </div>
+        </div>
+        <div class="flex justify-end md:col-span-2">
+          <%= form.submit "Update recommendations", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold text-slate-900">Recommended resources</h2>
+      <%= link_to "Browse the full directory", entries_path, class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
+    </div>
+
+    <% if @entries.any? %>
+      <div class="grid gap-6 lg:grid-cols-3">
+        <% @entries.each do |entry| %>
+          <%= render "entries/card", entry: entry %>
+        <% end %>
+      </div>
+
+      <div class="mt-8 flex justify-center">
+        <%= paginate @entries %>
+      </div>
+    <% else %>
+      <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">
+        <p class="text-lg font-semibold text-slate-700">No matches with the current filters.</p>
+        <p class="mt-2 text-sm text-slate-500">
+          Try clearing the search or switching back to the default collection filters.
+        </p>
+      </div>
+    <% end %>
+  </section>
+</div>

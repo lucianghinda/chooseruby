@@ -1,0 +1,176 @@
+<% content_for :title, "#{@category.name} Resources | ChooseRuby" %>
+<% content_for :meta_description, @category.description.present? ? @category.description.truncate(160) : "Curated Ruby on Rails resources for #{@category.name}." %>
+
+<% icon = @category.icon.presence || "💎" %>
+
+<div class="space-y-12 pb-16">
+  <section class="rounded-3xl bg-gradient-to-br from-white to-slate-50 p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
+    <div class="mx-auto max-w-4xl space-y-4 text-center sm:text-left">
+      <div class="flex items-center justify-center gap-4 sm:justify-start">
+        <span class="inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-rose-500/10 text-3xl"><%= icon %></span>
+        <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
+          <%= @category.name %>
+        </h1>
+      </div>
+      <% if @category.description.present? %>
+        <p class="text-lg text-slate-600"><%= @category.description %></p>
+      <% else %>
+        <p class="text-lg text-slate-600">Recommended gems, tools, and guides related to this topic.</p>
+      <% end %>
+      <% resource_count = @category.entries_count %>
+      <p class="text-sm font-medium text-slate-500">
+        <%= pluralize(resource_count, 'resource') %> in this category
+      </p>
+    </div>
+  </section>
+
+  <% featured_resources = @category.featured_entries %>
+  <% if featured_resources.any? %>
+    <section class="space-y-6">
+      <h2 class="text-2xl font-semibold text-slate-900">Featured Resources</h2>
+      <div class="grid gap-6 lg:grid-cols-3">
+        <% featured_resources.each do |entry| %>
+          <article class="flex h-full flex-col justify-between rounded-3xl border-2 border-rose-50 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <div class="space-y-4">
+              <div class="flex flex-wrap gap-2">
+                <% entry.categories.first(3).each do |category| %>
+                  <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"><%= category.name %></span>
+                <% end %>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-slate-900">
+                  <%= link_to entry.title, resource_path(entry.slug), class: "hover:text-rose-500" %>
+                </h3>
+                <% description_text = entry.description.to_plain_text.presence || entry.tags&.join(", ") %>
+                <% if description_text.present? %>
+                  <p class="mt-3 text-sm text-slate-600"><%= truncate(description_text, length: 150) %></p>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between text-sm text-slate-500">
+              <div class="flex flex-wrap items-center gap-2">
+                <% if entry.experience_level.present? %>
+                  <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                    <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(entry.experience_level) %>"></span>
+                    <%= entry.experience_level.capitalize %>
+                  </span>
+                <% end %>
+                <% if entry.authors.any? %>
+                  <span class="text-xs sm:text-sm">
+                    by <%= entry.authors.first(2).map(&:name).to_sentence %>
+                    <% remaining = entry.authors.size - 2 %>
+                    <%= "+#{remaining}" if remaining.positive? %>
+                  </span>
+                <% end %>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+    <div class="space-y-6">
+      <header class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold text-slate-900">Filter these resources</h2>
+          <p class="text-sm text-slate-600">Adjust search or experience level to focus on what you need.</p>
+        </div>
+        <%= link_to "Browse other categories", categories_path, class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
+      </header>
+
+      <%= form_with url: category_path(@category.slug), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
+        <div class="space-y-2">
+          <%= form.label :q, "Search within this category", class: "text-sm font-semibold text-slate-700" %>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M9 4a5 5 0 013.995 8.326l3.84 3.84a1 1 0 01-1.414 1.415l-3.84-3.84A5 5 0 119 4zm0 2a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <%= form.text_field :q, value: @query, class: "w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-sm text-slate-900 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Filter by keyword, gem, or problem…" %>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <%= form.label :level, "Experience level", class: "text-sm font-semibold text-slate-700" %>
+          <%= form.select :level,
+                          experience_level_options_for_select(@active_level),
+                          { include_blank: "Any level" },
+                          class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
+        </div>
+        <div class="flex justify-end md:col-span-2">
+          <%= form.submit "Update results", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold text-slate-900">Curated resources</h2>
+      <%= link_to "Submit a resource", new_resource_submission_path, class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
+    </div>
+
+    <% if @entries.any? %>
+      <div class="grid gap-6 lg:grid-cols-3">
+        <% @entries.each do |entry| %>
+          <article class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <div class="space-y-4">
+              <div class="flex flex-wrap gap-2">
+                <% entry.categories.first(3).each do |category| %>
+                  <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600"><%= category.name %></span>
+                <% end %>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-slate-900">
+                  <%= link_to entry.title, resource_path(entry.slug), class: "hover:text-rose-500" %>
+                </h3>
+                <% description_text = entry.description.to_plain_text.presence || entry.tags&.join(", ") %>
+                <% if description_text.present? %>
+                  <p class="mt-3 text-sm text-slate-600"><%= truncate(description_text, length: 150) %></p>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between text-sm text-slate-500">
+              <div class="flex flex-wrap items-center gap-2">
+                <% if entry.experience_level.present? %>
+                  <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
+                    <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(entry.experience_level) %>"></span>
+                    <%= entry.experience_level.capitalize %>
+                  </span>
+                <% end %>
+                <% if entry.authors.any? %>
+                  <span class="text-xs sm:text-sm">
+                    by <%= entry.authors.first(2).map(&:name).to_sentence %>
+                    <% remaining = entry.authors.size - 2 %>
+                    <%= "+#{remaining}" if remaining.positive? %>
+                  </span>
+                <% end %>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </article>
+        <% end %>
+      </div>
+
+      <div class="mt-8 flex justify-center">
+        <%= paginate @entries %>
+      </div>
+    <% else %>
+      <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">
+        <p class="text-lg font-semibold text-slate-700">No resources yet</p>
+        <p class="mt-2 text-sm text-slate-500">
+          Help grow this category by <%= link_to "submitting a resource", new_resource_submission_path, class: "font-semibold text-rose-500 hover:text-rose-400" %>.
+        </p>
+      </div>
+    <% end %>
+  </section>
+</div>

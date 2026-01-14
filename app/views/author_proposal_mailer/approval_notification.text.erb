@@ -1,0 +1,19 @@
+Congratulations! Your author proposal has been approved
+=========================================================
+
+Hi <%= @proposal.submitter_name || "there" %>,
+
+Great news! Your proposal to improve author information on ChooseRuby has been approved and the changes are now live on the site.
+
+<% if @author.present? %>
+Author: <%= @author.name %>
+
+You can view the updated author profile on ChooseRuby at:
+<%= author_url(@author.slug) %>
+<% end %>
+
+Thank you for contributing to the Ruby community and helping keep ChooseRuby accurate and comprehensive!
+
+If you notice other author information that could be improved, we'd love to hear about it. Feel free to submit another proposal anytime.
+
+— The ChooseRuby team

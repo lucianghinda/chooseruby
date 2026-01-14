@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: sessions
+#
+#  id             :integer          not null, primary key
+#  ip_address     :string
+#  last_active_at :datetime         not null
+#  token          :string           not null
+#  user_agent     :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  user_id        :integer          not null
+#
+# Indexes
+#
+#  index_sessions_on_last_active_at  (last_active_at)
+#  index_sessions_on_token           (token) UNIQUE
+#  index_sessions_on_user_id         (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id) ON DELETE => cascade
+#
+admin_session:
+  user: admin
+  token: <%= SecureRandom.urlsafe_base64(32) %>
+  ip_address: "127.0.0.1"
+  user_agent: "Test Browser"
+  last_active_at: <%= 1.hour.ago %>

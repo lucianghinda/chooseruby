@@ -1,0 +1,33 @@
+<h1>Update on your ChooseRuby submission</h1>
+
+<p>Hi <%= @entry.submitter_name || "there" %>,</p>
+
+<p>
+  Thank you for taking the time to submit a resource to ChooseRuby. After reviewing your submission, we're unable to publish it at this time.
+</p>
+
+<ul>
+  <li><strong>Title:</strong> <%= @entry.title %></li>
+  <li><strong>Type:</strong> <%= @entry.entryable_type.humanize %></li>
+</ul>
+
+<% if @comment.present? %>
+<p>
+  <strong>Feedback from our team:</strong><br>
+  <%= simple_format(@comment) %>
+</p>
+<% else %>
+<p>
+  While we don't have specific feedback to share at this time, we carefully review all submissions to ensure quality and relevance for the Ruby community.
+</p>
+<% end %>
+
+<p>
+  We appreciate your interest in contributing to ChooseRuby. If you'd like to revise and resubmit this resource, or if you have other resources to share, please feel free to submit again.
+</p>
+
+<p>
+  You can submit resources at <%= link_to "chooseruby.com", root_url %>.
+</p>
+
+<p>— The ChooseRuby team</p>
