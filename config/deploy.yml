@@ -1,3 +1,6 @@
+# yaml-language-server: $schema=https://www.rubyschema.org/kamal/deploy.json
+%YAML 1.1
+---
 # Name of your application. Used to uniquely configure containers.
 service: chooseruby
 
