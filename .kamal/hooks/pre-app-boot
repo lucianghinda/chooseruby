@@ -1,0 +1,6 @@
+#!/bin/sh
+# Run migrations on all databases before app boots
+# kamal app exec "bin/rails db:migrate"
+#kamal app exec "bin/rails db:migrate:queue"
+#kamal app exec "bin/rails db:migrate:cache"
+# kamal app exec "bin/rails db:migrate:cable"

@@ -17,6 +17,7 @@
 # == Schema Information
 #
 # Table name: tools
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  documentation_url :string

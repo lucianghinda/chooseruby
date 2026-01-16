@@ -19,6 +19,7 @@
 # == Schema Information
 #
 # Table name: courses
+# Database name: primary
 #
 #  id             :integer          not null, primary key
 #  currency       :string           default("USD")

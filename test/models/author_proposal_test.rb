@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: author_proposals
+# Database name: primary
 #
 #  id                    :integer          not null, primary key
 #  admin_comment         :text

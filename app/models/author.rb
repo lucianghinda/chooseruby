@@ -22,6 +22,7 @@
 # == Schema Information
 #
 # Table name: authors
+# Database name: primary
 #
 #  id              :integer          not null, primary key
 #  avatar_url      :string

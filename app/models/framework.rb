@@ -17,6 +17,7 @@
 # == Schema Information
 #
 # Table name: frameworks
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  name       :string

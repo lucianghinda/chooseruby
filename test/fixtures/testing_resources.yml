@@ -5,6 +5,7 @@
 # == Schema Information
 #
 # Table name: testing_resources
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  name       :string
