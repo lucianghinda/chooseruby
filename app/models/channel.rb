@@ -17,6 +17,7 @@
 # == Schema Information
 #
 # Table name: channels
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  name       :string

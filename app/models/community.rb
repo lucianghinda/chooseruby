@@ -16,6 +16,7 @@
 # == Schema Information
 #
 # Table name: communities
+# Database name: primary
 #
 #  id           :integer          not null, primary key
 #  is_official  :boolean          default(FALSE), not null

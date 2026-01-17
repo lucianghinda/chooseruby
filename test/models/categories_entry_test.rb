@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: categories_entries
+# Database name: primary
 #
 #  id          :integer          not null, primary key
 #  is_featured :boolean          default(FALSE), not null

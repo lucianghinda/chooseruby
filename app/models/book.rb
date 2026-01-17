@@ -18,6 +18,7 @@
 # == Schema Information
 #
 # Table name: books
+# Database name: primary
 #
 #  id               :integer          not null, primary key
 #  format           :integer

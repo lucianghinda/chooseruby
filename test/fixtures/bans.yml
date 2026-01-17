@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: bans
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  expires_at :datetime

@@ -1,24 +1,12 @@
-CREATE TABLE IF NOT EXISTS "action_text_rich_texts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "body" text, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL, "updated_at" datetime(6) NOT NULL);
-CREATE UNIQUE INDEX "index_action_text_rich_texts_uniqueness" ON "action_text_rich_texts" ("record_type", "record_id", "name") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "active_storage_blobs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "byte_size" bigint NOT NULL, "checksum" varchar, "content_type" varchar, "created_at" datetime(6) NOT NULL, "filename" varchar NOT NULL, "key" varchar NOT NULL, "metadata" text, "service_name" varchar NOT NULL);
-CREATE UNIQUE INDEX "index_active_storage_blobs_on_key" ON "active_storage_blobs" ("key") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "articles" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "author_name" varchar, "created_at" datetime(6) NOT NULL, "platform" varchar, "publication_date" date, "reading_time_minutes" integer, "updated_at" datetime(6) NOT NULL);
-CREATE TABLE IF NOT EXISTS "authors" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "avatar_url" varchar, "bio" text, "blog_url" varchar, "bluesky_url" varchar, "created_at" datetime(6) NOT NULL, "github_url" varchar, "gitlab_url" varchar, "linkedin_url" varchar, "name" varchar NOT NULL, "ruby_social_url" varchar, "slug" varchar NOT NULL, "status" integer DEFAULT 0 NOT NULL, "twitch_url" varchar, "twitter_url" varchar, "updated_at" datetime(6) NOT NULL, "website_url" varchar, "youtube_url" varchar);
-CREATE INDEX "index_authors_on_name" ON "authors" ("name") /*application='Chooseruby'*/;
+CREATE TABLE IF NOT EXISTS "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY);
+CREATE TABLE IF NOT EXISTS "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "authors" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "bio" text, "status" integer DEFAULT 0 NOT NULL, "slug" varchar NOT NULL, "avatar_url" varchar, "github_url" varchar, "gitlab_url" varchar, "website_url" varchar, "bluesky_url" varchar, "ruby_social_url" varchar, "twitter_url" varchar, "linkedin_url" varchar, "youtube_url" varchar, "twitch_url" varchar, "blog_url" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
 CREATE UNIQUE INDEX "index_authors_on_slug" ON "authors" ("slug") /*application='Chooseruby'*/;
+CREATE INDEX "index_authors_on_name" ON "authors" ("name") /*application='Chooseruby'*/;
 CREATE INDEX "index_authors_on_status" ON "authors" ("status") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "books" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "format" integer, "isbn" varchar, "page_count" integer, "publication_year" integer, "publisher" varchar, "purchase_url" varchar, "updated_at" datetime(6) NOT NULL);
-CREATE TABLE IF NOT EXISTS "categories" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "description" text, "display_order" integer DEFAULT 0 NOT NULL, "icon" varchar, "name" varchar NOT NULL, "slug" varchar NOT NULL, "updated_at" datetime(6) NOT NULL);
-CREATE UNIQUE INDEX "index_categories_on_name" ON "categories" ("name") /*application='Chooseruby'*/;
-CREATE UNIQUE INDEX "index_categories_on_slug" ON "categories" ("slug") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "communities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "is_official" boolean DEFAULT FALSE NOT NULL, "join_url" varchar NOT NULL, "member_count" integer, "platform" varchar NOT NULL, "updated_at" datetime(6) NOT NULL);
-CREATE TABLE IF NOT EXISTS "courses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "currency" varchar DEFAULT 'USD', "duration_hours" decimal(5,2), "enrollment_url" varchar, "instructor" varchar, "is_free" boolean DEFAULT FALSE NOT NULL, "platform" varchar, "price_cents" integer, "updated_at" datetime(6) NOT NULL);
-CREATE TABLE IF NOT EXISTS "podcasts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "apple_podcasts_url" varchar, "created_at" datetime(6) NOT NULL, "episode_count" integer, "frequency" varchar, "host" varchar, "rss_feed_url" varchar, "spotify_url" varchar, "updated_at" datetime(6) NOT NULL);
-CREATE TABLE IF NOT EXISTS "ruby_gems" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "current_version" varchar, "documentation_url" varchar, "downloads_count" integer, "gem_name" varchar NOT NULL, "github_url" varchar, "rubygems_url" varchar, "updated_at" datetime(6) NOT NULL);
-CREATE UNIQUE INDEX "index_ruby_gems_on_gem_name" ON "ruby_gems" ("gem_name") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "tools" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "documentation_url" varchar, "github_url" varchar, "is_open_source" boolean DEFAULT TRUE NOT NULL, "license" varchar, "tool_type" varchar, "updated_at" datetime(6) NOT NULL);
-CREATE TABLE IF NOT EXISTS "tutorials" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "author_name" varchar, "created_at" datetime(6) NOT NULL, "platform" varchar, "publication_date" date, "reading_time_minutes" integer, "updated_at" datetime(6) NOT NULL);
-CREATE TABLE IF NOT EXISTS "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "name" varchar NOT NULL, "record_id" bigint NOT NULL, "record_type" varchar NOT NULL, CONSTRAINT "fk_rails_c3b3935057"
+CREATE TABLE IF NOT EXISTS "active_storage_blobs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "key" varchar NOT NULL, "filename" varchar NOT NULL, "content_type" varchar, "metadata" text, "service_name" varchar NOT NULL, "byte_size" bigint NOT NULL, "checksum" varchar, "created_at" datetime(6) NOT NULL);
+CREATE UNIQUE INDEX "index_active_storage_blobs_on_key" ON "active_storage_blobs" ("key") /*application='Chooseruby'*/;
+CREATE TABLE IF NOT EXISTS "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "record_type" varchar NOT NULL, "record_id" bigint NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c3b3935057"
 FOREIGN KEY ("blob_id")
   REFERENCES "active_storage_blobs" ("id")
 );
@@ -29,28 +17,40 @@ FOREIGN KEY ("blob_id")
   REFERENCES "active_storage_blobs" ("id")
 );
 CREATE UNIQUE INDEX "index_active_storage_variant_records_uniqueness" ON "active_storage_variant_records" ("blob_id", "variation_digest") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "categories_entries" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "category_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "entry_id" integer NOT NULL, "updated_at" datetime(6) NOT NULL, "is_primary" boolean DEFAULT FALSE NOT NULL /*application='Chooseruby'*/, "is_featured" boolean DEFAULT FALSE NOT NULL /*application='Chooseruby'*/, CONSTRAINT "fk_rails_a608a4a5b5"
+CREATE TABLE IF NOT EXISTS "categories" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "slug" varchar NOT NULL, "description" text, "icon" varchar, "display_order" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE UNIQUE INDEX "index_categories_on_name" ON "categories" ("name") /*application='Chooseruby'*/;
+CREATE UNIQUE INDEX "index_categories_on_slug" ON "categories" ("slug") /*application='Chooseruby'*/;
+CREATE TABLE IF NOT EXISTS "ruby_gems" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "gem_name" varchar NOT NULL, "rubygems_url" varchar, "github_url" varchar, "documentation_url" varchar, "downloads_count" integer, "current_version" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "books" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "isbn" varchar, "publisher" varchar, "publication_year" integer, "page_count" integer, "format" integer, "purchase_url" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "courses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "platform" varchar, "instructor" varchar, "duration_hours" decimal(5,2), "price_cents" integer, "currency" varchar DEFAULT 'USD', "is_free" boolean DEFAULT FALSE NOT NULL, "enrollment_url" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "tutorials" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "reading_time_minutes" integer, "publication_date" date, "author_name" varchar, "platform" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "articles" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "reading_time_minutes" integer, "publication_date" date, "author_name" varchar, "platform" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "tools" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "tool_type" varchar, "github_url" varchar, "documentation_url" varchar, "license" varchar, "is_open_source" boolean DEFAULT TRUE NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "podcasts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "host" varchar, "episode_count" integer, "frequency" varchar, "rss_feed_url" varchar, "spotify_url" varchar, "apple_podcasts_url" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "communities" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "platform" varchar NOT NULL, "join_url" varchar NOT NULL, "member_count" integer, "is_official" boolean DEFAULT FALSE NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE TABLE IF NOT EXISTS "action_text_rich_texts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "body" text, "record_type" varchar NOT NULL, "record_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE UNIQUE INDEX "index_action_text_rich_texts_uniqueness" ON "action_text_rich_texts" ("record_type", "record_id", "name") /*application='Chooseruby'*/;
+CREATE UNIQUE INDEX "index_ruby_gems_on_gem_name" ON "ruby_gems" ("gem_name") /*application='Chooseruby'*/;
+CREATE TABLE IF NOT EXISTS "categories_entries" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "category_id" integer NOT NULL, "entry_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "is_primary" boolean DEFAULT FALSE NOT NULL /*application='Chooseruby'*/, "is_featured" boolean DEFAULT FALSE NOT NULL /*application='Chooseruby'*/, CONSTRAINT "fk_rails_11da8fc9a6"
+FOREIGN KEY ("entry_id")
+  REFERENCES "entries" ("id")
+ ON DELETE CASCADE, CONSTRAINT "fk_rails_a608a4a5b5"
 FOREIGN KEY ("category_id")
   REFERENCES "categories" ("id")
- ON DELETE CASCADE, CONSTRAINT "fk_rails_11da8fc9a6"
-FOREIGN KEY ("entry_id")
-  REFERENCES "entries" ("id")
  ON DELETE CASCADE);
-CREATE UNIQUE INDEX "index_categories_entries_on_category_id_and_entry_id" ON "categories_entries" ("category_id", "entry_id") /*application='Chooseruby'*/;
 CREATE INDEX "index_categories_entries_on_category_id" ON "categories_entries" ("category_id") /*application='Chooseruby'*/;
 CREATE INDEX "index_categories_entries_on_entry_id" ON "categories_entries" ("entry_id") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "entries_authors" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "entry_id" integer NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_ef4dd6bddc"
-FOREIGN KEY ("author_id")
-  REFERENCES "authors" ("id")
- ON DELETE CASCADE, CONSTRAINT "fk_rails_8938836c7a"
+CREATE UNIQUE INDEX "index_categories_entries_on_category_id_and_entry_id" ON "categories_entries" ("category_id", "entry_id") /*application='Chooseruby'*/;
+CREATE TABLE IF NOT EXISTS "entries_authors" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "author_id" integer NOT NULL, "entry_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_8938836c7a"
 FOREIGN KEY ("entry_id")
   REFERENCES "entries" ("id")
+ ON DELETE CASCADE, CONSTRAINT "fk_rails_ef4dd6bddc"
+FOREIGN KEY ("author_id")
+  REFERENCES "authors" ("id")
  ON DELETE CASCADE);
-CREATE UNIQUE INDEX "index_entries_authors_on_author_id_and_entry_id" ON "entries_authors" ("author_id", "entry_id") /*application='Chooseruby'*/;
 CREATE INDEX "index_entries_authors_on_author_id" ON "entries_authors" ("author_id") /*application='Chooseruby'*/;
 CREATE INDEX "index_entries_authors_on_entry_id" ON "entries_authors" ("entry_id") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY);
-CREATE TABLE IF NOT EXISTS "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL);
+CREATE UNIQUE INDEX "index_entries_authors_on_author_id_and_entry_id" ON "entries_authors" ("author_id", "entry_id") /*application='Chooseruby'*/;
 CREATE VIRTUAL TABLE entries_fts USING fts5(
             entry_id UNINDEXED,
             title,
@@ -69,13 +69,13 @@ CREATE UNIQUE INDEX "index_categories_entries_on_entry_id_primary" ON "categorie
 CREATE TABLE IF NOT EXISTS "active_hashcash_stamps" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "version" varchar NOT NULL, "bits" integer NOT NULL, "date" date NOT NULL, "resource" varchar NOT NULL, "ext" varchar NOT NULL, "rand" varchar NOT NULL, "counter" varchar NOT NULL, "request_path" varchar, "ip_address" varchar, "context" json, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
 CREATE INDEX "index_active_hashcash_stamps_on_ip_address_and_created_at" ON "active_hashcash_stamps" ("ip_address", "created_at") WHERE ip_address IS NOT NULL /*application='Chooseruby'*/;
 CREATE UNIQUE INDEX "index_active_hashcash_stamps_unique" ON "active_hashcash_stamps" ("counter", "rand", "date", "resource", "bits", "version", "ext") /*application='Chooseruby'*/;
-CREATE TABLE IF NOT EXISTS "entries" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "description" text, "entryable_id" integer, "entryable_type" varchar, "experience_level" integer, "image_url" varchar, "published" boolean DEFAULT FALSE NOT NULL, "slug" varchar, "status" integer DEFAULT 0 NOT NULL, "tags" text, "title" varchar, "updated_at" datetime(6) NOT NULL, "url" varchar, "submitter_name" varchar, "submitter_email" varchar, "featured_at" datetime(6) /*application='Chooseruby'*/);
-CREATE INDEX "index_entries_on_entryable_type_and_entryable_id" ON "entries" ("entryable_type", "entryable_id") /*application='Chooseruby'*/;
+CREATE TABLE IF NOT EXISTS "entries" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "description" text, "url" varchar, "status" integer DEFAULT 0 NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "image_url" varchar, "experience_level" integer, "published" boolean DEFAULT FALSE NOT NULL, "tags" text, "slug" varchar, "entryable_type" varchar, "entryable_id" integer, "submitter_name" varchar, "submitter_email" varchar, "featured_at" datetime(6) /*application='Chooseruby'*/);
 CREATE INDEX "index_entries_on_experience_level" ON "entries" ("experience_level") /*application='Chooseruby'*/;
 CREATE INDEX "index_entries_on_published" ON "entries" ("published") /*application='Chooseruby'*/;
-CREATE UNIQUE INDEX "index_entries_on_slug" ON "entries" ("slug") /*application='Chooseruby'*/;
 CREATE INDEX "index_entries_on_status" ON "entries" ("status") /*application='Chooseruby'*/;
+CREATE UNIQUE INDEX "index_entries_on_slug" ON "entries" ("slug") /*application='Chooseruby'*/;
 CREATE INDEX "index_entries_on_title" ON "entries" ("title") /*application='Chooseruby'*/;
+CREATE INDEX "index_entries_on_entryable_type_and_entryable_id" ON "entries" ("entryable_type", "entryable_id") /*application='Chooseruby'*/;
 CREATE TABLE IF NOT EXISTS "entry_reviews" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "entry_id" integer NOT NULL, "status" integer DEFAULT 0 NOT NULL, "comment" text, "reviewer_id" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5fc89ca42d"
 FOREIGN KEY ("entry_id")
   REFERENCES "entries" ("id")

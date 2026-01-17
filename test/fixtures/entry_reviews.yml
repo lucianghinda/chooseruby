@@ -20,14 +20,15 @@
 # == Schema Information
 #
 # Table name: entry_reviews
+# Database name: primary
 #
 #  id          :integer          not null, primary key
 #  comment     :text
-#  reviewer_id :integer
 #  status      :integer          default("approved"), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  entry_id    :integer          not null
+#  reviewer_id :integer
 #
 # Indexes
 #

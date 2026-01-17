@@ -48,6 +48,7 @@
 # == Schema Information
 #
 # Table name: entries
+# Database name: primary
 #
 #  id               :integer          not null, primary key
 #  description      :text

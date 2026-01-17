@@ -26,6 +26,7 @@
 # == Schema Information
 #
 # Table name: ruby_gems
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  current_version   :string

@@ -18,6 +18,7 @@
 # == Schema Information
 #
 # Table name: podcasts
+# Database name: primary
 #
 #  id                 :integer          not null, primary key
 #  apple_podcasts_url :string

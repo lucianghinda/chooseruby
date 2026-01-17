@@ -24,6 +24,7 @@
 # == Schema Information
 #
 # Table name: categories
+# Database name: primary
 #
 #  id            :integer          not null, primary key
 #  description   :text
