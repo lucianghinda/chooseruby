@@ -21,7 +21,7 @@ module Chooseruby
     config.eager_load_paths << Rails.root.join("app/queries")
 
     # Use SQL schema format to support FTS5 virtual tables
-    config.active_record.schema_format = :sql
+    config.active_record.schema_format = :ruby
 
     # Enable Rack::Attack middleware for rate limiting and throttling
     config.middleware.use Rack::Attack

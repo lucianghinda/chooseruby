@@ -165,6 +165,11 @@ rails test test/models/entry_test.rb
 rails test test/integration/avo_entry_admin_test.rb
 ```
 
+Notes:
+- The project uses Ruby schema format (`db/schema.rb`).
+- FTS5 tables (`entries_fts`, `authors_fts`) are created automatically when tests run.
+- `bin/rails db:test:prepare` triggers FTS table creation via the `fts:create` task.
+
 ## Database Schema
 
 The application uses a DelegatedTypes pattern:
