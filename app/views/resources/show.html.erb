@@ -30,11 +30,17 @@
 
 <div class="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
   <!-- Breadcrumbs -->
-  <%= breadcrumbs([
-    { text: "Home", url: root_path },
-    { text: "Resources", url: entries_path },
-    { text: @entry.title, url: nil }
-  ]) %>
+  <%
+    breadcrumb_items = [
+      { text: "Home", url: root_path },
+      { text: "Resources", url: entries_path }
+    ]
+    if @entry.type_slug.present?
+      breadcrumb_items << { text: type_name(@entry.type_slug), url: entries_path(type: @entry.type_slug) }
+    end
+    breadcrumb_items << { text: @entry.title, url: nil }
+  %>
+  <%= breadcrumbs(breadcrumb_items) %>
 
   <% if @entry.book? %>
     <%# Enhanced Book Layout %>
