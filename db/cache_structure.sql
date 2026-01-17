@@ -5,5 +5,6 @@ CREATE INDEX "index_solid_cache_entries_on_byte_size" ON "solid_cache_entries" (
 CREATE INDEX "index_solid_cache_entries_on_key_hash_and_byte_size" ON "solid_cache_entries" ("key_hash", "byte_size") /*application='Chooseruby'*/;
 CREATE UNIQUE INDEX "index_solid_cache_entries_on_key_hash" ON "solid_cache_entries" ("key_hash") /*application='Chooseruby'*/;
 INSERT INTO "schema_migrations" (version) VALUES
-('20260116152457');
+('20260116152457'),
+('1');
 

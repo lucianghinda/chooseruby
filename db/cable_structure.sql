@@ -5,5 +5,6 @@ CREATE INDEX "index_solid_cable_messages_on_channel" ON "solid_cable_messages" (
 CREATE INDEX "index_solid_cable_messages_on_channel_hash" ON "solid_cable_messages" ("channel_hash") /*application='Chooseruby'*/;
 CREATE INDEX "index_solid_cable_messages_on_created_at" ON "solid_cable_messages" ("created_at") /*application='Chooseruby'*/;
 INSERT INTO "schema_migrations" (version) VALUES
-('20260116152915');
+('20260116152915'),
+('1');
 
