@@ -59,22 +59,12 @@ CREATE VIRTUAL TABLE entries_fts USING fts5(
             tokenize='porter ascii'
           )
 /* entries_fts(entry_id,title,description,tags) */;
-CREATE TABLE IF NOT EXISTS 'entries_fts_data'(id INTEGER PRIMARY KEY, block BLOB);
-CREATE TABLE IF NOT EXISTS 'entries_fts_idx'(segid, term, pgno, PRIMARY KEY(segid, term)) WITHOUT ROWID;
-CREATE TABLE IF NOT EXISTS 'entries_fts_content'(id INTEGER PRIMARY KEY, c0, c1, c2, c3);
-CREATE TABLE IF NOT EXISTS 'entries_fts_docsize'(id INTEGER PRIMARY KEY, sz BLOB);
-CREATE TABLE IF NOT EXISTS 'entries_fts_config'(k PRIMARY KEY, v) WITHOUT ROWID;
 CREATE VIRTUAL TABLE authors_fts USING fts5(
             author_id UNINDEXED,
             name,
             tokenize='porter ascii'
           )
 /* authors_fts(author_id,name) */;
-CREATE TABLE IF NOT EXISTS 'authors_fts_data'(id INTEGER PRIMARY KEY, block BLOB);
-CREATE TABLE IF NOT EXISTS 'authors_fts_idx'(segid, term, pgno, PRIMARY KEY(segid, term)) WITHOUT ROWID;
-CREATE TABLE IF NOT EXISTS 'authors_fts_content'(id INTEGER PRIMARY KEY, c0, c1);
-CREATE TABLE IF NOT EXISTS 'authors_fts_docsize'(id INTEGER PRIMARY KEY, sz BLOB);
-CREATE TABLE IF NOT EXISTS 'authors_fts_config'(k PRIMARY KEY, v) WITHOUT ROWID;
 CREATE UNIQUE INDEX "index_categories_entries_on_entry_id_primary" ON "categories_entries" ("entry_id") WHERE is_primary = 1 /*application='Chooseruby'*/;
 CREATE TABLE IF NOT EXISTS "active_hashcash_stamps" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "version" varchar NOT NULL, "bits" integer NOT NULL, "date" date NOT NULL, "resource" varchar NOT NULL, "ext" varchar NOT NULL, "rand" varchar NOT NULL, "counter" varchar NOT NULL, "request_path" varchar, "ip_address" varchar, "context" json, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
 CREATE INDEX "index_active_hashcash_stamps_on_ip_address_and_created_at" ON "active_hashcash_stamps" ("ip_address", "created_at") WHERE ip_address IS NOT NULL /*application='Chooseruby'*/;
