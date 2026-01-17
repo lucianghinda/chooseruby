@@ -32,6 +32,7 @@ class ResourcesController < ApplicationController
       .includes(
         :categories,
         :rich_text_description,
+        :entryable,
         authors: { avatar_attachment: :blob }
       )
       .find_by!(slug: slug)

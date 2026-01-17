@@ -1,0 +1,41 @@
+<%# locals: (entry:) %>
+<%# Book description section %>
+
+<section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
+  <h2 class="text-2xl font-semibold tracking-tight text-slate-900 mb-6">About This Book</h2>
+
+  <%# Rich text description %>
+  <div class="prose prose-slate prose-lg max-w-none">
+    <%= entry.description %>
+  </div>
+
+  <%# Tags and Experience Level %>
+  <% if entry.tags.present? || entry.experience_level.present? %>
+    <div class="mt-8 pt-8 border-t border-slate-100">
+      <div class="flex flex-wrap items-center gap-4">
+        <%# Experience Level Badge %>
+        <% if entry.experience_level.present? %>
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-slate-500">Skill level:</span>
+            <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-1.5 text-sm font-semibold text-slate-700">
+              <span class="h-2.5 w-2.5 rounded-full <%= experience_level_badge_color(entry.experience_level) %>"></span>
+              <%= entry.experience_level.humanize %>
+            </span>
+          </div>
+        <% end %>
+
+        <%# Tags %>
+        <% if entry.tags.present? && entry.tags.any? %>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-sm text-slate-500">Topics:</span>
+            <% entry.tags.each do |tag| %>
+              <span class="inline-flex items-center rounded-full bg-rose-50 px-3 py-1 text-xs font-medium text-rose-700">
+                <%= tag %>
+              </span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</section>
