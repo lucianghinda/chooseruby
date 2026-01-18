@@ -22,7 +22,7 @@ class Entry::RelatedResources
       entries_from_category = Entry
         .strict_loading
         .visible
-        .includes(:categories, :rich_text_description)
+        .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
         .joins(:categories_entries)
         .where(categories_entries: { category_id: category_id })
         .where.not(id: already_collected_ids)
@@ -41,7 +41,7 @@ class Entry::RelatedResources
       additional_entries = Entry
         .strict_loading
         .visible
-        .includes(:categories, :rich_text_description)
+        .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
         .joins(:categories_entries)
         .where(categories_entries: { category_id: category_ids })
         .where.not(id: already_collected_ids)

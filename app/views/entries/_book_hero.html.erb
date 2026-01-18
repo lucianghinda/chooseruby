@@ -9,7 +9,7 @@
   <%# Using a subtle gradient background that works with any image %>
   <div class="relative overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100">
     <% if entry.image.attached? || entry.image_url.present? %>
-      <div class="p-6 sm:p-8 md:p-10" style="aspect-ratio: 1200/630;">
+      <div class="p-6 sm:p-8 md:p-10 aspect-[1200/630]">
         <% if entry.image.attached? %>
           <%= image_tag entry.image, alt: entry.title, class: "w-full h-full object-contain drop-shadow-xl" %>
         <% else %>
@@ -18,7 +18,7 @@
       </div>
     <% else %>
       <%# Placeholder when no image %>
-      <div class="flex flex-col items-center justify-center text-slate-400" style="aspect-ratio: 1200/630;">
+      <div class="flex flex-col items-center justify-center text-slate-400 aspect-[1200/630]">
         <span class="text-8xl mb-4">📚</span>
         <span class="text-xl font-semibold text-slate-500 text-center px-4"><%= truncate(entry.title, length: 40) %></span>
       </div>

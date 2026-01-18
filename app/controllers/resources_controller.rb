@@ -62,6 +62,8 @@ class ResourcesController < ApplicationController
   end
 
   def related_by_topic(entry)
+    return [] if entry.categories.empty?
+
     related = entry.related_resources(limit: 5)
     return related if related.size >= 5
 
