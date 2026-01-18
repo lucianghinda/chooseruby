@@ -103,4 +103,84 @@ class ResourcesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a", text: "API Framework"
     assert_select "a", text: "Framework Author"
   end
+
+  test "author resources section is hidden when no related author resources" do
+    entry = Entry.create!(
+      title: "Solo Entry",
+      url: "https://example.com/solo",
+      published: true,
+      status: :approved
+    )
+
+    get "/resources/#{entry.slug}"
+
+    assert_response :success
+    assert_select "h2", { text: /Other resources by the same author/, count: 0 }
+  end
+
+  test "author resources section shows when related author resources exist" do
+    author = Author.find_or_create_by!(name: "Shared Author", slug: "shared-author") { |a| a.status = :approved }
+
+    entry = Entry.create!(
+      title: "Primary Entry",
+      url: "https://example.com/primary",
+      published: true,
+      status: :approved
+    )
+    entry.authors << author
+
+    related_entry = Entry.create!(
+      title: "Author Related Entry",
+      url: "https://example.com/related-author",
+      published: true,
+      status: :approved
+    )
+    related_entry.authors << author
+
+    get "/resources/#{entry.slug}"
+
+    assert_response :success
+    assert_select "h2", text: /Other resources by the same author/
+    assert_select "a", text: "Author Related Entry"
+  end
+
+  test "related resources section is hidden when no related resources" do
+    entry = Entry.create!(
+      title: "Lonely Entry",
+      url: "https://example.com/lonely",
+      published: true,
+      status: :approved
+    )
+
+    get "/resources/#{entry.slug}"
+
+    assert_response :success
+    assert_select "h2", { text: /Related resources/, count: 0 }
+  end
+
+  test "related resources section shows when related resources exist" do
+    category = Category.find_or_create_by!(name: "Testing") { |c| c.slug = "testing" }
+
+    entry = Entry.create!(
+      title: "Primary Related Entry",
+      url: "https://example.com/primary-related",
+      published: true,
+      status: :approved
+    )
+    entry.categories << category
+
+    related_entry = Entry.create!(
+      title: "Category Related Entry",
+      url: "https://example.com/related-category",
+      published: true,
+      status: :approved
+    )
+    related_entry.categories << category
+
+    get "/resources/#{entry.slug}"
+
+    assert_response :success
+    assert_select "h2", text: /Related resources/
+    assert_select "a", text: "Category Related Entry"
+  end
 end
