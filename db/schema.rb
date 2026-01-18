@@ -381,6 +381,4 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_11_063409) do
   add_foreign_key "entries_authors", "entries", on_delete: :cascade
   add_foreign_key "entry_reviews", "entries"
   add_foreign_key "sessions", "users", on_delete: :cascade
-
-  # Virtual tables defined in this database.
-  # Note that virtual tables may not work with other database engines. Be careful if changing database.
+end
