@@ -33,10 +33,49 @@ class ResourcesController < ApplicationController
         :categories,
         :rich_text_description,
         :entryable,
+        { image_attachment: :blob },
         authors: { avatar_attachment: :blob }
       )
       .find_by!(slug: slug)
+
+    @author_resources = related_by_author(@entry)
+    @related_resources = related_by_topic(@entry)
   rescue ActiveRecord::RecordNotFound
     render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
+  end
+
+  private
+
+  def related_by_author(entry)
+    return Entry.none if entry.authors.blank?
+
+    Entry
+      .strict_loading
+      .visible
+      .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+      .joins(:entries_authors)
+      .where(entries_authors: { author_id: entry.author_ids })
+      .where.not(id: entry.id)
+      .distinct
+      .recently_curated
+      .limit(5)
+  end
+
+  def related_by_topic(entry)
+    related = entry.related_resources(limit: 5)
+    return related if related.size >= 5
+
+    additional_needed = 5 - related.size
+    type_related = Entry
+      .strict_loading
+      .visible
+      .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+      .where(entryable_type: entry.entryable_type)
+      .where.not(id: [ entry.id, *related.map(&:id) ])
+      .recently_curated
+      .limit(additional_needed)
+      .to_a
+
+    (related + type_related).first(5)
   end
 end

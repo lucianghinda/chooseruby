@@ -91,7 +91,7 @@ class ResourceDetailViewTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     # Check if related resources heading exists
-    assert_select "h2", text: /Related Resources/
+    assert_select "h2", text: /Related resources/
     # Should have resource cards in the grid
     assert_select "div.grid"
   end
@@ -101,7 +101,7 @@ class ResourceDetailViewTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "span", text: /Intermediate/
-    assert_select "span.bg-emerald-500"
+    assert_select "span.bg-amber-500"
   end
 
   test "resource type badge displays" do
