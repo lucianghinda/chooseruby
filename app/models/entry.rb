@@ -25,7 +25,7 @@
 # Associations:
 #   - delegated_type :entryable (RubyGem, Book, Course, Tutorial, Article, Tool, Podcast, Community,
 #                                 Newsletter, Blog, Video, Channel, Documentation, TestingResource,
-#                                 DevelopmentEnvironment, Job, Framework, Directory, Product)
+#                                 DevelopmentEnvironment, JobBoard, Framework, Directory, Product)
 #   - has_many :categories through :categories_entries
 #   - has_many :authors through :entries_authors
 #   - has_many :entry_reviews for review history tracking
@@ -96,7 +96,7 @@ class Entry < ApplicationRecord
     Documentation
     TestingResource
     DevelopmentEnvironment
-    Job
+    JobBoard
     Framework
     Directory
     Product
@@ -138,7 +138,7 @@ class Entry < ApplicationRecord
     "documentations" => "Documentation",
     "testing-resources" => "TestingResource",
     "development-environments" => "DevelopmentEnvironment",
-    "jobs" => "Job",
+    "job-boards" => "JobBoard",
     "frameworks" => "Framework",
     "directories" => "Directory",
     "products" => "Product"
@@ -198,7 +198,7 @@ class Entry < ApplicationRecord
   scope :documentations, -> { where(entryable_type: "Documentation") }
   scope :testing_resources, -> { where(entryable_type: "TestingResource") }
   scope :development_environments, -> { where(entryable_type: "DevelopmentEnvironment") }
-  scope :jobs, -> { where(entryable_type: "Job") }
+  scope :job_boards, -> { where(entryable_type: "JobBoard") }
   scope :frameworks, -> { where(entryable_type: "Framework") }
   scope :directories, -> { where(entryable_type: "Directory") }
   scope :products, -> { where(entryable_type: "Product") }

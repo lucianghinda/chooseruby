@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_01_11_063409) do
+ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -274,7 +274,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_11_063409) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "jobs", force: :cascade do |t|
+  create_table "job_boards", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
@@ -381,4 +381,9 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_11_063409) do
   add_foreign_key "entries_authors", "entries", on_delete: :cascade
   add_foreign_key "entry_reviews", "entries"
   add_foreign_key "sessions", "users", on_delete: :cascade
+
+  # Virtual tables defined in this database.
+  # Note that virtual tables may not work with other database engines. Be careful if changing database.
+  create_virtual_table "authors_fts", "fts5", [" author_id UNINDEXED", "name", "tokenize='porter ascii' "]
+  create_virtual_table "entries_fts", "fts5", [" entry_id UNINDEXED", "title", "description", "tags", "tokenize='porter ascii' "]
 end

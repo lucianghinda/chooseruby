@@ -20,7 +20,7 @@ class Avo::Filters::EntryTypeFilter < Avo::Filters::SelectFilter
       "Directory" => "Directory",
       "Documentation" => "Documentation",
       "Framework" => "Framework",
-      "Job" => "Job",
+      "Job Board" => "JobBoard",
       "Newsletter" => "Newsletter",
       "Podcast" => "Podcast",
       "Product" => "Product",

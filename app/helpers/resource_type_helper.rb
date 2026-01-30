@@ -85,11 +85,11 @@ module ResourceTypeHelper
       emoji: "💻",
       description: "curated development environments for Ruby developers"
     },
-    # Task 3.9: Job metadata
-    "jobs" => {
-      name: "Jobs",
+    # Task 3.9: JobBoard metadata
+    "job-boards" => {
+      name: "Job Boards",
       emoji: "💼",
-      description: "curated jobs for Ruby developers"
+      description: "curated job boards for Ruby developers"
     },
     # Task 3.10: Framework metadata
     "frameworks" => {
@@ -170,6 +170,8 @@ module ResourceTypeHelper
       "development environment"
     when "documentations"
       "documentation"
+    when "job-boards"
+      "job board"
     else
       # Remove hyphens and singularize
       type.tr("-", " ").singularize

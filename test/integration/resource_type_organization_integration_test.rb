@@ -16,7 +16,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
       { type: Documentation, slug: "documentations", title: "Ruby Docs" },
       { type: TestingResource, slug: "testing-resources", title: "RSpec Guide" },
       { type: DevelopmentEnvironment, slug: "development-environments", title: "Ruby Dev Setup" },
-      { type: Job, slug: "jobs", title: "Senior Ruby Developer" },
+      { type: JobBoard, slug: "job-boards", title: "Senior Ruby Developer" },
       { type: Framework, slug: "frameworks", title: "Rails Framework" },
       { type: Directory, slug: "directories", title: "Ruby Resources Directory" },
       { type: Product, slug: "products", title: "Ruby Product" }
@@ -227,7 +227,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
       { type: Video, slug: "videos", expected_singular: "video" },
       { type: Framework, slug: "frameworks", expected_singular: "framework" },
       { type: Product, slug: "products", expected_singular: "product" },
-      { type: Job, slug: "jobs", expected_singular: "job" }
+      { type: JobBoard, slug: "job-boards", expected_singular: "job board" }
     ]
 
     types_to_test.each do |type_info|
@@ -323,7 +323,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
   test "browse pages return successful responses for all new types" do
     new_type_slugs = [
       "newsletters", "blogs", "videos", "channels", "documentations",
-      "testing-resources", "development-environments", "jobs",
+      "testing-resources", "development-environments", "job-boards",
       "frameworks", "directories", "products"
     ]
 
@@ -337,19 +337,19 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
 
   # Test 7.3.9: Featured entries section is hidden when no featured entries exist
   test "featured entries section does not appear when no entries are featured" do
-    # Create regular (non-featured) job entry
-    job = Job.create!(name: "Test Job")
+    # Create regular (non-featured) job board entry
+    job_board = JobBoard.create!(name: "Test Job Board")
     Entry.create!(
-      title: "Regular Job",
-      description: "Non-featured job",
-      url: "https://example.com/regular-job",
-      entryable: job,
+      title: "Regular Job Board",
+      description: "Non-featured job board",
+      url: "https://example.com/regular-job-board",
+      entryable: job_board,
       status: :approved,
       published: true,
       featured_at: nil
     )
 
-    get resource_type_path("jobs")
+    get resource_type_path("job-boards")
     assert_response :success
 
     # Featured section should not appear

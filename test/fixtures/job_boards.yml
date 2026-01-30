@@ -4,7 +4,7 @@
 # Tests create their own records as needed
 # == Schema Information
 #
-# Table name: jobs
+# Table name: job_boards
 # Database name: primary
 #
 #  id         :integer          not null, primary key

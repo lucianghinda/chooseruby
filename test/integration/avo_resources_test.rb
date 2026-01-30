@@ -97,18 +97,18 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
     assert entry7.development_environment?
     assert_equal "DevelopmentEnvironment", entry7.entryable_type
 
-    # Job
-    job = Job.create!(name: "Test Job")
+    # JobBoard
+    job_board = JobBoard.create!(name: "Test Job Board")
     entry8 = Entry.create!(
-      title: "Job Test",
-      description: "Test job",
+      title: "Job Board Test",
+      description: "Test job board",
       url: "https://example.com",
-      entryable: job,
+      entryable: job_board,
       status: :approved
     )
     assert entry8.persisted?
-    assert entry8.job?
-    assert_equal "Job", entry8.entryable_type
+    assert entry8.job_board?
+    assert_equal "JobBoard", entry8.entryable_type
 
     # Framework
     framework = Framework.create!(name: "Test Framework")
@@ -172,8 +172,8 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
     development_environment = DevelopmentEnvironment.create!(name: "Test Dev Environment")
     assert_match(/Test Dev Environment/, development_environment.display_name)
 
-    job = Job.create!(name: "Test Job")
-    assert_match(/Test Job/, job.display_name)
+    job_board = JobBoard.create!(name: "Test Job Board")
+    assert_match(/Test Job Board/, job_board.display_name)
 
     framework = Framework.create!(name: "Test Framework")
     assert_match(/Test Framework/, framework.display_name)

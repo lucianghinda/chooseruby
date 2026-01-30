@@ -28,7 +28,7 @@ class ApplicationNavigationTest < ActionDispatch::IntegrationTest
     assert_select "a[href='#{resource_type_path('documentations')}']", minimum: 1
     assert_select "a[href='#{resource_type_path('testing-resources')}']", minimum: 1
     assert_select "a[href='#{resource_type_path('development-environments')}']", minimum: 1
-    assert_select "a[href='#{resource_type_path('jobs')}']", minimum: 1
+    assert_select "a[href='#{resource_type_path('job-boards')}']", minimum: 1
     assert_select "a[href='#{resource_type_path('frameworks')}']", minimum: 1
     assert_select "a[href='#{resource_type_path('directories')}']", minimum: 1
     assert_select "a[href='#{resource_type_path('products')}']", minimum: 1
@@ -56,7 +56,7 @@ class ApplicationNavigationTest < ActionDispatch::IntegrationTest
     assert_match(/📚.*Documentation/m, response.body)
     assert_match(/🧪.*Testing Resources/m, response.body)
     assert_match(/💻.*Development Environments/m, response.body)
-    assert_match(/💼.*Jobs/m, response.body)
+    assert_match(/💼.*Job Boards/m, response.body)
     assert_match(/🏗️.*Frameworks/m, response.body)
     assert_match(/📂.*Directories/m, response.body)
     assert_match(/🚀.*Products/m, response.body)
@@ -86,7 +86,7 @@ class ApplicationNavigationTest < ActionDispatch::IntegrationTest
       assert_select "a[href='#{resource_type_path('documentations')}']", minimum: 1
       assert_select "a[href='#{resource_type_path('testing-resources')}']", minimum: 1
       assert_select "a[href='#{resource_type_path('development-environments')}']", minimum: 1
-      assert_select "a[href='#{resource_type_path('jobs')}']", minimum: 1
+      assert_select "a[href='#{resource_type_path('job-boards')}']", minimum: 1
       assert_select "a[href='#{resource_type_path('frameworks')}']", minimum: 1
       assert_select "a[href='#{resource_type_path('directories')}']", minimum: 1
       assert_select "a[href='#{resource_type_path('products')}']", minimum: 1
