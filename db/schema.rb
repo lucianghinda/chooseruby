@@ -18,7 +18,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.bigint "record_id", null: false
     t.string "record_type", null: false
     t.datetime "updated_at", null: false
-    t.index [ "record_type", "record_id", "name" ], name: "index_action_text_rich_texts_uniqueness", unique: true
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
   end
 
   create_table "active_hashcash_stamps", force: :cascade do |t|
@@ -34,8 +34,8 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "resource", null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "version", null: false
-    t.index [ "counter", "rand", "date", "resource", "bits", "version", "ext" ], name: "index_active_hashcash_stamps_unique", unique: true
-    t.index [ "ip_address", "created_at" ], name: "index_active_hashcash_stamps_on_ip_address_and_created_at", where: "ip_address IS NOT NULL"
+    t.index ["counter", "rand", "date", "resource", "bits", "version", "ext"], name: "index_active_hashcash_stamps_unique", unique: true
+    t.index ["ip_address", "created_at"], name: "index_active_hashcash_stamps_on_ip_address_and_created_at", where: "ip_address IS NOT NULL"
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -44,8 +44,8 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "name", null: false
     t.bigint "record_id", null: false
     t.string "record_type", null: false
-    t.index [ "blob_id" ], name: "index_active_storage_attachments_on_blob_id"
-    t.index [ "record_type", "record_id", "name", "blob_id" ], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -57,13 +57,13 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "key", null: false
     t.text "metadata"
     t.string "service_name", null: false
-    t.index [ "key" ], name: "index_active_storage_blobs_on_key", unique: true
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
   create_table "active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
-    t.index [ "blob_id", "variation_digest" ], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "articles", force: :cascade do |t|
@@ -93,11 +93,11 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "submitter_email", null: false
     t.string "submitter_name"
     t.datetime "updated_at", null: false
-    t.index [ "author_id" ], name: "index_author_proposals_on_author_id"
-    t.index [ "created_at" ], name: "index_author_proposals_on_created_at"
-    t.index [ "matched_entry_id" ], name: "index_author_proposals_on_matched_entry_id"
-    t.index [ "status" ], name: "index_author_proposals_on_status"
-    t.index [ "submitter_email" ], name: "index_author_proposals_on_submitter_email"
+    t.index ["author_id"], name: "index_author_proposals_on_author_id"
+    t.index ["created_at"], name: "index_author_proposals_on_created_at"
+    t.index ["matched_entry_id"], name: "index_author_proposals_on_matched_entry_id"
+    t.index ["status"], name: "index_author_proposals_on_status"
+    t.index ["submitter_email"], name: "index_author_proposals_on_submitter_email"
   end
 
   create_table "authors", force: :cascade do |t|
@@ -118,9 +118,9 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.datetime "updated_at", null: false
     t.string "website_url"
     t.string "youtube_url"
-    t.index [ "name" ], name: "index_authors_on_name"
-    t.index [ "slug" ], name: "index_authors_on_slug", unique: true
-    t.index [ "status" ], name: "index_authors_on_status"
+    t.index ["name"], name: "index_authors_on_name"
+    t.index ["slug"], name: "index_authors_on_slug", unique: true
+    t.index ["status"], name: "index_authors_on_status"
   end
 
   create_table "bans", force: :cascade do |t|
@@ -130,9 +130,9 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.text "reason"
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.index [ "expires_at" ], name: "index_bans_on_expires_at"
-    t.index [ "ip_address" ], name: "index_bans_on_ip_address"
-    t.index [ "user_id" ], name: "index_bans_on_user_id"
+    t.index ["expires_at"], name: "index_bans_on_expires_at"
+    t.index ["ip_address"], name: "index_bans_on_ip_address"
+    t.index ["user_id"], name: "index_bans_on_user_id"
   end
 
   create_table "blogs", force: :cascade do |t|
@@ -160,8 +160,8 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "name", null: false
     t.string "slug", null: false
     t.datetime "updated_at", null: false
-    t.index [ "name" ], name: "index_categories_on_name", unique: true
-    t.index [ "slug" ], name: "index_categories_on_slug", unique: true
+    t.index ["name"], name: "index_categories_on_name", unique: true
+    t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
 
   create_table "categories_entries", force: :cascade do |t|
@@ -171,10 +171,10 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.boolean "is_featured", default: false, null: false
     t.boolean "is_primary", default: false, null: false
     t.datetime "updated_at", null: false
-    t.index [ "category_id", "entry_id" ], name: "index_categories_entries_on_category_id_and_entry_id", unique: true
-    t.index [ "category_id" ], name: "index_categories_entries_on_category_id"
-    t.index [ "entry_id" ], name: "index_categories_entries_on_entry_id"
-    t.index [ "entry_id" ], name: "index_categories_entries_on_entry_id_primary", unique: true, where: "is_primary = 1"
+    t.index ["category_id", "entry_id"], name: "index_categories_entries_on_category_id_and_entry_id", unique: true
+    t.index ["category_id"], name: "index_categories_entries_on_category_id"
+    t.index ["entry_id"], name: "index_categories_entries_on_entry_id"
+    t.index ["entry_id"], name: "index_categories_entries_on_entry_id_primary", unique: true, where: "is_primary = 1"
   end
 
   create_table "channels", force: :cascade do |t|
@@ -239,12 +239,12 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.string "url"
-    t.index [ "entryable_type", "entryable_id" ], name: "index_entries_on_entryable_type_and_entryable_id"
-    t.index [ "experience_level" ], name: "index_entries_on_experience_level"
-    t.index [ "published" ], name: "index_entries_on_published"
-    t.index [ "slug" ], name: "index_entries_on_slug", unique: true
-    t.index [ "status" ], name: "index_entries_on_status"
-    t.index [ "title" ], name: "index_entries_on_title"
+    t.index ["entryable_type", "entryable_id"], name: "index_entries_on_entryable_type_and_entryable_id"
+    t.index ["experience_level"], name: "index_entries_on_experience_level"
+    t.index ["published"], name: "index_entries_on_published"
+    t.index ["slug"], name: "index_entries_on_slug", unique: true
+    t.index ["status"], name: "index_entries_on_status"
+    t.index ["title"], name: "index_entries_on_title"
   end
 
   create_table "entries_authors", force: :cascade do |t|
@@ -252,9 +252,9 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.datetime "created_at", null: false
     t.integer "entry_id", null: false
     t.datetime "updated_at", null: false
-    t.index [ "author_id", "entry_id" ], name: "index_entries_authors_on_author_id_and_entry_id", unique: true
-    t.index [ "author_id" ], name: "index_entries_authors_on_author_id"
-    t.index [ "entry_id" ], name: "index_entries_authors_on_entry_id"
+    t.index ["author_id", "entry_id"], name: "index_entries_authors_on_author_id_and_entry_id", unique: true
+    t.index ["author_id"], name: "index_entries_authors_on_author_id"
+    t.index ["entry_id"], name: "index_entries_authors_on_entry_id"
   end
 
   create_table "entry_reviews", force: :cascade do |t|
@@ -264,8 +264,8 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.integer "reviewer_id"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.index [ "entry_id" ], name: "index_entry_reviews_on_entry_id"
-    t.index [ "status" ], name: "index_entry_reviews_on_status"
+    t.index ["entry_id"], name: "index_entry_reviews_on_entry_id"
+    t.index ["status"], name: "index_entry_reviews_on_status"
   end
 
   create_table "frameworks", force: :cascade do |t|
@@ -312,7 +312,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "github_url"
     t.string "rubygems_url"
     t.datetime "updated_at", null: false
-    t.index [ "gem_name" ], name: "index_ruby_gems_on_gem_name", unique: true
+    t.index ["gem_name"], name: "index_ruby_gems_on_gem_name", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -323,9 +323,9 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.datetime "updated_at", null: false
     t.string "user_agent"
     t.integer "user_id", null: false
-    t.index [ "last_active_at" ], name: "index_sessions_on_last_active_at"
-    t.index [ "token" ], name: "index_sessions_on_token", unique: true
-    t.index [ "user_id" ], name: "index_sessions_on_user_id"
+    t.index ["last_active_at"], name: "index_sessions_on_last_active_at"
+    t.index ["token"], name: "index_sessions_on_token", unique: true
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "testing_resources", force: :cascade do |t|
@@ -361,7 +361,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.string "role", default: "editor", null: false
     t.string "status", default: "active", null: false
     t.datetime "updated_at", null: false
-    t.index [ "email_address" ], name: "index_users_on_email_address", unique: true
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
   create_table "videos", force: :cascade do |t|
@@ -384,4 +384,6 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
 
   # Virtual tables defined in this database.
   # Note that virtual tables may not work with other database engines. Be careful if changing database.
+  create_virtual_table "authors_fts", "fts5", [" author_id UNINDEXED", "name", "tokenize='porter ascii' "]
+  create_virtual_table "entries_fts", "fts5", [" entry_id UNINDEXED", "title", "description", "tags", "tokenize='porter ascii' "]
 end

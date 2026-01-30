@@ -45,3 +45,7 @@ Separate domain concerns from infrastructure or presentation concerns, keeping t
 ## Rails Generation Guidelines
 
 When using an Active Record always use `strict_loading` and make sure you prevent N+1 queries from the design phase.
+
+## Database and Active Record models
+
+Never edit db/schema.rb - always update it by running `bin/rails db:migrate` or `bin/rails db:rollback`
