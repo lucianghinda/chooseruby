@@ -4,7 +4,7 @@ require "test_helper"
 
 # Tests for new delegated type models added in Resource Type Organization feature
 # Testing: Newsletter, Blog, Video, Channel, Documentation, TestingResource,
-# DevelopmentEnvironment, Job, Framework, Directory, Product
+# DevelopmentEnvironment, JobBoard, Framework, Directory, Product
 #
 # Focused on critical behaviors:
 # - display_name method
@@ -81,16 +81,16 @@ class NewDelegatedTypesTest < ActiveSupport::TestCase
     assert_equal "Test Dev Environment", dev_env.display_name
   end
 
-  test "Job, Framework, Directory, Product models have proper associations" do
-    job = Job.create!(name: "Test Job")
+  test "JobBoard, Framework, Directory, Product models have proper associations" do
+    job_board = JobBoard.create!(name: "Test Job Board")
     framework = Framework.create!(name: "Test Framework")
     directory = Directory.create!(name: "Test Directory")
     product = Product.create!(name: "Test Product")
 
-    job_entry = Entry.create!(
+    job_board_entry = Entry.create!(
       title: "Senior Ruby Developer",
       url: "https://example.com/job",
-      entryable: job,
+      entryable: job_board,
       status: :approved
     )
 
@@ -101,9 +101,9 @@ class NewDelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert_equal job, job_entry.entryable
+    assert_equal job_board, job_board_entry.entryable
     assert_equal framework, framework_entry.entryable
-    assert_equal "Test Job", job.display_name
+    assert_equal "Test Job Board", job_board.display_name
     assert_equal "Test Framework", framework.display_name
     assert_equal "Test Directory", directory.display_name
     assert_equal "Test Product", product.display_name

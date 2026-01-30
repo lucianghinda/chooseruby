@@ -353,7 +353,7 @@ class EntryTest < ActiveSupport::TestCase
     assert_equal "Documentation", Entry::VALID_TYPES["documentations"]
     assert_equal "TestingResource", Entry::VALID_TYPES["testing-resources"]
     assert_equal "DevelopmentEnvironment", Entry::VALID_TYPES["development-environments"]
-    assert_equal "Job", Entry::VALID_TYPES["jobs"]
+    assert_equal "JobBoard", Entry::VALID_TYPES["job-boards"]
     assert_equal "Framework", Entry::VALID_TYPES["frameworks"]
     assert_equal "Directory", Entry::VALID_TYPES["directories"]
     assert_equal "Product", Entry::VALID_TYPES["products"]

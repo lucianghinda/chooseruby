@@ -371,9 +371,9 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     create_entry(title: title, entryable: dev_env, updated_at: updated_at)
   end
 
-  def create_visible_job(title: "Test Job", updated_at: Time.current)
-    job = Job.create!(name: "Test Job")
-    create_entry(title: title, entryable: job, updated_at: updated_at)
+  def create_visible_job(title: "Test Job Board", updated_at: Time.current)
+    job_board = JobBoard.create!(name: "Test Job Board")
+    create_entry(title: title, entryable: job_board, updated_at: updated_at)
   end
 
   def create_visible_framework(title: "Test Framework", updated_at: Time.current)

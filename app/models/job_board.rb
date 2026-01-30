@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
-# Job delegated type model for Ruby job listings
+# JobBoard delegated type model for Ruby job boards
 #
-# Represents job opportunities for Ruby developers.
+# Represents job board platforms where Ruby developers can find opportunities.
 #
 # Associations:
 #   - has_one :entry (as: :entryable) - the base entry record
 #
 # Usage:
-#   job = Job.create!
+#   job_board = JobBoard.create!(name: "Ruby on Rails Jobs")
 #   entry = Entry.create!(
-#     title: "Senior Ruby Developer",
-#     url: "https://example.com/jobs/senior-ruby",
-#     entryable: job
+#     title: "Ruby on Rails Jobs",
+#     url: "https://example.com/ruby-jobs",
+#     entryable: job_board
 #   )
 # == Schema Information
 #
-# Table name: jobs
+# Table name: job_boards
 # Database name: primary
 #
 #  id         :integer          not null, primary key
@@ -24,7 +24,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Job < ApplicationRecord
+class JobBoard < ApplicationRecord
   has_one :entry, as: :entryable, touch: true, dependent: :destroy
 
   # Validations
@@ -32,6 +32,6 @@ class Job < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Job ##{id}"
+    name.presence || entry&.title || "JobBoard ##{id}"
   end
 end

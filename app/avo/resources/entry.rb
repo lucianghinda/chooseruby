@@ -38,7 +38,7 @@ class Avo::Resources::Entry < Avo::BaseResource
             ::Directory,
             ::Documentation,
             ::Framework,
-            ::Job,
+            ::JobBoard,
             ::Newsletter,
             ::Podcast,
             ::Product,

@@ -21,7 +21,7 @@ class ResourceTypeHelperTest < ActionView::TestCase
     assert_equal "📚", type_emoji("documentations")
     assert_equal "🧪", type_emoji("testing-resources")
     assert_equal "💻", type_emoji("development-environments")
-    assert_equal "💼", type_emoji("jobs")
+    assert_equal "💼", type_emoji("job-boards")
     assert_equal "🏗️", type_emoji("frameworks")
     assert_equal "📂", type_emoji("directories")
     assert_equal "🚀", type_emoji("products")

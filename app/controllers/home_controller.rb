@@ -26,7 +26,7 @@ class HomeController < ApplicationController
     @recent_documentations = fetch_recent_documentations
     @recent_testing_resources = fetch_recent_testing_resources
     @recent_development_environments = fetch_recent_development_environments
-    @recent_jobs = fetch_recent_jobs
+    @recent_job_boards = fetch_recent_job_boards
     @recent_frameworks = fetch_recent_frameworks
     @recent_directories = fetch_recent_directories
     @recent_products = fetch_recent_products
@@ -122,9 +122,9 @@ class HomeController < ApplicationController
     Entry.development_environments.visible.with_directory_includes.recently_curated.limit(4)
   end
 
-  # Task 4.9: Fetch method for jobs
-  def fetch_recent_jobs
-    Entry.jobs.visible.with_directory_includes.recently_curated.limit(4)
+  # Task 4.9: Fetch method for job boards
+  def fetch_recent_job_boards
+    Entry.job_boards.visible.with_directory_includes.recently_curated.limit(4)
   end
 
   # Task 4.10: Fetch method for frameworks
