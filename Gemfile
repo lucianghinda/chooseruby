@@ -46,7 +46,7 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Admin framework for managing authors and resources
-gem "avo", "~> 3.0"
+gem "avo", "~> 3.29"
 
 # Pagination for author resource lists
 gem "kaminari", "~> 1.2"
