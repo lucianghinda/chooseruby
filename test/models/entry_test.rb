@@ -358,8 +358,8 @@ class EntryTest < ActiveSupport::TestCase
     assert_equal "Directory", Entry::VALID_TYPES["directories"]
     assert_equal "Product", Entry::VALID_TYPES["products"]
 
-    # Verify total count (8 existing + 11 new = 19)
-    assert_equal 19, Entry::VALID_TYPES.size
+    # Verify total count (8 existing + 11 new + 1 AgentSkill = 20)
+    assert_equal 20, Entry::VALID_TYPES.size
   end
 
   test "featured scope returns only entries with featured_at set" do

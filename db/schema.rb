@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
+ActiveRecord::Schema[8.2].define(version: 2026_02_02_132521) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
@@ -64,6 +64,22 @@ ActiveRecord::Schema[8.2].define(version: 2026_01_29_195024) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "agent_skills", force: :cascade do |t|
+    t.text "allowed_tools"
+    t.text "body"
+    t.string "compatibility"
+    t.datetime "created_at", null: false
+    t.string "license"
+    t.text "metadata"
+    t.string "name"
+    t.text "parse_error"
+    t.integer "parse_status", default: 0, null: false
+    t.string "pattern"
+    t.string "skill_description"
+    t.string "skill_file_url", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "articles", force: :cascade do |t|

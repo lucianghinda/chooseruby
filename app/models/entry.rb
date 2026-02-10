@@ -80,6 +80,7 @@
 class Entry < ApplicationRecord
   # DelegatedType - polymorphic association to type-specific models
   # Task 2.2: Updated to include all 19 types (8 existing + 11 new)
+  # Added AgentSkill as 20th type
   delegated_type :entryable, types: %w[
     RubyGem
     Book
@@ -100,6 +101,7 @@ class Entry < ApplicationRecord
     Framework
     Directory
     Product
+    AgentSkill
   ], optional: true
 
   # ActionText for rich text description
@@ -141,7 +143,8 @@ class Entry < ApplicationRecord
     "job-boards" => "JobBoard",
     "frameworks" => "Framework",
     "directories" => "Directory",
-    "products" => "Product"
+    "products" => "Product",
+    "agent-skills" => "AgentSkill"
   }.freeze
 
   # Enums
@@ -202,6 +205,7 @@ class Entry < ApplicationRecord
   scope :frameworks, -> { where(entryable_type: "Framework") }
   scope :directories, -> { where(entryable_type: "Directory") }
   scope :products, -> { where(entryable_type: "Product") }
+  scope :agent_skills, -> { where(entryable_type: "AgentSkill") }
 
   class << self
     # Returns entries that are ready for the public directory with eager-loaded associations.

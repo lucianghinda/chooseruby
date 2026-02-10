@@ -112,6 +112,8 @@ GEM
       addressable
     addressable (2.8.8)
       public_suffix (>= 2.0.2, < 8.0)
+    agent_skill_parser (0.2.0)
+      zeitwerk (~> 2.6)
     annotaterb (4.21.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -483,6 +485,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_hashcash
+  agent_skill_parser
   annotaterb
   avo (~> 3.0)
   aws-sdk-s3
@@ -531,6 +534,7 @@ CHECKSUMS
   activestorage (8.2.0.alpha)
   activesupport (8.2.0.alpha)
   addressable (2.8.8) sha256=7c13b8f9536cf6364c03b9d417c19986019e28f7c00ac8132da4eb0fe393b057
+  agent_skill_parser (0.2.0) sha256=5c3079b4c3fd84ce6ab7ca3e79b59030acc606e98ef04c116ca07c4dc22cc07b
   annotaterb (4.21.0) sha256=29d63b647be64f86b4a8f3c69110538bf1a6a5b2289de2276491e228fdac8da3
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   avo (3.28.0) sha256=9a7ab701f41ee201b87553a36f0d34d4fd03a7c7737aeba6c0da09ba5a031910

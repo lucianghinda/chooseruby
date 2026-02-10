@@ -108,6 +108,12 @@ module ResourceTypeHelper
       name: "Products",
       emoji: "🚀",
       description: "curated products for Ruby developers"
+    },
+    # AgentSkill metadata
+    "agent-skills" => {
+      name: "Agent Skills",
+      emoji: "🤖",
+      description: "curated agent skills for Ruby developers"
     }
   }.freeze
 
@@ -172,6 +178,8 @@ module ResourceTypeHelper
       "documentation"
     when "job-boards"
       "job board"
+    when "agent-skills"
+      "agent skill"
     else
       # Remove hyphens and singularize
       type.tr("-", " ").singularize
