@@ -30,6 +30,7 @@ class HomeController < ApplicationController
     @recent_frameworks = fetch_recent_frameworks
     @recent_directories = fetch_recent_directories
     @recent_products = fetch_recent_products
+    @recent_agent_skills = fetch_recent_agent_skills
   end
 
   private
@@ -140,6 +141,11 @@ class HomeController < ApplicationController
   # Task 4.12: Fetch method for products
   def fetch_recent_products
     Entry.products.visible.with_directory_includes.recently_curated.limit(4)
+  end
+
+  # Fetch method for agent skills
+  def fetch_recent_agent_skills
+    Entry.agent_skills.visible.with_directory_includes.recently_curated.limit(4)
   end
 
   def popular_queries

@@ -81,6 +81,11 @@ class EntriesController < ApplicationController
           @entry.authors << author if author
         end
 
+        # Enqueue ParseAgentSkillJob for AgentSkill entries
+        if @entry.entryable.is_a?(AgentSkill)
+          ParseAgentSkillJob.perform_later(@entry.entryable.id)
+        end
+
         # Send notification emails asynchronously
         ResourceSubmissionMailer.notify_team(@entry).deliver_later
         ResourceSubmissionMailer.confirm_submitter(@entry).deliver_later
@@ -124,6 +129,8 @@ class EntriesController < ApplicationController
       :submitter_email,
       :resource_type,
       :author_id,
+      # AgentSkill fields
+      :skill_file_url,
       # RubyGem fields
       :gem_name,
       :github_url,
@@ -203,6 +210,8 @@ class EntriesController < ApplicationController
       Podcast.new(podcast_params)
     when "Community"
       Community.new(community_params)
+    when "AgentSkill"
+      AgentSkill.new(agent_skill_params)
     else
       raise ArgumentError, "Unknown resource type: #{resource_type}"
     end
@@ -294,5 +303,9 @@ class EntriesController < ApplicationController
       :member_count,
       :is_official
     )
+  end
+
+  def agent_skill_params
+    all_permitted_params.slice(:skill_file_url)
   end
 end

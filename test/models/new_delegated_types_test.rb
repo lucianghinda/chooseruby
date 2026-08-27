@@ -4,7 +4,7 @@ require "test_helper"
 
 # Tests for new delegated type models added in Resource Type Organization feature
 # Testing: Newsletter, Blog, Video, Channel, Documentation, TestingResource,
-# DevelopmentEnvironment, JobBoard, Framework, Directory, Product
+# DevelopmentEnvironment, JobBoard, Framework, Directory, Product, AgentSkill
 #
 # Focused on critical behaviors:
 # - display_name method
@@ -126,5 +126,30 @@ class NewDelegatedTypesTest < ActiveSupport::TestCase
 
     assert entry.updated_at > original_updated_at,
            "Expected entry.updated_at (#{entry.updated_at}) to be greater than original (#{original_updated_at})"
+  end
+
+  test "AgentSkill has display_name method that returns name when name exists" do
+    agent_skill = AgentSkill.create!(skill_file_url: "https://example.com/skill.md", name: "Test Skill")
+    entry = Entry.create!(
+      title: "Ruby Agent Skill",
+      url: "https://example.com",
+      entryable: agent_skill,
+      status: :approved
+    )
+
+    assert_equal "Ruby Agent Skill", agent_skill.display_name
+  end
+
+  test "AgentSkill has entry association" do
+    agent_skill = AgentSkill.create!(skill_file_url: "https://example.com/skill.md", name: "Test Skill")
+    entry = Entry.create!(
+      title: "Ruby Agent Skill",
+      url: "https://example.com",
+      entryable: agent_skill,
+      status: :approved
+    )
+
+    assert_equal entry, agent_skill.entry
+    assert_equal agent_skill, entry.entryable
   end
 end

@@ -66,7 +66,8 @@
                                 ["Article", "Article"],
                                 ["Tool", "Tool"],
                                 ["Podcast", "Podcast"],
-                                ["Community", "Community"]
+                                ["Community", "Community"],
+                                ["Agent Skill", "AgentSkill"]
                               ], @entry.entryable_type),
                               { prompt: "Choose one" },
                               class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300",
@@ -399,6 +400,17 @@
               <%= form.check_box :is_official, class: "h-4 w-4 rounded border-slate-300 text-rose-500 focus:ring-rose-400" %>
               <span class="font-semibold">This is an official Ruby community</span>
             </label>
+          </div>
+        </div>
+
+        <!-- AgentSkill Fields -->
+        <div class="space-y-6 hidden" data-entry-type="AgentSkill" data-entry-form-target="typeFields">
+          <h2 class="text-xl font-semibold text-slate-900">Agent Skill Details</h2>
+
+          <div class="space-y-2">
+            <%= form.label :skill_file_url, "Skill File URL", class: "text-sm font-semibold text-slate-700" %>
+            <%= form.url_field :skill_file_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://raw.githubusercontent.com/..." %>
+            <p class="text-xs text-slate-500">Link to the raw .md skill file (e.g., raw GitHub URL). We'll parse it automatically.</p>
           </div>
         </div>
 

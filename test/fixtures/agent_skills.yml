@@ -1,0 +1,24 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This file is intentionally empty to avoid conflicts
+# Tests create their own records as needed
+# == Schema Information
+#
+# Table name: agent_skills
+# Database name: primary
+#
+#  id                :integer          not null, primary key
+#  allowed_tools     :text
+#  body              :text
+#  compatibility     :string
+#  license           :string
+#  metadata          :text
+#  name              :string
+#  parse_error       :text
+#  parse_status      :integer          default("parse_pending"), not null
+#  pattern           :string
+#  skill_description :string
+#  skill_file_url    :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
