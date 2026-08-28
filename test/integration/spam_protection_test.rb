@@ -28,6 +28,16 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     assert throttles.key?("entries/create/daily"), "Daily throttle should be defined"
   end
 
+  test "hourly throttle is defined for author proposals creation" do
+    throttles = Rack::Attack.throttles
+    assert throttles.key?("author_proposals/create/hourly"), "Hourly author proposal throttle should be defined"
+  end
+
+  test "daily throttle is defined for author proposals creation" do
+    throttles = Rack::Attack.throttles
+    assert throttles.key?("author_proposals/create/daily"), "Daily author proposal throttle should be defined"
+  end
+
   test "localhost is safelisted from rate limiting" do
     # Verify safelist exists for localhost
     safelists = Rack::Attack.safelists
@@ -57,6 +67,21 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     assert_equal 429, status, "Should return 429 status"
     assert_equal "text/html", headers["Content-Type"], "Should return HTML content type"
     assert_match(/rate limit/i, body.first, "Response should mention rate limit")
+  end
+
+  test "throttled responder names the window for author proposal limits" do
+    env = {
+      "rack.attack.matched" => "author_proposals/create/daily",
+      "rack.attack.match_type" => :throttle,
+      "rack.attack.match_data" => {
+        epoch_time: Time.now.to_i,
+        period: 1.day.to_i
+      }
+    }
+
+    _status, _headers, body = Rack::Attack.throttled_responder.call(env)
+
+    assert_match(/daily submission limit/i, body.first, "Response should name the daily window")
   end
 
   test "active hashcash gem is loaded" do

@@ -35,6 +35,22 @@ class Rack::Attack
     end
   end
 
+  # Throttle: Limit author proposals to 3 requests per IP per hour
+  # Creating a proposal sends a confirmation email to an address the
+  # submitter chooses, so an unthrottled endpoint is an email relay
+  throttle("author_proposals/create/hourly", limit: 3, period: 1.hour) do |req|
+    if req.path == "/author_proposals" && req.post?
+      req.ip
+    end
+  end
+
+  # Throttle: Limit author proposals to 10 requests per IP per day
+  throttle("author_proposals/create/daily", limit: 10, period: 1.day) do |req|
+    if req.path == "/author_proposals" && req.post?
+      req.ip
+    end
+  end
+
   # Throttle: Limit login attempts to 10 requests per IP per 3 minutes
   # This prevents brute force attacks on the login page
   throttle("sessions/create", limit: 10, period: 3.minutes) do |req|
@@ -55,12 +71,11 @@ class Rack::Attack
     }
 
     # Determine which limit was exceeded
-    limit_type = if env["rack.attack.matched"] == "entries/create/hourly"
-      "hourly"
-    elsif env["rack.attack.matched"] == "entries/create/daily"
-      "daily"
-    else
-      "rate"
+    # Submission throttle names end in the window they cover, e.g. "entries/create/hourly"
+    limit_type = case env["rack.attack.matched"]
+    when %r{/hourly\z} then "hourly"
+    when %r{/daily\z} then "daily"
+    else "rate"
     end
 
     # User-friendly error message
