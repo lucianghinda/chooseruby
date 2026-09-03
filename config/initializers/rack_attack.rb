@@ -20,7 +20,7 @@ class Rack::Attack
   # Throttle: Limit entry submissions to 3 requests per IP per hour
   # This prevents rapid-fire spam submissions
   throttle("entries/create/hourly", limit: 3, period: 1.hour) do |req|
-    if req.path.match?(%r{\A/entries(?:\.[^/]+)?\z}) && req.post?
+    if req.path.match?(%r{\A/entries(?:\.[^/]+)?/?\z}) && req.post?
       # Return the IP address to track the request
       req.ip
     end
@@ -29,7 +29,7 @@ class Rack::Attack
   # Throttle: Limit entry submissions to 10 requests per IP per day
   # This provides a broader safety net for daily submission limits
   throttle("entries/create/daily", limit: 10, period: 1.day) do |req|
-    if req.path.match?(%r{\A/entries(?:\.[^/]+)?\z}) && req.post?
+    if req.path.match?(%r{\A/entries(?:\.[^/]+)?/?\z}) && req.post?
       # Return the IP address to track the request
       req.ip
     end
@@ -39,14 +39,14 @@ class Rack::Attack
   # Creating a proposal sends a confirmation email to an address the
   # submitter chooses, so an unthrottled endpoint is an email relay
   throttle("author_proposals/create/hourly", limit: 3, period: 1.hour) do |req|
-    if req.path.match?(%r{\A/author_proposals(?:\.[^/]+)?\z}) && req.post?
+    if req.path.match?(%r{\A/author_proposals(?:\.[^/]+)?/?\z}) && req.post?
       req.ip
     end
   end
 
   # Throttle: Limit author proposals to 10 requests per IP per day
   throttle("author_proposals/create/daily", limit: 10, period: 1.day) do |req|
-    if req.path.match?(%r{\A/author_proposals(?:\.[^/]+)?\z}) && req.post?
+    if req.path.match?(%r{\A/author_proposals(?:\.[^/]+)?/?\z}) && req.post?
       req.ip
     end
   end
@@ -54,7 +54,7 @@ class Rack::Attack
   # Throttle: Limit login attempts to 10 requests per IP per 3 minutes
   # This prevents brute force attacks on the login page
   throttle("sessions/create", limit: 10, period: 3.minutes) do |req|
-    if req.path.match?(%r{\A/session(?:\.[^/]+)?\z}) && req.post?
+    if req.path.match?(%r{\A/session(?:\.[^/]+)?/?\z}) && req.post?
       req.ip
     end
   end

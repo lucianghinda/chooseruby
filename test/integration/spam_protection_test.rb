@@ -56,6 +56,23 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "throttle matchers accept trailing slashes without widening request methods" do
+    {
+      "entries/create/hourly" => "/entries",
+      "entries/create/daily" => "/entries",
+      "author_proposals/create/hourly" => "/author_proposals",
+      "author_proposals/create/daily" => "/author_proposals",
+      "sessions/create" => "/session"
+    }.each do |throttle_name, route|
+      throttle = Rack::Attack.throttles.fetch(throttle_name)
+
+      [ "#{route}/", "#{route}.json/" ].each do |path|
+        assert_equal "203.0.113.1", throttle.block.call(rack_attack_request({ "REQUEST_METHOD" => "POST", "REMOTE_ADDR" => "203.0.113.1" }, path: path))
+        assert_nil throttle.block.call(rack_attack_request({ "REQUEST_METHOD" => "GET", "REMOTE_ADDR" => "203.0.113.1" }, path: path))
+      end
+    end
+  end
+
   test "localhost is safelisted from rate limiting" do
     # Verify safelist exists for localhost
     safelists = Rack::Attack.safelists
@@ -130,7 +147,7 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     Rack::Attack.safelists["allow-test-environment"] = test_safelist
   end
 
-  def rack_attack_request(env)
-    Rack::Attack::Request.new(Rack::MockRequest.env_for("/", env))
+  def rack_attack_request(env, path: "/")
+    Rack::Attack::Request.new(Rack::MockRequest.env_for(path, env))
   end
 end
