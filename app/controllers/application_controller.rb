@@ -9,6 +9,12 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
+  # Was copy-pasted into 4 actions across 3 controllers - see
+  # docs/llms/development.md's over-engineering pass.
+  rescue_from ActiveRecord::RecordNotFound do
+    render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
+  end
+
   # Authentication and authorization
   include SetCurrentRequest
   include BlockBannedRequests

@@ -69,6 +69,7 @@ fast ones (RuboCop, Reek, Herb) against staged files only.
 | debride | `bin/debride app lib` | Likely-unused methods | Exploratory only - high false-positive rate on Rails controller actions/callbacks (dynamic dispatch it can't see), always triage by hand before deleting anything it flags |
 | traceroute | `bin/rake traceroute:unused_routes` | Routes with no matching view/controller reference | Exploratory; skip `traceroute:unreachable_action_methods` - it's nearly 100% noise on `Avo::*Controller` subclasses, which inherit hundreds of gem-provided helper methods it can't tell apart from real actions |
 | skunk | `bin/skunk app` | Hotspot ranking (churn × complexity × smells) | Exploratory, points at what to refactor first, not a pass/fail gate - see `docs/llms/dependency_selection.md` for a caveat on Skunk's own dependency tail |
+| flay | `bin/flay app` | Structural duplication *across* files/classes - Reek's DuplicateMethodCall only catches duplication *within* one method | Exploratory, no fixed threshold - a real codebase never scores 0; used this pass to find the identical FTS-sanitizer/rescue-block/query-includes duplication described in the over-engineering section below |
 | still_active | `bin/still_active --baseline=still_active_baseline.json` | Dependency health / "gem smell" (maintenance activity, archived repos, OpenSSF score, poison-pill transitive caps) | Gated on regression only; runs on `Gemfile*` changes via lefthook and on every CI run |
 | PropCheck | plain Minitest test files (e.g. `test/models/author_proposal_url_matching_property_test.rb`) | Property-based testing | One example in place; add more as pure functions come up |
 | Mutineer | `bin/mutineer run <file> --test <test file> --rails` | Mutation testing (are your tests actually testing anything?) | Exploratory, run by hand against a file you're touching - not wired into CI (mutating the whole app on every push would be far too slow); see `--since`/`--baseline` in its own `--help` for scoping a CI job to a diff later |
@@ -77,3 +78,59 @@ fast ones (RuboCop, Reek, Herb) against staged files only.
 When you add a new gem here, add its `bin/<name>` wrapper (see `bin/reek` for the pattern)
 and a line to this table, and wire it into `config/ci.rb` and/or `lefthook.yml` as
 appropriate for how noisy/slow it is.
+
+## Over-engineering audit
+
+A pass looking specifically for unnecessary classes, dead flexibility, and
+duplicated logic - not style (RuboCop/Reek) or architecture boundaries
+(ArchSpec), which already have their own tools. See `AGENTS.md`'s
+"Avoiding over-engineering" section for the extracted rules and good/bad
+examples; this is the log of what was actually found and done about it.
+
+**Fixed this pass** (mechanical, behavior-preserving - full suite stayed green
+throughout):
+
+- `GithubAvatarService`, `FtsReindexer`: instantiate-then-delegate ceremony
+  around code with no instance state → `module_function`. Same call sites.
+- `Authentication::SessionLookup`: a whole extra file/module for one 12-line
+  private method with exactly one includer → inlined into `Authentication`.
+- `AuthorSearchQuery`/`EntryDirectoryQuery`: identical `sanitize_fts_query`
+  (down to the same doc comment) in both classes → extracted to
+  `app/queries/concerns/fts_query_sanitizer.rb`, `include`d by both. Also
+  dropped the `scope:` constructor keyword arg neither class's callers (in
+  `app/` or `test/`) ever passed, and replaced `.yield_self { |c| f(c) }`
+  chains with plain sequential calls (`flay`/`git grep` found the dead
+  parameter; nothing catches that automatically).
+- `Entry::RelatedResources#base_query`, `ResourcesController#related_by_author`,
+  `ResourcesController#related_by_topic`: the same 5-line `.includes(...)`
+  chain in 3 places → `Entry.with_card_includes` scope.
+- `EntriesController`: 8 near-identical `*_params` methods plus an 8-branch
+  `case` → one `ENTRYABLE_ATTRIBUTES` hash + one generic method. (Side
+  finding, not fixed here since it's a feature gap, not over-engineering:
+  this only ever covered 8 of the 19 types in `Entry::VALID_TYPES` - the
+  public submission form is missing 11 types Avo already manages. The new
+  hash-based structure makes adding them a one-line-per-type change instead
+  of a new method each.)
+- 4 identical `rescue ActiveRecord::RecordNotFound; render .../404.html...`
+  blocks across 3 controllers (found by `bin/flay app`) → one
+  `rescue_from` in `ApplicationController`.
+- SimpleCov's coverage floor (`test/test_helper.rb`) nudged from 47/32 to
+  46/31: deleting duplicate/dead code shrinks the denominator too, so the
+  same well-tested code read as a slightly lower percentage. Confirmed this
+  is the floor catching its own denominator shift, not new untested code,
+  before touching it - see the comment in `test/test_helper.rb`.
+
+**Flagged, not fixed** (needs a design call, not a mechanical extraction):
+
+- `app/avo/resources/{blog,channel,development_environment,directory,
+  documentation,framework,job_board,newsletter,product,testing_resource,
+  video}.rb` - 11 Avo resource classes with an identical `fields` shape
+  (`bin/flay app` mass 517, its single biggest finding). Each also has
+  bespoke per-type help text and a description string, so a shared base
+  trades ~15 duplicated lines/file for a parameterized one - not obviously
+  a win. Worth a second look if a 12th type shows up in the same shape.
+- `bin/flay app` also flags several `.html.erb` view-level duplications
+  (repeated `if` blocks across `entries/index`, `entries/start`, and
+  `resource_types/show`; repeated attribute assignments in
+  `home/index.html.erb`) - left for the Herb/view cleanup pass, since fixing
+  those means touching the same templates Herb's 112 offenses are already in.

@@ -31,9 +31,8 @@ class Entry::RelatedResources
 
   def base_query(category_ids:, exclude_ids:)
     Entry
-      .strict_loading
       .visible
-      .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+      .with_card_includes
       .joins(:categories_entries)
       .where(categories_entries: { category_id: category_ids })
       .where.not(id: exclude_ids)

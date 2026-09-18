@@ -180,6 +180,14 @@ class Entry < ApplicationRecord
   scope :recently_curated, -> { order(updated_at: :desc) }
   scope :with_directory_includes, -> { preload(:entryable, :categories, :authors, :rich_text_description) }
 
+  # Everything an entry card needs to render (image/avatar blobs included),
+  # with strict_loading so a missing include shows up immediately instead of
+  # as a silent N+1. Was copy-pasted 3 times across Entry::RelatedResources
+  # and ResourcesController - see docs/llms/development.md's over-engineering pass.
+  scope :with_card_includes, -> {
+    strict_loading.includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+  }
+
   # Task 2.5: Featured scope - returns entries with featured_at set, ordered by most recent
   scope :featured, -> { where.not(featured_at: nil).order(featured_at: :desc) }
 

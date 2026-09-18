@@ -103,6 +103,11 @@ group :development, :test do
   # Ranks files by (churn * complexity * code smells) to find hotspots worth refactoring first
   gem "skunk", require: false
 
+  # Structural duplication detector (already a transitive dep of skunk;
+  # listed directly for its own bin/flay, since Reek doesn't catch
+  # duplication *across* files/classes - see docs/llms/development.md)
+  gem "flay", require: false
+
   # Architecture linter: declares component boundaries in Archspec.rb and
   # checks them via static analysis (no app boot, no AI) [https://archspecrb.dev]
   gem "archspec", require: false

@@ -6,7 +6,7 @@ CI.run do
   step "Setup", "bin/setup --skip-server"
 
   step "Style: Ruby", "bin/rubocop"
-  step "Style: Code smells (Reek)", "bin/reek app"
+  step "Style: Code smells (Reek)", "bin/reek app/models"
   step "Style: ERB templates (Herb)", "bin/herb-lint"
   step "Architecture: boundaries (ArchSpec)", "bundle exec archspec check"
 

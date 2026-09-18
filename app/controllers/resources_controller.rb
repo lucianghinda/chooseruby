@@ -40,8 +40,6 @@ class ResourcesController < ApplicationController
 
     @author_resources = related_by_author(@entry)
     @related_resources = related_by_topic(@entry)
-  rescue ActiveRecord::RecordNotFound
-    render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
   end
 
   private
@@ -50,9 +48,8 @@ class ResourcesController < ApplicationController
     return Entry.none if entry.authors.blank?
 
     Entry
-      .strict_loading
       .visible
-      .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+      .with_card_includes
       .joins(:entries_authors)
       .where(entries_authors: { author_id: entry.author_ids })
       .where.not(id: entry.id)
@@ -69,9 +66,8 @@ class ResourcesController < ApplicationController
 
     additional_needed = 5 - related.size
     type_related = Entry
-      .strict_loading
       .visible
-      .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+      .with_card_includes
       .where(entryable_type: entry.entryable_type)
       .where.not(id: [ entry.id, *related.map(&:id) ])
       .recently_curated

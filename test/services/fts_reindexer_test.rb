@@ -28,7 +28,7 @@ class FtsReindexerTest < ActiveSupport::TestCase
     assert_equal 0, count
 
     # Reindex
-    FtsReindexer.new.reindex_entries
+    FtsReindexer.reindex_entries
 
     # Verify all entries are in FTS table
     count = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM entries_fts").first["COUNT(*)"]
@@ -63,7 +63,7 @@ class FtsReindexerTest < ActiveSupport::TestCase
     assert_equal 0, count
 
     # Reindex
-    FtsReindexer.new.reindex_authors
+    FtsReindexer.reindex_authors
 
     # Verify all authors are in FTS table
     count = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM authors_fts").first["COUNT(*)"]
@@ -95,7 +95,7 @@ class FtsReindexerTest < ActiveSupport::TestCase
     ActiveRecord::Base.connection.execute("DELETE FROM authors_fts")
 
     # Reindex all
-    FtsReindexer.new.reindex_all
+    FtsReindexer.reindex_all
 
     # Verify both tables have data
     entries_count = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM entries_fts").first["COUNT(*)"]
@@ -119,7 +119,7 @@ class FtsReindexerTest < ActiveSupport::TestCase
     end
 
     # Reindex with small batch size
-    FtsReindexer.new.reindex_entries(batch_size: 2)
+    FtsReindexer.reindex_entries(batch_size: 2)
 
     # Verify all entries are indexed
     count = ActiveRecord::Base.connection.execute("SELECT COUNT(*) FROM entries_fts").first["COUNT(*)"]

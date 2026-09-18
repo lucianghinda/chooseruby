@@ -675,6 +675,7 @@ DEPENDENCIES
   cgi
   debride
   debug
+  flay
   herb-embedded
   image_processing (~> 1.2)
   importmap-rails

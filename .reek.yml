@@ -24,6 +24,14 @@ detectors:
       # scan/finish don't touch instance state by design.
       - ApplicationController#n_plus_one_detection
 
+  TooManyStatements:
+    exclude:
+      # Was 3 methods (call/extract_username/construct_avatar_url) split
+      # purely to keep each one short - the actual over-engineering pass
+      # (docs/llms/development.md) merged them back into one linear guard-
+      # clause method. Re-splitting to satisfy this count would undo that.
+      - GithubAvatarService#call
+
   MissingSafeMethod:
     exclude:
       # These bang methods are the only entry point on purpose - there is no

@@ -20,8 +20,6 @@ class AuthorProposalsController < ApplicationController
   def new
     @author = Author.approved.find(params[:author_id])
     @author_proposal = AuthorProposal.new(author: @author)
-  rescue ActiveRecord::RecordNotFound
-    render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
   end
 
   # Display proposal form for new author
@@ -52,8 +50,6 @@ class AuthorProposalsController < ApplicationController
   # GET /author_proposals/:id/success
   def success
     @author_proposal = AuthorProposal.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
   end
 
   private
