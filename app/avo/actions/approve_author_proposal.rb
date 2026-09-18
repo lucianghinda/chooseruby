@@ -16,8 +16,6 @@ class Avo::Actions::ApproveAuthorProposal < Avo::BaseAction
         # Call the approve! method which handles all the logic
         proposal.approve!
         success_count += 1
-      rescue ActiveRecord::RecordInvalid => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
       rescue StandardError => e
         error_messages << "Proposal ##{proposal.id}: #{e.message}"
       end

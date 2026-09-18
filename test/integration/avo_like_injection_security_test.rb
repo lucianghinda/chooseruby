@@ -201,6 +201,28 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
     assert_equal query, result_empty, "Should return original query when value is empty"
   end
 
+  # AuthorProposal resource search tests
+  test "AuthorProposal resource search sanitizes percent wildcard" do
+    AuthorProposal.create!(author_name: "Searchable", bio_text: "Bio", submitter_email: "findme@example.com")
+    search_lambda = Avo::Resources::AuthorProposal.search[:query]
+
+    context = OpenStruct.new(params: { q: "%" }, query: AuthorProposal.all)
+    results = context.instance_exec(&search_lambda)
+
+    assert_operator results.count, :<, AuthorProposal.count,
+      "Wildcard % should be sanitized in AuthorProposal search"
+  end
+
+  test "AuthorProposal resource search matches submitter email" do
+    proposal = AuthorProposal.create!(author_name: "Searchable", bio_text: "Bio", submitter_email: "findme@example.com")
+    search_lambda = Avo::Resources::AuthorProposal.search[:query]
+
+    context = OpenStruct.new(params: { q: "findme" }, query: AuthorProposal.all)
+    results = context.instance_exec(&search_lambda)
+
+    assert_equal [ proposal ], results.to_a
+  end
+
   # Cross-cutting security tests
   test "all Avo resources use sanitize_sql_like" do
     # Verify that the code contains sanitization

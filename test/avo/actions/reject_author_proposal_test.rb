@@ -61,4 +61,39 @@ class Avo::Actions::RejectAuthorProposalTest < ActiveSupport::TestCase
     # The action should not be visible for non-pending proposals
     assert_not action.visible?
   end
+
+  test "reject action refuses to run without an admin comment" do
+    author = Author.create!(name: "Yukihiro Matsumoto", status: :approved)
+    proposal = AuthorProposal.create!(author: author, bio_text: "Bio", submitter_email: "user@example.com")
+
+    action = Avo::Actions::RejectAuthorProposal.new(record: proposal, resource: nil, user: nil, view: :index)
+    action.handle(records: [ proposal ], fields: { admin_comment: "" }, current_user: nil, resource: nil)
+
+    assert proposal.reload.pending?
+    assert_equal "Admin comment is required when rejecting proposals", action.response[:messages].sole[:body]
+  end
+
+  test "reject action reports proposals that fail to reject" do
+    author = Author.create!(name: "Yukihiro Matsumoto", status: :approved)
+    proposal = AuthorProposal.create!(author: author, bio_text: "Bio", submitter_email: "user@example.com")
+    proposal.define_singleton_method(:reject!) { |**| raise ActiveRecord::RecordInvalid }
+
+    action = Avo::Actions::RejectAuthorProposal.new(record: proposal, resource: nil, user: nil, view: :index)
+    action.handle(records: [ proposal ], fields: { admin_comment: "No" }, current_user: nil, resource: nil)
+
+    message = action.response[:messages].sole
+    assert_equal :error, message[:type]
+    assert_match "0 rejected, 1 failed: Proposal ##{proposal.id}:", message[:body]
+  end
+
+  test "reject action is visible on the index and only for pending records" do
+    author = Author.create!(name: "Visible Author", status: :approved)
+    pending = AuthorProposal.create!(author: author, bio_text: "Bio", submitter_email: "p@example.com")
+    rejected = AuthorProposal.create!(author: author, bio_text: "Bio", submitter_email: "r@example.com", status: :rejected)
+
+    assert Avo::Actions::RejectAuthorProposal.new(record: nil, resource: nil, user: nil, view: :index).visible?
+    assert Avo::Actions::RejectAuthorProposal.new(record: pending, resource: nil, user: nil, view: :show).visible?
+    assert_not Avo::Actions::RejectAuthorProposal.new(record: rejected, resource: nil, user: nil, view: :show).visible?
+    assert_not Avo::Actions::RejectAuthorProposal.new(record: nil, resource: nil, user: nil, view: :show).visible?
+  end
 end

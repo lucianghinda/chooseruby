@@ -86,4 +86,27 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
     assert_equal "Updated bio 1", author1.bio
     assert_equal "Updated bio 2", author2.bio
   end
+
+  test "approve action reports proposals that fail to approve" do
+    proposal = AuthorProposal.create!(author_name: "X", submitter_email: "user@example.com")
+
+    action = Avo::Actions::ApproveAuthorProposal.new(record: proposal, resource: nil, user: nil, view: :index)
+    action.handle(records: [ proposal ], fields: {}, current_user: nil, resource: nil)
+
+    assert proposal.reload.pending?
+    message = action.response[:messages].sole
+    assert_equal :error, message[:type]
+    assert_match "0 approved, 1 failed: Proposal ##{proposal.id}: Validation failed: Name is too short", message[:body]
+  end
+
+  test "approve action is visible on the index and only for pending records" do
+    author = Author.create!(name: "Visible Author", status: :approved)
+    pending = AuthorProposal.create!(author: author, bio_text: "Bio", submitter_email: "p@example.com")
+    approved = AuthorProposal.create!(author: author, bio_text: "Bio", submitter_email: "a@example.com", status: :approved)
+
+    assert Avo::Actions::ApproveAuthorProposal.new(record: nil, resource: nil, user: nil, view: :index).visible?
+    assert Avo::Actions::ApproveAuthorProposal.new(record: pending, resource: nil, user: nil, view: :show).visible?
+    assert_not Avo::Actions::ApproveAuthorProposal.new(record: approved, resource: nil, user: nil, view: :show).visible?
+    assert_not Avo::Actions::ApproveAuthorProposal.new(record: nil, resource: nil, user: nil, view: :show).visible?
+  end
 end

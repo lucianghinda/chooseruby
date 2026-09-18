@@ -270,6 +270,52 @@ class AuthorProposal < ApplicationRecord
     matched_entry_id.present?
   end
 
+  # Human-readable proposal kind for the admin interface
+  def proposal_type
+    new_author_proposal? ? "New Author" : "Edit Existing Author"
+  end
+
+  # Multi-line comparison of the proposed changes against the current author
+  # data, shown to admins when reviewing the proposal. Callers must preload
+  # :author and :matched_entry (the model is strict_loading by default).
+  def changes_summary
+    summary = []
+
+    summary << if new_author_proposal?
+      "Creating new author: #{author_name}"
+    else
+      "Editing author: #{author.name}"
+    end
+
+    if has_resource_proposal?
+      summary << if matched_entry?
+        "\nResource: Matched entry ##{matched_entry_id} - #{matched_entry.title}"
+      else
+        "\nResource: Unmatched URL - #{resource_url}"
+      end
+    end
+
+    if has_link_updates?
+      summary << "\nLink Updates:"
+      link_updates.each do |field, url|
+        summary << "  - #{field}: #{author&.public_send(field).presence || '(blank)'} → #{url}"
+      end
+    end
+
+    if bio_text.present?
+      summary << "\nBio:"
+      summary << "  Current: #{author&.bio.presence || '(blank)'}"
+      summary << "  Proposed: #{bio_text}"
+    end
+
+    if description_text.present?
+      summary << "\nDescription:"
+      summary << "  Proposed: #{description_text}"
+    end
+
+    summary.join("\n")
+  end
+
   private
 
   # ========================================

@@ -31,8 +31,6 @@ class Avo::Actions::RejectAuthorProposal < Avo::BaseAction
         # Call the reject! method with admin_comment
         proposal.reject!(admin_comment: admin_comment)
         success_count += 1
-      rescue ArgumentError => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
       rescue StandardError => e
         error_messages << "Proposal ##{proposal.id}: #{e.message}"
       end

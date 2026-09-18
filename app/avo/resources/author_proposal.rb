@@ -114,12 +114,8 @@ class Avo::Resources::AuthorProposal < Avo::BaseResource
           readonly: true,
           computed: true,
           hide_on: [ :edit, :new ],
-          help: "Type of proposal" do |record|
-            unless record && record.respond_to?(:new_author_proposal?)
-              ""
-            else
-              record.new_author_proposal? ? "New Author" : "Edit Existing Author"
-            end
+          help: "Type of proposal" do
+            record.proposal_type
           end
 
     field :changes_summary, as: :textarea,
@@ -127,50 +123,8 @@ class Avo::Resources::AuthorProposal < Avo::BaseResource
           computed: true,
           rows: 8,
           hide_on: [ :index, :edit, :new ],
-          help: "Summary of proposed changes" do |record|
-            unless record && record.respond_to?(:new_author_proposal?)
-              ""
-            else
-              summary = []
-
-              if record.new_author_proposal?
-                summary << "Creating new author: #{record.author_name}"
-              else
-                summary << "Editing author: #{record.author&.name}"
-              end
-
-              if record.has_resource_proposal?
-                if record.matched_entry?
-                  summary << "\nResource: Matched entry ##{record.matched_entry_id} - #{record.matched_entry&.title}"
-                else
-                  summary << "\nResource: Unmatched URL - #{record.resource_url}"
-                end
-              end
-
-              if record.has_link_updates?
-                summary << "\nLink Updates:"
-                record.link_updates.each do |field, url|
-                  current_value = record.author&.send(field) if record.author
-                  summary << "  - #{field}: #{current_value.presence || '(blank)'} → #{url}"
-                end
-              end
-
-              if record.bio_text.present?
-                current_bio = record.author&.bio if record.author
-                summary << "\nBio:"
-                summary << "  Current: #{current_bio.presence || '(blank)'}"
-                summary << "  Proposed: #{record.bio_text}"
-              end
-
-              if record.description_text.present?
-                current_desc = record.author&.description if record.author&.respond_to?(:description)
-                summary << "\nDescription:"
-                summary << "  Current: #{current_desc.presence || '(blank)'}"
-                summary << "  Proposed: #{record.description_text}"
-              end
-
-              summary.join("\n")
-            end
+          help: "Summary of proposed changes" do
+            record.changes_summary
           end
   end
 
