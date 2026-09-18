@@ -183,4 +183,36 @@ class ResourcesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", text: /Related resources/
     assert_select "a", text: "Category Related Entry"
   end
+
+  test "related resources come from categories alone when there are at least five" do
+    category = Category.find_or_create_by!(name: "Testing") { |c| c.slug = "testing" }
+    entry = Entry.create!(title: "Primary Entry", url: "https://example.com/primary", published: true, status: :approved)
+    entry.categories << category
+
+    5.times do |i|
+      related = Entry.create!(title: "Related #{i}", url: "https://example.com/related-#{i}", published: true, status: :approved)
+      related.categories << category
+    end
+    Entry.create!(title: "Same Type Only", url: "https://example.com/same-type", published: true, status: :approved)
+
+    get "/resources/#{entry.slug}"
+
+    assert_response :success
+    assert_select "a", text: /Related \d/, count: 5
+    assert_select "a", text: "Same Type Only", count: 0
+  end
+
+  test "index lists featured and filtered resources" do
+    featured = Entry.create!(title: "Featured Gem", url: "https://example.com/featured", published: true, status: :approved, featured_at: Time.current, entryable: RubyGem.create!(gem_name: "featured-gem"))
+    book = Entry.create!(title: "Plain Book", url: "https://example.com/book", published: true, status: :approved, entryable: Book.create!(publisher: "Pragmatic"))
+
+    get resources_path(type: "gems")
+
+    assert_response :success
+    assert_select "h1", text: /Resources Directory/
+    assert_select "h2", text: "Featured Resources"
+    assert_select "h3", text: featured.title
+    assert_select "h3", text: book.title, count: 0
+    assert_select "p", text: "1 resource found"
+  end
 end

@@ -298,4 +298,85 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     # Should NOT find beginner routing entry (filtered by search query)
     assert_select "h3", text: "Rails Routing for Beginners", count: 0
   end
+
+  test "POST create ignores an author_id that does not exist" do
+    post entries_path, params: {
+      entry: {
+        title: "Entry with Missing Author",
+        url: "https://example.com",
+        description: "Test",
+        resource_type: "RubyGem",
+        submitter_email: "test@example.com",
+        gem_name: "missing-author-gem",
+        author_id: 0
+      }
+    }
+
+    assert_empty Entry.last.authors
+  end
+
+  test "POST create with a Course and no price leaves price_cents unset" do
+    post entries_path, params: {
+      entry: {
+        title: "Free Course",
+        url: "https://example.com/course",
+        description: "Test",
+        resource_type: "Course",
+        submitter_email: "test@example.com",
+        platform: "Udemy"
+      }
+    }
+
+    assert_nil Entry.last.entryable.price_cents
+  end
+
+  test "POST create with an unknown resource type raises" do
+    assert_raises(ArgumentError) do
+      post entries_path, params: {
+        entry: {
+          title: "Mystery",
+          url: "https://example.com/mystery",
+          description: "Test",
+          resource_type: "Mystery",
+          submitter_email: "test@example.com"
+        }
+      }
+    end
+  end
+
+  test "GET suggestions returns nothing for queries shorter than two characters" do
+    get entries_suggestions_path(q: "r")
+
+    assert_response :ok
+    assert_empty response.body
+  end
+
+  test "GET suggestions lists matching resources, categories and types" do
+    gem = RubyGem.create!(gem_name: "rails-suggest")
+    entry = Entry.create!(title: "Rails Suggestion", url: "https://example.com/rails", entryable: gem, status: :approved, published: true)
+    category = Category.create!(name: "Rails Testing")
+
+    get entries_suggestions_path(q: "rails")
+
+    assert_response :success
+    assert_select "a[href=?]", resource_path(entry.slug), text: /Rails Suggestion/
+    assert_select "a[href=?]", category_path(category.slug)
+    assert_select "a[href=?]", resource_type_path("gems"), count: 0
+  end
+
+  test "GET suggestions matches resource types by name" do
+    get entries_suggestions_path(q: "gem")
+
+    assert_response :success
+    assert_select "a[href=?]", resource_type_path("gems")
+  end
+
+  test "GET suggestions escapes LIKE wildcards" do
+    Entry.create!(title: "Percent Sign", url: "https://example.com/percent", status: :approved, published: true)
+
+    get entries_suggestions_path(q: "%%")
+
+    assert_response :success
+    assert_select "a", text: /Percent Sign/, count: 0
+  end
 end

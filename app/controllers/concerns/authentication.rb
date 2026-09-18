@@ -7,7 +7,6 @@ module Authentication
 
   included do
     before_action :set_current_user
-    helper_method :current_user, :authenticated?
   end
 
   private
@@ -16,20 +15,6 @@ module Authentication
     if session = find_session_by_cookie
       Current.user = session.user
       Current.session = session
-    end
-  end
-
-  def current_user
-    Current.user
-  end
-
-  def authenticated?
-    current_user.present?
-  end
-
-  def require_authentication
-    unless authenticated?
-      redirect_to new_session_path, alert: "Please sign in to continue"
     end
   end
 

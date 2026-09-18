@@ -75,4 +75,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     delete session_url
     assert_redirected_to root_path
   end
+
+  test "DELETE destroy without an active session still redirects to root" do
+    delete session_url
+
+    assert_redirected_to root_path
+  end
 end

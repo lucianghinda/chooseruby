@@ -6,9 +6,8 @@ Rails.application.config.after_initialize do
   if defined?(Avo::BaseController)
     Avo::BaseController.class_eval do
       include SetCurrentRequest
-      include BlockBannedRequests
       include Authentication
-      include Authorization
+      include BlockBannedRequests
     end
   end
 end

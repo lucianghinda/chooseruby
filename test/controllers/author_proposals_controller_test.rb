@@ -102,4 +102,46 @@ class AuthorProposalsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", text: /Thank You/
   end
+
+  test "GET new returns 404 for an author that is not approved" do
+    author = Author.create!(name: "Pending Author", status: :pending)
+
+    get propose_author_edit_path(author_id: author.id)
+
+    assert_response :not_found
+  end
+
+  test "POST create re-renders the new author form when a new author proposal is invalid" do
+    post author_proposals_path, params: {
+      author_proposal: {
+        author_name: "Brand New Author",
+        submitter_name: "John Doe"
+      }
+    }
+
+    assert_response :unprocessable_entity
+    assert_select "input#author_proposal_author_name[value=?]", "Brand New Author"
+  end
+
+  test "GET success returns 404 for an unknown proposal" do
+    get author_proposal_success_path(id: 0)
+
+    assert_response :not_found
+  end
+
+  test "POST create stores only the non-blank link updates" do
+    author = Author.create!(name: "Test Author", status: :approved)
+
+    post author_proposals_path, params: {
+      author_proposal: {
+        author_id: author.id,
+        submitter_email: "john@example.com",
+        link_updates: { github_url: "https://github.com/test", gitlab_url: "" }
+      }
+    }
+
+    proposal = AuthorProposal.last
+    assert_redirected_to author_proposal_success_path(proposal)
+    assert_equal({ "github_url" => "https://github.com/test" }, proposal.link_updates)
+  end
 end

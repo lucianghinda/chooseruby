@@ -7,11 +7,11 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
-  # Authentication and authorization
+  # Authentication must come before BlockBannedRequests so Current.user is set
+  # when the ban check runs
   include SetCurrentRequest
-  include BlockBannedRequests
   include Authentication
-  include Authorization
+  include BlockBannedRequests
 
   helper_method :curated_collections_data, :experience_tracks_data
 
