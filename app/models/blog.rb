@@ -32,6 +32,6 @@ class Blog < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Blog ##{id}"
+    name
   end
 end

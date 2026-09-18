@@ -32,6 +32,6 @@ class DevelopmentEnvironment < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "DevelopmentEnvironment ##{id}"
+    name
   end
 end

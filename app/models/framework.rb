@@ -32,6 +32,6 @@ class Framework < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Framework ##{id}"
+    name
   end
 end

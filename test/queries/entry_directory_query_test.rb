@@ -329,6 +329,64 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     assert_equal 4, results.count, "Should return all entries with invalid type"
   end
 
+  test "handles invalid level parameter gracefully" do
+    results = EntryDirectoryQuery.new({ level: "expert" }).call
+
+    assert_equal 4, results.count, "Should return all entries with invalid level"
+  end
+
+  test "ignores query words made only of special characters" do
+    results = EntryDirectoryQuery.new({ q: "rails -" }).call
+
+    assert_includes results, @entry1
+  end
+
+  test "sorts by popularity using downloads count" do
+    @gem1.update!(downloads_count: 10)
+    @gem2.update!(downloads_count: 1_000)
+    @gem3.update!(downloads_count: 100)
+
+    results = EntryDirectoryQuery.new({ sort: "popular", type: "gems" }).call
+
+    assert_equal [ @entry2, @entry3, @entry1 ], results.to_a
+  end
+
+  test "sorts oldest first" do
+    @entry1.update_column(:updated_at, 3.days.ago)
+    @entry2.update_column(:updated_at, 1.day.ago)
+    @entry3.update_column(:updated_at, 2.days.ago)
+
+    results = EntryDirectoryQuery.new({ sort: "oldest", type: "gems" }).call
+
+    assert_equal [ @entry1, @entry3, @entry2 ], results.to_a
+  end
+
+  test "sorts beginner entries first" do
+    @entry1.update!(experience_level: :advanced)
+    @entry2.update!(experience_level: :beginner)
+    @entry3.update!(experience_level: :intermediate)
+
+    results = EntryDirectoryQuery.new({ sort: "beginner_first", type: "gems" }).call
+
+    assert_equal [ @entry2, @entry3, @entry1 ], results.to_a
+  end
+
+  test "falls back to most recent for unknown sort" do
+    @entry1.update_column(:updated_at, 3.days.ago)
+    @entry2.update_column(:updated_at, 1.day.ago)
+    @entry3.update_column(:updated_at, 2.days.ago)
+
+    results = EntryDirectoryQuery.new({ sort: "bogus", type: "gems" }).call
+
+    assert_equal [ @entry2, @entry3, @entry1 ], results.to_a
+  end
+
+  test "keeps relevance ordering for unknown sort when searching" do
+    results = EntryDirectoryQuery.new({ sort: "bogus", q: "rails" }).call
+
+    assert_equal [ @entry1 ], results.to_a
+  end
+
   # Test 16: FTS5 search works with type filter
   test "maintains FTS5 relevance ordering with type filter" do
     gem_high = RubyGem.create!(gem_name: "ruby-test", rubygems_url: "https://rubygems.org/gems/ruby-test")

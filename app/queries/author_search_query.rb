@@ -63,8 +63,6 @@ class AuthorSearchQuery
   #   '"Yukihiro Matsumoto"' => '"Yukihiro Matsumoto"'
   #   'david "heinemeier hansson"' => 'david* "heinemeier hansson"'
   def sanitize_fts_query(query_string)
-    return "" if query_string.blank?
-
     # Extract quoted phrases and their positions
     phrases = []
     query_without_phrases = query_string.gsub(/"([^"]*)"/) do |match|

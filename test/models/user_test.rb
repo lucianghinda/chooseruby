@@ -94,4 +94,38 @@ class UserTest < ActiveSupport::TestCase
       user.destroy
     end
   end
+
+  # Bannable tests
+  test "ban! suspends the user, records the ban and closes sessions" do
+    user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
+    session = user.sessions.create!
+
+    user.ban!(reason: "Spam", ip_address: "127.0.0.1")
+
+    assert user.banned?
+    assert user.suspended?
+    assert_equal "Spam", user.bans.sole.reason
+    assert_equal "127.0.0.1", user.bans.sole.ip_address
+    assert_not Session.exists?(session.id)
+  end
+
+  test "unban! reactivates the user and expires active bans" do
+    user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
+    user.ban!(reason: "Spam")
+
+    user.unban!
+
+    assert_not user.banned?
+    assert user.active?
+    assert_empty user.bans.active
+  end
+
+  # Role tests
+  test "can_administer? is true only for admins" do
+    admin = User.new(email_address: "admin@example.com", name: "Admin", password: "password123", role: :admin)
+    editor = User.new(email_address: "editor@example.com", name: "Editor", password: "password123", role: :editor)
+
+    assert admin.can_administer?
+    assert_not editor.can_administer?
+  end
 end

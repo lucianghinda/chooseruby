@@ -32,6 +32,6 @@ class JobBoard < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "JobBoard ##{id}"
+    name
   end
 end

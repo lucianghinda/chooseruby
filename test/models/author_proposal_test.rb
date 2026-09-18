@@ -419,6 +419,79 @@ class AuthorProposalTest < ActiveSupport::TestCase
     assert proposal.pending?, "Proposal should remain pending without admin_comment"
   end
 
+  test "reject! should require a non-blank admin_comment" do
+    proposal = AuthorProposal.create!(
+      author: @author,
+      bio_text: "Some bio text",
+      submitter_email: "test@example.com"
+    )
+
+    error = assert_raises(ArgumentError) do
+      proposal.reject!(admin_comment: " ")
+    end
+
+    assert_equal "admin_comment is required for rejection", error.message
+    assert proposal.pending?, "Proposal should remain pending with blank admin_comment"
+  end
+
+  test "approve! should skip blank link_updates values" do
+    @author.update!(github_url: "https://github.com/existing")
+    proposal = AuthorProposal.create!(
+      author: @author,
+      link_updates: { "github_url" => "", "website_url" => "https://example.com" },
+      submitter_email: "test@example.com"
+    )
+
+    proposal.approve!
+
+    @author.reload
+    assert_equal "https://github.com/existing", @author.github_url
+    assert_equal "https://example.com", @author.website_url
+  end
+
+  test "approve! should not duplicate an existing EntriesAuthor association" do
+    entry = Entry.create!(
+      title: "RSpec Testing",
+      url: "https://rspec.info",
+      status: :approved,
+      published: true
+    )
+    EntriesAuthor.create!(author: @author, entry: entry)
+
+    proposal = AuthorProposal.create!(
+      author: @author,
+      resource_url: "https://rspec.info",
+      submitter_email: "test@example.com"
+    )
+
+    assert_no_difference "EntriesAuthor.count" do
+      proposal.approve!
+    end
+
+    assert proposal.approved?
+  end
+
+  test "should allow blank values in link_updates" do
+    proposal = AuthorProposal.new(
+      author: @author,
+      link_updates: { "github_url" => "", "website_url" => "https://example.com" },
+      submitter_email: "test@example.com"
+    )
+
+    assert proposal.valid?
+  end
+
+  test "should reject unknown link fields in link_updates" do
+    proposal = AuthorProposal.new(
+      author: @author,
+      link_updates: { "myspace_url" => "https://myspace.com/matz" },
+      submitter_email: "test@example.com"
+    )
+
+    assert_not proposal.valid?
+    assert_includes proposal.errors[:link_updates], "myspace_url is not a valid link field"
+  end
+
   # Test 2.1.6: New author creation flow via approve!
   test "approve! should create new author from proposal" do
     proposal = AuthorProposal.create!(

@@ -47,7 +47,7 @@ class RubyGem < ApplicationRecord
 
   # Display name for Avo dropdown - prefers entry title, falls back to gem_name
   def display_name
-    entry&.title || gem_name || "RubyGem ##{id}"
+    entry&.title || gem_name
   end
 
   # Validations

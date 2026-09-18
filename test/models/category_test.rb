@@ -22,6 +22,14 @@
 require "test_helper"
 
 class CategoryTest < ActiveSupport::TestCase
+  test "ensures slug uniqueness by appending number" do
+    category1 = Category.create!(name: "Web Frameworks")
+    category2 = Category.create!(name: "Web & Frameworks")
+
+    assert_equal "web-frameworks", category1.slug
+    assert_equal "web-frameworks-1", category2.slug
+  end
+
   test "entries_count returns correct count of visible entries" do
     category = Category.create!(name: "Testing Count", slug: "testing-count")
 

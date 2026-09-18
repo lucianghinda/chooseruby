@@ -32,6 +32,6 @@ class Product < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Product ##{id}"
+    name
   end
 end

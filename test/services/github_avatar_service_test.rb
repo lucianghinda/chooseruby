@@ -67,4 +67,20 @@ class GithubAvatarServiceTest < ActiveSupport::TestCase
 
     assert_equal "https://github.com/dhh.png", author.reload.avatar_url
   end
+
+  test "integration: author keeps avatar when github_url is cleared" do
+    author = Author.create(name: "Test Author", github_url: "https://github.com/dhh")
+
+    author.update(github_url: nil)
+
+    assert_equal "https://github.com/dhh.png", author.reload.avatar_url
+  end
+
+  test "integration: author keeps avatar when github_url has no username" do
+    author = Author.create(name: "Test Author", github_url: "https://github.com/dhh")
+
+    author.update(github_url: "https://github.com/rails/rails")
+
+    assert_equal "https://github.com/dhh.png", author.reload.avatar_url
+  end
 end

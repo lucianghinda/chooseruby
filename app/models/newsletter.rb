@@ -32,6 +32,6 @@ class Newsletter < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Newsletter ##{id}"
+    name
   end
 end

@@ -32,6 +32,6 @@ class Documentation < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Documentation ##{id}"
+    name
   end
 end

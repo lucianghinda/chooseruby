@@ -272,4 +272,15 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
 
     assert_equal 3, related.length, "Should return 3 resources when only 1 per category available"
   end
+
+  test "stops collecting once the limit is reached" do
+    [ @category1, @category2 ].each_with_index do |category, i|
+      entry = Entry.create!(title: "Resource #{i}", url: "https://example.com/#{i}", published: true, status: :approved)
+      entry.categories << category
+    end
+
+    related = Entry::RelatedResources.new(@main_entry, limit: 1).call
+
+    assert_equal 1, related.length
+  end
 end

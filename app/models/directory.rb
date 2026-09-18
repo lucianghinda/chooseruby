@@ -32,6 +32,6 @@ class Directory < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Directory ##{id}"
+    name
   end
 end

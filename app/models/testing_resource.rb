@@ -32,6 +32,6 @@ class TestingResource < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "TestingResource ##{id}"
+    name
   end
 end

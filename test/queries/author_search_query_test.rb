@@ -117,4 +117,10 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
       query.call.to_a
     end
   end
+
+  test "ignores query words made only of special characters" do
+    results = AuthorSearchQuery.new({ q: "Yuki -" }).call
+
+    assert_includes results, @author_matz
+  end
 end

@@ -244,7 +244,29 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
     assert_equal original_result["tags"], updated_result["tags"]
   end
 
+  test "keeps FTS row when an entry without description changes unrelated fields" do
+    gem = RubyGem.create!(gem_name: "no-description-gem")
+    entry = Entry.create!(title: "No Description Entry", url: "https://example.com", entryable: gem, status: :approved)
+
+    entry.update!(published: true)
+
+    assert_equal "", fts_description_for(entry)
+  end
+
+  test "syncs FTS row when only the description changes" do
+    gem = RubyGem.create!(gem_name: "description-change-gem")
+    entry = Entry.create!(title: "Description Entry", url: "https://example.com", entryable: gem, status: :approved)
+
+    entry.update!(description: "A new description")
+
+    assert_equal "A new description", fts_description_for(entry)
+  end
+
   private
+
+  def fts_description_for(entry)
+    ActiveRecord::Base.connection.select_value("SELECT description FROM entries_fts WHERE entry_id = #{entry.id}")
+  end
 
   # Create FTS5 tables if they don't exist
   # This is needed for parallel test runs where each worker has its own database

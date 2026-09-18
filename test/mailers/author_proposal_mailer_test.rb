@@ -114,4 +114,32 @@ class AuthorProposalMailerTest < ActionMailer::TestCase
     assert_match(/thank/i, email.html_part.body.to_s)
     assert_match(/thank/i, email.text_part.body.to_s)
   end
+
+  test "submission_confirmation for a new author proposal names the proposed author" do
+    proposal = AuthorProposal.create!(
+      author_name: "Brand New Author",
+      submitter_email: "john@example.com",
+      status: :pending
+    )
+
+    email = AuthorProposalMailer.submission_confirmation(proposal)
+
+    assert_match "New Author Proposal", email.html_part.body.to_s
+    assert_match "Brand New Author", email.html_part.body.to_s
+    assert_match "Brand New Author", email.text_part.body.to_s
+  end
+
+  test "rejection_notification for a new author proposal does not require an author" do
+    proposal = AuthorProposal.create!(
+      author_name: "Brand New Author",
+      submitter_email: "john@example.com",
+      status: :rejected,
+      admin_comment: "We could not verify this author."
+    )
+
+    email = AuthorProposalMailer.rejection_notification(proposal)
+
+    assert_equal [ "john@example.com" ], email.to
+    assert_match "We could not verify this author.", email.html_part.body.to_s
+  end
 end

@@ -32,6 +32,6 @@ class Channel < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Channel ##{id}"
+    name
   end
 end

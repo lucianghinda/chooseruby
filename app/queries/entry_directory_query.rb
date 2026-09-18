@@ -86,17 +86,30 @@ class EntryDirectoryQuery
 
   def apply_sort(current_scope)
     case sort
-    when "recent", "newest"
-      query.present? ? current_scope : current_scope.order(updated_at: :desc)
     when "popular"
       current_scope.reorder(Arel.sql(popularity_order_sql))
     when "oldest"
       current_scope.reorder(updated_at: :asc)
     when "beginner_first"
-      current_scope.reorder(Arel.sql("experience_level = 'beginner' DESC, experience_level = 'intermediate' DESC, experience_level = 'advanced' DESC, entries.updated_at DESC"))
+      current_scope.reorder(Arel.sql(beginner_first_order_sql))
     else
+      # "recent" and unknown sorts: keep FTS5 relevance when searching, otherwise most recent
       query.present? ? current_scope : current_scope.order(updated_at: :desc)
     end
+  end
+
+  def beginner_first_order_sql
+    levels = Entry.experience_levels
+
+    <<~SQL.squish
+      CASE entries.experience_level
+        WHEN #{levels[:beginner]} THEN 0
+        WHEN #{levels[:intermediate]} THEN 1
+        WHEN #{levels[:advanced]} THEN 2
+        ELSE 3
+      END,
+      entries.updated_at DESC
+    SQL
   end
 
   def popularity_order_sql
@@ -131,8 +144,6 @@ class EntryDirectoryQuery
   #   '"web framework"' => '"web framework"'
   #   'rails "web framework"' => 'rails* "web framework"'
   def sanitize_fts_query(query_string)
-    return "" if query_string.blank?
-
     # Extract quoted phrases and their positions
     phrases = []
     query_without_phrases = query_string.gsub(/"([^"]*)"/) do |match|

@@ -316,18 +316,13 @@ class AuthorProposal < ApplicationRecord
   # Applies link_updates hash to author's link fields
   #
   # Only updates fields that are present in the link_updates hash.
-  # Validates that all link fields are valid Author attributes.
+  # Field names are checked by validate_link_urls before the proposal is saved.
   #
   # @param target_author [Author] the author to update
   # @return [void]
   def apply_link_updates_to_author(target_author)
     link_updates.each do |field_name, url_value|
       next if url_value.blank?
-
-      # Validate field exists on Author model
-      unless target_author.respond_to?("#{field_name}=")
-        raise ArgumentError, "Invalid link field: #{field_name}"
-      end
 
       target_author.send("#{field_name}=", url_value)
     end
@@ -412,8 +407,6 @@ class AuthorProposal < ApplicationRecord
   # Normalizes resource_url and attempts to match with existing Entry
   # Stores original URL and sets matched_entry_id if found
   def normalize_and_match_resource_url
-    return if resource_url.blank?
-
     # Store original URL before normalization
     self.original_resource_url = resource_url.dup
 
@@ -427,8 +420,6 @@ class AuthorProposal < ApplicationRecord
   # Normalizes a URL for consistent matching
   # Handles: whitespace, http/https, trailing slashes, www prefix, case
   def normalize_url(url)
-    return nil if url.blank?
-
     normalized = url.strip.downcase
 
     # Normalize protocol to http://
@@ -446,8 +437,6 @@ class AuthorProposal < ApplicationRecord
   # Searches for matching Entry by normalized URL
   # Sets matched_entry_id if exact match found
   def match_entry_by_url
-    return if resource_url.blank?
-
     # Search all entries and normalize their URLs for comparison
     matched = Entry.find_by(
       "REPLACE(REPLACE(LOWER(TRIM(url)), 'https://', 'http://'), 'www.', '') = ?",

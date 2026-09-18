@@ -2,8 +2,6 @@
 
 module ApplicationHelper
   def breadcrumbs(items)
-    return "" if items.blank?
-
     content_tag :nav, aria: { label: "Breadcrumb" }, class: "mb-6" do
       content_tag :ol, class: "flex flex-wrap items-center gap-2 text-sm text-slate-600" do
         items.each_with_index.map do |item, index|

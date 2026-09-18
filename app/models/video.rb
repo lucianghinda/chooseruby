@@ -32,6 +32,6 @@ class Video < ApplicationRecord
 
   # Display name for Avo dropdown
   def display_name
-    name.presence || entry&.title || "Video ##{id}"
+    name
   end
 end
