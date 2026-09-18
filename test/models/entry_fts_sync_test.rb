@@ -93,6 +93,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
     result_before = ActiveRecord::Base.connection.execute(
       "SELECT entry_id FROM entries_fts WHERE entry_id = #{entry_id}"
     ).first
+
     assert_not_nil result_before, "FTS row should exist before deletion"
 
     # Delete the entry
@@ -102,6 +103,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
     result_after = ActiveRecord::Base.connection.execute(
       "SELECT entry_id FROM entries_fts WHERE entry_id = #{entry_id}"
     ).first
+
     assert_nil result_after, "FTS row should be deleted after entry destruction"
   end
 

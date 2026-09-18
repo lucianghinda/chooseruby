@@ -9,7 +9,7 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
   end
 
   test "rack attack middleware is loaded" do
-    assert Rails.application.config.middleware.include?(Rack::Attack), "Rack::Attack middleware should be loaded"
+    assert_includes Rails.application.config.middleware, Rack::Attack, "Rack::Attack middleware should be loaded"
   end
 
   test "rack attack cache store is configured" do
@@ -19,24 +19,28 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
   test "hourly throttle is defined for entries creation" do
     # Check that the throttle is registered
     throttles = Rack::Attack.throttles
+
     assert throttles.key?("entries/create/hourly"), "Hourly throttle should be defined"
   end
 
   test "daily throttle is defined for entries creation" do
     # Check that the throttle is registered
     throttles = Rack::Attack.throttles
+
     assert throttles.key?("entries/create/daily"), "Daily throttle should be defined"
   end
 
   test "localhost is safelisted from rate limiting" do
     # Verify safelist exists for localhost
     safelists = Rack::Attack.safelists
+
     assert safelists.key?("allow-localhost"), "Localhost safelist should be defined"
   end
 
   test "test environment is safelisted from rate limiting" do
     # Verify safelist exists for test environment
     safelists = Rack::Attack.safelists
+
     assert safelists.key?("allow-test-environment"), "Test environment safelist should be defined"
   end
 
@@ -67,7 +71,7 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
   test "active hashcash difficulty bits is set to appropriate level" do
     # Verify difficulty level is set (should be between 12-16 for forms)
     assert_not_nil ActiveHashcash.bits, "ActiveHashcash.bits should be configured"
-    assert ActiveHashcash.bits >= 10, "Difficulty should be at least 10 bits"
-    assert ActiveHashcash.bits <= 20, "Difficulty should be at most 20 bits"
+    assert_operator ActiveHashcash.bits, :>=, 10, "Difficulty should be at least 10 bits"
+    assert_operator ActiveHashcash.bits, :<=, 20, "Difficulty should be at most 20 bits"
   end
 end

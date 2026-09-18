@@ -44,11 +44,13 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Step 1: Browse gems by type
     get resource_type_path("gems")
+
     assert_response :success
     assert_select "h1", text: /Gems Directory/i
 
     # Step 2: Filter by category
     get resource_type_path("gems"), params: { category: "testing-integration" }
+
     assert_response :success
     # Should show only gems in testing category (25 on page 1)
     assert_select "article.border-gray-200", count: 25
@@ -57,6 +59,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Step 3: Navigate to page 2
     get resource_type_path("gems"), params: { category: "testing-integration", page: 2 }
+
     assert_response :success
     # Should show remaining 5 entries
     assert_select "article.border-gray-200", count: 5
@@ -87,6 +90,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Visit homepage
     get root_path
+
     assert_response :success
 
     # Verify "View all" links exist for type sections
@@ -95,6 +99,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Follow link to gems browse page
     get resource_type_path("gems")
+
     assert_response :success
     assert_select "h1", text: /Gems Directory/i
     assert_select "article", text: /Test Gem/i
@@ -245,52 +250,66 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Books should show year, publisher, format
     get resource_type_path("books")
+
     assert_response :success
     page = CGI.unescapeHTML(response.body)
+
     assert_match(/2023/, page)
     assert_match(/O'Reilly/, page)
     assert_match(/Ebook/, page)
 
     # Courses should show platform, instructor, duration
     get resource_type_path("courses")
+
     assert_response :success
     page = CGI.unescapeHTML(response.body)
+
     assert_match(/Udemy/, page)
     assert_match(/Test Instructor/, page)
     assert_match(/10(\.0)? hours/, page)
 
     # Tutorials should show platform, date, reading time
     get resource_type_path("tutorials")
+
     assert_response :success
     page = CGI.unescapeHTML(response.body)
+
     assert_match(/YouTube/, page)
     assert_match(/June 2023/, page)
     assert_match(/30 min read/, page)
 
     # Articles should show platform, date, reading time
     get resource_type_path("articles")
+
     assert_response :success
     page = CGI.unescapeHTML(response.body)
+
     assert_match(/Dev\.to/, page)
     assert_match(/July 2023/, page)
     assert_match(/15 min read/, page)
 
     # Tools should show tool_type
     get resource_type_path("tools")
+
     assert_response :success
     page = CGI.unescapeHTML(response.body)
+
     assert_match(/CLI/, page)
 
     # Podcasts should show host
     get resource_type_path("podcasts")
+
     assert_response :success
     page = CGI.unescapeHTML(response.body)
+
     assert_match(/Hosted by Test Host/, page)
 
     # Communities should show platform
     get resource_type_path("communities")
+
     assert_response :success
     page = CGI.unescapeHTML(response.body)
+
     assert_match(/Discord community/, page)
   end
 
@@ -385,6 +404,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
     end
 
     get root_path
+
     assert_response :success
 
     # Should show only 4 most recent gems (not all 6)
@@ -405,6 +425,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
   # Task 7.3.8: Test - navigation dropdown shows all types
   test "browse by type navigation includes all 8 types with emojis" do
     get root_path
+
     assert_response :success
 
     # Verify all 8 types are in navigation
@@ -441,6 +462,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Initial search query
     get resource_type_path("gems"), params: { q: "search" }
+
     assert_response :success
     assert_select "input[value='search']"
 
@@ -494,6 +516,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Browse gems page should only show visible entry
     get resource_type_path("gems")
+
     assert_response :success
     assert_select "h3", text: "Visible Gem"
     assert_select "h3", { text: "Unpublished Gem", count: 0 }
@@ -502,6 +525,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Verify via scope query
     gems = Entry.gems.visible
+
     assert_includes gems, visible_entry
     assert_equal 1, gems.count
   end

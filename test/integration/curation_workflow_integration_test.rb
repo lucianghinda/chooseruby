@@ -30,7 +30,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Verify starting state
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    refute entry.published
     assert_equal 0, entry.entry_reviews.count
 
     # Perform approval action and process enqueued jobs
@@ -41,18 +41,21 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Verify entry was updated
     entry.reload
+
     assert_equal "approved", entry.status
     assert entry.published
 
     # Verify EntryReview was created
     assert_equal 1, entry.entry_reviews.count
     review = entry.entry_reviews.last
+
     assert_equal "approved", review.status
     assert_nil review.comment
 
     # Verify email was delivered
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [ "workflow@example.com" ], email.to
     assert_equal "Your ChooseRuby submission has been approved: Workflow Test Gem", email.subject
     assert_match "Workflow Test Gem", email.html_part.body.to_s
@@ -82,18 +85,21 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Verify entry was updated
     entry.reload
+
     assert_equal "rejected", entry.status
-    assert_equal false, entry.published
+    refute entry.published
 
     # Verify EntryReview was created with comment
     assert_equal 1, entry.entry_reviews.count
     review = entry.entry_reviews.last
+
     assert_equal "rejected", review.status
     assert_equal rejection_comment, review.comment
 
     # Verify email was delivered with comment
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [ "author@example.com" ], email.to
     assert_equal "Update on your ChooseRuby submission: Rejected Book", email.subject
     assert_match "Rejected Book", email.html_part.body.to_s
@@ -122,11 +128,13 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Verify EntryReview was created with nil comment
     entry.reload
     review = entry.entry_reviews.last
+
     assert_equal "rejected", review.status
     assert_nil review.comment
 
     # Verify email was delivered with fallback message
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [ "dev@example.com" ], email.to
     # Should not include specific comment, but should render successfully
     assert_no_match "Missing documentation", email.html_part.body.to_s
@@ -152,6 +160,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Test approved_entry_reviews convenience method
     approved_reviews = entry.approved_entry_reviews
+
     assert_equal 2, approved_reviews.count
     assert_includes approved_reviews, approved_review1
     assert_includes approved_reviews, approved_review2
@@ -178,6 +187,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Test rejected_entry_reviews convenience method
     rejected_reviews = entry.rejected_entry_reviews
+
     assert_equal 2, rejected_reviews.count
     assert_includes rejected_reviews, rejected_review1
     assert_includes rejected_reviews, rejected_review2
@@ -203,6 +213,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Verify reviewer_id is NULL
     review = entry.entry_reviews.last
+
     assert_nil review.reviewer_id
   end
 
@@ -228,6 +239,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Verify exactly one email was delivered
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [ "emailtest@example.com" ], email.to
     assert_match "Email Job Test", email.html_part.body.to_s
   end
@@ -254,6 +266,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Verify exactly one email was delivered
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [ "rejection@example.com" ], email.to
     assert_match "Rejection Email Job Test", email.html_part.body.to_s
     assert_match "Testing rejection email", email.html_part.body.to_s
@@ -282,6 +295,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Verify all steps completed
     entry.reload
+
     assert_equal "approved", entry.status
     assert entry.published
     assert_equal 1, entry.entry_reviews.count
@@ -318,13 +332,16 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Verify can query by status
     approved_reviews = entry.entry_reviews.where(status: :approved)
+
     assert_equal 1, approved_reviews.count
 
     rejected_reviews = entry.entry_reviews.where(status: :rejected)
+
     assert_equal 2, rejected_reviews.count
 
     # Verify most recent review
     latest_review = entry.entry_reviews.last
+
     assert_equal "rejected", latest_review.status
     assert_equal "Second rejection - outdated content", latest_review.comment
   end

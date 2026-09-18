@@ -73,7 +73,7 @@ class CategoriesEntryTest < ActiveSupport::TestCase
       is_primary: true
     )
 
-    refute categories_entry2.valid?
+    refute_predicate categories_entry2, :valid?
     assert_includes categories_entry2.errors[:is_primary], "An entry can only have one primary category"
   end
 
@@ -96,6 +96,6 @@ class CategoriesEntryTest < ActiveSupport::TestCase
       is_primary: false
     )
 
-    assert categories_entry2.valid?
+    assert_predicate categories_entry2, :valid?
   end
 end

@@ -13,6 +13,7 @@ require "test_helper"
 class NewDelegatedTypesTest < ActiveSupport::TestCase
   test "Newsletter has display_name method that returns name when name exists" do
     newsletter = Newsletter.create!(name: "Test Newsletter")
+
     assert_equal "Test Newsletter", newsletter.display_name
   end
 
@@ -68,6 +69,7 @@ class NewDelegatedTypesTest < ActiveSupport::TestCase
 
   test "Documentation model display_name returns name when name exists" do
     documentation = Documentation.create!(name: "Test Documentation")
+
     assert_equal "Test Documentation", documentation.display_name
   end
 
@@ -124,7 +126,6 @@ class NewDelegatedTypesTest < ActiveSupport::TestCase
     newsletter.touch
     entry.reload
 
-    assert entry.updated_at > original_updated_at,
-           "Expected entry.updated_at (#{entry.updated_at}) to be greater than original (#{original_updated_at})"
+    assert_operator entry.updated_at, :>, original_updated_at, "Expected entry.updated_at (#{entry.updated_at}) to be greater than original (#{original_updated_at})"
   end
 end

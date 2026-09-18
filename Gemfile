@@ -73,6 +73,11 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
+  # Additional cops: performance, minitest and thread-safety linting
+  gem "rubocop-performance", require: false
+  gem "rubocop-minitest", require: false
+  gem "rubocop-thread_safety", require: false
+
   # A Ruby Gem that adds annotations to your Rails models and route files.
   gem "annotaterb"
 end

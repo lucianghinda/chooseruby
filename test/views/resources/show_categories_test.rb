@@ -56,6 +56,7 @@ class ResourcesShowCategoriesTest < ActionDispatch::IntegrationTest
 
     # Verify primary category appears first by checking order in rendered HTML
     category_links = css_select(".category-badges a")
+
     assert_equal "Testing", category_links.first.text.strip
   end
 
@@ -110,10 +111,12 @@ class ResourcesShowCategoriesTest < ActionDispatch::IntegrationTest
 
     # Check primary category badge contains a star icon (SVG)
     primary_badge = css_select(".category-badges a.bg-rose-500").first
+
     assert_not_nil primary_badge
 
     # Star icon should be present within the primary badge
     star_icon = primary_badge.css("svg")
+
     assert_equal 1, star_icon.length, "Primary category badge should contain a star icon"
   end
 
@@ -144,6 +147,7 @@ class ResourcesShowCategoriesTest < ActionDispatch::IntegrationTest
 
     # Ensure they're actual anchor tags
     category_links = css_select(".category-badges a")
-    assert category_links.length >= 2, "Should have at least 2 clickable category links"
+
+    assert_operator category_links.length, :>=, 2, "Should have at least 2 clickable category links"
   end
 end

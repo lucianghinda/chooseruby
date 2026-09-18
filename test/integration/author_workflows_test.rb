@@ -16,6 +16,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Pending author should not be visible on public profile
     get author_path(slug: pending_author.slug)
+
     assert_response :not_found
 
     # Admin approves the author
@@ -23,6 +24,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Now the author should be visible
     get author_path(slug: pending_author.slug)
+
     assert_response :success
     assert_select "h1", text: "New Contributor"
   end
@@ -40,6 +42,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Avatar should display on profile page
     get author_path(slug: author.slug)
+
     assert_response :success
     assert_select "img[src='https://github.com/dhh.png']"
   end
@@ -53,6 +56,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     )
 
     get author_path(slug: author.slug)
+
     assert_response :success
     assert_select "h1", text: "Entryless Author"
     assert_select "p", text: /No resources yet/i
@@ -69,6 +73,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     author.entries << [ entry1, entry2, entry3 ]
 
     get author_path(slug: author.slug)
+
     assert_response :success
     # Entries are displayed as h3 with links
     assert_select "a", text: "First Entry"
@@ -85,10 +90,12 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
 
     # Both authors should have this entry
     get author_path(slug: author1.slug)
+
     assert_response :success
     assert_select "a", text: "Collaborative Entry"
 
     get author_path(slug: author2.slug)
+
     assert_response :success
     assert_select "a", text: "Collaborative Entry"
   end
@@ -132,11 +139,13 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
 
     # First page should show 20 entries
     get author_path(slug: author.slug)
+
     assert_response :success
     assert_select "div.bg-white.border.border-gray-200.rounded-lg", count: 20
 
     # Second page should show 5 entries
     get author_path(slug: author.slug, page: 2)
+
     assert_response :success
     assert_select "div.bg-white.border.border-gray-200.rounded-lg", count: 5
   end
@@ -150,6 +159,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     )
 
     get author_path(slug: author.slug)
+
     assert_response :success
 
     # Should have GitHub and Twitter links
@@ -170,6 +180,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     )
 
     get author_path(slug: author_with_bio.slug)
+
     assert_response :success
     # Bio should be in a paragraph
     assert_select "p", text: "This is a test biography"
@@ -181,12 +192,14 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     )
 
     get author_path(slug: author_without_bio.slug)
+
     assert_response :success
     # Should have h1 with name but bio paragraph should not exist
     assert_select "h1", text: "No Bio Author"
     # The bio paragraph has specific text-lg and max-w-2xl classes
     # When bio is absent, this p tag shouldn't exist
     response_body = response.body
+
     refute_includes response_body, "text-lg text-gray-600 max-w-2xl"
   end
 end

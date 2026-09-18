@@ -33,6 +33,7 @@ class AuthorsController::SearchTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     json_response = JSON.parse(response.body)
+
     assert_equal [], json_response
   end
 

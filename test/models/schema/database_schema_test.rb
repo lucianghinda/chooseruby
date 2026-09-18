@@ -5,6 +5,7 @@ require "test_helper"
 class DatabaseSchemaTest < ActiveSupport::TestCase
   test "entries table has required columns for DelegatedTypes" do
     columns = Entry.column_names
+
     assert_includes columns, "entryable_type"
     assert_includes columns, "entryable_id"
     assert_includes columns, "slug"
@@ -23,10 +24,12 @@ class DatabaseSchemaTest < ActiveSupport::TestCase
     )
 
     join_record = CategoriesEntry.create!(category: category, entry: entry)
-    assert join_record.persisted?
+
+    assert_predicate join_record, :persisted?
 
     # Test cascade delete when category is deleted
     category.destroy
+
     refute CategoriesEntry.exists?(join_record.id)
   end
 

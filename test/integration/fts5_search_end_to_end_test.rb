@@ -125,6 +125,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
 
     # Navigate to page 2
     get entries_path(q: "pagination", page: 2)
+
     assert_response :success
 
     # Second page should show remaining entries (at least 1)
@@ -190,6 +191,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
     # Test various special character scenarios (avoiding FTS5 special chars like ! & etc)
     [ "Rails Version", "framework", "fast reliable", "rails best" ].each do |query|
       get entries_path(q: query)
+
       assert_response :success, "Failed for query: #{query}"
     end
   end
@@ -208,6 +210,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
   test "complete workflow from search to viewing results" do
     # Step 1: User searches for "Rails"
     get entries_path(q: "Rails")
+
     assert_response :success
 
     # Step 2: User sees search results
@@ -224,6 +227,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
   test "complete workflow from author search to author detail page" do
     # Step 1: User searches for author
     get authors_path(q: "Aaron")
+
     assert_response :success
 
     # Step 2: User sees search results with entry count
@@ -231,6 +235,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
 
     # Step 3: Navigate to author detail page
     get author_path(slug: @author2.slug)
+
     assert_response :success
 
     # Step 4: Verify author page shows entries

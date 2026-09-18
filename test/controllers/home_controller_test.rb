@@ -76,7 +76,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     # We expect exactly 4 entries (the limit) to be displayed
     # Count links that point to resource_path
     gem_links = css_select("a[href*='/resources/']")
-    assert gem_links.count >= 4, "Expected at least 4 gem entries"
+
+    assert_operator gem_links.count, :>=, 4, "Expected at least 4 gem entries"
   end
 
   # Test 5.1.3: Sections appear after "Freshly curated resources"

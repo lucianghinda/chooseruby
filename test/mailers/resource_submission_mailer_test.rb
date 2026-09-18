@@ -185,10 +185,12 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
 
     # notify_team should work
     team_email = ResourceSubmissionMailer.notify_team(entry)
+
     assert_match "Anonymous", team_email.html_part.body.to_s
 
     # confirm_submitter should work with fallback
     submitter_email = ResourceSubmissionMailer.confirm_submitter(entry)
+
     assert_match(/Hi there/, submitter_email.html_part.body.to_s)
   end
 

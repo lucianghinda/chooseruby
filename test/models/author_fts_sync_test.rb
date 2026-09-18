@@ -66,6 +66,7 @@ class AuthorFtsSyncTest < ActiveSupport::TestCase
     result_before = ActiveRecord::Base.connection.execute(
       "SELECT author_id FROM authors_fts WHERE author_id = #{author_id}"
     ).first
+
     assert_not_nil result_before, "FTS row should exist before deletion"
 
     # Delete the author
@@ -75,6 +76,7 @@ class AuthorFtsSyncTest < ActiveSupport::TestCase
     result_after = ActiveRecord::Base.connection.execute(
       "SELECT author_id FROM authors_fts WHERE author_id = #{author_id}"
     ).first
+
     assert_nil result_after, "FTS row should be deleted after author destruction"
   end
 

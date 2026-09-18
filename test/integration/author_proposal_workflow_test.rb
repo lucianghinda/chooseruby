@@ -32,6 +32,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
     end
 
     proposal = AuthorProposal.last
+
     assert_equal "pending", proposal.status
     assert_redirected_to author_proposal_success_path(proposal)
 
@@ -45,12 +46,14 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
 
     # Step 4: Verify author was updated with all changes
     author.reload
+
     assert_equal "Creator of Ruby programming language", author.bio
     assert_equal "https://github.com/matz", author.github_url
     assert_equal "https://twitter.com/yukihiro_matz", author.twitter_url
 
     # Step 5: Verify proposal status updated
     proposal.reload
+
     assert_equal "approved", proposal.status
     assert_not_nil proposal.reviewed_at
 
@@ -81,6 +84,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
     }
 
     proposal = AuthorProposal.last
+
     assert_equal "pending", proposal.status
     assert_nil proposal.author_id, "Should not have author_id yet"
 
@@ -93,9 +97,11 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
 
     # Step 3: Verify new author was created with all attributes
     proposal.reload
+
     assert_not_nil proposal.author_id, "Should have author_id after approval"
 
     new_author = Author.find(proposal.author_id)
+
     assert_equal "David Heinemeier Hansson", new_author.name
     assert_equal "Creator of Ruby on Rails", new_author.bio
     assert_equal "https://github.com/dhh", new_author.github_url
@@ -133,7 +139,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
 
     # Step 2: Verify URL was matched to entry
     assert_equal entry.id, proposal.matched_entry_id, "Should match entry despite URL variations"
-    assert proposal.matched_entry?, "matched_entry? should return true"
+    assert_predicate proposal, :matched_entry?, "matched_entry? should return true"
 
     # Step 3: Admin approves proposal
     assert_difference "EntriesAuthor.count", 1 do
@@ -142,6 +148,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
 
     # Step 4: Verify EntriesAuthor association was created
     entries_author = EntriesAuthor.find_by(author: author, entry: entry)
+
     assert_not_nil entries_author, "EntriesAuthor association should exist"
     assert_equal author.id, entries_author.author_id
     assert_equal entry.id, entries_author.entry_id
@@ -173,12 +180,14 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
 
     # Step 3: Verify proposal status
     proposal.reload
+
     assert_equal "rejected", proposal.status
     assert_equal "Bio is too short. Please provide more detail about contributions to Ruby community.", proposal.admin_comment
     assert_not_nil proposal.reviewed_at
 
     # Step 4: Verify author was NOT updated
     author.reload
+
     assert_equal original_bio, author.bio, "Author should not be updated on rejection"
 
     # Step 5: Verify rejection email was sent
@@ -228,6 +237,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
     end
 
     author.reload
+
     assert_equal "Lead developer of YARV, Ruby's virtual machine", author.bio
     assert_equal "https://github.com/ko1", author.github_url
     assert_equal "https://twitter.com/ko1_ruby", author.twitter_url
@@ -253,6 +263,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
     }
 
     first_proposal = AuthorProposal.last
+
     assert_redirected_to author_proposal_success_path(first_proposal)
 
     # Step 2: Attempt duplicate submission within 24 hours
@@ -357,6 +368,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
 
     # Step 3: Verify proposal status unchanged (rollback successful)
     proposal.reload
+
     assert_equal initial_proposal_status, proposal.status, "Proposal status should not change on failed approval"
     assert_nil proposal.reviewed_at, "reviewed_at should not be set on failed approval"
     assert_nil proposal.author_id, "author_id should remain nil on failed approval"
@@ -369,6 +381,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
     end
 
     proposal.reload
+
     assert_equal "approved", proposal.status
     assert_not_nil proposal.author_id
   end

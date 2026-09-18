@@ -18,6 +18,7 @@ class Avo::Actions::RejectAuthorProposalTest < ActiveSupport::TestCase
     action.handle(records: [ proposal ], fields: { admin_comment: comment_text }, current_user: nil, resource: nil)
 
     proposal.reload
+
     assert_equal "rejected", proposal.status
     assert_equal comment_text, proposal.admin_comment
     assert_not_nil proposal.reviewed_at
@@ -38,11 +39,13 @@ class Avo::Actions::RejectAuthorProposalTest < ActiveSupport::TestCase
     action.handle(records: [ proposal ], fields: { admin_comment: "Bio too short" }, current_user: nil, resource: nil)
 
     proposal.reload
+
     assert_equal "rejected", proposal.status
     assert_equal "Bio too short", proposal.admin_comment
 
     # Author should not be updated
     author.reload
+
     assert_not_equal "Updated bio", author.bio
   end
 

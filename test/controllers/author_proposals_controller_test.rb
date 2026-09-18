@@ -52,6 +52,7 @@ class AuthorProposalsControllerTest < ActionDispatch::IntegrationTest
     end
 
     proposal = AuthorProposal.last
+
     assert_equal "pending", proposal.status
     assert_equal author.id, proposal.author_id
     assert_equal "user@example.com", proposal.submitter_email
@@ -96,9 +97,11 @@ class AuthorProposalsControllerTest < ActionDispatch::IntegrationTest
     }
 
     proposal = AuthorProposal.last
+
     assert_redirected_to author_proposal_success_path(proposal)
 
     follow_redirect!
+
     assert_response :success
     assert_select "h1", text: /Thank You/
   end

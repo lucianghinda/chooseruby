@@ -4,6 +4,14 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
+plugins:
+  - rubocop-performance
+  - rubocop-minitest
+  - rubocop-thread_safety
+
+AllCops:
+  NewCops: enable
+
 # Overwrite or add rules to create your own house style
 #
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
@@ -13,3 +21,24 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 Style/FrozenStringLiteralComment:
   Enabled: true
   EnforcedStyle: always_true
+
+Minitest/MultipleAssertions:
+  Max: 15
+  Exclude:
+    # Deliberately enumerate every delegated/resource type in one test; splitting
+    # would just duplicate the same setup per type for no added safety.
+    - test/integration/avo_resources_test.rb
+    - test/integration/resource_type_workflows_test.rb
+    - test/views/layouts/application_navigation_test.rb
+
+ThreadSafety/ClassAndModuleAttributes:
+  Enabled: false # Rails autoloading + class_attribute is single-threaded at boot; safe by convention here.
+
+ThreadSafety/ClassInstanceVariable:
+  Exclude:
+    # One-off rake-task import script (bin/rails runner), never run concurrently.
+    - lib/imports/rubyandrailsinfo/helpers.rb
+
+ThreadSafety/MutableClassInstanceVariable:
+  Exclude:
+    - lib/imports/rubyandrailsinfo/helpers.rb

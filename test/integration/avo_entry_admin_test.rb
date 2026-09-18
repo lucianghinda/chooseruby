@@ -18,9 +18,9 @@ class AvoEntryAdminTest < ActionDispatch::IntegrationTest
       submitter_email: "pending@example.com"
     )
 
-    assert entry.persisted?
+    assert_predicate entry, :persisted?
     assert_equal "RubyGem", entry.entryable_type
-    assert entry.ruby_gem?
+    assert_predicate entry, :ruby_gem?
     assert_equal "test-gem", entry.entryable.gem_name
   end
 
@@ -40,8 +40,8 @@ class AvoEntryAdminTest < ActionDispatch::IntegrationTest
       status: :approved
     )
 
-    assert entry.persisted?
-    assert entry.book?
+    assert_predicate entry, :persisted?
+    assert_predicate entry, :book?
     assert_equal "Test Publisher", entry.entryable.publisher
   end
 
@@ -80,6 +80,7 @@ class AvoEntryAdminTest < ActionDispatch::IntegrationTest
     assert_equal "pending", entry.status
 
     entry.update!(status: :approved)
+
     assert_equal "approved", entry.status
   end
 
@@ -145,42 +146,50 @@ class AvoEntryAdminTest < ActionDispatch::IntegrationTest
     # RubyGem
     ruby_gem = RubyGem.create!(gem_name: "test-gem")
     entry1 = Entry.create!(title: "RubyGem Test", description: "Test", url: "https://example.com", entryable: ruby_gem, status: :approved)
-    assert entry1.ruby_gem?
+
+    assert_predicate entry1, :ruby_gem?
 
     # Book
     book = Book.create!(format: :ebook)
     entry2 = Entry.create!(title: "Book Test", description: "Test", url: "https://example.com", entryable: book, status: :approved)
-    assert entry2.book?
+
+    assert_predicate entry2, :book?
 
     # Course
     course = Course.create!(is_free: true)
     entry3 = Entry.create!(title: "Course Test", description: "Test", url: "https://example.com", entryable: course, status: :approved)
-    assert entry3.course?
+
+    assert_predicate entry3, :course?
 
     # Tutorial
     tutorial = Tutorial.create!
     entry4 = Entry.create!(title: "Tutorial Test", description: "Test", url: "https://example.com", entryable: tutorial, status: :approved)
-    assert entry4.tutorial?
+
+    assert_predicate entry4, :tutorial?
 
     # Article
     article = Article.create!
     entry5 = Entry.create!(title: "Article Test", description: "Test", url: "https://example.com", entryable: article, status: :approved)
-    assert entry5.article?
+
+    assert_predicate entry5, :article?
 
     # Tool
     tool = Tool.create!(is_open_source: true)
     entry6 = Entry.create!(title: "Tool Test", description: "Test", url: "https://example.com", entryable: tool, status: :approved)
-    assert entry6.tool?
+
+    assert_predicate entry6, :tool?
 
     # Podcast
     podcast = Podcast.create!
     entry7 = Entry.create!(title: "Podcast Test", description: "Test", url: "https://example.com", entryable: podcast, status: :approved)
-    assert entry7.podcast?
+
+    assert_predicate entry7, :podcast?
 
     # Community
     community = Community.create!(platform: "Discord", join_url: "https://discord.gg/test")
     entry8 = Entry.create!(title: "Community Test", description: "Test", url: "https://example.com", entryable: community, status: :approved)
-    assert entry8.community?
+
+    assert_predicate entry8, :community?
   end
 
   test "tags save and load correctly" do
@@ -195,6 +204,7 @@ class AvoEntryAdminTest < ActionDispatch::IntegrationTest
     )
 
     entry.reload
+
     assert_equal [ "testing", "ruby", "gem" ], entry.tags
   end
 end

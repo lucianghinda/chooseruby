@@ -25,9 +25,11 @@ class Avo::Actions::RejectEntriesTest < ActiveSupport::TestCase
     end
 
     entry.reload
+
     assert_equal "rejected", entry.status
 
     review = entry.entry_reviews.last
+
     assert_equal "rejected", review.status
     assert_equal comment_text, review.comment
   end
@@ -67,6 +69,7 @@ class Avo::Actions::RejectEntriesTest < ActiveSupport::TestCase
 
     entry.reload
     review = entry.entry_reviews.last
+
     assert_equal "rejected", review.status
     assert_nil review.comment
   end
@@ -103,6 +106,7 @@ class Avo::Actions::RejectEntriesTest < ActiveSupport::TestCase
 
     entry1.reload
     entry2.reload
+
     assert_equal "rejected", entry1.status
     assert_equal "rejected", entry2.status
     assert_equal comment, entry1.entry_reviews.last.comment

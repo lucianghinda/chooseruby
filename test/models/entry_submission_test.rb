@@ -88,6 +88,7 @@ class EntrySubmissionTest < ActiveSupport::TestCase
     )
 
     pending_entries = Entry.pending
+
     assert_includes pending_entries, pending_entry
     assert_not_includes pending_entries, approved_entry
   end
@@ -106,6 +107,7 @@ class EntrySubmissionTest < ActiveSupport::TestCase
     )
 
     entry.categories << [ category1, category2, category3 ]
+
     assert_equal 3, entry.categories.count
     assert_includes entry.categories, category1
     assert_includes entry.categories, category2
@@ -124,6 +126,7 @@ class EntrySubmissionTest < ActiveSupport::TestCase
     )
 
     entry.authors << author
+
     assert_equal 1, entry.authors.count
     assert_includes entry.authors, author
   end
@@ -166,7 +169,7 @@ class EntrySubmissionTest < ActiveSupport::TestCase
     )
 
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    refute entry.published
   end
 
   test "validates image_url format for external URLs" do
@@ -180,7 +183,8 @@ class EntrySubmissionTest < ActiveSupport::TestCase
       image_url: "https://example.com/image.png",
       submitter_email: "valid@example.com"
     )
-    assert entry.valid?
+
+    assert_predicate entry, :valid?
 
     # Invalid URL
     entry_invalid = Entry.new(
@@ -190,8 +194,9 @@ class EntrySubmissionTest < ActiveSupport::TestCase
       image_url: "not-a-valid-url",
       submitter_email: "invalid@example.com"
     )
+
     assert_not entry_invalid.valid?
-    assert entry_invalid.errors[:image_url].present?
+    assert_predicate entry_invalid.errors[:image_url], :present?
   end
 
   test "validates submitter_email presence for pending entries" do
@@ -205,8 +210,9 @@ class EntrySubmissionTest < ActiveSupport::TestCase
       status: :pending,
       submitter_email: nil
     )
+
     assert_not entry.valid?
-    assert entry.errors[:submitter_email].present?
+    assert_predicate entry.errors[:submitter_email], :present?
   end
 
   test "validates submitter_email format" do
@@ -220,8 +226,9 @@ class EntrySubmissionTest < ActiveSupport::TestCase
       submitter_email: "not-an-email",
       status: :pending
     )
+
     assert_not entry.valid?
-    assert entry.errors[:submitter_email].present?
+    assert_predicate entry.errors[:submitter_email], :present?
 
     # Valid email format
     entry_valid = Entry.new(
@@ -231,7 +238,8 @@ class EntrySubmissionTest < ActiveSupport::TestCase
       submitter_email: "valid@example.com",
       status: :pending
     )
-    assert entry_valid.valid?
+
+    assert_predicate entry_valid, :valid?
   end
 
   test "submitter_email is optional for approved entries" do
@@ -246,7 +254,8 @@ class EntrySubmissionTest < ActiveSupport::TestCase
       published: true,
       submitter_email: nil
     )
-    assert entry.persisted?
+
+    assert_predicate entry, :persisted?
     assert_nil entry.submitter_email
   end
 end

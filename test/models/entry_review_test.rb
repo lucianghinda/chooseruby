@@ -27,6 +27,7 @@ require "test_helper"
 class EntryReviewTest < ActiveSupport::TestCase
   test "validates presence of entry_id" do
     review = EntryReview.new(status: :approved)
+
     assert_not review.valid?
     assert_includes review.errors[:entry_id], "can't be blank"
   end
@@ -39,6 +40,7 @@ class EntryReviewTest < ActiveSupport::TestCase
     )
     review = EntryReview.new(entry: entry)
     review.status = nil
+
     assert_not review.valid?
     assert_includes review.errors[:status], "can't be blank"
   end
@@ -62,7 +64,7 @@ class EntryReviewTest < ActiveSupport::TestCase
     )
     review = EntryReview.create!(entry: entry, status: :approved)
 
-    assert review.approved?
+    assert_predicate review, :approved?
     assert_not review.rejected?
     assert_equal "approved", review.status
   end
@@ -75,7 +77,7 @@ class EntryReviewTest < ActiveSupport::TestCase
     )
     review = EntryReview.create!(entry: entry, status: :rejected)
 
-    assert review.rejected?
+    assert_predicate review, :rejected?
     assert_not review.approved?
     assert_equal "rejected", review.status
   end
@@ -104,6 +106,7 @@ class EntryReviewTest < ActiveSupport::TestCase
     EntryReview.create!(entry: entry, status: :rejected)
 
     approved_reviews = entry.entry_reviews.where(status: :approved)
+
     assert_equal 1, approved_reviews.count
     assert_includes approved_reviews, approved_review
   end
@@ -118,6 +121,7 @@ class EntryReviewTest < ActiveSupport::TestCase
     rejected_review = EntryReview.create!(entry: entry, status: :rejected, comment: "Not suitable")
 
     rejected_reviews = entry.entry_reviews.where(status: :rejected)
+
     assert_equal 1, rejected_reviews.count
     assert_includes rejected_reviews, rejected_review
   end

@@ -40,15 +40,16 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    refute entry.published
     assert_equal "Course", entry.entryable_type
     assert_equal "Udemy", entry.entryable.platform
     assert_equal "John Doe", entry.entryable.instructor
     assert_equal 40, entry.entryable.duration_hours
     assert_equal 9999, entry.entryable.price_cents # Converted from 99.99 dollars
     assert_equal "USD", entry.entryable.currency
-    assert_equal false, entry.entryable.is_free
+    refute entry.entryable.is_free
     assert_redirected_to entry_success_path
   end
 
@@ -117,6 +118,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_includes entry.authors, author
     assert_equal 1, entry.authors.count
   end
@@ -141,6 +143,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Tutorial", entry.entryable_type
     assert_equal "Manual Author Name", entry.entryable.author_name
     assert_equal 15, entry.entryable.reading_time_minutes
@@ -169,11 +172,12 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Tool", entry.entryable_type
     assert_equal "CLI", entry.entryable.tool_type
     assert_equal "https://github.com/user/formatter", entry.entryable.github_url
     assert_equal "MIT", entry.entryable.license
-    assert_equal true, entry.entryable.is_open_source
+    assert entry.entryable.is_open_source
   end
 
   # Test 7: Complete submission flow for Podcast type
@@ -198,6 +202,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Podcast", entry.entryable_type
     assert_equal "Panel of Ruby experts", entry.entryable.host
     assert_equal 500, entry.entryable.episode_count
@@ -224,6 +229,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Article", entry.entryable_type
     assert_equal "Jane Writer", entry.entryable.author_name
     assert_equal 8, entry.entryable.reading_time_minutes
@@ -278,6 +284,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
 
     # Check team notification email
     team_email = ActionMailer::Base.deliveries[-2]
+
     assert_equal [ ENV.fetch("RESOURCE_SUBMISSION_RECIPIENT", "hello@chooseruby.com") ], team_email.to
     assert_match "Test Email Details", team_email.html_part.body.to_s
     assert_match "RubyGem", team_email.html_part.body.to_s
@@ -286,6 +293,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
 
     # Check submitter confirmation email
     submitter_email = ActionMailer::Base.deliveries.last
+
     assert_equal [ "tester@example.com" ], submitter_email.to
     assert_match "Email Tester", submitter_email.html_part.body.to_s
     assert_match "Test Email Details", submitter_email.html_part.body.to_s

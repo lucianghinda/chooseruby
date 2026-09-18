@@ -164,12 +164,14 @@ class ResourceTypesControllerTest < ActionDispatch::IntegrationTest
 
     # Get first page
     get resource_type_path("gems")
+
     assert_response :success
     # Should show 25 entries on first page
     assert_select "article.border-gray-200", count: 25
 
     # Get second page
     get resource_type_path("gems"), params: { page: 2 }
+
     assert_response :success
     # Should show remaining 5 entries on second page
     assert_select "article.border-gray-200", count: 5
@@ -349,7 +351,8 @@ class ResourceTypesControllerTest < ActionDispatch::IntegrationTest
     # Newer featured entry should appear before older featured entry in response body
     newer_position = response.body.index("Newer Featured Gem")
     older_position = response.body.index("Older Featured Gem")
-    assert newer_position < older_position, "Newer featured entry should appear before older featured entry"
+
+    assert_operator newer_position, :<, older_position, "Newer featured entry should appear before older featured entry"
   end
 
   # Test 5.1.5: Stats panel shows correct category counts for specific type

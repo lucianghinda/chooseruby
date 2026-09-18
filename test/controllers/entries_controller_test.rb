@@ -29,8 +29,9 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    refute entry.published
     assert_equal "Test Resource", entry.title
     assert_redirected_to entry_success_path
   end
@@ -52,6 +53,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "RubyGem", entry.entryable_type
     assert_not_nil entry.entryable
     assert_equal "rspec-core", entry.entryable.gem_name
@@ -76,6 +78,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Book", entry.entryable_type
     assert_not_nil entry.entryable
     assert_equal "1617295213", entry.entryable.isbn
@@ -101,11 +104,12 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Community", entry.entryable_type
     assert_not_nil entry.entryable
     assert_equal "Slack", entry.entryable.platform
     assert_equal "https://www.rubyonrails.link", entry.entryable.join_url
-    assert_equal true, entry.entryable.is_official
+    assert entry.entryable.is_official
   end
 
   # Test 3.1.6: POST create with validation failure renders form with errors (422 status)
@@ -165,6 +169,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal 2, entry.categories.count
     assert_includes entry.categories, category1
     assert_includes entry.categories, category2

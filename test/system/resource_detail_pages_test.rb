@@ -59,6 +59,7 @@ class ResourceDetailPagesTest < ApplicationSystemTestCase
 
     # Verify "Visit Resource" button is present
     visit_resource_button = find("a", text: /Visit Resource/i)
+
     assert_equal @entry.url, visit_resource_button[:href]
     assert_equal "_blank", visit_resource_button[:target]
     assert_equal "noopener noreferrer", visit_resource_button[:rel]

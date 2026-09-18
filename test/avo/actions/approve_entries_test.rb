@@ -21,6 +21,7 @@ class Avo::Actions::ApproveEntriesTest < ActiveSupport::TestCase
     action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
 
     entry.reload
+
     assert_equal "approved", entry.status
     assert entry.published
   end
@@ -43,6 +44,7 @@ class Avo::Actions::ApproveEntriesTest < ActiveSupport::TestCase
     end
 
     review = entry.entry_reviews.last
+
     assert_equal "approved", review.status
   end
 
@@ -94,6 +96,7 @@ class Avo::Actions::ApproveEntriesTest < ActiveSupport::TestCase
 
     entry1.reload
     entry2.reload
+
     assert_equal "approved", entry1.status
     assert_equal "approved", entry2.status
     assert entry1.published

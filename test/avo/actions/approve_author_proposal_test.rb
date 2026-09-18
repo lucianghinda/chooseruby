@@ -16,6 +16,7 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
     action.handle(records: [ proposal ], fields: {}, current_user: nil, resource: nil)
 
     proposal.reload
+
     assert_equal "approved", proposal.status
     assert_not_nil proposal.reviewed_at
   end
@@ -35,8 +36,10 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
     action.handle(records: [ proposal ], fields: {}, current_user: nil, resource: nil)
 
     proposal.reload
+
     assert_equal "approved", proposal.status
     author.reload
+
     assert_equal "Updated bio", author.bio
   end
 
@@ -78,11 +81,13 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
 
     proposal1.reload
     proposal2.reload
+
     assert_equal "approved", proposal1.status
     assert_equal "approved", proposal2.status
 
     author1.reload
     author2.reload
+
     assert_equal "Updated bio 1", author1.bio
     assert_equal "Updated bio 2", author2.bio
   end

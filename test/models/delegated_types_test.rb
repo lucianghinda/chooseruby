@@ -12,8 +12,8 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.persisted?
-    assert entry.ruby_gem?
+    assert_predicate entry, :persisted?
+    assert_predicate entry, :ruby_gem?
     assert_equal "rspec", entry.entryable.gem_name
   end
 
@@ -26,7 +26,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.book?
+    assert_predicate entry, :book?
     assert_equal "1234567890", entry.entryable.isbn
   end
 
@@ -39,7 +39,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.course?
+    assert_predicate entry, :course?
     assert entry.entryable.is_free
   end
 
@@ -52,7 +52,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.tutorial?
+    assert_predicate entry, :tutorial?
     assert_equal 15, entry.entryable.reading_time_minutes
   end
 
@@ -65,7 +65,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.article?
+    assert_predicate entry, :article?
     assert_equal "Dev.to", entry.entryable.platform
   end
 
@@ -78,7 +78,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.tool?
+    assert_predicate entry, :tool?
     assert entry.entryable.is_open_source
   end
 
@@ -91,7 +91,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.podcast?
+    assert_predicate entry, :podcast?
     assert_equal 50, entry.entryable.episode_count
   end
 
@@ -108,7 +108,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.community?
+    assert_predicate entry, :community?
     assert_equal "Discord", entry.entryable.platform
     assert entry.entryable.is_official
   end
@@ -137,13 +137,13 @@ class DelegatedTypesTest < ActiveSupport::TestCase
       status: :approved
     )
 
-    assert entry.ruby_gem?
-    refute entry.book?
-    refute entry.course?
-    refute entry.tutorial?
-    refute entry.article?
-    refute entry.tool?
-    refute entry.podcast?
-    refute entry.community?
+    assert_predicate entry, :ruby_gem?
+    refute_predicate entry, :book?
+    refute_predicate entry, :course?
+    refute_predicate entry, :tutorial?
+    refute_predicate entry, :article?
+    refute_predicate entry, :tool?
+    refute_predicate entry, :podcast?
+    refute_predicate entry, :community?
   end
 end
