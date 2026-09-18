@@ -12,3 +12,7 @@ Read `docs/llms/testing.md` whenever you are asked to create a test.
 ### 2. Rake tasks
 
 Read the file at `docs/llms/rake.md` whenever you are asked to create a rake task.
+
+### 3. Choosing a gem
+
+Read `docs/llms/dependency_selection.md` whenever you are about to add a new gem to the Gemfile.

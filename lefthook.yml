@@ -23,6 +23,15 @@ pre-commit:
       glob: "*.html.erb"
       run: bin/herb-lint {staged_files}
 
+    # "Does this gem still smell fresh?" - runs only when Gemfile/Gemfile.lock
+    # is staged, so adding/bumping a gem gets instant feedback instead of
+    # finding out from still_active_baseline.json going stale in review.
+    # Compares against the committed baseline, not an absolute bar, so this
+    # only fails on a NEW regression (see docs/llms/dependency_selection.md).
+    - name: gem-health
+      glob: "Gemfile*"
+      run: bin/still_active --baseline=still_active_baseline.json
+
 pre-push:
   parallel: false
   jobs:

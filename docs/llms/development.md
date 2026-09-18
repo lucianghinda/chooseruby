@@ -68,7 +68,11 @@ fast ones (RuboCop, Reek, Herb) against staged files only.
 | Prosopite | runs automatically in `bin/rails test` | N+1 queries | Log-only for now, see `docs/llms/n_plus_one_todo.md` |
 | debride | `bin/debride app lib` | Likely-unused methods | Exploratory only - high false-positive rate on Rails controller actions/callbacks (dynamic dispatch it can't see), always triage by hand before deleting anything it flags |
 | traceroute | `bin/rake traceroute:unused_routes` | Routes with no matching view/controller reference | Exploratory; skip `traceroute:unreachable_action_methods` - it's nearly 100% noise on `Avo::*Controller` subclasses, which inherit hundreds of gem-provided helper methods it can't tell apart from real actions |
-| skunk | `bin/skunk app` | Hotspot ranking (churn × complexity × smells) | Exploratory, points at what to refactor first, not a pass/fail gate |
+| skunk | `bin/skunk app` | Hotspot ranking (churn × complexity × smells) | Exploratory, points at what to refactor first, not a pass/fail gate - see `docs/llms/dependency_selection.md` for a caveat on Skunk's own dependency tail |
+| still_active | `bin/still_active --baseline=still_active_baseline.json` | Dependency health / "gem smell" (maintenance activity, archived repos, OpenSSF score, poison-pill transitive caps) | Gated on regression only; runs on `Gemfile*` changes via lefthook and on every CI run |
+| PropCheck | plain Minitest test files (e.g. `test/models/author_proposal_url_matching_property_test.rb`) | Property-based testing | One example in place; add more as pure functions come up |
+| Mutineer | `bin/mutineer run <file> --test <test file> --rails` | Mutation testing (are your tests actually testing anything?) | Exploratory, run by hand against a file you're touching - not wired into CI (mutating the whole app on every push would be far too slow); see `--since`/`--baseline` in its own `--help` for scoping a CI job to a diff later |
+| Ruzzy | see `fuzz/README.md` | Fuzz testing | Documented, not installed - needs a full LLVM/clang toolchain this sandbox doesn't have |
 
 When you add a new gem here, add its `bin/<name>` wrapper (see `bin/reek` for the pattern)
 and a line to this table, and wire it into `config/ci.rb` and/or `lefthook.yml` as
