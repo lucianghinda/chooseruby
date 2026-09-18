@@ -50,6 +50,8 @@
 #  index_authors_on_status  (status)
 #
 class Author < ApplicationRecord
+  include Sluggable
+
   # Active Storage for manual avatar uploads
   has_one_attached :avatar
 
@@ -72,8 +74,9 @@ class Author < ApplicationRecord
   # Status enum
   enum :status, { pending: 0, approved: 1 }, default: :pending
 
+  sluggable_from :name
+
   # Callbacks
-  before_validation :generate_slug, if: -> { name.present? && (slug.blank? || name_changed?) }
   after_save :fetch_github_avatar, if: :saved_change_to_github_url?
   after_save :sync_to_fts, if: :saved_change_to_name?
   after_destroy :remove_from_fts
@@ -83,21 +86,6 @@ class Author < ApplicationRecord
   scope :pending, -> { where(status: :pending) }
 
   private
-
-  # Generate URL-friendly slug from name
-  # Ensures uniqueness by appending number if needed
-  def generate_slug
-    base_slug = name.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Author.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
-  end
 
   # Fetch GitHub avatar URL when github_url changes
   # Uses update_column to avoid triggering callbacks and infinite loop
@@ -111,11 +99,10 @@ class Author < ApplicationRecord
   # Sync author data to FTS5 virtual table for full-text search
   # Called after save when name changed
   def sync_to_fts
-    # Handle nil or empty name
-    name_text = name.to_s
+    connection = ActiveRecord::Base.connection
 
     # Delete existing FTS row first (FTS5 tables don't support proper upserts)
-    ActiveRecord::Base.connection.execute(
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "DELETE FROM authors_fts WHERE author_id = ?",
         id
@@ -123,11 +110,11 @@ class Author < ApplicationRecord
     )
 
     # Insert new FTS row
-    ActiveRecord::Base.connection.execute(
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "INSERT INTO authors_fts (author_id, name) VALUES (?, ?)",
         id,
-        name_text
+        name.to_s
       ])
     )
   end

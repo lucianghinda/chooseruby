@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Finds entries related to a given entry by shared categories: prefers spreading
+# results across the entry's top 3 categories, then backfills from any of its
+# categories if that didn't reach the requested limit.
 class Entry::RelatedResources
   def initialize(entry, limit: 6)
     @entry = entry
@@ -9,51 +12,9 @@ class Entry::RelatedResources
   def call
     return [] if categories.empty?
 
-    category_ids = categories.pluck(:id)
-    per_category = (limit.to_f / [ category_ids.length, 3 ].min).ceil
-
-    related_entries = []
-    already_collected_ids = [ entry.id ]
-
-    category_ids.first(3).each do |category_id|
-      remaining_needed = limit - related_entries.length
-      break if remaining_needed <= 0
-
-      entries_from_category = Entry
-        .strict_loading
-        .visible
-        .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
-        .joins(:categories_entries)
-        .where(categories_entries: { category_id: category_id })
-        .where.not(id: already_collected_ids)
-        .distinct
-        .recently_curated
-        .limit([ per_category, remaining_needed ].min)
-        .to_a
-
-      related_entries.concat(entries_from_category)
-      already_collected_ids.concat(entries_from_category.map(&:id))
-    end
-
-    if related_entries.length < limit && category_ids.length > 0
-      remaining_needed = limit - related_entries.length
-
-      additional_entries = Entry
-        .strict_loading
-        .visible
-        .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
-        .joins(:categories_entries)
-        .where(categories_entries: { category_id: category_ids })
-        .where.not(id: already_collected_ids)
-        .distinct
-        .recently_curated
-        .limit(remaining_needed)
-        .to_a
-
-      related_entries.concat(additional_entries)
-    end
-
-    related_entries.first(limit)
+    related = related_by_top_categories
+    related.concat(related_by_any_category(related)) if related.length < limit
+    related.first(limit)
   end
 
   private
@@ -62,5 +23,44 @@ class Entry::RelatedResources
 
   def categories
     entry.categories
+  end
+
+  def category_ids
+    @category_ids ||= categories.pluck(:id)
+  end
+
+  def base_query(category_ids:, exclude_ids:)
+    Entry
+      .strict_loading
+      .visible
+      .includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+      .joins(:categories_entries)
+      .where(categories_entries: { category_id: category_ids })
+      .where.not(id: exclude_ids)
+      .distinct
+      .recently_curated
+  end
+
+  def related_by_top_categories
+    per_category = (limit.to_f / [ category_ids.length, 3 ].min).ceil
+
+    category_ids.first(3).each_with_object([]) do |category_id, related|
+      remaining = limit - related.length
+      next if remaining <= 0
+
+      related.concat(fetch_from_category(category_id, exclude_ids: [ entry.id, *related.map(&:id) ], take: [ per_category, remaining ].min))
+    end
+  end
+
+  def fetch_from_category(category_id, exclude_ids:, take:)
+    base_query(category_ids: category_id, exclude_ids: exclude_ids).limit(take).to_a
+  end
+
+  def related_by_any_category(already_related)
+    remaining = limit - already_related.length
+
+    base_query(category_ids: category_ids, exclude_ids: [ entry.id, *already_related.map(&:id) ])
+      .limit(remaining)
+      .to_a
   end
 end

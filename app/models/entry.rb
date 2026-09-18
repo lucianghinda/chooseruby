@@ -78,6 +78,8 @@
 #  index_entries_on_title                            (title)
 #
 class Entry < ApplicationRecord
+  include Sluggable
+
   # DelegatedType - polymorphic association to type-specific models
   # Task 2.2: Updated to include all 19 types (8 existing + 11 new)
   delegated_type :entryable, types: %w[
@@ -164,8 +166,9 @@ class Entry < ApplicationRecord
                                        message: "must be a valid email address" },
                               allow_blank: true
 
+  sluggable_from :title
+
   # Callbacks
-  before_validation :generate_slug, if: -> { title.present? && (slug.blank? || title_changed?) }
   after_save :sync_to_fts, if: :should_sync_fts?
   after_destroy :remove_from_fts
 
@@ -271,21 +274,6 @@ class Entry < ApplicationRecord
 
   private
 
-  # Generate URL-friendly slug from title
-  # Ensures uniqueness by appending number if needed
-  def generate_slug
-    base_slug = title.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Entry.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
-  end
-
   # Determine if FTS sync should be triggered
   # Returns true if title, description, or tags changed
   # Note: For ActionText (description), we check if the rich_text_description association was previously changed
@@ -306,18 +294,11 @@ class Entry < ApplicationRecord
   # Sync entry data to FTS5 virtual table for full-text search
   # Called after save when title, description, or tags changed
   def sync_to_fts
-    # Extract plain text from ActionText description
-    description_text = if description.present?
-                        description.to_plain_text
-    else
-                        ""
-    end
-
-    # Convert tags array to space-separated string
-    tags_text = tags.to_a.join(" ")
+    connection = ActiveRecord::Base.connection
+    description_text = description.present? ? description.to_plain_text : ""
 
     # Delete existing FTS row first (FTS5 tables don't support proper upserts)
-    ActiveRecord::Base.connection.execute(
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "DELETE FROM entries_fts WHERE entry_id = ?",
         id
@@ -325,13 +306,13 @@ class Entry < ApplicationRecord
     )
 
     # Insert new FTS row
-    ActiveRecord::Base.connection.execute(
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "INSERT INTO entries_fts (entry_id, title, description, tags) VALUES (?, ?, ?, ?)",
         id,
         title || "",
         description_text,
-        tags_text
+        tags.to_a.join(" ")
       ])
     )
   end

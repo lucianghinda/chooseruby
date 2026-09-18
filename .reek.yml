@@ -1,0 +1,29 @@
+---
+exclude_paths:
+  - bin
+  - config
+  - db
+  - log
+  - public
+  - test
+  - storage
+  - tmp
+  - vendor
+
+detectors:
+  UtilityFunction:
+    exclude:
+      # Private query builder shared by the class's two other private methods;
+      # splitting it into a separate object would just add a file for no reuse.
+      - Entry::RelatedResources#base_query
+      # Deliberately a stateless class method (see AuthorProposal::UrlMatching)
+      # so it's reusable without an instance; that's the point, not a smell.
+      - AuthorProposal::UrlMatching#normalize_url
+
+  MissingSafeMethod:
+    exclude:
+      # These bang methods are the only entry point on purpose - there is no
+      # "safe" boolean-returning variant we want to expose.
+      - AuthorProposal::Approvable#approve!
+      - AuthorProposal::Approvable#reject!
+      - AuthorProposal::Approvable#create_new_author!

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Ban/unban lifecycle for a User, tracked via the associated Ban record.
 module User::Bannable
   extend ActiveSupport::Concern
 
