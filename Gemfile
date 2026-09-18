@@ -113,6 +113,34 @@ group :development, :test do
   # config/initializers/prosopite.rb overrides fingerprinting for SQLite
   # instead, so no extra gem needed here. [https://github.com/charkost/prosopite]
   gem "prosopite"
+
+  # Property-based testing. Compared against Rantly: both have zero external
+  # deps, but PropCheck's shrinking (reducing a failing case to its simplest
+  # form) is the more complete implementation, and it documents first-class
+  # Minitest/RSpec/test-unit integration - Rantly needs a hand-rolled Minitest
+  # adapter. Actively released (1.0 reached in 2026); Rantly's shrinking gaps
+  # are a known, unaddressed limitation. [https://github.com/Qqwy/ruby-prop_check]
+  gem "prop_check", require: false
+
+  # Mutation testing. Compared against mutant, the category's best-known tool:
+  # mutant carries 6 runtime deps and needs a separate mutant-minitest adapter,
+  # and its free tier's license explicitly excludes closed-source/commercial
+  # use. Mutineer is Prism + Ruby stdlib only (zero runtime deps, Ruby >= 3.4),
+  # ships first-class `--rails`/`--daemon` support with a fork-safe per-worker
+  # SQLite test DB (our adapter), and `--since`/`--baseline` scope a run to a
+  # diff - relevant for adopting this on an existing app instead of mutating
+  # everything at once. [https://github.com/davidteren/mutineer]
+  gem "mutineer", require: false
+
+  # Dependency health / "gem smell" checks: last-commit activity, archived
+  # repos, OpenSSF Scorecard, poison-pill transitive caps - none of which
+  # bundler-audit or `bundle outdated` cover (CVEs and version drift only).
+  # Compared against holepicker: holepicker only re-covers bundler-audit's CVE
+  # ground (last released 2016, unmaintained) with none of the maintenance
+  # signals. still_active is actively released (3.x in 2026), has 6 CI gate
+  # flags and a --baseline diff mode built for exactly this use.
+  # [https://github.com/SeanLF/still_active]
+  gem "still_active", require: false
 end
 
 group :development do
