@@ -75,6 +75,9 @@ group :development, :test do
 
   # A Ruby Gem that adds annotations to your Rails models and route files.
   gem "annotaterb"
+
+  # Code coverage; enforces 100% line and branch coverage (see .simplecov)
+  gem "simplecov", require: false
 end
 
 group :development do
