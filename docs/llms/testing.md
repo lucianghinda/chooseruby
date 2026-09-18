@@ -23,6 +23,23 @@ We should use Controller Testing to test the behavior of controllers and their i
 SimpleCov runs on every `bin/rails test` (configured in `test/test_helper.rb`, report written to `coverage/`).
 
 Current floor: line 45%, branch 30%, both measured at the point coverage tracking was introduced.
-`maximum_drop 2` fails the suite if coverage regresses by more than 2 points, so it can only go up from here.
+No `maximum_drop`: it compares against the local, gitignored `coverage/.last_run.json`,
+which CI never has (fresh checkout every run) and local dev accumulates from whatever
+you ran last, full suite or one file - neither makes it a reliable regression check.
+`minimum` doesn't have that problem, so it's the only gate.
 
 When you add tests that raise coverage, raise `minimum` in `test/test_helper.rb` to match (round down slightly). Never lower these numbers without discussing it with the user first.
+
+## N+1 detection
+
+Prosopite scans every test (`test/test_helper.rb`) and logs findings to `log/prosopite.log`
+and the Rails log (`config/initializers/prosopite.rb`) - log-only for now, see
+`docs/llms/n_plus_one_todo.md` for the inventory. Flip `Prosopite.raise = true` once that
+list is clear, to fail the suite on new N+1s.
+
+Prosopite's default fingerprinting (anything but MySQL/MariaDB) shells out to the `pg_query`
+gem, a Postgres-only parser. SQLite queries arrive already parameterized (`... = ?`), which
+that parser can't read, and a bug in Prosopite's own rescue clause turns the parse failure
+into `raise <the raw SQL string>`, crashing the test. `config/initializers/prosopite.rb`
+overrides fingerprinting for the SQLite adapter to just use the (already-parameterized)
+query string, so no parser is needed there at all.

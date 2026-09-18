@@ -49,3 +49,27 @@ When using an Active Record always use `strict_loading` and make sure you preven
 ## Database and Active Record models
 
 Never edit db/schema.rb - always update it by running `bin/rails db:migrate` or `bin/rails db:rollback`
+
+## Static analysis toolchain
+
+Every tool below runs on `bin/ci` (`config/ci.rb`) and on `git push` via `lefthook.yml`
+(install once with `bin/setup`, or `bundle exec lefthook install`). `git commit` runs the
+fast ones (RuboCop, Reek, Herb) against staged files only.
+
+| Tool | Command | Checks | Status |
+|---|---|---|---|
+| RuboCop (+ performance/minitest/thread_safety) | `bin/rubocop` | Style | Clean |
+| Reek | `bin/reek app` | Code smells | Clean for `app/models`; not yet run on the rest of `app/` - see AGENTS.md |
+| Herb | `bin/herb-lint` | ERB/HTML template lint | Not yet clean - 113 offenses as of this writing |
+| ArchSpec | `bundle exec archspec check` | Component boundaries, declared in `Archspec.rb` | Clean against `archspec_todo.yml`; burn that list down, don't add to it |
+| Brakeman | `bin/brakeman` | Security | Clean |
+| bundler-audit / importmap audit | `bin/bundler-audit`, `bin/importmap audit` | Known CVEs in deps | Clean |
+| SimpleCov | runs automatically in `bin/rails test` | Test coverage | Enforces a floor (`test/test_helper.rb`), see `docs/llms/testing.md` |
+| Prosopite | runs automatically in `bin/rails test` | N+1 queries | Log-only for now, see `docs/llms/n_plus_one_todo.md` |
+| debride | `bin/debride app lib` | Likely-unused methods | Exploratory only - high false-positive rate on Rails controller actions/callbacks (dynamic dispatch it can't see), always triage by hand before deleting anything it flags |
+| traceroute | `bin/rake traceroute:unused_routes` | Routes with no matching view/controller reference | Exploratory; skip `traceroute:unreachable_action_methods` - it's nearly 100% noise on `Avo::*Controller` subclasses, which inherit hundreds of gem-provided helper methods it can't tell apart from real actions |
+| skunk | `bin/skunk app` | Hotspot ranking (churn × complexity × smells) | Exploratory, points at what to refactor first, not a pass/fail gate |
+
+When you add a new gem here, add its `bin/<name>` wrapper (see `bin/reek` for the pattern)
+and a line to this table, and wire it into `config/ci.rb` and/or `lefthook.yml` as
+appropriate for how noisy/slow it is.

@@ -1,0 +1,12 @@
+---
+violations:
+- id: 1978e4d3430725bb24a7e5e5
+  rule: components.empty
+  path: app/services/fts_reindexer.rb
+  line: 1
+  message: services must stay empty
+- id: 0e02d3000c682e0b90a1dc6e
+  rule: components.empty
+  path: app/services/github_avatar_service.rb
+  line: 1
+  message: services must stay empty

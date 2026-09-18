@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/evilmartians/lefthook/master/schema.json
+---
+# Harness-level gate: catches what the linters below already know how to
+# catch, before it costs anyone (human or agent) a CI run or a review
+# comment. Install once per clone with `bin/setup` (calls `lefthook install`).
+#
+# Keep pre-commit fast (only staged files, only fast tools) and pre-push
+# thorough (whole repo, the same checks bin/ci runs) - a slow pre-commit
+# gets skipped with --no-verify, a slow pre-push is still faster than
+# waiting for CI to fail.
+pre-commit:
+  parallel: true
+  jobs:
+    - name: rubocop
+      glob: "*.rb"
+      run: bin/rubocop {staged_files}
+
+    - name: reek
+      glob: "app/**/*.rb"
+      run: bin/reek {staged_files}
+
+    - name: herb-lint
+      glob: "*.html.erb"
+      run: bin/herb-lint {staged_files}
+
+pre-push:
+  parallel: false
+  jobs:
+    - name: rubocop
+      run: bin/rubocop
+
+    - name: reek
+      run: bin/reek app
+
+    - name: herb-lint
+      run: bin/herb-lint
+
+    - name: archspec
+      run: bundle exec archspec check
+
+    - name: brakeman
+      run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+
+    - name: bundler-audit
+      run: bin/bundler-audit
+
+    - name: test
+      run: bin/rails test

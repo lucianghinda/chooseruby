@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Base controller: browser support, auth, and shared view data every
+# controller needs (see AGENTS.md - controllers stay thin, logic lives on models).
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -14,6 +16,22 @@ class ApplicationController < ActionController::Base
   include Authorization
 
   helper_method :curated_collections_data, :experience_tracks_data
+
+  # In test, ActiveSupport::TestCase already wraps every test (controller,
+  # integration, or otherwise) in a single Prosopite.scan/finish - see
+  # test/test_helper.rb. Nesting this around_action inside that breaks
+  # Prosopite's state, so skip it there; it still runs for real dev-server
+  # requests.
+  if Rails.env.development?
+    around_action :n_plus_one_detection
+
+    def n_plus_one_detection
+      Prosopite.scan
+      yield
+    ensure
+      Prosopite.finish
+    end
+  end
 
   private
 

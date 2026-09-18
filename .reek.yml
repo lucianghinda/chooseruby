@@ -19,6 +19,10 @@ detectors:
       # Deliberately a stateless class method (see AuthorProposal::UrlMatching)
       # so it's reusable without an instance; that's the point, not a smell.
       - AuthorProposal::UrlMatching#normalize_url
+      # Prosopite's own documented around_action pattern
+      # (https://github.com/charkost/prosopite#development-environment-usage);
+      # scan/finish don't touch instance state by design.
+      - ApplicationController#n_plus_one_detection
 
   MissingSafeMethod:
     exclude:

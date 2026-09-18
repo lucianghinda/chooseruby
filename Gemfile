@@ -86,11 +86,42 @@ group :development, :test do
 
   # A Ruby Gem that adds annotations to your Rails models and route files.
   gem "annotaterb"
+
+  # HTML+ERB linter. `herb lint` itself shells out to `npx @herb-tools/linter` (Node), which
+  # doesn't fit an app that deliberately keeps Node off its stack (importmap-rails +
+  # tailwindcss-ruby). herb-embedded runs the same upstream rule engine inside Ruby via an
+  # embedded JS runtime instead. [https://github.com/defmethodinc/herb-embedded]
+  gem "herb-embedded", require: false
+
+  # Detects likely-unused methods (static analysis) [https://github.com/seattlerb/debride]
+  gem "debride", require: false
+
+  # Finds Rails routes with no matching controller action, or vice versa.
+  # No `require: false`: its Railtie needs to load for `rake traceroute` to exist.
+  gem "traceroute"
+
+  # Ranks files by (churn * complexity * code smells) to find hotspots worth refactoring first
+  gem "skunk", require: false
+
+  # Architecture linter: declares component boundaries in Archspec.rb and
+  # checks them via static analysis (no app boot, no AI) [https://archspecrb.dev]
+  gem "archspec", require: false
+
+  # Detects N+1 queries at runtime by flagging them during the test run.
+  # Its default non-MySQL fingerprinting needs the `pg_query` gem (Postgres-only
+  # syntax), which can't parse SQLite's already-parameterized queries anyway -
+  # config/initializers/prosopite.rb overrides fingerprinting for SQLite
+  # instead, so no extra gem needed here. [https://github.com/charkost/prosopite]
+  gem "prosopite"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Git hooks runner: blocks bad commits/pushes before they use any CI time
+  # [https://github.com/evilmartians/lefthook]
+  gem "lefthook", require: false
 end
 
 group :test do

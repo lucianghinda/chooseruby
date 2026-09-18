@@ -6,6 +6,9 @@ CI.run do
   step "Setup", "bin/setup --skip-server"
 
   step "Style: Ruby", "bin/rubocop"
+  step "Style: Code smells (Reek)", "bin/reek app"
+  step "Style: ERB templates (Herb)", "bin/herb-lint"
+  step "Architecture: boundaries (ArchSpec)", "bundle exec archspec check"
 
   step "Security: Gem audit", "bin/bundler-audit"
   step "Security: Importmap vulnerability audit", "bin/importmap audit"

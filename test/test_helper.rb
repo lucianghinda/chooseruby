@@ -8,15 +8,15 @@ SimpleCov.start "rails" do
 
   # Baseline at the time coverage tracking was introduced (see docs/llms/testing.md).
   # Ratchet these up as coverage improves; never lower them without discussion.
-  coverage :line do
-    minimum 45
-    maximum_drop 2
-  end
-
-  coverage :branch do
-    minimum 30
-    maximum_drop 2
-  end
+  #
+  # No maximum_drop here on purpose: it compares against coverage/.last_run.json,
+  # which is a local, gitignored cache. CI starts every run with an empty
+  # coverage/, so maximum_drop would silently never fire there, while locally
+  # it compares against whatever partial/full run you happened to run last -
+  # a false "regression" as likely as a real one. `minimum` alone is stable
+  # regardless of run history, so it is the only gate here.
+  coverage(:line) { minimum 47 }
+  coverage(:branch) { minimum 32 }
 end
 
 require_relative "../config/environment"
@@ -31,6 +31,13 @@ module ActiveSupport
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
+
+    # N+1 query detection (config/initializers/prosopite.rb, currently log-only -
+    # see docs/llms/testing.md). Wraps the whole test, not just controller actions,
+    # so model/query/service tests are covered too. Must run per-test, never around
+    # the whole suite.
+    setup { Prosopite.scan }
+    teardown { Prosopite.finish }
 
     # Ensure FTS5 tables exist for tests (bin/rails test doesn't run db:test:prepare)
     setup do

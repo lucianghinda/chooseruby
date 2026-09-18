@@ -1,0 +1,9 @@
+version: "0.10.3"
+files:
+  include:
+    - "**/*.html.erb"
+    - "**/*.herb"
+  exclude: []
+linter:
+  fail_level: error
+  rules: {}
