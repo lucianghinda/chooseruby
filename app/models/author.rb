@@ -87,16 +87,7 @@ class Author < ApplicationRecord
   # Generate URL-friendly slug from name
   # Ensures uniqueness by appending number if needed
   def generate_slug
-    base_slug = name.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Author.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
+    self.slug = UniqueSlug.new(self, name).to_s
   end
 
   # Fetch GitHub avatar URL when github_url changes
@@ -115,7 +106,8 @@ class Author < ApplicationRecord
     name_text = name.to_s
 
     # Delete existing FTS row first (FTS5 tables don't support proper upserts)
-    ActiveRecord::Base.connection.execute(
+    connection = ActiveRecord::Base.connection
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "DELETE FROM authors_fts WHERE author_id = ?",
         id
@@ -123,7 +115,7 @@ class Author < ApplicationRecord
     )
 
     # Insert new FTS row
-    ActiveRecord::Base.connection.execute(
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "INSERT INTO authors_fts (author_id, name) VALUES (?, ?)",
         id,

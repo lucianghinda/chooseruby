@@ -1,30 +1,32 @@
 # frozen_string_literal: true
 
+# Applies curated search defaults to public resource collections.
 class CollectionsController < ApplicationController
-  before_action :load_collection, only: :show
-
   def index
-    @collections = curated_collections_data
-    @experience_tracks = experience_tracks_data
+    render :index, locals: { collections: curated_collections_data, experience_tracks: experience_tracks_data }
   end
 
   def show
-    @categories = Category.order(:display_order, :name)
-    @base_filters = @collection.fetch(:filters, {}).symbolize_keys
-    override_filters = params.permit(:q, :level, :category).to_h.symbolize_keys
-    merged_filters = @base_filters.merge(override_filters) do |_key, base, override|
-      override.present? ? override : base
-    end
-
-    @directory_query = EntryDirectoryQuery.new(merged_filters)
-    @entries = @directory_query.call.page(params[:page]).per(12)
+    collection = find_collection
+    query = EntryDirectoryQuery.new(collection_filters(collection))
+    render :show, locals: {
+      collection: collection, directory_query: query,
+      categories: Category.strict_loading.order(:display_order, :name),
+      entries: query.call.page(params[:page]).per(12)
+    }
   end
 
   private
 
-  def load_collection
+  def collection_filters(collection)
+    defaults = collection.fetch(:filters, {}).symbolize_keys
+    overrides = params.permit(:q, :level, :category).to_h.symbolize_keys.compact_blank
+    defaults.merge(overrides)
+  end
+
+  def find_collection
     slug = params[:id]
-    @collection = curated_collections_data.find { |collection| collection[:slug] == slug }
-    raise ActiveRecord::RecordNotFound, "Collection not found" unless @collection
+    curated_collections_data.find { |collection| collection[:slug] == slug } ||
+      raise(ActiveRecord::RecordNotFound, "Collection not found")
   end
 end

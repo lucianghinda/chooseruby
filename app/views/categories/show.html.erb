@@ -1,7 +1,9 @@
-<% content_for :title, "#{@category.name} Resources | ChooseRuby" %>
-<% content_for :meta_description, @category.description.present? ? @category.description.truncate(160) : "Curated Ruby on Rails resources for #{@category.name}." %>
+<% query = directory_query.query %>
+<% active_level = directory_query.level %>
+<% content_for :title, "#{category.name} Resources | ChooseRuby" %>
+<% content_for :meta_description, category.description.present? ? category.description.truncate(160) : "Curated Ruby on Rails resources for #{category.name}." %>
 
-<% icon = @category.icon.presence || "💎" %>
+<% icon = category.icon.presence || "💎" %>
 
 <div class="space-y-12 pb-16">
   <section class="rounded-3xl bg-gradient-to-br from-white to-slate-50 p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
@@ -9,22 +11,22 @@
       <div class="flex items-center justify-center gap-4 sm:justify-start">
         <span class="inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-rose-500/10 text-3xl"><%= icon %></span>
         <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-          <%= @category.name %>
+          <%= category.name %>
         </h1>
       </div>
-      <% if @category.description.present? %>
-        <p class="text-lg text-slate-600"><%= @category.description %></p>
+      <% if category.description.present? %>
+        <p class="text-lg text-slate-600"><%= category.description %></p>
       <% else %>
         <p class="text-lg text-slate-600">Recommended gems, tools, and guides related to this topic.</p>
       <% end %>
-      <% resource_count = @category.entries_count %>
+      <% resource_count = category.entries_count %>
       <p class="text-sm font-medium text-slate-500">
         <%= pluralize(resource_count, 'resource') %> in this category
       </p>
     </div>
   </section>
 
-  <% featured_resources = @category.featured_entries %>
+  <% featured_resources = category.featured_entries %>
   <% if featured_resources.any? %>
     <section class="space-y-6">
       <h2 class="text-2xl font-semibold text-slate-900">Featured Resources</h2>
@@ -84,7 +86,7 @@
         <%= link_to "Browse other categories", categories_path, class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
       </header>
 
-      <%= form_with url: category_path(@category.slug), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
+      <%= form_with url: category_path(category.slug), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
         <div class="space-y-2">
           <%= form.label :q, "Search within this category", class: "text-sm font-semibold text-slate-700" %>
           <div class="relative">
@@ -93,13 +95,13 @@
                 <path fill-rule="evenodd" d="M9 4a5 5 0 013.995 8.326l3.84 3.84a1 1 0 01-1.414 1.415l-3.84-3.84A5 5 0 119 4zm0 2a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
               </svg>
             </div>
-            <%= form.text_field :q, value: @query, class: "w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-sm text-slate-900 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Filter by keyword, gem, or problem…" %>
+            <%= form.text_field :q, value: query, class: "w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-sm text-slate-900 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Filter by keyword, gem, or problem…" %>
           </div>
         </div>
         <div class="space-y-2">
           <%= form.label :level, "Experience level", class: "text-sm font-semibold text-slate-700" %>
           <%= form.select :level,
-                          experience_level_options_for_select(@active_level),
+                          experience_level_options_for_select(active_level),
                           { include_blank: "Any level" },
                           class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
         </div>
@@ -116,9 +118,9 @@
       <%= link_to "Submit a resource", new_resource_submission_path, class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
     </div>
 
-    <% if @entries.any? %>
+    <% if entries.any? %>
       <div class="grid gap-6 lg:grid-cols-3">
-        <% @entries.each do |entry| %>
+        <% entries.each do |entry| %>
           <article class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
             <div class="space-y-4">
               <div class="flex flex-wrap gap-2">
@@ -162,7 +164,7 @@
       </div>
 
       <div class="mt-8 flex justify-center">
-        <%= paginate @entries %>
+        <%= paginate entries %>
       </div>
     <% else %>
       <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">

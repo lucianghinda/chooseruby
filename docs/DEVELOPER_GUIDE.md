@@ -10,6 +10,8 @@ This guide explains how to work with and extend the Core Entry Model in ChooseRu
 4. [Avo Customization Patterns](#avo-customization-patterns)
 5. [Seed Data Management](#seed-data-management)
 6. [N+1 Query Prevention](#n1-query-prevention)
+7. [Tests and Coverage](#tests-and-coverage)
+8. [Mutation Validation](#mutation-validation)
 
 ## Understanding DelegatedTypes
 
@@ -357,6 +359,93 @@ Entry.includes(:entryable, :categories).limit(10).each do |e|
   puts e.categories.map(&:name)
 end
 ```
+
+## Tests and Coverage
+
+```bash
+bin/rails test           # Rails tests without the browser system suite
+bundle exec rake test   # Equivalent entry point
+bin/rails test:all       # Rails and browser system tests in one coverage run
+bin/ci                  # Setup, quality/security checks, tests, mutation, and seeds
+```
+
+Both local CI and GitHub Actions use `bin/rails test:all` so the existing system
+tests contribute to the same report as the rest of the suite. The system tests
+require Chrome/Chromium and run headlessly. The standalone Rails and Rake test
+commands also enforce the coverage gate.
+
+CI recreates the test database before the suite and again before mutation
+validation. This also clears sample data left by the previous local CI seed check.
+
+SimpleCov starts before Rails prepares the test environment and tracks every
+Ruby file in `app/` and `lib/`. Both line and branch coverage must reach **100%**
+overall and for each file. Rails-generated `eval` branches are ignored; source
+branches remain included. Open `coverage/index.html` for the report, or inspect
+`coverage/coverage.json` for machine-readable results. GitHub Actions retains the
+coverage artifact even when a check fails.
+
+Each test invocation discards the previous `.resultset.json` cache before
+starting. SimpleCov then combines only the current invocation's forked Rails
+workers, preventing earlier full runs from concealing missing coverage in a later
+run. Targeted tests keep the same thresholds and can therefore pass assertions
+but exit unsuccessfully for incomplete application coverage. Finish with a full
+suite run. Do not run independent suites concurrently into the same report
+directory; choose separate `COVERAGE_DIR` values and isolated test databases.
+`COVERAGE_COMMAND_NAME` can label a report without changing its thresholds.
+
+## Mutation Validation
+
+Mutant checks whether the tests detect changes to application behavior. Install the
+development and test bundle, prepare the test database, and run the regular tests
+before mutation testing:
+
+```bash
+bundle install
+RAILS_ENV=test bin/rails db:test:prepare
+bin/rails test
+RAILS_ENV=test bin/rails db:test:prepare
+bin/mutant run
+```
+
+`bin/mutant` sets `MUTANT=1` to keep SimpleCov disabled only during mutation runs.
+Mutant deliberately runs selected tests against modified code; those executions
+must not replace or enforce the regular suite's line and branch coverage report.
+Run the normal suite and its SimpleCov checks before the mutation gate.
+
+The initial mutation gate covers **`Book#display_name`**, using
+`BookDisplayNameTest`. A successful run must report at least one subject and
+mutation, with no surviving mutations. This is an initial, explicit scope; it does
+not claim mutation coverage of the entire application.
+
+To check another method, declare the responsible tests with Mutant's `cover` API
+at the test class level, then pass its subject expression:
+
+```ruby
+class EntryTest < ActiveSupport::TestCase
+  cover "Entry#method_to_check"
+end
+```
+
+```bash
+bin/mutant run --fail-fast 'Entry#method_to_check'
+```
+
+Command-line subjects replace the defaults in `config/mutant.yml`. Once a method's
+tests kill its mutations, add it to `matcher.subjects` to include it in the regular
+gate. Uncovered behavior should gain a meaningful test; unnecessary behavior can
+be simplified. Surviving mutations and execution failures are failures, and are
+not ignored or counted as successful coverage.
+
+The configuration boots Rails in the test environment and eagerly loads the app
+so subjects can be discovered. Both Rails test parallelism and Mutant workers are
+limited to one because the tests share a SQLite database. Run mutation validation
+separately from other commands that modify that database; adding parallel workers
+requires database isolation first.
+
+This public Apache-2.0 project uses Mutant's `opensource` usage mode. See the
+[official Minitest integration](https://github.com/mbj/mutant/blob/main/docs/mutant-minitest.md),
+[Rails integration](https://github.com/mbj/mutant/blob/main/docs/rails.md), and
+[licensing documentation](https://github.com/mbj/mutant#licensing).
 
 ## Best Practices
 

@@ -1,23 +1,19 @@
 # frozen_string_literal: true
 
+# Limits the admin author listing to a selected approval status.
 class Avo::Filters::AuthorStatusFilter < Avo::Filters::SelectFilter
   self.name = "Status"
 
-  def apply(request, query, value)
-    case value
-    when "approved"
-      query.approved
-    when "pending"
-      query.pending
-    else
-      query
-    end
+  def apply(_request, query, value)
+    return query unless options.key?(value)
+
+    query.where(status: value)
   end
 
   def options
     {
-      "Approved" => "approved",
-      "Pending" => "pending"
+      "approved" => "Approved",
+      "pending" => "Pending"
     }
   end
 end

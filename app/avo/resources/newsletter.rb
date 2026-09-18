@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Configures the admin form and listing for Newsletter records.
 class Avo::Resources::Newsletter < Avo::BaseResource
   self.title = :display_name
   self.includes = [ :entry ]

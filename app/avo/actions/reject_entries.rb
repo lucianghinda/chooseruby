@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Rejects entries while recording review feedback and notifying submitters.
 class Avo::Actions::RejectEntries < Avo::BaseAction
   self.name = "Reject Resources"
   self.message = "Are you sure you want to reject the selected resources?"
@@ -13,24 +14,22 @@ class Avo::Actions::RejectEntries < Avo::BaseAction
           placeholder: "Explain why this submission was rejected..."
   end
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |resource|
-      ActiveRecord::Base.transaction do
-        # Update entry: status to rejected
-        resource.update!(status: :rejected)
+  def handle(records:, fields:, **)
+    @entries = records
+    reject_entries(fields[:comment])
+    report_count
+  end
 
-        # Create EntryReview record with status: :rejected and comment
-        EntryReview.create!(
-          entry: resource,
-          status: :rejected,
-          comment: fields[:comment]
-        )
+  private
 
-        # Queue rejection notification email
-        ResourceSubmissionMailer.rejection_notification(resource).deliver_later
-      end
-    end
+  attr_reader :entries
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} rejected successfully!"
+  def reject_entries(comment)
+    entries.each { |entry| entry.reject_with_review(comment: comment) }
+  end
+
+  def report_count
+    count = entries.count
+    succeed "#{count} #{'resource'.pluralize(count)} rejected successfully!"
   end
 end

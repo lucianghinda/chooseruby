@@ -63,7 +63,7 @@ class EntryWorkflowTest < ActionDispatch::IntegrationTest
 
     entry.reload
     assert_not_nil entry.description
-    assert entry.description.to_s.include?("Rich Text")
+    assert_includes entry.description.to_s, "Rich Text"
   end
 
   test "image URL can be set as string" do

@@ -5,6 +5,30 @@ require "test_helper"
 # Tests for ResourceSubmissionMailer adapted for Entry model submissions
 # These tests verify email delivery for community resource submissions
 class ResourceSubmissionMailerTest < ActionMailer::TestCase
+  test "rejection without a review still informs the submitter" do
+    entry = Entry.new(title: "Rejected resource", url: "https://example.com/rejected", status: :rejected,
+      entryable_type: "Book", submitter_email: "submitter@example.com")
+
+    email = ResourceSubmissionMailer.rejection_notification(entry)
+
+    assert_equal [ "submitter@example.com" ], email.to
+    assert_match "Rejected resource", email.text_part.body.to_s
+  end
+
+  test "legacy submission attributes supply categories and contact email" do
+    submission_class = Struct.new(:title, :url, :entryable_type, :experience_level, :description,
+      :selected_categories, :contact_name, :contact_email, keyword_init: true)
+    submission = submission_class.new(title: "Legacy resource", url: "https://example.com/legacy",
+      entryable_type: "Blog", selected_categories: [ categories(:testing) ], contact_name: "Legacy Submitter",
+      contact_email: "legacy@example.com")
+
+    team_email = ResourceSubmissionMailer.notify_team(submission)
+    confirmation = ResourceSubmissionMailer.confirm_submitter(submission)
+
+    assert_match "Testing", team_email.text_part.body.to_s
+    assert_equal [ "legacy@example.com" ], confirmation.to
+  end
+
   test "notify_team sends email to configured recipient with Entry details" do
     # Create a RubyGem entry for testing
     ruby_gem = RubyGem.create!(

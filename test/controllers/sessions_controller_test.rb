@@ -3,6 +3,39 @@
 require "test_helper"
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
+  test "a suspended signed-in user is blocked on public and admin pages" do
+    post session_url, params: { email_address: "admin@test.com", password: "password" }
+    assert_redirected_to "/avo/"
+
+    users(:admin).suspended!
+
+    [ root_path, "/avo/resources/entries" ].each do |path|
+      get path
+      assert_response :forbidden
+      assert_equal "Access denied", response.body
+    end
+  end
+
+  test "sign in supports an authenticated request before signing out" do
+    post session_url, params: { email_address: "admin@test.com", password: "password" }
+    get "/avo/resources/entries"
+    assert_response :success
+
+    delete "/session"
+    assert_redirected_to "/"
+    assert_empty cookies[:session_token]
+
+    get "/avo/resources/entries"
+    assert_redirected_to "/session/new"
+  end
+
+  test "logout without an existing session is idempotent" do
+    assert_no_difference "Session.count" do
+      delete session_url
+    end
+    assert_redirected_to root_path
+  end
+
   test "GET new renders login form" do
     get new_session_url
     assert_response :success

@@ -19,7 +19,7 @@ class AuthorProposalsController < ApplicationController
   # GET /authors/:author_id/propose_edit
   def new
     @author = Author.approved.find(params[:author_id])
-    @author_proposal = AuthorProposal.new(author: @author)
+    @author_proposal = AuthorProposal.new(author: author)
   rescue ActiveRecord::RecordNotFound
     render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
   end
@@ -35,16 +35,10 @@ class AuthorProposalsController < ApplicationController
   def create
     @author_proposal = AuthorProposal.new(author_proposal_params)
 
-    if @author_proposal.save
-      redirect_to author_proposal_success_path(@author_proposal)
+    if author_proposal.save
+      redirect_to author_proposal_success_path(author_proposal)
     else
-      # Reload author for existing author proposals to display form correctly
-      if @author_proposal.author_id.present?
-        @author = Author.find_by(id: @author_proposal.author_id)
-        render :new, status: :unprocessable_entity
-      else
-        render :new_author, status: :unprocessable_entity
-      end
+      render_invalid_proposal
     end
   end
 
@@ -58,9 +52,21 @@ class AuthorProposalsController < ApplicationController
 
   private
 
+  attr_reader :author, :author_proposal
+
   # Strong parameters for author proposal
   def author_proposal_params
-    params.require(:author_proposal).permit(
+    permitted_author_proposal_params.tap do |permitted|
+      permitted[:link_updates] = normalized_link_updates if permitted[:link_updates].present?
+    end
+  end
+
+  def normalized_link_updates
+    permitted_author_proposal_params[:link_updates].compact_blank.presence
+  end
+
+  def permitted_author_proposal_params
+    @permitted_author_proposal_params ||= params.require(:author_proposal).permit(
       :author_id,
       :author_name,
       :resource_url,
@@ -81,12 +87,15 @@ class AuthorProposalsController < ApplicationController
         :twitch_url,
         :blog_url
       ]
-    ).tap do |permitted|
-      # Convert link_updates array to hash, removing blank values
-      if permitted[:link_updates].present?
-        link_hash = permitted[:link_updates].to_h.reject { |_k, v| v.blank? }
-        permitted[:link_updates] = link_hash.presence
-      end
+    )
+  end
+
+  def render_invalid_proposal
+    if (author_id = author_proposal.author_id).present?
+      @author = Author.find_by(id: author_id)
+      render :new, status: :unprocessable_entity
+    else
+      render :new_author, status: :unprocessable_entity
     end
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Suspends accounts, expires bans, and closes their sessions.
 module User::Bannable
   extend ActiveSupport::Concern
 

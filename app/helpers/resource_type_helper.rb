@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Provides display labels, icons, and descriptions for resource types.
 module ResourceTypeHelper
   # Type metadata mapping
   TYPE_METADATA = {

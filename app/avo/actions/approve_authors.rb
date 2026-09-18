@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Approves the author profiles selected by an administrator.
 class Avo::Actions::ApproveAuthors < Avo::BaseAction
   self.name = "Approve Authors"
   self.message = "Are you sure you want to approve the selected authors?"
@@ -7,11 +8,22 @@ class Avo::Actions::ApproveAuthors < Avo::BaseAction
   self.cancel_button_label = "Cancel"
   self.no_confirmation = false
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |author|
-      author.update(status: :approved)
-    end
+  def handle(records:, **)
+    @authors = records
+    approve_authors
+    report_count
+  end
 
-    succeed "#{records.count} #{'author'.pluralize(records.count)} approved successfully!"
+  private
+
+  attr_reader :authors
+
+  def approve_authors
+    authors.each { |author| author.update(status: :approved) }
+  end
+
+  def report_count
+    count = authors.count
+    succeed "#{count} #{'author'.pluralize(count)} approved successfully!"
   end
 end

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Signs active users in and terminates their sessions.
 class SessionsController < ApplicationController
   def new
     # Renders login form

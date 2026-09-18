@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+# Presents the mission, roadmap, and Ruby introduction pages.
 class PagesController < ApplicationController
   def why_ruby
-    @pillars = [
+    pillars = [
       {
         title: "Velocity without the overhead",
         description: "Rails 8 ships with built-in tooling—from Turbo and Solid Queue to Solid Cache—so teams deliver features quickly without maintaining a fleet of services.",
@@ -20,7 +21,7 @@ class PagesController < ApplicationController
       }
     ]
 
-    @modern_highlights = [
+    modern_highlights = [
       {
         name: "Rails 8 + Hotwire",
         description: "Build interactive experiences with server-rendered HTML, Turbo Streams, and Stimulus—no sprawling front-end stack required."
@@ -34,10 +35,12 @@ class PagesController < ApplicationController
         description: "Active contributors, meetups, and online communities champion modern Ruby patterns and help newcomers skill up quickly."
       }
     ]
+
+    render :why_ruby, locals: { pillars: pillars, modern_highlights: modern_highlights }
   end
 
   def mission
-    @mission_points = [
+    mission_points = [
       {
         title: "Surface the best of Ruby",
         description: "Curate gems, guides, and tools so developers can solve real problems faster than hunting across forums and GitHub."
@@ -52,16 +55,18 @@ class PagesController < ApplicationController
       }
     ]
 
-    @personas = [
+    personas = [
       { name: "Sarah", role: "Ruby Beginner", goal: "Find trusted guidance while building first projects." },
       { name: "Marcus", role: "Experienced Developer", goal: "Stay current with ecosystem changes and pick the right tools quickly." },
       { name: "Priya", role: "Language Explorer", goal: "Evaluate Ruby’s capabilities compared with other ecosystems." },
       { name: "Jordan", role: "Expert Contributor", goal: "Help quality resources reach the community and shape best practices." }
     ]
+
+    render :mission, locals: { mission_points: mission_points, personas: personas }
   end
 
   def roadmap
-    @mvp_tracks = [
+    mvp_tracks = [
       {
         title: "Searchable directory",
         description: "Deliver a responsive, filterable resource directory so developers can discover the right gems and guides instantly."
@@ -76,7 +81,7 @@ class PagesController < ApplicationController
       }
     ]
 
-    @roadmap_pillars = [
+    roadmap_pillars = [
       {
         title: "Phase 1: Foundation",
         items: [
@@ -102,5 +107,7 @@ class PagesController < ApplicationController
         ]
       }
     ]
+
+    render :roadmap, locals: { mvp_tracks: mvp_tracks, roadmap_pillars: roadmap_pillars }
   end
 end

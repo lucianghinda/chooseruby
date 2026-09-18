@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base class inheriting the application's Active Job queue configuration.
 class ApplicationJob < ActiveJob::Base
   # Automatically retry jobs that encountered a deadlock
   # retry_on ActiveRecord::Deadlocked

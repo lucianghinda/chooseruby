@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Protects administration actions according to the current user role.
 module Authorization
   extend ActiveSupport::Concern
 

@@ -92,6 +92,13 @@
 #  matched_entry_id  (matched_entry_id => entries.id) ON DELETE => nullify
 #
 class AuthorProposal < ApplicationRecord
+  include Review
+
+  LINK_FIELDS = %w[
+    github_url gitlab_url website_url bluesky_url ruby_social_url
+    twitter_url linkedin_url youtube_url twitch_url blog_url
+  ].freeze
+
   # Enable strict loading to prevent N+1 queries
   self.strict_loading_by_default = true
   # Always preload associations we render to avoid strict loading violations in admin views
@@ -117,7 +124,7 @@ class AuthorProposal < ApplicationRecord
   validates :bio_text, length: { maximum: 500 }, allow_blank: true
 
   # Author name required for new author proposals
-  validates :author_name, presence: true, if: -> { author_id.nil? }
+  validates :author_name, presence: true, if: -> { author_id.blank? }
 
   # Custom validations
   validate :has_proposed_changes?
@@ -129,102 +136,6 @@ class AuthorProposal < ApplicationRecord
   after_create :send_submission_confirmation_email
 
   # ========================================
-  # Public API - Approval Workflow Methods
-  # ========================================
-
-  # Approves the proposal and applies all changes to the Author model
-  #
-  # This method handles:
-  # - Creating new authors from proposals (when author_id is nil)
-  # - Updating existing authors with proposed changes
-  # - Applying link_updates to author's link fields
-  # - Creating EntriesAuthor associations when matched_entry_id exists
-  # - Setting proposal status to approved with reviewed_at timestamp
-  # - Sending approval notification email to submitter
-  #
-  # The entire operation is wrapped in a transaction for atomicity.
-  # If any step fails, all changes are rolled back and the proposal
-  # remains in pending status.
-  #
-  # Leverages Author model callbacks:
-  # - GithubAvatarService for github_url changes
-  # - FTS sync for name changes
-  #
-  # @raise [ActiveRecord::RecordInvalid] if author validation fails
-  # @return [Boolean] true if approval succeeded
-  #
-  # Example:
-  #   proposal.approve!
-  #   proposal.approved? # => true
-  #   proposal.author.reload.bio # => "Updated bio text"
-  def approve!
-    ActiveRecord::Base.transaction do
-      # Eager load author to avoid strict loading violations
-      existing_author = author_id.present? ? Author.find(author_id) : nil
-      target_author = existing_author || create_new_author!
-
-      # Apply bio changes if present (note: Author does not have description field)
-      target_author.bio = bio_text if bio_text.present?
-
-      # Apply link_updates to author
-      apply_link_updates_to_author(target_author) if link_updates.present?
-
-      # Save author with validations
-      target_author.save!
-
-      # Update proposal's author_id if this was a new author
-      self.author_id = target_author.id if author_id.nil?
-
-      # Create EntriesAuthor association if matched entry exists
-      create_entries_author_association(target_author) if matched_entry_id.present?
-
-      # Mark proposal as approved
-      update!(
-        status: :approved,
-        reviewed_at: Time.current,
-        reviewer_id: nil  # Will be populated when admin system exists
-      )
-
-      # Send approval email - reload with author association to avoid strict loading violation
-      send_approval_email
-    end
-
-    true
-  end
-
-  # Rejects the proposal without applying any changes
-  #
-  # Sets the proposal status to rejected and records the admin's
-  # feedback comment and review timestamp. Does not modify the
-  # Author model or create any associations.
-  #
-  # Sends rejection notification email to submitter with feedback.
-  #
-  # @param admin_comment [String] required feedback explaining rejection
-  # @raise [ArgumentError] if admin_comment is not provided
-  # @return [Boolean] true if rejection succeeded
-  #
-  # Example:
-  #   proposal.reject!(admin_comment: "Bio needs more detail")
-  #   proposal.rejected? # => true
-  #   proposal.admin_comment # => "Bio needs more detail"
-  def reject!(admin_comment:)
-    raise ArgumentError, "admin_comment is required for rejection" if admin_comment.blank?
-
-    update!(
-      status: :rejected,
-      admin_comment: admin_comment,
-      reviewed_at: Time.current,
-      reviewer_id: nil  # Will be populated when admin system exists
-    )
-
-    # Send rejection email
-    send_rejection_email
-
-    true
-  end
-
-  # ========================================
   # Domain Query Methods
   # ========================================
 
@@ -232,7 +143,7 @@ class AuthorProposal < ApplicationRecord
   #
   # @return [Boolean] true when author_id is nil
   def new_author_proposal?
-    author_id.nil?
+    author_id.blank?
   end
 
   # Returns true if this is a proposal to edit an existing author
@@ -301,55 +212,6 @@ class AuthorProposal < ApplicationRecord
   end
 
   # ========================================
-  # Private Helper Methods - Approval Workflow
-  # ========================================
-
-  # Creates a new Author from proposal data
-  #
-  # @return [Author] newly created author instance (unsaved)
-  # @raise [ActiveRecord::RecordInvalid] if author validation fails
-  def create_new_author!
-    new_author = Author.new(name: author_name)
-    new_author
-  end
-
-  # Applies link_updates hash to author's link fields
-  #
-  # Only updates fields that are present in the link_updates hash.
-  # Validates that all link fields are valid Author attributes.
-  #
-  # @param target_author [Author] the author to update
-  # @return [void]
-  def apply_link_updates_to_author(target_author)
-    link_updates.each do |field_name, url_value|
-      next if url_value.blank?
-
-      # Validate field exists on Author model
-      unless target_author.respond_to?("#{field_name}=")
-        raise ArgumentError, "Invalid link field: #{field_name}"
-      end
-
-      target_author.send("#{field_name}=", url_value)
-    end
-  end
-
-  # Creates EntriesAuthor association between author and matched entry
-  #
-  # Only creates association if it doesn't already exist.
-  # Silently skips if association already exists to maintain idempotency.
-  #
-  # @param target_author [Author] the author to associate with entry
-  # @return [void]
-  def create_entries_author_association(target_author)
-    return if EntriesAuthor.exists?(author: target_author, entry_id: matched_entry_id)
-
-    EntriesAuthor.create!(
-      author: target_author,
-      entry_id: matched_entry_id
-    )
-  end
-
-  # ========================================
   # Private Helper Methods - Validations
   # ========================================
 
@@ -370,28 +232,25 @@ class AuthorProposal < ApplicationRecord
   def validate_link_urls
     return if link_updates.blank?
 
-    valid_link_fields = %w[
-      github_url gitlab_url website_url bluesky_url ruby_social_url
-      twitter_url linkedin_url youtube_url twitch_url blog_url
-    ]
-
     link_updates.each do |field_name, url|
-      next if url.blank?
+      validate_link_url(field_name, url) if url.present?
+    end
+  end
 
-      unless valid_link_fields.include?(field_name)
-        errors.add(:link_updates, "#{field_name} is not a valid link field")
-        next
-      end
+  def validate_link_url(field_name, url)
+    unless LINK_FIELDS.include?(field_name)
+      errors.add(:link_updates, "#{field_name} is not a valid link field")
+      return
+    end
 
-      unless url.match?(URI::DEFAULT_PARSER.make_regexp(%w[http https]))
-        errors.add(:link_updates, "#{field_name} must be a valid URL starting with http:// or https://")
-      end
+    unless url.match?(URI::DEFAULT_PARSER.make_regexp(%w[http https]))
+      errors.add(:link_updates, "#{field_name} must be a valid URL starting with http:// or https://")
     end
   end
 
   # Prevents duplicate pending proposals for same author by same email within 24 hours
   def prevent_duplicate_pending_proposals
-    return if author_id.nil?  # Skip for new author proposals
+    return if author_id.blank?  # Skip for new author proposals
     return unless status == "pending"
 
     duplicate = AuthorProposal
@@ -412,35 +271,14 @@ class AuthorProposal < ApplicationRecord
   # Normalizes resource_url and attempts to match with existing Entry
   # Stores original URL and sets matched_entry_id if found
   def normalize_and_match_resource_url
-    return if resource_url.blank?
-
     # Store original URL before normalization
     self.original_resource_url = resource_url.dup
 
     # Normalize the URL
-    self.resource_url = normalize_url(resource_url)
+    self.resource_url = ResourceUrl.new(resource_url).to_s
 
     # Attempt to match with existing entries
     match_entry_by_url
-  end
-
-  # Normalizes a URL for consistent matching
-  # Handles: whitespace, http/https, trailing slashes, www prefix, case
-  def normalize_url(url)
-    return nil if url.blank?
-
-    normalized = url.strip.downcase
-
-    # Normalize protocol to http://
-    normalized = normalized.sub(/\Ahttps:\/\//, "http://")
-
-    # Remove www prefix
-    normalized = normalized.sub(/\Ahttp:\/\/www\./, "http://")
-
-    # Remove trailing slash
-    normalized = normalized.sub(/\/\z/, "")
-
-    normalized
   end
 
   # Searches for matching Entry by normalized URL

@@ -36,11 +36,12 @@ if ENV['IMPORT_RUBYANDRAILSINFO'] == 'true' && File.exist?(Rails.root.join('tmp/
     10_taggings
   ]
 
+  import_helpers = Imports::Rubyandrailsinfo::Helpers.new
   seed_files.each do |seed_file|
     puts "\n" + "="*80
     puts "Running: seeds/rubyandrailsinfo/#{seed_file}.rb"
     puts "="*80
-    load Rails.root.join('db', 'seeds', 'rubyandrailsinfo', "#{seed_file}.rb")
+    import_helpers.load_seed(Rails.root.join('db', 'seeds', 'rubyandrailsinfo', "#{seed_file}.rb"))
   end
 
   # Verification

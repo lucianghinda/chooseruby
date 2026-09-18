@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+ENV["MUTANT"] = "1"
+
+require_relative "../config/boot"
+
+load Gem.bin_path("mutant", "mutant")

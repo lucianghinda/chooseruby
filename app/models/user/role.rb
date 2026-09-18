@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Defines the permissions granted by each account role.
 module User::Role
   extend ActiveSupport::Concern
 

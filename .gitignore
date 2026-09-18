@@ -37,6 +37,10 @@
 /.claude/
 /agent-os/
 
+# Generated test coverage reports.
+/coverage/
+/.mutant/
+
 /app/assets/builds/*
 !/app/assets/builds/.keep
 

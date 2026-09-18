@@ -3,6 +3,17 @@
 require "test_helper"
 
 class ApplicationHelperTest < ActionView::TestCase
+  test "empty breadcrumbs have no navigation markup" do
+    assert_equal "", breadcrumbs([])
+  end
+
+  test "nonfinal breadcrumbs without URLs remain text with separators" do
+    result = breadcrumbs([ { text: "Section" }, { text: "Current", url: "/current" } ])
+    assert_includes result, "Section"
+    assert_includes result, "›"
+    refute_includes result, "<a "
+  end
+
   test "breadcrumbs renders navigation with chevron separators" do
     items = [
       { text: "Home", url: "/" },

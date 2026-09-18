@@ -38,6 +38,13 @@ class Session < ApplicationRecord
     last_active_at < 30.days.ago
   end
 
+  def resume
+    return if expired?
+
+    touch_last_active
+    self
+  end
+
   private
 
   def generate_token

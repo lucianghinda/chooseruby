@@ -12,9 +12,9 @@
         Curated beginner-friendly resources to help you learn Ruby on Rails. No overwhelm, just the essentials you need to get started.
       </p>
 
-      <%= form_with url: start_path, method: :get, local: true, class: "mt-8", data: { controller: "typeahead", typeahead_url_value: entries_suggestions_path, typeahead_popular_value: @popular_queries, action: "submit->typeahead#recordSearch" } do |form| %>
-        <%= form.hidden_field :level, value: @active_level || "beginner" %>
-        <%= form.hidden_field :category, value: @active_category&.slug if @active_category.present? %>
+      <%= form_with url: start_path, method: :get, local: true, class: "mt-8", data: { controller: "typeahead", typeahead_url_value: entries_suggestions_path, typeahead_popular_value: directory.popular_queries, action: "submit->typeahead#recordSearch" } do |form| %>
+        <%= form.hidden_field :level, value: directory.level || "beginner" %>
+        <%= form.hidden_field :category, value: directory.category&.slug if directory.category.present? %>
         <div class="relative">
           <div class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -22,7 +22,7 @@
             </svg>
           </div>
             <%= form.text_field :q,
-            value: @query,
+            value: directory.query,
             class: "h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-base text-slate-900 placeholder:text-slate-400 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300 focus:outline-none",
             placeholder: "Search beginner resources…",
             data: { typeahead_target: "input", action: "input->typeahead#search focus->typeahead#focus blur->typeahead#blur keydown->typeahead#navigate", aria: { controls: "start-typeahead" } } %>
@@ -33,15 +33,15 @@
         </div>
       <% end %>
 
-      <% if @query.present? %>
+      <% if directory.query.present? %>
         <p class="mt-4 text-sm text-slate-500">
           Showing results for
-          <span class="font-semibold text-slate-700">"<%= @query %>"</span>
-          <%= link_to "Clear search", start_path(category: @active_category&.slug), class: "ml-2 text-rose-500 hover:text-rose-400" %>
+          <span class="font-semibold text-slate-700">"<%= directory.query %>"</span>
+          <%= link_to "Clear search", start_path(category: directory.category&.slug), class: "ml-2 text-rose-500 hover:text-rose-400" %>
         </p>
       <% end %>
 
-      <%= render partial: "entries/filter_chips", locals: { base_path: start_path } %>
+      <%= render partial: "entries/filter_chips", locals: { base_path: start_path, directory: } %>
     </div>
   </section>
 
@@ -51,7 +51,7 @@
       <div class="space-y-4">
         <h2 class="text-xl font-semibold text-slate-900">Experience level</h2>
         <div class="flex flex-wrap gap-3">
-          <% base_params = { q: @query.presence, category: @active_category&.slug }.compact %>
+          <% base_params = { q: directory.query.presence, category: directory.category&.slug }.compact %>
           <%= link_to entries_path(base_params),
                       class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition bg-slate-100 text-slate-600 hover:bg-slate-200" do %>
             All levels
@@ -59,7 +59,7 @@
           <% Entry.experience_levels.keys.reject { |level| level == "all_levels" }.each do |level| %>
             <% level_label = level.to_s.humanize %>
             <% level_params = base_params.merge(level:) %>
-            <% active = @active_level == level %>
+            <% active = directory.level == level %>
             <%= link_to start_path(level_params),
                         class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active ? "bg-rose-500 text-white shadow-sm hover:bg-rose-400" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}" do %>
               <span class="mr-2 h-2 w-2 rounded-full <%= active ? "bg-white" : "bg-rose-400" %>"></span>
@@ -72,21 +72,21 @@
       <div class="space-y-4 lg:max-w-xl">
         <div class="flex items-center justify-between">
           <h2 class="text-xl font-semibold text-slate-900">Categories</h2>
-          <% if @active_category.present? %>
+          <% if directory.category.present? %>
             <% cleared_params = base_params.except(:category) %>
             <%= link_to "Clear category", start_path(cleared_params), class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
           <% end %>
         </div>
         <div class="flex flex-wrap gap-3">
-          <% @categories.first(12).each do |category| %>
+          <% directory.categories.first(12).each do |category| %>
             <% category_params = base_params.merge(category: category.slug).compact %>
-            <% active = @active_category == category %>
+            <% active = directory.category == category %>
             <%= link_to category.name,
                         start_path(category_params),
                         class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{active ? "bg-slate-900 text-white shadow-sm hover:bg-slate-800" : "bg-white text-slate-600 ring-1 ring-slate-200 hover:text-rose-500"}" %>
           <% end %>
         </div>
-        <% if @categories.size > 12 %>
+        <% if directory.categories.size > 12 %>
           <p class="text-sm text-slate-500">
             Looking for a specific topic?
             <%= link_to "View the full category index", categories_path, class: "font-semibold text-rose-500 hover:text-rose-400" %>
@@ -99,21 +99,21 @@
   <!-- Results -->
   <section class="space-y-6">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <% total_count = @entries.total_count %>
+      <% total_count = entries.total_count %>
       <p class="text-sm text-slate-500">
         <%= pluralize(total_count, "resource") %> curated for beginners
-        <% if @active_category.present? %>
-          · <span class="font-medium text-slate-700"><%= @active_category.name %></span>
+        <% if directory.category.present? %>
+          · <span class="font-medium text-slate-700"><%= directory.category.name %></span>
         <% end %>
       </p>
       <span class="sr-only" aria-live="polite"><%= "#{total_count} beginner resources available" %></span>
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
         <%= form_with url: start_path, method: :get, local: true, class: "flex items-center gap-2" do |form| %>
-          <%= form.hidden_field :q, value: @query if @query.present? %>
-          <%= form.hidden_field :category, value: @active_category&.slug if @active_category.present? %>
+          <%= form.hidden_field :q, value: directory.query if directory.query.present? %>
+          <%= form.hidden_field :category, value: directory.category&.slug if directory.category.present? %>
           <label for="sort" class="text-xs font-semibold text-slate-600">Sort by</label>
           <%= form.select :sort,
-                          options_for_select([["Most recent", "recent"], ["Most popular", "popular"], ["Beginner friendly", "beginner_first"], ["Oldest first", "oldest"]], @active_sort),
+                          options_for_select([["Most recent", "recent"], ["Most popular", "popular"], ["Beginner friendly", "beginner_first"], ["Oldest first", "oldest"]], directory.sort),
                           {},
                           class: "rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300",
                           onchange: "this.form.submit()" %>
@@ -128,11 +128,11 @@
       </div>
     </div>
 
-    <% if @entries.any? %>
+    <% if entries.any? %>
       <div data-controller="view-toggle"
            data-view-toggle-key-value="start_view"
-           data-view-toggle-grid-class="grid gap-6 lg:grid-cols-3"
-           data-view-toggle-list-class="space-y-4"
+           data-view-toggle-grid-class-value="grid gap-6 lg:grid-cols-3"
+           data-view-toggle-list-class-value="space-y-4"
            data-view-toggle-default-view-value="grid">
         <div class="mb-3 flex items-center gap-2 justify-end">
           <span class="text-xs font-semibold text-slate-600">View</span>
@@ -155,16 +155,16 @@
         </div>
 
         <div data-view-toggle-target="container" class="grid gap-6 lg:grid-cols-3">
-          <%= render partial: "entries/card", collection: @entries, as: :entry, locals: { variant: :compact } %>
+          <%= render partial: "entries/card", collection: entries, as: :entry, locals: { variant: :compact } %>
         </div>
       </div>
 
       <div class="mt-8 flex justify-center">
-        <%= paginate @entries %>
+        <%= paginate entries %>
       </div>
     <% else %>
       <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">
-        <% if @query.present? %>
+        <% if directory.query.present? %>
           <p class="text-lg font-semibold text-slate-700">No results found</p>
           <p class="mt-2 text-sm text-slate-500">
             Know a great beginner resource? <%= link_to "Submit a resource", new_resource_submission_path, class: "font-semibold text-rose-500 hover:text-rose-400" %> to share it with the community!

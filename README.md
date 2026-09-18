@@ -157,13 +157,24 @@ entry.entryable.github_url   # => "https://github.com/rspec/rspec"
 Run the test suite:
 
 ```bash
-# Run all tests
-rails test
+# Run the Rails suite (without browser system tests)
+bin/rails test
+# Equivalent Rake entry point
+bundle exec rake test
+
+# Run Rails and browser system tests together, as CI does
+bin/rails test:all
 
 # Run specific test files
-rails test test/models/entry_test.rb
-rails test test/integration/avo_entry_admin_test.rb
+bin/rails test test/models/entry_test.rb
+bin/rails test test/integration/avo_entry_admin_test.rb
 ```
+
+SimpleCov requires 100% line and branch coverage, both overall and per file, for
+Ruby code in `app/` and `lib/`. Reports are written to `coverage/index.html` and
+`coverage/coverage.json`. Each invocation starts with fresh coverage results;
+targeted test runs can pass their assertions while failing the full-app coverage
+gate. See the [test and coverage guide](docs/DEVELOPER_GUIDE.md#tests-and-coverage).
 
 Notes:
 - The project uses Ruby schema format (`db/schema.rb`).
@@ -200,4 +211,3 @@ See `docs/DEVELOPER_GUIDE.md` for detailed instructions on extending the system.
 ## License
 
 This project is available as open source under the terms of the Apache 2.0 License.
-

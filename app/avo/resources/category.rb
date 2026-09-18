@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Configures the admin form and listing for Category records.
 class Avo::Resources::Category < Avo::BaseResource
   self.title = :name
   self.includes = [ :entries ]
@@ -13,22 +14,32 @@ class Avo::Resources::Category < Avo::BaseResource
   }
 
   def fields
-    field :id, as: :id, link_to_record: true
+    identity_fields
+    presentation_fields
+    entry_fields
+    timestamp_fields
+  end
 
-    # Basic information
+  private
+
+  def identity_fields
+    field :id, as: :id, link_to_record: true
     field :name, as: :text, required: true, sortable: true
     field :slug, as: :text, readonly: true, help: "Auto-generated from name"
+  end
+
+  def presentation_fields
     field :description, as: :textarea, rows: 3, help: "Max 500 characters"
     field :icon, as: :text, help: "Icon identifier for future use"
     field :display_order, as: :number, sortable: true, help: "Lower numbers appear first"
+  end
 
-    # Computed fields
+  def entry_fields
     field :entries_count, as: :number, readonly: true, help: "Total number of visible resources"
-
-    # Associations
     field :entries, as: :has_many, through: :categories_entries
+  end
 
-    # Timestamps
+  def timestamp_fields
     field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
     field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
   end

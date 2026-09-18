@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 ENV["RAILS_ENV"] ||= "test"
+
+require_relative "coverage_setup"
+
 require_relative "../config/environment"
 require "rails/test_help"
+require "mutant/minitest/coverage"
 
 module ActiveSupport
   class TestCase

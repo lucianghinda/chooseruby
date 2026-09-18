@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Configures the admin form and listing for JobBoard records.
 class Avo::Resources::JobBoard < Avo::BaseResource
   self.title = :display_name
   self.includes = [ :entry ]

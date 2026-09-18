@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Resolves the signed session cookie and manages the current user.
 module Authentication
   extend ActiveSupport::Concern
 

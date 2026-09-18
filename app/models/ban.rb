@@ -34,7 +34,7 @@ class Ban < ApplicationRecord
   scope :by_ip, ->(ip) { where(ip_address: ip) }
 
   def active?
-    expires_at.nil? || expires_at > Time.current
+    expires_at.blank? || expires_at > Time.current
   end
 
   def expired?

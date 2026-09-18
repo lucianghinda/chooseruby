@@ -1,0 +1,22 @@
+---
+usage: opensource
+includes:
+  - test
+requires:
+  - ./config/environment
+environment_variables:
+  RAILS_ENV: test
+  MUTANT: "1"
+  PARALLEL_WORKERS: "1"
+integration:
+  name: minitest
+hooks:
+  - config/mutant/hooks.rb
+# SQLite tests share one database; keep mutation workers serial.
+jobs: 1
+mutation:
+  timeout: 30.0
+# Initial mutation gate. Add subjects as their tests gain cover declarations.
+matcher:
+  subjects:
+    - "Book#display_name"

@@ -61,6 +61,13 @@ gem "aws-sdk-s3"
 
 
 group :development, :test do
+  gem "simplecov", "~> 1.2", require: false
+  gem "reek", "~> 6.5", require: false
+  gem "rubocop-performance", require: false
+  gem "rubocop-minitest", require: false
+  gem "rubocop-thread_safety", require: false
+  gem "mutant-minitest", "~> 0.17.0", require: false
+
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 

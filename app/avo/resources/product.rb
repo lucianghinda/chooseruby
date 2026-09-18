@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Configures the admin form and listing for Product records.
 class Avo::Resources::Product < Avo::BaseResource
   self.title = :display_name
   self.includes = [ :entry ]

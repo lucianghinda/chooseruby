@@ -88,15 +88,6 @@ class Category < ApplicationRecord
   # Generate URL-friendly slug from name
   # Ensures uniqueness by appending number if needed
   def generate_slug
-    base_slug = name.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Category.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
+    self.slug = UniqueSlug.new(self, name).to_s
   end
 end
