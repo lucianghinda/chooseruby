@@ -1,0 +1,19 @@
+---
+- id: '1'
+  free: t
+  created_at: '2022-13-45 00:00:00'
+  updated_at: ''
+  entry:
+    title: Rails Course
+    slug: rails-course
+    website_url: https://example.com/rails-course
+- id: '2'
+  free: f
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: X
+    slug: broken-course
+- id: '3'
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'

@@ -1,0 +1,39 @@
+---
+- id: '1'
+  youtube_id: '1'
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: Static pages
+    slug: static-pages
+    url: MwbmKqdDsyI
+- id: '2'
+  youtube_id: '1'
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: Full URL lesson
+    slug: full-url-lesson
+    url: https://vimeo.com/123
+- id: '3'
+  youtube_id: '1'
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: Website lesson
+    slug: website-lesson
+    website_url: https://example.com/website-lesson
+- id: '4'
+  youtube_id: '1'
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: X
+    slug: broken-lesson
+    url: MwbmKqdDsyI
+- id: '5'
+  youtube_id: '1'
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    slug: untitled-lesson

@@ -1,0 +1,14 @@
+---
+- id: '1'
+  name: Jane Author
+  twitter_url: https://twitter.com/jane
+  github_url: https://github.com/jane
+  website_url: http://jane.example.com
+  slug: jane-author
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+- id: '2'
+  name: X
+  slug: bad-author
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'

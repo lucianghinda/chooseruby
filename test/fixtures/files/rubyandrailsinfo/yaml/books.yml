@@ -1,0 +1,44 @@
+---
+- id: '1'
+  isbn: '9781680507218'
+  year: '2022'
+  page: '408'
+  amazon_url: ''
+  website_url: https://pragprog.com/titles/nrclient2/
+  free: f
+  featured: t
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: Modern Front-End Development for Rails
+    slug: modern-front-end-development-for-rails
+    website_url: https://pragprog.com/titles/nrclient2/
+    content: A book about Rails front-ends.
+- id: '2'
+  free: f
+  featured: f
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: Book Without ISBN
+    slug: book-without-isbn
+- id: '3'
+  free: f
+  featured: f
+  created_at: not a date
+  updated_at: ''
+  entry:
+    title: Book Without ISBN
+    slug: book-without-isbn
+- id: '4'
+  isbn: not-an-isbn
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    title: Broken Book
+    slug: broken-book
+- id: '5'
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+  entry:
+    slug: untitled-book

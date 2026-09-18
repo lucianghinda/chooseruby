@@ -1,0 +1,16 @@
+---
+- id: '1'
+  title: Ruby on Rails 7
+  slug: ruby-on-rails-7
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+- id: '2'
+  title: Hotwire
+  slug: hotwire
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
+- id: '3'
+  title: X
+  slug: bad-tag
+  created_at: '2022-06-19 09:24:14.950515'
+  updated_at: '2022-08-15 14:48:44.738082'
