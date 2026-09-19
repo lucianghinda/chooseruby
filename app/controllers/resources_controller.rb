@@ -33,8 +33,8 @@ class ResourcesController < ApplicationController
         :categories,
         :rich_text_description,
         :entryable,
-        { image_attachment: :blob },
-        authors: { avatar_attachment: :blob }
+        {image_attachment: :blob},
+        authors: {avatar_attachment: :blob}
       )
       .find_by!(slug: slug)
 
@@ -51,7 +51,7 @@ class ResourcesController < ApplicationController
       .visible
       .with_card_includes
       .joins(:entries_authors)
-      .where(entries_authors: { author_id: entry.author_ids })
+      .where(entries_authors: {author_id: entry.author_ids})
       .where.not(id: entry.id)
       .distinct
       .recently_curated
@@ -69,7 +69,7 @@ class ResourcesController < ApplicationController
       .visible
       .with_card_includes
       .where(entryable_type: entry.entryable_type)
-      .where.not(id: [ entry.id, *related.map(&:id) ])
+      .where.not(id: [entry.id, *related.map(&:id)])
       .recently_curated
       .limit(additional_needed)
       .to_a

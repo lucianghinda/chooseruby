@@ -2,7 +2,7 @@
 
 class Avo::Resources::RubyGem < Avo::BaseResource
   self.title = :display_name
-  self.includes = [ :entry ]
+  self.includes = [:entry]
   self.description = "Create a RubyGem first, then create an Entry and select this RubyGem as the entryable"
 
   def fields
@@ -18,10 +18,10 @@ class Avo::Resources::RubyGem < Avo::BaseResource
 
     # Association to base entry resource
     field :entry, as: :has_one,
-          help: "After creating this RubyGem, go to Entries → New and select this RubyGem"
+      help: "After creating this RubyGem, go to Entries → New and select this RubyGem"
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

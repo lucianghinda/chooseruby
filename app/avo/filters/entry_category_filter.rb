@@ -7,7 +7,7 @@ class Avo::Filters::EntryCategoryFilter < Avo::Filters::SelectFilter
     return query if value.blank?
 
     # Filter entries that belong to the selected category
-    query.joins(:categories).where(categories: { id: value })
+    query.joins(:categories).where(categories: {id: value})
   end
 
   def options

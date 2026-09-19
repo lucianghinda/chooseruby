@@ -16,10 +16,10 @@ Rails.application.configure do
     policy.object_src :none
 
     policy.font_src :self, :data
-    policy.img_src  :self, :data, :https
+    policy.img_src :self, :data, :https
 
     policy.script_src :self, "https://cdn.jsdelivr.net"
-    policy.style_src  :self
+    policy.style_src :self
 
     policy.connect_src :self
 

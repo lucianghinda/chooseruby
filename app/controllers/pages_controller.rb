@@ -53,10 +53,10 @@ class PagesController < ApplicationController
     ]
 
     @personas = [
-      { name: "Sarah", role: "Ruby Beginner", goal: "Find trusted guidance while building first projects." },
-      { name: "Marcus", role: "Experienced Developer", goal: "Stay current with ecosystem changes and pick the right tools quickly." },
-      { name: "Priya", role: "Language Explorer", goal: "Evaluate Ruby’s capabilities compared with other ecosystems." },
-      { name: "Jordan", role: "Expert Contributor", goal: "Help quality resources reach the community and shape best practices." }
+      {name: "Sarah", role: "Ruby Beginner", goal: "Find trusted guidance while building first projects."},
+      {name: "Marcus", role: "Experienced Developer", goal: "Stay current with ecosystem changes and pick the right tools quickly."},
+      {name: "Priya", role: "Language Explorer", goal: "Evaluate Ruby’s capabilities compared with other ecosystems."},
+      {name: "Jordan", role: "Expert Contributor", goal: "Help quality resources reach the community and shape best practices."}
     ]
   end
 

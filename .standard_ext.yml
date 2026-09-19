@@ -1,0 +1,13 @@
+# Extra cops Standard doesn't ship a plugin for (see the Gemfile comment on
+# rubocop-minitest/rubocop-thread_safety for why not their standard-* wrappers).
+# Loaded via .standard.yml's extend_config. Per-file Exclude lists don't
+# reliably apply from here - use .standard.yml's own `ignore:` for those.
+plugins:
+  - rubocop-minitest
+  - rubocop-thread_safety
+
+Minitest/MultipleAssertions:
+  Max: 15
+
+ThreadSafety/ClassAndModuleAttributes:
+  Enabled: false # Rails autoloading + class_attribute is single-threaded at boot; safe by convention here.

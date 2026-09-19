@@ -111,6 +111,6 @@ class CategoriesShowViewTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     # Featured section should not exist
-    assert_select "h2", { text: "Featured Resources", count: 0 }
+    assert_select "h2", {text: "Featured Resources", count: 0}
   end
 end

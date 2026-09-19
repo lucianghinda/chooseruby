@@ -6,7 +6,7 @@ class Avo::AuthorProposalsController < Avo::ResourcesController
 
   # Disable create/edit/delete actions - only allow index and show
   def authorize_action(action)
-    return false if [ :create, :new, :edit, :update, :destroy ].include?(action)
+    return false if [:create, :new, :edit, :update, :destroy].include?(action)
 
     true
   end

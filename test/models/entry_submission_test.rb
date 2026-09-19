@@ -14,7 +14,7 @@ require "test_helper"
 # - Image URL validation for external URLs
 class EntrySubmissionTest < ActiveSupport::TestCase
   test "creates entry with RubyGem delegated type in single transaction" do
-    assert_difference [ "Entry.count", "RubyGem.count" ], 1 do
+    assert_difference ["Entry.count", "RubyGem.count"], 1 do
       ruby_gem = RubyGem.create!(
         gem_name: "submission-gem",
         github_url: "https://github.com/example/gem"
@@ -30,7 +30,7 @@ class EntrySubmissionTest < ActiveSupport::TestCase
   end
 
   test "creates entry with Book delegated type in single transaction" do
-    assert_difference [ "Entry.count", "Book.count" ], 1 do
+    assert_difference ["Entry.count", "Book.count"], 1 do
       book = Book.create!(
         isbn: "9781234567890",
         publication_year: 2023
@@ -47,21 +47,19 @@ class EntrySubmissionTest < ActiveSupport::TestCase
 
   test "rollback when delegated type creation fails validation" do
     # This tests atomic behavior - if delegated type fails, entry should not be created
-    assert_no_difference [ "Entry.count", "Community.count" ] do
-      begin
-        ActiveRecord::Base.transaction do
-          # Community requires platform and join_url
-          community = Community.create!(platform: "") # Missing required join_url - will fail
-          Entry.create!(
-            title: "Invalid Community",
-            url: "https://example.com",
-            entryable: community,
-            submitter_email: "test@example.com"
-          )
-        end
-      rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-        # Expected to fail
+    assert_no_difference ["Entry.count", "Community.count"] do
+      ActiveRecord::Base.transaction do
+        # Community requires platform and join_url
+        community = Community.create!(platform: "") # Missing required join_url - will fail
+        Entry.create!(
+          title: "Invalid Community",
+          url: "https://example.com",
+          entryable: community,
+          submitter_email: "test@example.com"
+        )
       end
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+      # Expected to fail
     end
   end
 
@@ -106,7 +104,7 @@ class EntrySubmissionTest < ActiveSupport::TestCase
       submitter_email: "categories@example.com"
     )
 
-    entry.categories << [ category1, category2, category3 ]
+    entry.categories << [category1, category2, category3]
 
     assert_equal 3, entry.categories.count
     assert_includes entry.categories, category1

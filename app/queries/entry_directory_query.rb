@@ -69,13 +69,13 @@ class EntryDirectoryQuery
     levels = Entry.experience_levels
     return current_scope unless levels.key?(level)
 
-    current_scope.where(experience_level: [ levels[level], levels["all_levels"] ])
+    current_scope.where(experience_level: [levels[level], levels["all_levels"]])
   end
 
   def filter_by_category(current_scope)
     return current_scope if category.blank?
 
-    current_scope.joins(:categories).where(categories: { id: category.id })
+    current_scope.joins(:categories).where(categories: {id: category.id})
   end
 
   def apply_sort(current_scope)

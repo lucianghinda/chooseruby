@@ -9,17 +9,17 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
   test "can create and display entries for all 11 new delegated types end-to-end" do
     # Create one entry for each new type and verify it displays on homepage and browse pages
     new_types = [
-      { type: Newsletter, slug: "newsletters", title: "Ruby Weekly" },
-      { type: Blog, slug: "blogs", title: "Ruby Blog" },
-      { type: Video, slug: "videos", title: "Ruby Video" },
-      { type: Channel, slug: "channels", title: "Ruby Channel" },
-      { type: Documentation, slug: "documentations", title: "Ruby Docs" },
-      { type: TestingResource, slug: "testing-resources", title: "RSpec Guide" },
-      { type: DevelopmentEnvironment, slug: "development-environments", title: "Ruby Dev Setup" },
-      { type: JobBoard, slug: "job-boards", title: "Senior Ruby Developer" },
-      { type: Framework, slug: "frameworks", title: "Rails Framework" },
-      { type: Directory, slug: "directories", title: "Ruby Resources Directory" },
-      { type: Product, slug: "products", title: "Ruby Product" }
+      {type: Newsletter, slug: "newsletters", title: "Ruby Weekly"},
+      {type: Blog, slug: "blogs", title: "Ruby Blog"},
+      {type: Video, slug: "videos", title: "Ruby Video"},
+      {type: Channel, slug: "channels", title: "Ruby Channel"},
+      {type: Documentation, slug: "documentations", title: "Ruby Docs"},
+      {type: TestingResource, slug: "testing-resources", title: "RSpec Guide"},
+      {type: DevelopmentEnvironment, slug: "development-environments", title: "Ruby Dev Setup"},
+      {type: JobBoard, slug: "job-boards", title: "Senior Ruby Developer"},
+      {type: Framework, slug: "frameworks", title: "Rails Framework"},
+      {type: Directory, slug: "directories", title: "Ruby Resources Directory"},
+      {type: Product, slug: "products", title: "Ruby Product"}
     ]
 
     new_types.each do |type_info|
@@ -29,7 +29,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
       )
 
       # Create entry
-      entry = Entry.create!(
+      Entry.create!(
         title: type_info[:title],
         description: "Test #{type_info[:slug]}",
         url: "https://example.com/#{type_info[:slug]}",
@@ -111,7 +111,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    assert_select "h2", { text: /Newsletters/i, count: 0 }
+    assert_select "h2", {text: /Newsletters/i, count: 0}
 
     # Test 1 entry - section shows with submission message
     newsletter1 = Newsletter.create!(name: "Test Newsletter")
@@ -127,7 +127,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h2", text: /Newsletters/i
-    assert_match /Know a great Ruby newsletter/i, response.body
+    assert_match(/Know a great Ruby newsletter/i, response.body)
 
     # Test 3 entries - section shows with submission message
     2.times do |i|
@@ -145,7 +145,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h2", text: /Newsletters/i
-    assert_match /Know a great Ruby newsletter/i, response.body
+    assert_match(/Know a great Ruby newsletter/i, response.body)
 
     # Test 4 entries - section shows WITHOUT submission message
     newsletter4 = Newsletter.create!(name: "Test Newsletter")
@@ -161,7 +161,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h2", text: /Newsletters/i
-    assert_no_match /Know a great Ruby newsletter/i, response.body
+    assert_no_match(/Know a great Ruby newsletter/i, response.body)
   end
 
   # Test 7.3.4: Stats panel accuracy with multiple categories and types
@@ -232,11 +232,11 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
   test "submission messages display correctly for all new types" do
     # Test submission messages for types with 1-3 entries
     types_to_test = [
-      { type: Blog, slug: "blogs", expected_singular: "blog" },
-      { type: Video, slug: "videos", expected_singular: "video" },
-      { type: Framework, slug: "frameworks", expected_singular: "framework" },
-      { type: Product, slug: "products", expected_singular: "product" },
-      { type: JobBoard, slug: "job-boards", expected_singular: "job board" }
+      {type: Blog, slug: "blogs", expected_singular: "blog"},
+      {type: Video, slug: "videos", expected_singular: "video"},
+      {type: Framework, slug: "frameworks", expected_singular: "framework"},
+      {type: Product, slug: "products", expected_singular: "product"},
+      {type: JobBoard, slug: "job-boards", expected_singular: "job board"}
     ]
 
     types_to_test.each do |type_info|
@@ -259,7 +259,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
 
       assert_response :success
       # Verify submission message includes the singular form
-      assert_match /Know a great Ruby #{type_info[:expected_singular]}/i, response.body
+      assert_match(/Know a great Ruby #{type_info[:expected_singular]}/i, response.body)
       assert_select "a[href=?]", new_resource_submission_path, text: /Submit it here/i
     end
   end
@@ -405,7 +405,7 @@ class ResourceTypeOrganizationIntegrationTest < ActionDispatch::IntegrationTest
     assert_no_match "Test Gem", response.body
 
     # Check second page
-    get resource_type_path("development-environments"), params: { page: 2 }
+    get resource_type_path("development-environments"), params: {page: 2}
 
     assert_response :success
     assert_select "article.border-gray-200", count: 5

@@ -2,7 +2,7 @@
 
 class Avo::Resources::Podcast < Avo::BaseResource
   self.title = :display_name
-  self.includes = [ :entry ]
+  self.includes = [:entry]
   self.description = "Create a Podcast first, then create an Entry and select this Podcast as the entryable"
 
   def fields
@@ -18,10 +18,10 @@ class Avo::Resources::Podcast < Avo::BaseResource
 
     # Association to base resource
     field :entry, as: :has_one,
-          help: "After creating this Podcast, go to Entries → New and select this Podcast"
+      help: "After creating this Podcast, go to Entries → New and select this Podcast"
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

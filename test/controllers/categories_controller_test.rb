@@ -102,7 +102,7 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     entry.save!
     CategoriesEntry.create!(category: category, entry: entry)
 
-    get category_path(category.slug), params: { level: "beginner" }
+    get category_path(category.slug), params: {level: "beginner"}
 
     assert_response :success
     # Verify experience level filter is applied (button should show as selected)

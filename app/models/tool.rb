@@ -38,7 +38,7 @@ class Tool < ApplicationRecord
 
   # Validations
   validates :github_url, :documentation_url,
-            format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                     message: "must be a valid URL starting with http:// or https://" },
-            allow_blank: true
+    format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+             message: "must be a valid URL starting with http:// or https://"},
+    allow_blank: true
 end

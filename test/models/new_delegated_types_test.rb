@@ -32,7 +32,7 @@ class NewDelegatedTypesTest < ActiveSupport::TestCase
 
   test "Blog has display_name method that returns blog name when name exists" do
     blog = Blog.create!(name: "Rails Blog")
-    entry = Entry.create!(
+    Entry.create!(
       title: "Ruby on Rails Blog",
       url: "https://example.com/blog",
       entryable: blog,

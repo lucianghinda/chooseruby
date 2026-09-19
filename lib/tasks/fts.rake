@@ -6,7 +6,9 @@ namespace :fts do
     puts "Creating FTS5 virtual tables..."
 
     # Create entries_fts
-    unless ActiveRecord::Base.connection.table_exists?("entries_fts")
+    if ActiveRecord::Base.connection.table_exists?("entries_fts")
+      puts "  - entries_fts already exists"
+    else
       ActiveRecord::Base.connection.execute(<<-SQL)
         CREATE VIRTUAL TABLE IF NOT EXISTS entries_fts USING fts5(
           entry_id UNINDEXED,
@@ -17,12 +19,12 @@ namespace :fts do
         );
       SQL
       puts "  ✓ Created entries_fts table"
-    else
-      puts "  - entries_fts already exists"
     end
 
     # Create authors_fts
-    unless ActiveRecord::Base.connection.table_exists?("authors_fts")
+    if ActiveRecord::Base.connection.table_exists?("authors_fts")
+      puts "  - authors_fts already exists"
+    else
       ActiveRecord::Base.connection.execute(<<-SQL)
         CREATE VIRTUAL TABLE IF NOT EXISTS authors_fts USING fts5(
           author_id UNINDEXED,
@@ -31,8 +33,6 @@ namespace :fts do
         );
       SQL
       puts "  ✓ Created authors_fts table"
-    else
-      puts "  - authors_fts already exists"
     end
 
     puts "FTS5 tables ready!"

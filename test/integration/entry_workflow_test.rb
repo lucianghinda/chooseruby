@@ -4,7 +4,7 @@ require "test_helper"
 
 class EntryWorkflowTest < ActionDispatch::IntegrationTest
   test "creating entry with delegated type in single transaction" do
-    assert_difference [ "Entry.count", "RubyGem.count" ], 1 do
+    assert_difference ["Entry.count", "RubyGem.count"], 1 do
       ruby_gem = RubyGem.create!(gem_name: "transaction-gem")
       Entry.create!(
         title: "Transaction Test",
@@ -146,8 +146,8 @@ class EntryWorkflowTest < ActionDispatch::IntegrationTest
       status: :approved # Skip submitter_email validation
     )
 
-    entry.categories << [ category1, category2 ]
-    entry.authors << [ author1, author2 ]
+    entry.categories << [category1, category2]
+    entry.authors << [author1, author2]
 
     assert_equal 2, entry.categories.count
     assert_equal 2, entry.authors.count
@@ -180,7 +180,7 @@ class EntryWorkflowTest < ActionDispatch::IntegrationTest
 
   test "deleting delegated type removes entry due to dependent destroy" do
     ruby_gem = RubyGem.create!(gem_name: "delegate-delete-gem")
-    entry = Entry.create!(
+    Entry.create!(
       title: "Delegate Delete Test",
       description: "Test",
       url: "https://example.com",

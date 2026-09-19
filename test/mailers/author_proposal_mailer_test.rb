@@ -9,7 +9,7 @@ class AuthorProposalMailerTest < ActionMailer::TestCase
     author = Author.create!(name: "Jane Developer")
     proposal = AuthorProposal.create!(
       author: author,
-      link_updates: { "github_url" => "https://github.com/janedeveloper" },
+      link_updates: {"github_url" => "https://github.com/janedeveloper"},
       submitter_name: "John Smith",
       submitter_email: "john@example.com",
       status: :pending
@@ -21,7 +21,7 @@ class AuthorProposalMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ "john@example.com" ], email.to
+    assert_equal ["john@example.com"], email.to
     assert_equal "Author Proposal Received - ID ##{proposal.id}", email.subject
 
     # Check HTML part includes proposal ID
@@ -47,7 +47,7 @@ class AuthorProposalMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ "member@example.com" ], email.to
+    assert_equal ["member@example.com"], email.to
     assert_equal "Author Proposal Approved - #{author.name}", email.subject
 
     # Check HTML part includes author name and link
@@ -74,7 +74,7 @@ class AuthorProposalMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ "proposer@example.com" ], email.to
+    assert_equal ["proposer@example.com"], email.to
     assert_equal "Author Proposal Feedback - ID ##{proposal.id}", email.subject
 
     # Check HTML part includes admin comment
@@ -88,7 +88,7 @@ class AuthorProposalMailerTest < ActionMailer::TestCase
     author = Author.create!(name: "Matz")
     proposal = AuthorProposal.create!(
       author: author,
-      link_updates: { "website_url" => "https://example.com" },
+      link_updates: {"website_url" => "https://example.com"},
       submitter_email: "contributor@example.com"
     )
 
@@ -103,7 +103,7 @@ class AuthorProposalMailerTest < ActionMailer::TestCase
     author = Author.create!(name: "DHH", slug: "dhh")
     proposal = AuthorProposal.create!(
       author: author,
-      link_updates: { "twitter_url" => "https://twitter.com/dhh" },
+      link_updates: {"twitter_url" => "https://twitter.com/dhh"},
       submitter_email: "fan@example.com",
       status: :approved
     )

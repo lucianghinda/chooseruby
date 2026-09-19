@@ -70,7 +70,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     entry2 = Entry.create(title: "Second Entry", url: "https://example.com/2", status: :approved, published: true)
     entry3 = Entry.create(title: "Third Entry", url: "https://example.com/3", status: :approved, published: true)
 
-    author.entries << [ entry1, entry2, entry3 ]
+    author.entries << [entry1, entry2, entry3]
 
     get author_path(slug: author.slug)
 
@@ -86,7 +86,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     author2 = Author.create(name: "Second Author", status: :approved)
     entry = Entry.create(title: "Collaborative Entry", url: "https://example.com/collab", status: :approved, published: true)
 
-    entry.authors << [ author1, author2 ]
+    entry.authors << [author1, author2]
 
     # Both authors should have this entry
     get author_path(slug: author1.slug)

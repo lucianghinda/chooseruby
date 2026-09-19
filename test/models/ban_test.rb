@@ -116,7 +116,7 @@ class BanTest < ActiveSupport::TestCase
   # Cascade delete test
   test "should be destroyed when user is destroyed" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
-    ban = user.bans.create!(reason: "Test ban")
+    user.bans.create!(reason: "Test ban")
 
     assert_difference "Ban.count", -1 do
       user.destroy

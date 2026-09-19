@@ -27,7 +27,7 @@ module EntriesHelper
   def experience_level_options_for_select(selected = nil)
     options = Entry.experience_levels.keys
       .reject { |level| level == "all_levels" }
-      .map { |level| [ level.to_s.humanize, level ] }
+      .map { |level| [level.to_s.humanize, level] }
     options_for_select(options, selected)
   end
 end

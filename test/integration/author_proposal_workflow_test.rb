@@ -66,7 +66,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
   # ========================================
   # Tests the complete workflow of proposing and creating a new author
   test "anonymous user proposes new author, admin approves, new author is created" do
-    initial_author_count = Author.count
+    Author.count
 
     # Step 1: User submits new author proposal
     post author_proposals_path, params: {
@@ -351,7 +351,7 @@ class AuthorProposalWorkflowTest < ActionDispatch::IntegrationTest
       author_id: nil,
       author_name: "X",  # Too short - Author requires minimum 2 characters
       bio_text: "Test bio",
-      link_updates: { "github_url" => "https://github.com/test" },
+      link_updates: {"github_url" => "https://github.com/test"},
       submitter_email: "test@example.com"
     )
 

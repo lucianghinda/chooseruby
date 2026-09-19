@@ -5,9 +5,9 @@ require "test_helper"
 class ApplicationHelperTest < ActionView::TestCase
   test "breadcrumbs renders navigation with chevron separators" do
     items = [
-      { text: "Home", url: "/" },
-      { text: "Resources", url: "/resources" },
-      { text: "Current Page", url: nil }
+      {text: "Home", url: "/"},
+      {text: "Resources", url: "/resources"},
+      {text: "Current Page", url: nil}
     ]
 
     result = breadcrumbs(items)
@@ -22,9 +22,9 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "breadcrumbs renders first and middle items as links" do
     items = [
-      { text: "Home", url: "/" },
-      { text: "Resources", url: "/resources" },
-      { text: "Current Page", url: nil }
+      {text: "Home", url: "/"},
+      {text: "Resources", url: "/resources"},
+      {text: "Current Page", url: nil}
     ]
 
     result = breadcrumbs(items)
@@ -35,9 +35,9 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "breadcrumbs renders last item without link and in bold" do
     items = [
-      { text: "Home", url: "/" },
-      { text: "Resources", url: "/resources" },
-      { text: "Current Page", url: nil }
+      {text: "Home", url: "/"},
+      {text: "Resources", url: "/resources"},
+      {text: "Current Page", url: nil}
     ]
 
     result = breadcrumbs(items)
@@ -50,8 +50,8 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "breadcrumbs renders semantic HTML with nav tag" do
     items = [
-      { text: "Home", url: "/" },
-      { text: "Resources", url: nil }
+      {text: "Home", url: "/"},
+      {text: "Resources", url: nil}
     ]
 
     result = breadcrumbs(items)
@@ -62,7 +62,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "breadcrumbs handles single item without separator" do
     items = [
-      { text: "Home", url: nil }
+      {text: "Home", url: nil}
     ]
 
     result = breadcrumbs(items)
@@ -74,8 +74,8 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "breadcrumbs handles two items with single separator" do
     items = [
-      { text: "Home", url: "/" },
-      { text: "Resources", url: nil }
+      {text: "Home", url: "/"},
+      {text: "Resources", url: nil}
     ]
 
     result = breadcrumbs(items)

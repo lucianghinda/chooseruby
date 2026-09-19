@@ -13,7 +13,7 @@ class FtsReindexerTest < ActiveSupport::TestCase
       url: "https://example.com/entry1",
       status: :approved
     )
-    entry2 = Entry.create!(
+    Entry.create!(
       title: "Test Entry 2",
       url: "https://example.com/entry2",
       status: :approved
@@ -52,7 +52,7 @@ class FtsReindexerTest < ActiveSupport::TestCase
 
     # Create test authors
     author1 = Author.create!(name: "Yukihiro Matsumoto")
-    author2 = Author.create!(name: "David Heinemeier Hansson")
+    Author.create!(name: "David Heinemeier Hansson")
 
     # Clear FTS table again (authors will auto-sync on create)
     ActiveRecord::Base.connection.execute("DELETE FROM authors_fts")

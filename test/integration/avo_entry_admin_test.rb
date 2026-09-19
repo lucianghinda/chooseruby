@@ -199,12 +199,12 @@ class AvoEntryAdminTest < ActionDispatch::IntegrationTest
       description: "Test",
       url: "https://example.com",
       entryable: ruby_gem,
-      tags: [ "testing", "ruby", "gem" ],
+      tags: ["testing", "ruby", "gem"],
       status: :approved
     )
 
     entry.reload
 
-    assert_equal [ "testing", "ruby", "gem" ], entry.tags
+    assert_equal ["testing", "ruby", "gem"], entry.tags
   end
 end

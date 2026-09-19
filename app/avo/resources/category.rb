@@ -2,7 +2,7 @@
 
 class Avo::Resources::Category < Avo::BaseResource
   self.title = :name
-  self.includes = [ :entries ]
+  self.includes = [:entries]
 
   # Enable fuzzy search on name field
   self.search = {
@@ -29,7 +29,7 @@ class Avo::Resources::Category < Avo::BaseResource
     field :entries, as: :has_many, through: :categories_entries
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

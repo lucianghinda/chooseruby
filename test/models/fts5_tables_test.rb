@@ -30,7 +30,7 @@ class Fts5TablesTest < ActiveSupport::TestCase
     # Test that entries_fts table exists in the database
     tables = ActiveRecord::Base.connection.execute(
       "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%fts%'"
-    ).map { |row| row["name"] }
+    ).pluck("name")
 
     assert_includes tables, "entries_fts", "entries_fts virtual table should exist"
 
@@ -38,7 +38,7 @@ class Fts5TablesTest < ActiveSupport::TestCase
     # FTS5 virtual tables expose their structure through pragma_table_info
     columns = ActiveRecord::Base.connection.execute(
       "SELECT name FROM pragma_table_info('entries_fts')"
-    ).map { |row| row["name"] }
+    ).pluck("name")
 
     assert_includes columns, "entry_id", "entries_fts should have entry_id column"
     assert_includes columns, "title", "entries_fts should have title column"
@@ -50,14 +50,14 @@ class Fts5TablesTest < ActiveSupport::TestCase
     # Test that authors_fts table exists in the database
     tables = ActiveRecord::Base.connection.execute(
       "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%fts%'"
-    ).map { |row| row["name"] }
+    ).pluck("name")
 
     assert_includes tables, "authors_fts", "authors_fts virtual table should exist"
 
     # Test that we can query the table structure
     columns = ActiveRecord::Base.connection.execute(
       "SELECT name FROM pragma_table_info('authors_fts')"
-    ).map { |row| row["name"] }
+    ).pluck("name")
 
     assert_includes columns, "author_id", "authors_fts should have author_id column"
     assert_includes columns, "name", "authors_fts should have name column"

@@ -12,6 +12,6 @@ class Avo::Actions::PublishEntries < Avo::BaseAction
       resource.update(published: true)
     end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} published successfully!"
+    succeed "#{records.count} #{"resource".pluralize(records.count)} published successfully!"
   end
 end

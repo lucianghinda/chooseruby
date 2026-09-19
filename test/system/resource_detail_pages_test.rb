@@ -26,7 +26,7 @@ class ResourceDetailPagesTest < ApplicationSystemTestCase
       experience_level: :intermediate
     )
     @entry.description = "This is a comprehensive guide to testing in Ruby with detailed examples and best practices."
-    @entry.categories << [ @category1, @category2 ]
+    @entry.categories << [@category1, @category2]
     @entry.authors << @author
 
     # Create related resources

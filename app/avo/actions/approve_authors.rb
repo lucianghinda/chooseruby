@@ -12,6 +12,6 @@ class Avo::Actions::ApproveAuthors < Avo::BaseAction
       author.update(status: :approved)
     end
 
-    succeed "#{records.count} #{'author'.pluralize(records.count)} approved successfully!"
+    succeed "#{records.count} #{"author".pluralize(records.count)} approved successfully!"
   end
 end

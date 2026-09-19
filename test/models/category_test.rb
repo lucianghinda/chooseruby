@@ -55,7 +55,7 @@ class CategoryTest < ActiveSupport::TestCase
     )
 
     # Associate all entries with category
-    category.entries << [ visible_entry1, visible_entry2, unpublished_entry, pending_entry ]
+    category.entries << [visible_entry1, visible_entry2, unpublished_entry, pending_entry]
 
     assert_equal 2, category.entries_count
   end

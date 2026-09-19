@@ -21,7 +21,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       description: "Ruby on Rails is a web framework for building applications",
       url: "https://rubyonrails.org",
       entryable: @gem1,
-      tags: [ "web", "framework" ],
+      tags: ["web", "framework"],
       status: :approved,
       published: true
     )
@@ -32,7 +32,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       description: "RSpec is a behavior-driven development framework",
       url: "https://rspec.info",
       entryable: @gem2,
-      tags: [ "testing", "bdd" ],
+      tags: ["testing", "bdd"],
       status: :approved,
       published: true
     )
@@ -43,7 +43,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       description: "Simple, efficient background jobs for Ruby",
       url: "https://sidekiq.org",
       entryable: @gem3,
-      tags: [ "background", "jobs" ],
+      tags: ["background", "jobs"],
       status: :approved,
       published: true
     )
@@ -55,7 +55,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       description: "Comprehensive guide to Ruby programming",
       url: "https://example.com/ruby-book",
       entryable: @book1,
-      tags: [ "programming", "reference" ],
+      tags: ["programming", "reference"],
       status: :approved,
       published: true
     )
@@ -72,7 +72,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 1: Partial word matching (e.g., "rail" finds "Rails")
   test "searches with partial word matching using FTS5" do
-    query = EntryDirectoryQuery.new({ q: "rail" })
+    query = EntryDirectoryQuery.new({q: "rail"})
     results = query.call
 
     assert_includes results, @entry1, "Should find Rails Framework with partial match 'rail'"
@@ -82,7 +82,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 2: Phrase search with quotes (e.g., "web framework")
   test "searches with phrase matching using quotes" do
-    query = EntryDirectoryQuery.new({ q: '"web framework"' })
+    query = EntryDirectoryQuery.new({q: '"web framework"'})
     results = query.call
 
     assert_includes results, @entry1, "Should find Rails with exact phrase 'web framework'"
@@ -92,7 +92,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 3: Mixed queries (partial + phrase)
   test "searches with mixed partial and phrase matching" do
-    query = EntryDirectoryQuery.new({ q: 'rails "web framework"' })
+    query = EntryDirectoryQuery.new({q: 'rails "web framework"'})
     results = query.call
 
     assert_includes results, @entry1, "Should find Rails with both partial and phrase match"
@@ -114,7 +114,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     )
 
     # Query with special characters that need escaping
-    query = EntryDirectoryQuery.new({ q: "test (alpha)" })
+    query = EntryDirectoryQuery.new({q: "test (alpha)"})
     results = query.call
 
     assert_includes results, entry, "Should handle special chars in query"
@@ -132,7 +132,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       published: true
     )
 
-    query = EntryDirectoryQuery.new({ q: "Entr'" })
+    query = EntryDirectoryQuery.new({q: "Entr'"})
     assert_nothing_raised { query.call }
     assert_includes query.call, entry, "Should match even with apostrophe in query"
   end
@@ -146,13 +146,13 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       description: "Ruby on Rails Ruby on Rails Ruby on Rails",
       url: "https://example.com/high",
       entryable: gem_high,
-      tags: [ "ruby", "rails" ],
+      tags: ["ruby", "rails"],
       status: :approved,
       published: true
     )
 
     gem_low = RubyGem.create!(gem_name: "other-gem", rubygems_url: "https://rubygems.org/gems/other-gem")
-    low_relevance = Entry.create!(
+    Entry.create!(
       title: "Other Gem",
       description: "This mentions Ruby once",
       url: "https://example.com/low",
@@ -161,7 +161,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       published: true
     )
 
-    query = EntryDirectoryQuery.new({ q: "ruby" })
+    query = EntryDirectoryQuery.new({q: "ruby"})
     results = query.call.to_a
 
     # High relevance entry should come before low relevance
@@ -170,7 +170,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 6: Empty query handling
   test "returns all visible entries when query is blank" do
-    query = EntryDirectoryQuery.new({ q: "" })
+    query = EntryDirectoryQuery.new({q: ""})
     results = query.call
 
     assert_equal 4, results.count, "Should return all visible entries with blank query"
@@ -182,7 +182,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 7: Whitespace-only query handling
   test "returns all visible entries when query is whitespace only" do
-    query = EntryDirectoryQuery.new({ q: "   " })
+    query = EntryDirectoryQuery.new({q: "   "})
     results = query.call
 
     assert_equal 4, results.count, "Should return all visible entries with whitespace query"
@@ -190,7 +190,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 8: Search in tags
   test "searches in tags field" do
-    query = EntryDirectoryQuery.new({ q: "background" })
+    query = EntryDirectoryQuery.new({q: "background"})
     results = query.call
 
     assert_includes results, @entry3, "Should find Sidekiq by tag 'background'"
@@ -202,14 +202,14 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 9: Query initialization with type parameter
   test "initializes query with type parameter" do
-    query = EntryDirectoryQuery.new({ type: "gems" })
+    query = EntryDirectoryQuery.new({type: "gems"})
 
     assert_equal "gems", query.type, "Should store type parameter"
   end
 
   # Test 10: filter_by_type filters by single type (gems)
   test "filters entries by single type gems" do
-    query = EntryDirectoryQuery.new({ type: "gems" })
+    query = EntryDirectoryQuery.new({type: "gems"})
     results = query.call
 
     assert_equal 3, results.count, "Should return only gem entries"
@@ -221,7 +221,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 11: filter_by_type filters by books type
   test "filters entries by books type" do
-    query = EntryDirectoryQuery.new({ type: "books" })
+    query = EntryDirectoryQuery.new({type: "books"})
     results = query.call
 
     assert_equal 1, results.count, "Should return only book entries"
@@ -237,7 +237,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     @entry2.categories << category
     @entry4.categories << category
 
-    query = EntryDirectoryQuery.new({ type: "gems", category: "testing" })
+    query = EntryDirectoryQuery.new({type: "gems", category: "testing"})
     results = query.call
 
     assert_equal 1, results.count, "Should return only gem entries in testing category"
@@ -251,7 +251,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     @entry2.update!(experience_level: :intermediate)
     @entry4.update!(experience_level: :beginner)
 
-    query = EntryDirectoryQuery.new({ type: "gems", level: "beginner" })
+    query = EntryDirectoryQuery.new({type: "gems", level: "beginner"})
     results = query.call
 
     assert_equal 1, results.count, "Should return only beginner gem entries"
@@ -262,7 +262,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 14: Type filtering combined with search query
   test "filters by type and search query together" do
-    query = EntryDirectoryQuery.new({ type: "gems", q: "rails" })
+    query = EntryDirectoryQuery.new({type: "gems", q: "rails"})
     results = query.call
 
     assert_equal 1, results.count, "Should return only gem entries matching search"
@@ -276,7 +276,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     @entry2.update!(experience_level: :all_levels)
     @entry3.update!(experience_level: :intermediate)
 
-    query = EntryDirectoryQuery.new({ level: "beginner" })
+    query = EntryDirectoryQuery.new({level: "beginner"})
     results = query.call
 
     assert_includes results, @entry1
@@ -288,7 +288,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     @entry1.update!(experience_level: :intermediate)
     @entry2.update!(experience_level: :all_levels)
 
-    query = EntryDirectoryQuery.new({ level: "intermediate" })
+    query = EntryDirectoryQuery.new({level: "intermediate"})
     results = query.call
 
     assert_includes results, @entry1
@@ -299,7 +299,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     @entry1.update!(experience_level: :advanced)
     @entry2.update!(experience_level: :all_levels)
 
-    query = EntryDirectoryQuery.new({ level: "advanced" })
+    query = EntryDirectoryQuery.new({level: "advanced"})
     results = query.call
 
     assert_includes results, @entry1
@@ -311,7 +311,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     @entry2.update!(experience_level: :advanced)
     @entry3.update!(experience_level: :all_levels)
 
-    results = EntryDirectoryQuery.new({ level: "" }).call
+    results = EntryDirectoryQuery.new({level: ""}).call
 
     assert_equal 4, results.count
     assert_includes results, @entry1
@@ -322,7 +322,7 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
 
   # Test 15: Invalid type parameter is handled gracefully
   test "handles invalid type parameter gracefully" do
-    query = EntryDirectoryQuery.new({ type: "invalid_type" })
+    query = EntryDirectoryQuery.new({type: "invalid_type"})
     results = query.call
 
     # Should return all entries when type is invalid (graceful degradation)
@@ -337,12 +337,12 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
       description: "Ruby Testing Ruby Testing Ruby Testing",
       url: "https://example.com/high",
       entryable: gem_high,
-      tags: [ "ruby", "testing" ],
+      tags: ["ruby", "testing"],
       status: :approved,
       published: true
     )
 
-    query = EntryDirectoryQuery.new({ type: "gems", q: "testing" })
+    query = EntryDirectoryQuery.new({type: "gems", q: "testing"})
     results = query.call.to_a
 
     # High relevance gem entry should come first

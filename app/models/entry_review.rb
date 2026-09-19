@@ -59,9 +59,8 @@ class EntryReview < ApplicationRecord
   belongs_to :entry
 
   # Enums
-  enum :status, { approved: 0, rejected: 1 }
+  enum :status, {approved: 0, rejected: 1}
 
   # Validations
-  validates :entry_id, presence: true
   validates :status, presence: true
 end

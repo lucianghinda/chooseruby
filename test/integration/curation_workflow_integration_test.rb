@@ -36,7 +36,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Perform approval action and process enqueued jobs
     perform_enqueued_jobs do
       action = Avo::Actions::ApproveEntries.new(record: entry, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
+      action.handle(records: [entry], fields: {}, current_user: nil, resource: nil)
     end
 
     # Verify entry was updated
@@ -56,7 +56,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
 
-    assert_equal [ "workflow@example.com" ], email.to
+    assert_equal ["workflow@example.com"], email.to
     assert_equal "Your ChooseRuby submission has been approved: Workflow Test Gem", email.subject
     assert_match "Workflow Test Gem", email.html_part.body.to_s
   end
@@ -80,7 +80,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Perform rejection action and process enqueued jobs
     perform_enqueued_jobs do
       action = Avo::Actions::RejectEntries.new(record: entry, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry ], fields: { comment: rejection_comment }, current_user: nil, resource: nil)
+      action.handle(records: [entry], fields: {comment: rejection_comment}, current_user: nil, resource: nil)
     end
 
     # Verify entry was updated
@@ -100,7 +100,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
 
-    assert_equal [ "author@example.com" ], email.to
+    assert_equal ["author@example.com"], email.to
     assert_equal "Update on your ChooseRuby submission: Rejected Book", email.subject
     assert_match "Rejected Book", email.html_part.body.to_s
     assert_match rejection_comment, email.html_part.body.to_s
@@ -122,7 +122,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Perform rejection action without comment
     perform_enqueued_jobs do
       action = Avo::Actions::RejectEntries.new(record: entry, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry ], fields: { comment: nil }, current_user: nil, resource: nil)
+      action.handle(records: [entry], fields: {comment: nil}, current_user: nil, resource: nil)
     end
 
     # Verify EntryReview was created with nil comment
@@ -135,7 +135,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Verify email was delivered with fallback message
     email = ActionMailer::Base.deliveries.last
 
-    assert_equal [ "dev@example.com" ], email.to
+    assert_equal ["dev@example.com"], email.to
     # Should not include specific comment, but should render successfully
     assert_no_match "Missing documentation", email.html_part.body.to_s
   end
@@ -209,7 +209,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Perform approval action
     action = Avo::Actions::ApproveEntries.new(record: entry, resource: nil, user: nil, view: :index)
-    action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
+    action.handle(records: [entry], fields: {}, current_user: nil, resource: nil)
 
     # Verify reviewer_id is NULL
     review = entry.entry_reviews.last
@@ -233,14 +233,14 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Process jobs and verify email delivery
     perform_enqueued_jobs do
       action = Avo::Actions::ApproveEntries.new(record: entry, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
+      action.handle(records: [entry], fields: {}, current_user: nil, resource: nil)
     end
 
     # Verify exactly one email was delivered
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
 
-    assert_equal [ "emailtest@example.com" ], email.to
+    assert_equal ["emailtest@example.com"], email.to
     assert_match "Email Job Test", email.html_part.body.to_s
   end
 
@@ -260,14 +260,14 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Process jobs and verify email delivery
     perform_enqueued_jobs do
       action = Avo::Actions::RejectEntries.new(record: entry, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry ], fields: { comment: "Testing rejection email" }, current_user: nil, resource: nil)
+      action.handle(records: [entry], fields: {comment: "Testing rejection email"}, current_user: nil, resource: nil)
     end
 
     # Verify exactly one email was delivered
     assert_equal 1, ActionMailer::Base.deliveries.count
     email = ActionMailer::Base.deliveries.last
 
-    assert_equal [ "rejection@example.com" ], email.to
+    assert_equal ["rejection@example.com"], email.to
     assert_match "Rejection Email Job Test", email.html_part.body.to_s
     assert_match "Testing rejection email", email.html_part.body.to_s
   end
@@ -289,7 +289,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     assert_difference "entry.entry_reviews.count", 1 do
       assert_enqueued_jobs 1, only: ActionMailer::MailDeliveryJob do
         action = Avo::Actions::ApproveEntries.new(record: entry, resource: nil, user: nil, view: :index)
-        action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
+        action.handle(records: [entry], fields: {}, current_user: nil, resource: nil)
       end
     end
 

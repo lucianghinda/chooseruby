@@ -41,9 +41,9 @@ class Course < ApplicationRecord
   end
 
   # Validations
-  validates :duration_hours, numericality: { greater_than: 0 }, allow_blank: true
-  validates :price_cents, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
-  validates :enrollment_url, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                                      message: "must be a valid URL starting with http:// or https://" },
-                            allow_blank: true
+  validates :duration_hours, numericality: {greater_than: 0}, allow_blank: true
+  validates :price_cents, numericality: {greater_than_or_equal_to: 0}, allow_blank: true
+  validates :enrollment_url, format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+                                      message: "must be a valid URL starting with http:// or https://"},
+    allow_blank: true
 end

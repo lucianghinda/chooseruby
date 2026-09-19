@@ -11,7 +11,7 @@ class CreateCategoriesResources < ActiveRecord::Migration[8.1]
 
     add_index :categories_resources, :category_id
     add_index :categories_resources, :resource_id
-    add_index :categories_resources, [ :category_id, :resource_id ], unique: true
+    add_index :categories_resources, [:category_id, :resource_id], unique: true
 
     add_foreign_key :categories_resources, :categories, on_delete: :cascade
     add_foreign_key :categories_resources, :resources, on_delete: :cascade

@@ -27,7 +27,7 @@ module FtsQuerySanitizer
 
       cleaned = word.gsub(/[()\-']/, "").gsub(/\*+\z/, "")
       cleaned.present? ? "#{cleaned}*" : ""
-    end.reject(&:blank?)
+    end.compact_blank
 
     result = processed_words.join(" ")
     phrases.each_with_index { |phrase, index| result = result.gsub("__PHRASE_#{index}__", phrase) }

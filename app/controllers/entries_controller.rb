@@ -55,12 +55,12 @@ class EntriesController < ApplicationController
 
   def create
     # Validate category limit before processing
-    category_ids = all_permitted_params[:category_ids].to_a.reject(&:blank?)
+    category_ids = all_permitted_params[:category_ids].to_a.compact_blank
     if category_ids.length > 3
       @entry = Entry.new(common_entry_params)
       @entry.errors.add(:categories, "You can select a maximum of 3 categories")
       flash.now[:alert] = "Please review the highlighted fields."
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
       return
     end
 
@@ -93,7 +93,7 @@ class EntriesController < ApplicationController
 
     unless @entry.persisted?
       flash.now[:alert] = "Please review the highlighted fields."
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -215,6 +215,6 @@ class EntriesController < ApplicationController
   def course_price_cents
     return {} if all_permitted_params[:price].blank?
 
-    { price_cents: (all_permitted_params[:price].to_f * 100).to_i }
+    {price_cents: (all_permitted_params[:price].to_f * 100).to_i}
   end
 end

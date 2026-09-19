@@ -35,8 +35,8 @@ class Article < ApplicationRecord
   end
 
   # Validations
-  validates :reading_time_minutes, numericality: { greater_than: 0 }, allow_blank: true
-  validates :publication_date, comparison: { less_than_or_equal_to: -> { Date.current },
-                                            message: "cannot be in the future" },
-                              allow_blank: true
+  validates :reading_time_minutes, numericality: {greater_than: 0}, allow_blank: true
+  validates :publication_date, comparison: {less_than_or_equal_to: -> { Date.current },
+                                            message: "cannot be in the future"},
+    allow_blank: true
 end

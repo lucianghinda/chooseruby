@@ -7,7 +7,7 @@ class Avo::Actions::RejectAuthorProposalTest < ActiveSupport::TestCase
     author = Author.create!(name: "Yukihiro Matsumoto", status: :approved)
     proposal = AuthorProposal.create!(
       author: author,
-      link_updates: { "github_url" => "https://github.com/matz" },
+      link_updates: {"github_url" => "https://github.com/matz"},
       submitter_email: "user@example.com",
       status: :pending
     )
@@ -15,7 +15,7 @@ class Avo::Actions::RejectAuthorProposalTest < ActiveSupport::TestCase
     comment_text = "Needs more details about the contribution"
 
     action = Avo::Actions::RejectAuthorProposal.new(record: proposal, resource: nil, user: nil, view: :index)
-    action.handle(records: [ proposal ], fields: { admin_comment: comment_text }, current_user: nil, resource: nil)
+    action.handle(records: [proposal], fields: {admin_comment: comment_text}, current_user: nil, resource: nil)
 
     proposal.reload
 
@@ -36,7 +36,7 @@ class Avo::Actions::RejectAuthorProposalTest < ActiveSupport::TestCase
     assert_equal "pending", proposal.status
 
     action = Avo::Actions::RejectAuthorProposal.new(record: proposal, resource: nil, user: nil, view: :index)
-    action.handle(records: [ proposal ], fields: { admin_comment: "Bio too short" }, current_user: nil, resource: nil)
+    action.handle(records: [proposal], fields: {admin_comment: "Bio too short"}, current_user: nil, resource: nil)
 
     proposal.reload
 
@@ -53,7 +53,7 @@ class Avo::Actions::RejectAuthorProposalTest < ActiveSupport::TestCase
     author = Author.create!(name: "Yukihiro Matsumoto", status: :approved)
     rejected_proposal = AuthorProposal.create!(
       author: author,
-      link_updates: { "website_url" => "https://example.com" },
+      link_updates: {"website_url" => "https://example.com"},
       submitter_email: "user@example.com",
       status: :rejected,
       admin_comment: "Already rejected"

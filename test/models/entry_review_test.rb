@@ -25,11 +25,14 @@
 require "test_helper"
 
 class EntryReviewTest < ActiveSupport::TestCase
-  test "validates presence of entry_id" do
+  test "validates presence of entry" do
     review = EntryReview.new(status: :approved)
 
     assert_not review.valid?
-    assert_includes review.errors[:entry_id], "can't be blank"
+    # belongs_to :entry is required by default (no explicit presence
+    # validation needed) - Rails keys the error on the association name,
+    # not the foreign key column.
+    assert_includes review.errors[:entry], "must exist"
   end
 
   test "validates presence of status" do

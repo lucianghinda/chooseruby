@@ -31,7 +31,7 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ ENV.fetch("RESOURCE_SUBMISSION_RECIPIENT", "hello@chooseruby.com") ], email.to
+    assert_equal [ENV.fetch("RESOURCE_SUBMISSION_RECIPIENT", "hello@chooseruby.com")], email.to
     assert_equal "New resource submission: Awesome Gem", email.subject
 
     # Check both HTML and text parts
@@ -78,7 +78,7 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
       status: :pending
     )
 
-    entry.categories << [ testing, authentication ]
+    entry.categories << [testing, authentication]
 
     email = ResourceSubmissionMailer.notify_team(entry)
 
@@ -135,7 +135,7 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ "jane@example.com" ], email.to
+    assert_equal ["jane@example.com"], email.to
     assert_equal "We received your resource submission for ChooseRuby", email.subject
     assert_match "Jane Smith", email.html_part.body.to_s
     assert_match "Ruby Discord", email.html_part.body.to_s
@@ -197,7 +197,7 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
   test "notify_team email displays submitter information correctly" do
     article = Article.create!(
       author_name: "DHH",
-      publication_date: Date.today - 30.days
+      publication_date: Time.zone.today - 30.days
     )
 
     entry = Entry.create!(
@@ -238,7 +238,7 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ "jane@example.com" ], email.to
+    assert_equal ["jane@example.com"], email.to
     assert_equal "Your ChooseRuby submission has been approved: Approved Gem", email.subject
   end
 
@@ -292,7 +292,7 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
       email.deliver_now
     end
 
-    assert_equal [ "developer@example.com" ], email.to
+    assert_equal ["developer@example.com"], email.to
     assert_equal "Update on your ChooseRuby submission: Rejected Tool", email.subject
 
     # Verify comment is included in both parts

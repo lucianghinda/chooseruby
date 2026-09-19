@@ -4,11 +4,11 @@ module ApplicationHelper
   def breadcrumbs(items)
     return "" if items.blank?
 
-    content_tag :nav, aria: { label: "Breadcrumb" }, class: "mb-6" do
+    content_tag :nav, aria: {label: "Breadcrumb"}, class: "mb-6" do
       content_tag :ol, class: "flex flex-wrap items-center gap-2 text-sm text-slate-600" do
         items.each_with_index.map do |item, index|
           is_last = index == items.size - 1
-          separator = is_last ? "" : content_tag(:span, "›", class: "mx-1 text-slate-400", aria: { hidden: true })
+          separator = is_last ? "" : content_tag(:span, "›", class: "mx-1 text-slate-400", aria: {hidden: true})
 
           content_tag(:li, class: "inline-flex items-center") do
             if item[:url].present? && !is_last

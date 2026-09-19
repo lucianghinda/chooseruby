@@ -11,7 +11,7 @@ module Authentication
   private
 
   def set_current_user
-    if session = find_session_by_cookie
+    if (session = find_session_by_cookie)
       Current.user = session.user
       Current.session = session
     end

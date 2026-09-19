@@ -17,7 +17,7 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
       published: true,
       status: :approved
     )
-    @main_entry.categories << [ @category1, @category2, @category3 ]
+    @main_entry.categories << [@category1, @category2, @category3]
   end
 
   test "returns up to 6 related resources" do
@@ -57,7 +57,7 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
 
   test "distributes 2 resources from each of first 3 categories" do
     # Create 3 resources in category1
-    cat1_entries = 3.times.map do |i|
+    3.times.map do |i|
       entry = Entry.create!(
         title: "Cat1 Resource #{i}",
         url: "https://example.com/cat1-#{i}",
@@ -70,7 +70,7 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
     end
 
     # Create 3 resources in category2
-    cat2_entries = 3.times.map do |i|
+    3.times.map do |i|
       entry = Entry.create!(
         title: "Cat2 Resource #{i}",
         url: "https://example.com/cat2-#{i}",
@@ -83,7 +83,7 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
     end
 
     # Create 3 resources in category3
-    cat3_entries = 3.times.map do |i|
+    3.times.map do |i|
       entry = Entry.create!(
         title: "Cat3 Resource #{i}",
         url: "https://example.com/cat3-#{i}",
@@ -244,7 +244,7 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
       published: true,
       status: :approved
     )
-    entry.categories << [ @category1, @category2, @category3 ]
+    entry.categories << [@category1, @category2, @category3]
 
     # Create only 1 resource in each category
     Entry.create!(

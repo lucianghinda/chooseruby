@@ -108,7 +108,7 @@ class AuthorProposal < ApplicationRecord
   serialize :link_updates, coder: JSON
 
   # Status enum
-  enum :status, { pending: 0, approved: 1, rejected: 2 }, default: :pending
+  enum :status, {pending: 0, approved: 1, rejected: 2}, default: :pending
 
   VALID_LINK_FIELDS = %w[
     github_url gitlab_url website_url bluesky_url ruby_social_url
@@ -122,7 +122,7 @@ class AuthorProposal < ApplicationRecord
     message: "must be a valid email address"
   }, allow_blank: true
 
-  validates :bio_text, length: { maximum: 500 }, allow_blank: true
+  validates :bio_text, length: {maximum: 500}, allow_blank: true
 
   # Author name required for new author proposals
   validates :author_name, presence: true, if: -> { author_id.blank? }
@@ -183,10 +183,10 @@ class AuthorProposal < ApplicationRecord
   # Validates that at least one change is proposed
   def has_proposed_changes?
     has_changes = resource_url.present? ||
-                  link_updates.present? ||
-                  bio_text.present? ||
-                  description_text.present? ||
-                  author_name.present?
+      link_updates.present? ||
+      bio_text.present? ||
+      description_text.present? ||
+      author_name.present?
 
     unless has_changes
       errors.add(:base, "At least one change must be proposed")

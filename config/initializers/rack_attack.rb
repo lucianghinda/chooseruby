@@ -47,7 +47,7 @@ class Rack::Attack
   # Return a user-friendly 429 (Too Many Requests) response
   self.throttled_responder = lambda do |env|
     match_data = env["rack.attack.match_data"]
-    now = match_data[:epoch_time]
+    match_data[:epoch_time]
 
     headers = {
       "Content-Type" => "text/html",
@@ -117,13 +117,13 @@ class Rack::Attack
       </html>
     HTML
 
-    [ 429, headers, [ body ] ]
+    [429, headers, [body]]
   end
 
   # Log throttled requests for monitoring
   ActiveSupport::Notifications.subscribe("rack.attack") do |name, start, finish, request_id, payload|
     req = payload[:request]
-    if [ :throttle ].include?(req.env["rack.attack.match_type"])
+    if [:throttle].include?(req.env["rack.attack.match_type"])
       Rails.logger.warn("[Rack::Attack] Throttled request from #{req.ip} to #{req.path}")
     end
   end

@@ -11,9 +11,9 @@
 pre-commit:
   parallel: true
   jobs:
-    - name: rubocop
+    - name: standardrb
       glob: "*.rb"
-      run: bin/rubocop {staged_files}
+      run: bin/standardrb {staged_files}
 
     # Scoped to app/models: the only part of app/ that's actually reek-clean
     # so far (see AGENTS.md's Reek acceptance criteria). Widen the glob (and
@@ -39,8 +39,8 @@ pre-commit:
 pre-push:
   parallel: false
   jobs:
-    - name: rubocop
-      run: bin/rubocop
+    - name: standardrb
+      run: bin/standardrb
 
     - name: reek
       run: bin/reek app/models

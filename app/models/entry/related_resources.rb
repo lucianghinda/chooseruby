@@ -34,20 +34,20 @@ class Entry::RelatedResources
       .visible
       .with_card_includes
       .joins(:categories_entries)
-      .where(categories_entries: { category_id: category_ids })
+      .where(categories_entries: {category_id: category_ids})
       .where.not(id: exclude_ids)
       .distinct
       .recently_curated
   end
 
   def related_by_top_categories
-    per_category = (limit.to_f / [ category_ids.length, 3 ].min).ceil
+    per_category = (limit.to_f / [category_ids.length, 3].min).ceil
 
     category_ids.first(3).each_with_object([]) do |category_id, related|
       remaining = limit - related.length
       next if remaining <= 0
 
-      related.concat(fetch_from_category(category_id, exclude_ids: [ entry.id, *related.map(&:id) ], take: [ per_category, remaining ].min))
+      related.concat(fetch_from_category(category_id, exclude_ids: [entry.id, *related.map(&:id)], take: [per_category, remaining].min))
     end
   end
 
@@ -58,7 +58,7 @@ class Entry::RelatedResources
   def related_by_any_category(already_related)
     remaining = limit - already_related.length
 
-    base_query(category_ids: category_ids, exclude_ids: [ entry.id, *already_related.map(&:id) ])
+    base_query(category_ids: category_ids, exclude_ids: [entry.id, *already_related.map(&:id)])
       .limit(remaining)
       .to_a
   end

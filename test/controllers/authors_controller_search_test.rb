@@ -11,12 +11,12 @@ class AuthorsController::SearchTest < ActionDispatch::IntegrationTest
       github_url: "https://github.com/matz"
     )
 
-    pending_author = Author.create!(
+    Author.create!(
       name: "Yukihiro Pending",
       status: :pending
     )
 
-    get authors_search_path, params: { q: "Yukihiro" }, as: :json
+    get authors_search_path, params: {q: "Yukihiro"}, as: :json
 
     assert_response :success
     json_response = JSON.parse(response.body)
@@ -29,7 +29,7 @@ class AuthorsController::SearchTest < ActionDispatch::IntegrationTest
   end
 
   test "search returns empty array for blank query" do
-    get authors_search_path, params: { q: "" }, as: :json
+    get authors_search_path, params: {q: ""}, as: :json
 
     assert_response :success
     json_response = JSON.parse(response.body)
@@ -46,7 +46,7 @@ class AuthorsController::SearchTest < ActionDispatch::IntegrationTest
       )
     end
 
-    get authors_search_path, params: { q: "Author" }, as: :json
+    get authors_search_path, params: {q: "Author"}, as: :json
 
     assert_response :success
     json_response = JSON.parse(response.body)
@@ -64,7 +64,7 @@ class AuthorsController::SearchTest < ActionDispatch::IntegrationTest
     )
 
     # Search for partial match
-    get authors_search_path, params: { q: "Heine" }, as: :json
+    get authors_search_path, params: {q: "Heine"}, as: :json
 
     assert_response :success
     json_response = JSON.parse(response.body)

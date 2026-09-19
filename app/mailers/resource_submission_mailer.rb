@@ -9,9 +9,9 @@ class ResourceSubmissionMailer < ApplicationMailer
 
     # Handle both Entry and ResourceSubmission models
     @categories = if submission.respond_to?(:selected_categories)
-                    submission.selected_categories
+      submission.selected_categories
     else
-                    submission.categories
+      submission.categories
     end
 
     mail(subject: "New resource submission: #{submission.title}")

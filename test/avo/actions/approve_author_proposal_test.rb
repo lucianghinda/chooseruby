@@ -7,13 +7,13 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
     author = Author.create!(name: "Yukihiro Matsumoto", status: :approved)
     proposal = AuthorProposal.create!(
       author: author,
-      link_updates: { "github_url" => "https://github.com/matz" },
+      link_updates: {"github_url" => "https://github.com/matz"},
       submitter_email: "user@example.com",
       status: :pending
     )
 
     action = Avo::Actions::ApproveAuthorProposal.new(record: proposal, resource: nil, user: nil, view: :index)
-    action.handle(records: [ proposal ], fields: {}, current_user: nil, resource: nil)
+    action.handle(records: [proposal], fields: {}, current_user: nil, resource: nil)
 
     proposal.reload
 
@@ -33,7 +33,7 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
     assert_equal "pending", proposal.status
 
     action = Avo::Actions::ApproveAuthorProposal.new(record: proposal, resource: nil, user: nil, view: :index)
-    action.handle(records: [ proposal ], fields: {}, current_user: nil, resource: nil)
+    action.handle(records: [proposal], fields: {}, current_user: nil, resource: nil)
 
     proposal.reload
 
@@ -47,7 +47,7 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
     author = Author.create!(name: "Yukihiro Matsumoto", status: :approved)
     approved_proposal = AuthorProposal.create!(
       author: author,
-      link_updates: { "website_url" => "https://example.com" },
+      link_updates: {"website_url" => "https://example.com"},
       submitter_email: "user@example.com",
       status: :approved
     )
@@ -77,7 +77,7 @@ class Avo::Actions::ApproveAuthorProposalTest < ActiveSupport::TestCase
     )
 
     action = Avo::Actions::ApproveAuthorProposal.new(record: proposal1, resource: nil, user: nil, view: :index)
-    action.handle(records: [ proposal1, proposal2 ], fields: {}, current_user: nil, resource: nil)
+    action.handle(records: [proposal1, proposal2], fields: {}, current_user: nil, resource: nil)
 
     proposal1.reload
     proposal2.reload

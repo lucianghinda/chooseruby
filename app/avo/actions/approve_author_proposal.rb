@@ -12,21 +12,19 @@ class Avo::Actions::ApproveAuthorProposal < Avo::BaseAction
     error_messages = []
 
     records.each do |proposal|
-      begin
-        # Call the approve! method which handles all the logic
-        proposal.approve!
-        success_count += 1
-      rescue ActiveRecord::RecordInvalid => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      rescue StandardError => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      end
+      # Call the approve! method which handles all the logic
+      proposal.approve!
+      success_count += 1
+    rescue ActiveRecord::RecordInvalid => e
+      error_messages << "Proposal ##{proposal.id}: #{e.message}"
+    rescue => e
+      error_messages << "Proposal ##{proposal.id}: #{e.message}"
     end
 
     if error_messages.any?
-      error "#{success_count} approved, #{error_messages.count} failed: #{error_messages.join('; ')}"
+      error "#{success_count} approved, #{error_messages.count} failed: #{error_messages.join("; ")}"
     else
-      succeed "#{success_count} #{'proposal'.pluralize(success_count)} approved successfully!"
+      succeed "#{success_count} #{"proposal".pluralize(success_count)} approved successfully!"
     end
   end
 

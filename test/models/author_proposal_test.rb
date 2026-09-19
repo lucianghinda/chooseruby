@@ -94,7 +94,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   test "should save with link_updates" do
     proposal = AuthorProposal.new(
       author: @author,
-      link_updates: { "github_url" => "https://github.com/newuser" },
+      link_updates: {"github_url" => "https://github.com/newuser"},
       submitter_email: "test@example.com"
     )
 
@@ -160,7 +160,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   test "should serialize link_updates as JSON hash" do
     proposal = AuthorProposal.create(
       author: @author,
-      link_updates: { "github_url" => "https://github.com/test", "website_url" => "https://example.com" },
+      link_updates: {"github_url" => "https://github.com/test", "website_url" => "https://example.com"},
       submitter_email: "test@example.com"
     )
 
@@ -172,7 +172,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   test "should validate link URL formats in link_updates" do
     proposal = AuthorProposal.new(
       author: @author,
-      link_updates: { "github_url" => "not-a-valid-url" },
+      link_updates: {"github_url" => "not-a-valid-url"},
       submitter_email: "test@example.com"
     )
 
@@ -214,7 +214,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   end
 
   test "should allow proposal after 24 hours" do
-    proposal1 = AuthorProposal.create(
+    AuthorProposal.create(
       author: @author,
       bio_text: "First proposal",
       submitter_email: "test@example.com",
@@ -231,7 +231,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   end
 
   test "should allow multiple proposals from different emails" do
-    proposal1 = AuthorProposal.create(
+    AuthorProposal.create(
       author: @author,
       bio_text: "First proposal",
       submitter_email: "test1@example.com"
@@ -544,7 +544,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   test "has_link_updates? should return true when link_updates is present" do
     proposal = AuthorProposal.new(
       author: @author,
-      link_updates: { "github_url" => "https://github.com/test" },
+      link_updates: {"github_url" => "https://github.com/test"},
       submitter_email: "test@example.com"
     )
 
@@ -591,7 +591,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   test "has_bio_changes? should return false when bio_text and description_text are blank" do
     proposal = AuthorProposal.new(
       author: @author,
-      link_updates: { "github_url" => "https://github.com/test" },
+      link_updates: {"github_url" => "https://github.com/test"},
       submitter_email: "test@example.com"
     )
 
@@ -599,7 +599,7 @@ class AuthorProposalTest < ActiveSupport::TestCase
   end
 
   test "matched_entry? should return true when matched_entry_id is present" do
-    entry = Entry.create!(
+    Entry.create!(
       title: "Test Entry",
       url: "https://example.com",
       status: :approved,

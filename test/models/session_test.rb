@@ -97,7 +97,7 @@ class SessionTest < ActiveSupport::TestCase
   # Cascade delete test
   test "should be destroyed when user is destroyed" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
-    session = user.sessions.create!
+    user.sessions.create!
 
     assert_difference "Session.count", -1 do
       user.destroy

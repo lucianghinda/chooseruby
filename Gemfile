@@ -26,7 +26,7 @@ gem "tailwindcss-rails", "~> 3.0"
 gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data", platforms: %i[windows jruby]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
@@ -59,10 +59,9 @@ gem "active_hashcash"
 
 gem "aws-sdk-s3"
 
-
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
 
   # Test coverage reporting [https://github.com/simplecov-ruby/simplecov]
   gem "simplecov", require: false
@@ -76,11 +75,24 @@ group :development, :test do
   # Code smell detector [https://github.com/troessner/reek]
   gem "reek", require: false
 
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  # Ruby style linter/formatter. Compared against staying on
+  # rubocop-rails-omakase: both are "just pick one, stop bikeshedding"
+  # configs, but Standard is the more actively-adopted community default
+  # (2.9k GitHub stars vs. omakase's few hundred), ships its own performance
+  # plugin, and its `--generate-todo`/`ignore:` give the same adoption path
+  # omakase's `.rubocop_todo.yml` did. [https://github.com/standardrb/standard]
+  gem "standard", ">= 1.35.1", require: false
 
-  # Additional cops: performance, minitest and thread-safety linting
-  gem "rubocop-performance", require: false
+  # Standard's official Rails plugin (Rails-specific cops - the closest
+  # thing to what rubocop-rails-omakase's bundled rubocop-rails gave us).
+  # [https://github.com/standardrb/standard-rails]
+  gem "standard-rails", require: false
+
+  # Minitest/thread-safety cops layered on top via .standard_ext.yml (see
+  # docs/llms/development.md): standard-minitest/standard-thread_safety
+  # exist but are single-maintainer wrappers stale since March 2025, which
+  # fails our own "actively maintained" bar - using the real, official
+  # rubocop-minitest/rubocop-thread_safety gems directly instead.
   gem "rubocop-minitest", require: false
   gem "rubocop-thread_safety", require: false
 

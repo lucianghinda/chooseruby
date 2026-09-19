@@ -49,7 +49,7 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
   end
 
   test "finds authors by partial name match" do
-    query = AuthorSearchQuery.new({ q: "Yuki" })
+    query = AuthorSearchQuery.new({q: "Yuki"})
     results = query.call
 
     assert_includes results, @author_matz
@@ -58,7 +58,7 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
   end
 
   test "finds authors by last name" do
-    query = AuthorSearchQuery.new({ q: "Patterson" })
+    query = AuthorSearchQuery.new({q: "Patterson"})
     results = query.call
 
     assert_includes results, @author_aaron
@@ -67,7 +67,7 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
   end
 
   test "phrase search for full names" do
-    query = AuthorSearchQuery.new({ q: '"David Heinemeier"' })
+    query = AuthorSearchQuery.new({q: '"David Heinemeier"'})
     results = query.call
 
     assert_includes results, @author_dhh
@@ -75,7 +75,7 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
   end
 
   test "includes entry count in results" do
-    query = AuthorSearchQuery.new({ q: "David" })
+    query = AuthorSearchQuery.new({q: "David"})
     results = query.call
     author = results.first
 
@@ -84,7 +84,7 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
 
   test "ranks results by FTS5 relevance and alphabetically" do
     # Search for "Patterson" which should match Aaron Patterson specifically
-    query = AuthorSearchQuery.new({ q: "Patterson" })
+    query = AuthorSearchQuery.new({q: "Patterson"})
     results = query.call.to_a
 
     assert_equal 1, results.size
@@ -92,14 +92,14 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
   end
 
   test "returns only approved authors" do
-    query = AuthorSearchQuery.new({ q: "Pending" })
+    query = AuthorSearchQuery.new({q: "Pending"})
     results = query.call
 
     assert_not_includes results, @pending_author
   end
 
   test "handles empty query" do
-    query = AuthorSearchQuery.new({ q: "" })
+    query = AuthorSearchQuery.new({q: ""})
     results = query.call
 
     # Should return all approved authors when no query
@@ -110,7 +110,7 @@ class AuthorSearchQueryTest < ActiveSupport::TestCase
   end
 
   test "sanitizes FTS5 special characters" do
-    query = AuthorSearchQuery.new({ q: "David (test)" })
+    query = AuthorSearchQuery.new({q: "David (test)"})
 
     # Should not raise error, should sanitize the query
     assert_nothing_raised do

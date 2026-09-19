@@ -12,6 +12,6 @@ class Avo::Actions::UnpublishEntries < Avo::BaseAction
       resource.update(published: false)
     end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} unpublished successfully!"
+    succeed "#{records.count} #{"resource".pluralize(records.count)} unpublished successfully!"
   end
 end

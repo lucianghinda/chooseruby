@@ -34,7 +34,7 @@ class Book < ApplicationRecord
   has_one :entry, as: :entryable, touch: true, dependent: :destroy
 
   # Enums
-  enum :format, { physical: 0, ebook: 1, both: 2 }
+  enum :format, {physical: 0, ebook: 1, both: 2}
 
   # Display name for Avo dropdown
   def display_name
@@ -42,14 +42,14 @@ class Book < ApplicationRecord
   end
 
   # Validations
-  validates :isbn, format: { with: /\A(\d{10}|\d{13})\z/,
-                            message: "must be a valid 10 or 13 digit ISBN" },
-                   allow_blank: true
-  validates :publication_year, numericality: { greater_than_or_equal_to: 1990,
-                                              less_than_or_equal_to: -> { Time.current.year } },
-                              allow_blank: true
-  validates :page_count, numericality: { greater_than: 0 }, allow_blank: true
-  validates :purchase_url, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                                    message: "must be a valid URL starting with http:// or https://" },
-                          allow_blank: true
+  validates :isbn, format: {with: /\A(\d{10}|\d{13})\z/,
+                            message: "must be a valid 10 or 13 digit ISBN"},
+    allow_blank: true
+  validates :publication_year, numericality: {greater_than_or_equal_to: 1990,
+                                              less_than_or_equal_to: -> { Time.current.year }},
+    allow_blank: true
+  validates :page_count, numericality: {greater_than: 0}, allow_blank: true
+  validates :purchase_url, format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+                                    message: "must be a valid URL starting with http:// or https://"},
+    allow_blank: true
 end

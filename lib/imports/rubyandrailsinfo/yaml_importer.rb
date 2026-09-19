@@ -60,7 +60,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:categories] = { success: success, errors: errors }
+        @stats[:categories] = {success: success, errors: errors}
         puts "✓ Imported #{success} categories (#{errors} errors)"
       end
 
@@ -90,7 +90,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:authors] = { success: success, errors: errors }
+        @stats[:authors] = {success: success, errors: errors}
         puts "✓ Imported #{success} authors (#{errors} errors)"
       end
 
@@ -143,7 +143,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:books] = { success: success, errors: errors, skipped: skipped }
+        @stats[:books] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} books (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -182,7 +182,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:courses] = { success: success, errors: errors, skipped: skipped }
+        @stats[:courses] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} courses (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -221,7 +221,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:newsletters] = { success: success, errors: errors, skipped: skipped }
+        @stats[:newsletters] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} newsletters (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -259,7 +259,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:podcasts] = { success: success, errors: errors, skipped: skipped }
+        @stats[:podcasts] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} podcasts (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -280,7 +280,7 @@ module Imports
           end
 
           # Get join_url or generate placeholder
-          join_url = entry_data["website_url"].presence || "https://example.com/#{entry_data['slug']}"
+          join_url = entry_data["website_url"].presence || "https://example.com/#{entry_data["slug"]}"
 
           # Create community
           community = Community.create! do |c|
@@ -304,7 +304,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:communities] = { success: success, errors: errors, skipped: skipped }
+        @stats[:communities] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} communities (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -343,7 +343,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:youtubes] = { success: success, errors: errors, skipped: skipped }
+        @stats[:youtubes] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} youtubes (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -382,7 +382,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:screencasts] = { success: success, errors: errors, skipped: skipped }
+        @stats[:screencasts] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} screencasts (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -415,7 +415,7 @@ module Imports
             url = if entry_data["url"].present?
               # If it looks like a video ID (not a full URL), construct YouTube URL
               if entry_data["url"].match?(/^[a-zA-Z0-9_-]{11}$/)
-                "https://www.youtube.com/watch?v=#{entry_data['url']}"
+                "https://www.youtube.com/watch?v=#{entry_data["url"]}"
               else
                 entry_data["url"]
               end
@@ -442,7 +442,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:lessons] = { success: success, errors: errors, skipped: skipped }
+        @stats[:lessons] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} lessons (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -478,7 +478,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:authorings] = { success: success, errors: errors, skipped: skipped }
+        @stats[:authorings] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} authorings (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -521,7 +521,7 @@ module Imports
           errors += 1
         end
 
-        @stats[:taggings] = { success: success, errors: errors, skipped: skipped }
+        @stats[:taggings] = {success: success, errors: errors, skipped: skipped}
         puts "✓ Imported #{success} taggings (#{errors} errors, #{skipped} skipped)"
       end
 
@@ -533,7 +533,7 @@ module Imports
 
       def parse_time(str)
         return nil if str.blank?
-        Time.parse(str)
+        Time.zone.parse(str)
       rescue
         nil
       end
@@ -577,9 +577,9 @@ module Imports
 
       def print_summary
         puts
-        puts "="*60
+        puts "=" * 60
         puts "Import Summary"
-        puts "="*60
+        puts "=" * 60
         @stats.each do |type, counts|
           puts "#{type.to_s.capitalize}: #{counts[:success]} success"
           puts "  Errors: #{counts[:errors]}" if counts[:errors] > 0

@@ -39,9 +39,9 @@ class AuthorProposalsController < ApplicationController
       # Reload author for existing author proposals to display form correctly
       if @author_proposal.author_id.present?
         @author = Author.find_by(id: @author_proposal.author_id)
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       else
-        render :new_author, status: :unprocessable_entity
+        render :new_author, status: :unprocessable_content
       end
     end
   end
@@ -80,7 +80,7 @@ class AuthorProposalsController < ApplicationController
     ).tap do |permitted|
       # Convert link_updates array to hash, removing blank values
       if permitted[:link_updates].present?
-        link_hash = permitted[:link_updates].to_h.reject { |_k, v| v.blank? }
+        link_hash = permitted[:link_updates].to_h.compact_blank
         permitted[:link_updates] = link_hash.presence
       end
     end

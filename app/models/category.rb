@@ -48,9 +48,9 @@ class Category < ApplicationRecord
   has_many :entries, through: :categories_entries
 
   # Validations
-  validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 100 }
+  validates :name, presence: true, uniqueness: true, length: {minimum: 2, maximum: 100}
   validates :slug, presence: true, uniqueness: true
-  validates :description, length: { maximum: 500 }, allow_blank: true
+  validates :description, length: {maximum: 500}, allow_blank: true
 
   sluggable_from :name
 
@@ -78,7 +78,7 @@ class Category < ApplicationRecord
     entries
       .visible
       .joins(:categories_entries)
-      .where(categories_entries: { category_id: id, is_featured: true })
+      .where(categories_entries: {category_id: id, is_featured: true})
       .with_directory_includes
       .recently_curated
       .limit(limit)

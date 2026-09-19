@@ -54,11 +54,11 @@ Never edit db/schema.rb - always update it by running `bin/rails db:migrate` or 
 
 Every tool below runs on `bin/ci` (`config/ci.rb`) and on `git push` via `lefthook.yml`
 (install once with `bin/setup`, or `bundle exec lefthook install`). `git commit` runs the
-fast ones (RuboCop, Reek, Herb) against staged files only.
+fast ones (Standard, Reek, Herb) against staged files only.
 
 | Tool | Command | Checks | Status |
 |---|---|---|---|
-| RuboCop (+ performance/minitest/thread_safety) | `bin/rubocop` | Style | Clean |
+| Standard (+ standard-rails, rubocop-minitest/thread_safety via `.standard_ext.yml`) | `bin/standardrb` | Style | Clean. Replaced rubocop-rails-omakase - see `docs/llms/dependency_selection.md` for why |
 | Reek | `bin/reek app` | Code smells | Clean for `app/models`; not yet run on the rest of `app/` - see AGENTS.md |
 | Herb | `bin/herb-lint` | ERB/HTML template lint | Not yet clean - 113 offenses as of this writing |
 | ArchSpec | `bundle exec archspec check` | Component boundaries, declared in `Archspec.rb` | Clean against `archspec_todo.yml`; burn that list down, don't add to it |

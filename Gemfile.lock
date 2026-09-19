@@ -478,8 +478,8 @@ GEM
     reline (0.7.0)
       io-console (~> 0.5)
     rexml (3.4.4)
-    rubocop (1.90.0)
-      json (>= 2.3)
+    rubocop (1.88.2)
+      json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
       parallel (>= 1.10)
@@ -496,23 +496,19 @@ GEM
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
-    rubocop-performance (1.27.0)
+    rubocop-performance (1.26.1)
       lint_roller (~> 1.1)
-      rubocop (>= 1.89.0, < 2.0)
+      rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.47.1, < 2.0)
-    rubocop-rails (2.37.0)
+    rubocop-rails (2.34.3)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
-      rubocop (>= 1.89.0, < 2.0)
+      rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.44.0, < 2.0)
-    rubocop-rails-omakase (1.1.0)
-      rubocop (>= 1.72)
-      rubocop-performance (>= 1.24)
-      rubocop-rails (>= 2.30)
-    rubocop-thread_safety (0.8.0)
+    rubocop-thread_safety (0.7.3)
       lint_roller (~> 1.1)
-      rubocop (~> 1.89)
+      rubocop (~> 1.72, >= 1.72.1)
       rubocop-ast (>= 1.44.0, < 2.0)
     ruby-progressbar (1.13.0)
     ruby-vips (2.3.0)
@@ -585,6 +581,21 @@ GEM
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
       ostruct
+    standard (1.56.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.88.0)
+      standard-custom (~> 1.0.0)
+      standard-performance (~> 1.8)
+    standard-custom (1.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.50)
+    standard-performance (1.9.0)
+      lint_roller (~> 1.1)
+      rubocop-performance (~> 1.26.0)
+    standard-rails (1.6.0)
+      lint_roller (~> 1.0)
+      rubocop-rails (~> 2.34.0)
     still_active (3.1.0)
       async (>= 2.2)
       bundler (>= 2.0)
@@ -692,8 +703,6 @@ DEPENDENCIES
   rails!
   reek
   rubocop-minitest
-  rubocop-performance
-  rubocop-rails-omakase
   rubocop-thread_safety
   selenium-webdriver
   simplecov
@@ -702,6 +711,8 @@ DEPENDENCIES
   solid_cache
   solid_queue
   sqlite3 (>= 2.1)
+  standard (>= 1.35.1)
+  standard-rails
   still_active
   stimulus-rails
   tailwindcss-rails (~> 3.0)
@@ -893,13 +904,12 @@ CHECKSUMS
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
   reline (0.7.0) sha256=5b012d8e55dbf9d450f12bde2cf7d15ff546ae80b3f8f3b30e570d431815583d
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
-  rubocop (1.90.0) sha256=9eb4c065b5c5154e4ef554c547972f3905a9eb6b53e657e580b6796b54bf8242
+  rubocop (1.88.2) sha256=8def251c90cd955feb4daa3edc0ab56893250c4ce90ef81e6c80c03f9a939bbf
   rubocop-ast (1.50.0) sha256=b9ca88300da0803ee222ad20cdb30494c0a784eed06fdc35d254b06d662788db
   rubocop-minitest (0.40.0) sha256=353c698199115f12151144cf0b5a96f69bb9d77b660cf6536df2c4250c672a9d
-  rubocop-performance (1.27.0) sha256=eeeb1374d062a368ee1c787b70eb0b0cc4b184cb1f8565f424760946146d61ce
-  rubocop-rails (2.37.0) sha256=6e1645add5060e0328f8ddda0d820f55697c591394398bf14bb9dccb62f14b7e
-  rubocop-rails-omakase (1.1.0) sha256=2af73ac8ee5852de2919abbd2618af9c15c19b512c4cfc1f9a5d3b6ef009109d
-  rubocop-thread_safety (0.8.0) sha256=71fe5e7894fb9acfbd4c2dcd394feabc35bd690f75b0bc846e1504d9e31f9034
+  rubocop-performance (1.26.1) sha256=cd19b936ff196df85829d264b522fd4f98b6c89ad271fa52744a8c11b8f71834
+  rubocop-rails (2.34.3) sha256=10d37989024865ecda8199f311f3faca990143fbac967de943f88aca11eb9ad2
+  rubocop-thread_safety (0.7.3) sha256=067cdd52fbf5deffc18995437e45b5194236eaff4f71de3375a1f6052e48f431
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   ruby-vips (2.3.0) sha256=e685ec02c13969912debbd98019e50492e12989282da5f37d05f5471442f5374
   ruby_parser (3.22.0) sha256=1eb4937cd9eb220aa2d194e352a24dba90aef00751e24c8dfffdb14000f15d23
@@ -927,6 +937,10 @@ CHECKSUMS
   sqlite3 (2.9.6-x86_64-linux-gnu) sha256=613188ce02f614126ddbc38c5e217ccffd6306d0dcd9adca9764547aa890a634
   sqlite3 (2.9.6-x86_64-linux-musl) sha256=d493b11818a3573387a1d56e1ee8fa00da23a683a7a1cc063e7a0feeed843abf
   sshkit (1.25.1) sha256=be3f10b9d6eb0b44d5eaba3f7cbe41bc6bb894bce4339688ac20124391455b78
+  standard (1.56.0) sha256=ae2af4d9669589162ac69ed5ef59dcf9f346d4afc81f7e62b84339310dfcb787
+  standard-custom (1.0.2) sha256=424adc84179a074f1a2a309bb9cf7cd6bfdb2b6541f20c6bf9436c0ba22a652b
+  standard-performance (1.9.0) sha256=49483d31be448292951d80e5e67cdcb576c2502103c7b40aec6f1b6e9c88e3f2
+  standard-rails (1.6.0) sha256=8f1d19a402491901ee8148adb431682012838a73bb7d3b0e95aa339ea872497a
   still_active (3.1.0) sha256=3c90280499ab4384c2ba6683155efdd86a4586d63eb3bb75f1e3bb1392d11685
   stimulus-rails (1.3.4) sha256=765676ffa1f33af64ce026d26b48e8ffb2e0b94e0f50e9119e11d6107d67cb06
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1

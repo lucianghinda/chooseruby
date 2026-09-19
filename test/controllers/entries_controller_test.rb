@@ -38,7 +38,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
 
   # Test 3.1.3: POST create with RubyGem type creates Entry + RubyGem
   test "POST create with RubyGem type creates Entry and RubyGem" do
-    assert_difference([ "Entry.count", "RubyGem.count" ], 1) do
+    assert_difference(["Entry.count", "RubyGem.count"], 1) do
       post entries_path, params: {
         entry: {
           title: "RSpec Testing Framework",
@@ -62,7 +62,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
 
   # Test 3.1.4: POST create with Book type creates Entry + Book
   test "POST create with Book type creates Entry and Book" do
-    assert_difference([ "Entry.count", "Book.count" ], 1) do
+    assert_difference(["Entry.count", "Book.count"], 1) do
       post entries_path, params: {
         entry: {
           title: "The Well-Grounded Rubyist",
@@ -88,7 +88,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
 
   # Test 3.1.5: POST create with Community type creates Entry + Community
   test "POST create with Community type creates Entry and Community" do
-    assert_difference([ "Entry.count", "Community.count" ], 1) do
+    assert_difference(["Entry.count", "Community.count"], 1) do
       post entries_path, params: {
         entry: {
           title: "Ruby on Rails Link Slack",
@@ -163,7 +163,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
           resource_type: "RubyGem",
           submitter_email: "submitter@example.com",
           gem_name: "test-gem",
-          category_ids: [ category1.id, category2.id ]
+          category_ids: [category1.id, category2.id]
         }
       }
     end
@@ -189,7 +189,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
   # Test 1.1.2: GET /start filters only beginner-level entries
   test "GET start filters only beginner-level entries" do
     # Create test entries with different experience levels
-    beginner_entry = Entry.create!(
+    Entry.create!(
       title: "Rails for Beginners",
       url: "https://example.com/beginner",
       description: "Learn Rails basics",
@@ -199,7 +199,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
       submitter_email: "test@example.com"
     )
 
-    intermediate_entry = Entry.create!(
+    Entry.create!(
       title: "Advanced Rails Patterns",
       url: "https://example.com/intermediate",
       description: "Advanced concepts",
@@ -231,7 +231,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
       submitter_email: "test@example.com"
     )
 
-    get start_path, params: { q: "testing" }
+    get start_path, params: {q: "testing"}
 
     assert_response :success
     # Verify the query parameter is preserved in the view
@@ -254,7 +254,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     )
     entry.categories << category
 
-    get start_path, params: { category: "testing" }
+    get start_path, params: {category: "testing"}
 
     assert_response :success
   end
@@ -262,7 +262,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
   # Test 1.1.5: GET /start with search combines beginner filter + query filter
   test "GET start with search combines beginner filter and query filter" do
     # Create beginner entries with different content
-    beginner_testing = Entry.create!(
+    Entry.create!(
       title: "Rails Testing for Beginners",
       url: "https://example.com/testing",
       description: "Learn testing basics",
@@ -272,7 +272,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
       submitter_email: "test@example.com"
     )
 
-    beginner_other = Entry.create!(
+    Entry.create!(
       title: "Rails Routing for Beginners",
       url: "https://example.com/routing",
       description: "Learn routing basics",
@@ -283,7 +283,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     )
 
     # Intermediate entry about testing (should NOT appear)
-    intermediate_testing = Entry.create!(
+    Entry.create!(
       title: "Advanced Testing Patterns",
       url: "https://example.com/advanced-testing",
       description: "Advanced testing techniques",
@@ -293,7 +293,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
       submitter_email: "test@example.com"
     )
 
-    get start_path, params: { q: "testing" }
+    get start_path, params: {q: "testing"}
 
     assert_response :success
     # Should find beginner testing entry

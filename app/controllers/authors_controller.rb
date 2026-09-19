@@ -31,7 +31,7 @@ class AuthorsController < ApplicationController
     end
 
     # Use AuthorSearchQuery to search with FTS5
-    search_results = AuthorSearchQuery.new({ q: query }).call
+    search_results = AuthorSearchQuery.new({q: query}).call
 
     # Limit to 10 results for autocomplete
     authors = search_results.limit(10)

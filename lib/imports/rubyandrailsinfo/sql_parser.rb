@@ -66,7 +66,7 @@ module Imports
           next nil if values.nil? || values.length != columns.length
 
           # Create hash mapping column names to values
-          Hash[columns.zip(values)]
+          columns.zip(values).to_h
         end.compact
       end
 

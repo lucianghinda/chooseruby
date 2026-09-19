@@ -52,7 +52,7 @@ class DatabaseSchemaTest < ActiveSupport::TestCase
   test "entries table has polymorphic index on entryable_type and entryable_id" do
     indexes = ActiveRecord::Base.connection.indexes(:entries)
     polymorphic_index = indexes.find do |idx|
-      idx.columns == [ "entryable_type", "entryable_id" ]
+      idx.columns == ["entryable_type", "entryable_id"]
     end
 
     assert_not_nil polymorphic_index, "Polymorphic index on [entryable_type, entryable_id] should exist"
@@ -60,14 +60,14 @@ class DatabaseSchemaTest < ActiveSupport::TestCase
 
   test "slug has unique index on entries table" do
     indexes = ActiveRecord::Base.connection.indexes(:entries)
-    slug_index = indexes.find { |idx| idx.columns == [ "slug" ] && idx.unique }
+    slug_index = indexes.find { |idx| idx.columns == ["slug"] && idx.unique }
 
     assert_not_nil slug_index, "Unique index on slug should exist"
   end
 
   test "gem_name has unique index on ruby_gems table" do
     indexes = ActiveRecord::Base.connection.indexes(:ruby_gems)
-    gem_name_index = indexes.find { |idx| idx.columns == [ "gem_name" ] && idx.unique }
+    gem_name_index = indexes.find { |idx| idx.columns == ["gem_name"] && idx.unique }
 
     assert_not_nil gem_name_index, "Unique index on gem_name should exist"
   end

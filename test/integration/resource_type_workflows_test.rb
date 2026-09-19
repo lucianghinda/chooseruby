@@ -49,7 +49,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
     assert_select "h1", text: /Gems Directory/i
 
     # Step 2: Filter by category
-    get resource_type_path("gems"), params: { category: "testing-integration" }
+    get resource_type_path("gems"), params: {category: "testing-integration"}
 
     assert_response :success
     # Should show only gems in testing category (25 on page 1)
@@ -58,7 +58,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
     assert_select ".bg-slate-900", text: "Testing Integration"
 
     # Step 3: Navigate to page 2
-    get resource_type_path("gems"), params: { category: "testing-integration", page: 2 }
+    get resource_type_path("gems"), params: {category: "testing-integration", page: 2}
 
     assert_response :success
     # Should show remaining 5 entries
@@ -103,7 +103,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", text: /Gems Directory/i
     assert_select "article", text: /Test Gem/i
-    assert_select "article", { text: /Test Book/i, count: 0 }
+    assert_select "article", {text: /Test Book/i, count: 0}
   end
 
   # Task 7.3.3: Test - Entry type scopes work with strict_loading
@@ -131,7 +131,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       entries.each do |e|
         e.categories.to_a
         e.authors.to_a
-        e.entryable.gem_name if e.entryable.present?
+        e.entryable.presence&.gem_name
       end
     end
 
@@ -149,7 +149,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # 1. RubyGem
     gem = RubyGem.create!(gem_name: "metadata-gem")
-    gem_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Gem",
       url: "https://example.com/gem",
       entryable: gem,
@@ -163,7 +163,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       publisher: "O'Reilly",
       format: "ebook"
     )
-    book_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Book",
       url: "https://example.com/book",
       entryable: book,
@@ -177,7 +177,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       instructor: "Test Instructor",
       duration_hours: 10
     )
-    course_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Course",
       url: "https://example.com/course",
       entryable: course,
@@ -191,7 +191,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       publication_date: Date.new(2023, 6, 1),
       reading_time_minutes: 30
     )
-    tutorial_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Tutorial",
       url: "https://example.com/tutorial",
       entryable: tutorial,
@@ -205,7 +205,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       publication_date: Date.new(2023, 7, 1),
       reading_time_minutes: 15
     )
-    article_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Article",
       url: "https://example.com/article",
       entryable: article,
@@ -215,7 +215,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # 6. Tool
     tool = Tool.create!(tool_type: "CLI")
-    tool_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Tool",
       url: "https://example.com/tool",
       entryable: tool,
@@ -225,7 +225,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     # 7. Podcast
     podcast = Podcast.create!(host: "Test Host")
-    podcast_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Podcast",
       url: "https://example.com/podcast",
       entryable: podcast,
@@ -238,7 +238,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       platform: "Discord",
       join_url: "https://discord.gg/test"
     )
-    community_entry = Entry.create!(
+    Entry.create!(
       title: "Metadata Community",
       url: "https://example.com/community",
       entryable: community,
@@ -374,8 +374,8 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
     assert_response :success
     # Should ONLY show entry1 (beginner gem in testing category matching "rspec")
     assert_select "h3", text: "RSpec Rails"
-    assert_select "h3", { text: "Minitest", count: 0 } # Wrong level
-    assert_select "h3", { text: "RSpec Book", count: 0 } # Wrong type
+    assert_select "h3", {text: "Minitest", count: 0} # Wrong level
+    assert_select "h3", {text: "RSpec Book", count: 0} # Wrong type
   end
 
   # Task 7.3.7: Test - homepage sections only load recent entries efficiently
@@ -391,7 +391,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       updated_at: 3.days.ago
     )
 
-    [ 1, 2, 3, 4, 5 ].each do |i|
+    [1, 2, 3, 4, 5].each do |i|
       gem = RubyGem.create!(gem_name: "recent-gem-#{i}")
       Entry.create!(
         title: "Recent Gem #{i}",
@@ -461,7 +461,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
     entry.categories << testing_cat
 
     # Initial search query
-    get resource_type_path("gems"), params: { q: "search" }
+    get resource_type_path("gems"), params: {q: "search"}
 
     assert_response :success
     assert_select "input[value='search']"
@@ -519,9 +519,9 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h3", text: "Visible Gem"
-    assert_select "h3", { text: "Unpublished Gem", count: 0 }
-    assert_select "h3", { text: "Pending Gem", count: 0 }
-    assert_select "h3", { text: "Rejected Gem", count: 0 }
+    assert_select "h3", {text: "Unpublished Gem", count: 0}
+    assert_select "h3", {text: "Pending Gem", count: 0}
+    assert_select "h3", {text: "Rejected Gem", count: 0}
 
     # Verify via scope query
     gems = Entry.gems.visible

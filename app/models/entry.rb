@@ -147,30 +147,30 @@ class Entry < ApplicationRecord
   }.freeze
 
   # Enums
-  enum :experience_level, { beginner: 0, intermediate: 1, advanced: 2, all_levels: 3 }
-  enum :status, { pending: 0, approved: 1, rejected: 2 }, default: :pending
+  enum :experience_level, {beginner: 0, intermediate: 1, advanced: 2, all_levels: 3}
+  enum :status, {pending: 0, approved: 1, rejected: 2}, default: :pending
 
   # Validations
-  validates :title, presence: true, length: { minimum: 2, maximum: 200 }
+  validates :title, presence: true, length: {minimum: 2, maximum: 200}
   validates :url, presence: true,
-                  format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                           message: "must be a valid URL starting with http:// or https://" }
-  validates :image_url, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                                  message: "must be a valid URL starting with http:// or https://" },
-                        allow_blank: true
+    format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+             message: "must be a valid URL starting with http:// or https://"}
+  validates :image_url, format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+                                 message: "must be a valid URL starting with http:// or https://"},
+    allow_blank: true
   validates :slug, presence: true, uniqueness: true
 
   # Submitter validations for community submissions
   validates :submitter_email, presence: true, if: :pending?
-  validates :submitter_email, format: { with: URI::MailTo::EMAIL_REGEXP,
-                                       message: "must be a valid email address" },
-                              allow_blank: true
+  validates :submitter_email, format: {with: URI::MailTo::EMAIL_REGEXP,
+                                       message: "must be a valid email address"},
+    allow_blank: true
 
   sluggable_from :title
 
+  after_destroy :remove_from_fts
   # Callbacks
   after_save :sync_to_fts, if: :should_sync_fts?
-  after_destroy :remove_from_fts
 
   # Scopes
   scope :published, -> { where(published: true) }
@@ -185,7 +185,7 @@ class Entry < ApplicationRecord
   # as a silent N+1. Was copy-pasted 3 times across Entry::RelatedResources
   # and ResourcesController - see docs/llms/development.md's over-engineering pass.
   scope :with_card_includes, -> {
-    strict_loading.includes(:categories, :rich_text_description, :entryable, { image_attachment: :blob }, authors: { avatar_attachment: :blob })
+    strict_loading.includes(:categories, :rich_text_description, :entryable, {image_attachment: :blob}, authors: {avatar_attachment: :blob})
   }
 
   # Task 2.5: Featured scope - returns entries with featured_at set, ordered by most recent
@@ -250,7 +250,7 @@ class Entry < ApplicationRecord
   def primary_category
     categories
       .joins(:categories_entries)
-      .where(categories_entries: { entry_id: id, is_primary: true })
+      .where(categories_entries: {entry_id: id, is_primary: true})
       .first || categories.first
   end
 
@@ -287,9 +287,9 @@ class Entry < ApplicationRecord
   # Note: For ActionText (description), we check if the rich_text_description association was previously changed
   def should_sync_fts?
     saved_change_to_title? ||
-    saved_change_to_tags? ||
-    previously_new_record? ||
-    description_was_changed?
+      saved_change_to_tags? ||
+      previously_new_record? ||
+      description_was_changed?
   end
 
   # Check if ActionText description was changed during this save

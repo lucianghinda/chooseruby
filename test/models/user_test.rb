@@ -87,7 +87,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "should destroy dependent sessions when user is destroyed" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
-    session = user.sessions.create!(token: SecureRandom.urlsafe_base64(32), last_active_at: Time.current)
+    user.sessions.create!(token: SecureRandom.urlsafe_base64(32), last_active_at: Time.current)
 
     assert_difference "Session.count", -1 do
       user.destroy
@@ -96,7 +96,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "should destroy dependent bans when user is destroyed" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
-    ban = user.bans.create!(reason: "Test ban")
+    user.bans.create!(reason: "Test ban")
 
     assert_difference "Ban.count", -1 do
       user.destroy

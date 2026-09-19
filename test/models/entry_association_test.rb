@@ -99,11 +99,11 @@ class EntryAssociationTest < ActiveSupport::TestCase
       title: "Test Entry",
       url: "https://example.com",
       status: :approved,
-      tags: [ "ruby", "testing", "rspec" ]
+      tags: ["ruby", "testing", "rspec"]
     )
 
     entry.reload
 
-    assert_equal [ "ruby", "testing", "rspec" ], entry.tags
+    assert_equal ["ruby", "testing", "rspec"], entry.tags
   end
 end
