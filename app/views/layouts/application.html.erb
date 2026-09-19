@@ -16,9 +16,6 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
@@ -103,7 +100,7 @@
             <%= link_to "Community", communities_path, class: "transition hover:text-rose-500" %>
           </nav>
           <div class="hidden items-center gap-3 md:flex">
-            <%= link_to "Log in", "#", class: "text-sm font-semibold text-slate-600 transition hover:text-rose-500" %>
+            <%= link_to "Log in", new_session_path, class: "text-sm font-semibold text-slate-600 transition hover:text-rose-500" %>
             <%= link_to "Submit resource", new_resource_submission_path, class: "inline-flex items-center rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
           </div>
           <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 shadow-sm md:hidden" aria-label="Toggle navigation" data-mobile-nav-target="toggle" data-action="click->mobile-nav#toggle">
@@ -147,7 +144,7 @@
           </nav>
           <div class="mt-8 grid gap-3">
             <%= link_to "Submit resource", new_resource_submission_path, class: "inline-flex items-center justify-center rounded-2xl bg-rose-500 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400", data: { action: "click->mobile-nav#close" } %>
-            <%= link_to "Log in", "#", class: "inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700", data: { action: "click->mobile-nav#close" } %>
+            <%= link_to "Log in", new_session_path, class: "inline-flex items-center justify-center rounded-2xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700", data: { action: "click->mobile-nav#close" } %>
           </div>
         </div>
       </header>

@@ -1,12 +1,12 @@
 <%# locals: (entry:) %>
-<%# Book hero section with cover image and details %>
-<%# Image dimensions: 1200x630px (landscape format) %>
+<!-- Book hero section with cover image and details -->
+<!-- Image dimensions: 1200x630px (landscape format) -->
 
 <% book = entry.entryable %>
 
 <section class="rounded-3xl bg-white shadow-sm ring-1 ring-slate-100 overflow-hidden">
-  <%# Book Cover Image - Full width, landscape format %>
-  <%# Using a subtle gradient background that works with any image %>
+  <!-- Book Cover Image - Full width, landscape format -->
+  <!-- Using a subtle gradient background that works with any image -->
   <div class="relative overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100">
     <% if entry.image.attached? || entry.image_url.present? %>
       <div class="p-6 sm:p-8 md:p-10 aspect-[1200/630]">
@@ -17,7 +17,7 @@
         <% end %>
       </div>
     <% else %>
-      <%# Placeholder when no image %>
+      <!-- Placeholder when no image -->
       <div class="flex flex-col items-center justify-center text-slate-400 aspect-[1200/630]">
         <span class="text-8xl mb-4">📚</span>
         <span class="text-xl font-semibold text-slate-500 text-center px-4"><%= truncate(entry.title, length: 40) %></span>
@@ -25,9 +25,9 @@
     <% end %>
   </div>
 
-  <%# Book Details %>
+  <!-- Book Details -->
   <div class="p-8 sm:p-12">
-      <%# Categories %>
+      <!-- Categories -->
       <% if entry.categories.any? %>
         <div class="flex flex-wrap gap-2 mb-4">
           <% primary_category = entry.primary_category %>
@@ -48,12 +48,12 @@
         </div>
       <% end %>
 
-      <%# Title %>
+      <!-- Title -->
       <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900 mb-4">
         <%= entry.title %>
       </h1>
 
-      <%# Authors %>
+      <!-- Authors -->
       <% if entry.authors.any? %>
         <p class="text-lg text-slate-600 mb-6">
           by
@@ -63,7 +63,7 @@
         </p>
       <% end %>
 
-      <%# Metadata Chips %>
+      <!-- Metadata Chips -->
       <div class="flex flex-wrap gap-3 mb-8">
         <% if book.page_count.present? %>
           <div class="bg-slate-50 px-4 py-2.5 rounded-xl">
@@ -101,7 +101,7 @@
         <% end %>
       </div>
 
-      <%# CTA Button %>
+      <!-- CTA Button -->
       <div class="flex flex-wrap gap-4">
         <% if book.purchase_url.present? %>
           <%= link_to book.purchase_url, target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-rose-500/25 hover:bg-rose-400 hover:shadow-rose-400/30 transition-all duration-200" do %>

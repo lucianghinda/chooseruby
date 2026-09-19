@@ -46,7 +46,7 @@ class EntriesController < ApplicationController
       .order(updated_at: :desc)
       .limit(5)
 
-    render partial: "entries/suggestions"
+    render partial: "entries/suggestions", locals: {entries: @entries, categories: @categories, types: @types, popular_queries: @popular_queries}
   end
 
   def new
@@ -183,31 +183,34 @@ class EntriesController < ApplicationController
     )
   end
 
-  # Which of all_permitted_params belongs to each entryable type. One data
-  # structure instead of a case statement plus one near-identical *_params
-  # method per type - see docs/llms/development.md's over-engineering pass.
-  # Extending to the other 11 delegated types Entry supports (see
-  # Entry::VALID_TYPES) is just adding entries here.
+  # Which class and fields each entryable type maps to. One data structure
+  # instead of a case statement plus one near-identical *_params method per
+  # type - see docs/llms/development.md's over-engineering pass. The classes
+  # are real constants here (not `resource_type.constantize`, which Brakeman
+  # flags as unsafe reflection on request params - rightly, since a class
+  # name alone doesn't prove it's meant to be entryable). Extending to the
+  # other 11 delegated types Entry supports (see Entry::VALID_TYPES) is just
+  # adding entries here.
   ENTRYABLE_ATTRIBUTES = {
-    "RubyGem" => %i[gem_name github_url documentation_url rubygems_url current_version downloads_count],
-    "Book" => %i[isbn publisher publication_year page_count format purchase_url],
-    "Course" => %i[platform instructor duration_hours currency is_free enrollment_url],
-    "Tutorial" => %i[reading_time_minutes publication_date author_name platform],
-    "Article" => %i[reading_time_minutes publication_date author_name platform],
-    "Tool" => %i[tool_type github_url documentation_url license is_open_source],
-    "Podcast" => %i[host episode_count frequency rss_feed_url spotify_url apple_podcasts_url],
-    "Community" => %i[platform join_url member_count is_official]
+    "RubyGem" => [RubyGem, %i[gem_name github_url documentation_url rubygems_url current_version downloads_count]],
+    "Book" => [Book, %i[isbn publisher publication_year page_count format purchase_url]],
+    "Course" => [Course, %i[platform instructor duration_hours currency is_free enrollment_url]],
+    "Tutorial" => [Tutorial, %i[reading_time_minutes publication_date author_name platform]],
+    "Article" => [Article, %i[reading_time_minutes publication_date author_name platform]],
+    "Tool" => [Tool, %i[tool_type github_url documentation_url license is_open_source]],
+    "Podcast" => [Podcast, %i[host episode_count frequency rss_feed_url spotify_url apple_podcasts_url]],
+    "Community" => [Community, %i[platform join_url member_count is_official]]
   }.freeze
 
   def build_entryable
     resource_type = params.dig(:entry, :resource_type)
-    attributes = ENTRYABLE_ATTRIBUTES[resource_type]
-    raise ArgumentError, "Unknown resource type: #{resource_type}" unless attributes
+    klass, attributes = ENTRYABLE_ATTRIBUTES[resource_type]
+    raise ArgumentError, "Unknown resource type: #{resource_type}" unless klass
 
     entryable_attributes = all_permitted_params.slice(*attributes)
     entryable_attributes.merge!(course_price_cents) if resource_type == "Course"
 
-    resource_type.constantize.new(entryable_attributes)
+    klass.new(entryable_attributes)
   end
 
   # Course is the only type with a unit conversion (dollars -> cents), so it

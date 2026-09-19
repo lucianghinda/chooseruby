@@ -1,5 +1,5 @@
 <%# locals: (entry:) %>
-<%# Enhanced author section for books %>
+<!-- Enhanced author section for books -->
 
 <% if entry.authors.any? %>
   <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
@@ -10,7 +10,7 @@
     <div class="space-y-8">
       <% entry.authors.each do |author| %>
         <div class="flex flex-col sm:flex-row items-start gap-6">
-          <%# Author Avatar - larger size %>
+          <!-- Author Avatar - larger size -->
           <div class="flex-shrink-0">
             <% if author.avatar.attached? %>
               <%= image_tag author.avatar, alt: author.name, class: "w-24 h-24 rounded-2xl object-cover shadow-lg ring-4 ring-slate-100" %>
@@ -23,28 +23,28 @@
             <% end %>
           </div>
 
-          <%# Author Info %>
+          <!-- Author Info -->
           <div class="flex-1">
-            <%# Name %>
+            <!-- Name -->
             <h3 class="text-xl font-semibold text-slate-900 mb-2">
               <%= link_to author.name, author_path(author.slug), class: "hover:text-rose-500 transition-colors" %>
             </h3>
 
-            <%# Bio %>
+            <!-- Bio -->
             <% if author.bio.present? %>
               <p class="text-slate-600 leading-relaxed mb-4">
                 <%= author.bio %>
               </p>
             <% end %>
 
-            <%# Social Links %>
+            <!-- Social Links -->
             <% social_links = author_social_links(author) %>
             <% if social_links.any? %>
               <div class="flex flex-wrap gap-2">
                 <% social_links.each do |link| %>
                   <%= link_to link[:url], target: "_blank", rel: "noopener noreferrer", title: link[:name], class: "inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 text-slate-500 hover:bg-rose-50 hover:text-rose-500 transition-colors" do %>
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="<%= link[:icon_path] %>"/>
+                      <path d="<%= link[:icon_path] %>" />
                     </svg>
                     <span class="sr-only"><%= link[:name] %></span>
                   <% end %>
@@ -54,7 +54,7 @@
           </div>
         </div>
 
-        <%# Divider between authors (except last) %>
+        <!-- Divider between authors (except last) -->
         <% unless author == entry.authors.last %>
           <hr class="border-slate-100">
         <% end %>

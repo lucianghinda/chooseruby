@@ -1,3 +1,4 @@
+<%# locals: (base_path:, query:, active_level:, active_category:, active_sort:) %>
 <% base_params = params.permit(:q, :level, :category, :sort).to_h.symbolize_keys %>
 <% build_url = ->(overrides = {}) do
   merged = base_params.merge(overrides)
@@ -7,20 +8,20 @@
 end %>
 
 <% chips = [] %>
-<% if @query.present? %>
-  <% chips << { label: "Search: “#{@query}”", url: build_url.call(q: nil) } %>
+<% if query.present? %>
+  <% chips << { label: "Search: “#{query}”", url: build_url.call(q: nil) } %>
 <% end %>
 
-<% if @active_level.present? %>
-  <% chips << { label: "Level: #{@active_level.titleize}", url: build_url.call(level: nil) } %>
+<% if active_level.present? %>
+  <% chips << { label: "Level: #{active_level.titleize}", url: build_url.call(level: nil) } %>
 <% end %>
 
-<% if @active_category.present? %>
-  <% chips << { label: "Category: #{@active_category.name}", url: build_url.call(category: nil) } %>
+<% if active_category.present? %>
+  <% chips << { label: "Category: #{active_category.name}", url: build_url.call(category: nil) } %>
 <% end %>
 
-<% if @active_sort.present? && @active_sort != "recent" %>
-  <% chips << { label: "Sort: #{@active_sort.humanize}", url: build_url.call(sort: nil) } %>
+<% if active_sort.present? && active_sort != "recent" %>
+  <% chips << { label: "Sort: #{active_sort.humanize}", url: build_url.call(sort: nil) } %>
 <% end %>
 
 <% if chips.any? %>

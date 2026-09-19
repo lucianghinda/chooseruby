@@ -1,19 +1,19 @@
 <%# locals: (entry:) %>
-<%# Book description section %>
+<!-- Book description section -->
 
 <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
   <h2 class="text-2xl font-semibold tracking-tight text-slate-900 mb-6">About This Book</h2>
 
-  <%# Rich text description %>
+  <!-- Rich text description -->
   <div class="prose prose-slate prose-lg max-w-none">
     <%= entry.description %>
   </div>
 
-  <%# Tags and Experience Level %>
+  <!-- Tags and Experience Level -->
   <% if entry.tags.present? || entry.experience_level.present? %>
     <div class="mt-8 pt-8 border-t border-slate-100">
       <div class="flex flex-wrap items-center gap-4">
-        <%# Experience Level Badge %>
+        <!-- Experience Level Badge -->
         <% if entry.experience_level.present? %>
           <div class="flex items-center gap-2">
             <span class="text-sm text-slate-500">Skill level:</span>
@@ -24,7 +24,7 @@
           </div>
         <% end %>
 
-        <%# Tags %>
+        <!-- Tags -->
         <% if entry.tags.present? && entry.tags.any? %>
           <div class="flex items-center gap-2 flex-wrap">
             <span class="text-sm text-slate-500">Topics:</span>

@@ -60,7 +60,7 @@ fast ones (Standard, Reek, Herb) against staged files only.
 |---|---|---|---|
 | Standard (+ standard-rails, rubocop-minitest/thread_safety via `.standard_ext.yml`) | `bin/standardrb` | Style | Clean. Replaced rubocop-rails-omakase - see `docs/llms/dependency_selection.md` for why |
 | Reek | `bin/reek app` | Code smells | Clean for `app/models`; not yet run on the rest of `app/` - see AGENTS.md |
-| Herb | `bin/herb-lint` | ERB/HTML template lint | Not yet clean - 113 offenses as of this writing |
+| Herb | `bin/herb-lint` | ERB/HTML template lint | Clean at `error` level (its `fail_level`). ~50 `warning`/`hint`-level items remain (accessibility nits, class-interpolation style, a duplicate-branch-markup refactor suggestion) - non-blocking by the tool's own severity model, left as backlog |
 | ArchSpec | `bundle exec archspec check` | Component boundaries, declared in `Archspec.rb` | Clean against `archspec_todo.yml`; burn that list down, don't add to it |
 | Brakeman | `bin/brakeman` | Security | Clean |
 | bundler-audit / importmap audit | `bin/bundler-audit`, `bin/importmap audit` | Known CVEs in deps | Clean |
@@ -129,8 +129,49 @@ throughout):
   bespoke per-type help text and a description string, so a shared base
   trades ~15 duplicated lines/file for a parameterized one - not obviously
   a win. Worth a second look if a 12th type shows up in the same shape.
-- `bin/flay app` also flags several `.html.erb` view-level duplications
-  (repeated `if` blocks across `entries/index`, `entries/start`, and
-  `resource_types/show`; repeated attribute assignments in
-  `home/index.html.erb`) - left for the Herb/view cleanup pass, since fixing
-  those means touching the same templates Herb's 112 offenses are already in.
+- `bin/flay app` also flags several `.html.erb` view-level duplications: a
+  repeated `<p>`-pair markup shape across `entries/index`,`entries/start`,
+  `resource_types/show`, and `authors/index` (matches Herb's own
+  `erb-no-duplicate-branch-elements` hint on the same 4 files - see below),
+  and the 19 near-identical `render "home/type_section", type: "...", ...`
+  calls in `home/index.html.erb` (one per delegated type - the view-layer
+  version of the `EntriesController` `*_params` duplication already fixed;
+  same "not obviously worth a shared abstraction over 19 lines of plain
+  data" call as the Avo resources above).
+
+## Herb pass
+
+Getting `bin/herb-lint` to `error`-level clean (112 -> 0 offenses at its
+`fail_level`) surfaced two confirmed herb-embedded 0.10.3.0 bugs and two real
+application bugs, alongside plain template cleanup:
+
+- **Confirmed herb-embedded bugs** (worked around, not silenced - see
+  `.herb.yml`'s comment): `erb-no-unused-expressions`/`erb-no-unused-literals`
+  false-positive on plain `<%# some words %>` comments in several contexts
+  (reproduced with a one-line `<%# Hero Section %>` repro, and again on a
+  `locals: (foo:, bar: nil)` strict-locals declaration with a default value).
+  Per-rule disabling via `.herb.yml`'s documented `rules: { name: { enabled:
+  false } }` schema is also broken - `Config#enabled_rule_names` exists but
+  is never called from `cli.rb`/`runner.rb`. Worked around by rewording/
+  converting the flagged comments to HTML comments and dropping default
+  values from the one affected `locals:` declaration - worth reporting
+  upstream.
+- **Real bugs found via the `erb-no-instance-variables-in-partials` rule**:
+  `entries/_filter_chips.html.erb` and `entries/_suggestions.html.erb` read
+  `@query`/`@active_level`/etc. and `@entries`/`@categories`/etc. directly
+  (21 offenses total) - converted both to explicit `locals:` (with a strict
+  `<%# locals: (...) %>` declaration, matching the `_book_*.html.erb`
+  partials' existing convention) and updated their 3 render call sites.
+- **Two unrelated real bugs surfaced by fixing the above and by the
+  `html-anchor-require-href` rule**: the header's "Log in" links pointed at
+  `"#"` instead of the already-existing `new_session_path` route - fixed.
+  `home/_type_section.html.erb`'s `<section class="..." data: section_data>`
+  isn't valid ERB (this app doesn't use `Herb::Engine`, just plain Erubi) -
+  `data: section_data` rendered as a literal, useless HTML attribute, so the
+  Stimulus `data-type-sections-toggle-target` attribute the JS controller
+  needs was never actually applied. Fixed with `<%= tag.section class: "...",
+  data: section_data do %>`.
+- Also removed a dead, permanently-commented-out PWA manifest `<link>` in
+  `application.html.erb` (routes.rb was never updated to match) rather than
+  keep carrying inert scaffolding - add it back properly (both lines, plus
+  the route) if PWA support is actually wanted.
