@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Runs bin/kamal with the variables from .env loaded.
+# Kamal 2 does not load .env, and config/deploy.yml reads APP_HOST and
+# DEPLOY_HOST from the environment.
+#
+# Values never leave this process: nothing is printed and nothing is written.
+# .env is gitignored; this file holds no secrets and is safe to commit.
+#
+# Env file: .env.production if it exists, else .env. ENV_FILE overrides both.
+#
+# Usage: bin/kamal-env <kamal args>          e.g. bin/kamal-env app details
+#        ENV_FILE=.env bin/kamal-env app details
+
+require "open3"
+
+root = File.expand_path("..", __dir__)
+default = %w[.env.production .env].find { |name| File.file?(File.join(root, name)) }
+env_file = File.expand_path(ENV.fetch("ENV_FILE") { default || ".env.production" }, root)
+abort "kamal-env: #{env_file} not found" unless File.file?(env_file)
+warn "kamal-env: using #{File.basename(env_file)}"
+
+# Let bash read the file, so quoting and expansion behave like `source .env`.
+out, status = Open3.capture2(
+  "bash", "-c", 'set -a; . "$1" >/dev/null; set +a; env -0', "kamal-env", env_file
+)
+abort "kamal-env: could not load #{File.basename(env_file)}" unless status.success?
+
+loaded = out.split("\0").to_h { |pair| pair.split("=", 2) }
+ENV.update(loaded)
+
+abort "kamal-env: APP_HOST is not set in #{File.basename(env_file)}" if ENV["APP_HOST"].to_s.empty?
+warn "kamal-env: DEPLOY_HOST not set, Kamal will SSH to APP_HOST" if ENV["DEPLOY_HOST"].to_s.empty?
+
+Dir.chdir(root)
+exec(File.join(root, "bin/kamal"), *ARGV)
