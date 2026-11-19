@@ -85,7 +85,7 @@ This will not be public but only used by me to review submissions or update exis
 
 ### Prerequisites
 
-- Ruby 4.0.1
+- Ruby 4.0.10
 - Rails 8.2.0.alpha
 - SQLite 3
 
