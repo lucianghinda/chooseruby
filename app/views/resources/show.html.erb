@@ -1,30 +1,30 @@
-<% content_for :title, "#{@entry.title} | ChooseRuby Resources" %>
+<% content_for :title, "#{entry.title} | ChooseRuby Resources" %>
 
 <% content_for :meta_description do %>
-  <%= truncate(@entry.description.to_plain_text, length: 160) %>
+  <%= truncate(entry.description.to_plain_text, length: 160) %>
 <% end %>
 
 <% content_for :head do %>
   <%# Open Graph tags %>
-  <meta property="og:title" content="<%= @entry.title %>" />
-  <meta property="og:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>" />
+  <meta property="og:title" content="<%= entry.title %>" />
+  <meta property="og:description" content="<%= truncate(entry.description.to_plain_text, length: 160) %>" />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="<%= request.original_url %>" />
   <meta property="og:site_name" content="ChooseRuby" />
-  <% if @entry.image.attached? %>
-    <meta property="og:image" content="<%= url_for(@entry.image) %>" />
-  <% elsif @entry.image_url.present? %>
-    <meta property="og:image" content="<%= @entry.image_url %>" />
+  <% if entry.image.attached? %>
+    <meta property="og:image" content="<%= url_for(entry.image) %>" />
+  <% elsif entry.image_url.present? %>
+    <meta property="og:image" content="<%= entry.image_url %>" />
   <% end %>
 
   <%# Twitter Card tags %>
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="<%= @entry.title %>" />
-  <meta name="twitter:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>" />
-  <% if @entry.image.attached? %>
-    <meta name="twitter:image" content="<%= url_for(@entry.image) %>" />
-  <% elsif @entry.image_url.present? %>
-    <meta name="twitter:image" content="<%= @entry.image_url %>" />
+  <meta name="twitter:title" content="<%= entry.title %>" />
+  <meta name="twitter:description" content="<%= truncate(entry.description.to_plain_text, length: 160) %>" />
+  <% if entry.image.attached? %>
+    <meta name="twitter:image" content="<%= url_for(entry.image) %>" />
+  <% elsif entry.image_url.present? %>
+    <meta name="twitter:image" content="<%= entry.image_url %>" />
   <% end %>
 <% end %>
 
@@ -35,18 +35,18 @@
       { text: "Home", url: root_path },
       { text: "Resources", url: entries_path }
     ]
-    if @entry.type_slug.present?
-      breadcrumb_items << { text: type_name(@entry.type_slug), url: entries_path(type: @entry.type_slug) }
+    if entry.type_slug.present?
+      breadcrumb_items << { text: type_name(entry.type_slug), url: entries_path(type: entry.type_slug) }
     end
-    breadcrumb_items << { text: @entry.title, url: nil }
+    breadcrumb_items << { text: entry.title, url: nil }
   %>
   <%= breadcrumbs(breadcrumb_items) %>
 
-  <% if @entry.book? %>
+  <% if entry.book? %>
     <%# Enhanced Book Layout %>
-    <%= render "entries/book_hero", entry: @entry %>
-    <%= render "entries/book_description", entry: @entry %>
-    <%= render "entries/book_author", entry: @entry %>
+    <%= render "entries/book_hero", entry: entry %>
+    <%= render "entries/book_description", entry: entry %>
+    <%= render "entries/book_author", entry: entry %>
   <% else %>
     <%# Generic Layout for other entry types %>
     <!-- Main Content Section -->
@@ -54,14 +54,14 @@
       <div class="space-y-6">
         <!-- Entry Title (linked to external URL) -->
         <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-          <%= link_to @entry.title, @entry.url, target: "_blank", rel: "noopener noreferrer", class: "hover:text-rose-500 transition-colors" %>
+          <%= link_to entry.title, entry.url, target: "_blank", rel: "noopener noreferrer", class: "hover:text-rose-500 transition-colors" %>
         </h1>
 
         <!-- Categories -->
-        <% if @entry.categories.any? %>
+        <% if entry.categories.any? %>
           <div class="category-badges flex flex-wrap gap-2">
-            <% primary_category = @entry.primary_category %>
-            <% remaining_categories = @entry.categories.reject { |c| c.id == primary_category&.id } %>
+            <% primary_category = entry.primary_category %>
+            <% remaining_categories = entry.categories.reject { |c| c.id == primary_category&.id } %>
 
             <%# Display primary category first with rose-500 background %>
             <% if primary_category %>
@@ -82,35 +82,35 @@
 
         <!-- Full ActionText Description -->
         <div class="prose prose-slate max-w-none">
-          <%= @entry.description %>
+          <%= entry.description %>
         </div>
 
         <!-- Metadata: Experience Level, Resource Type, Date -->
         <div class="flex flex-wrap items-center gap-4 text-sm">
           <!-- Experience Level Badge -->
-          <% if @entry.experience_level.present? %>
+          <% if entry.experience_level.present? %>
             <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-              <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(@entry.experience_level) %>"></span>
-              <%= @entry.experience_level.capitalize %>
+              <span class="h-2 w-2 rounded-full <%= experience_level_badge_color(entry.experience_level) %>"></span>
+              <%= entry.experience_level.capitalize %>
             </span>
           <% end %>
 
           <!-- Resource Type Badge -->
-          <% if @entry.entryable_type.present? %>
+          <% if entry.entryable_type.present? %>
             <span class="inline-flex items-center rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-600">
-              <%= @entry.entryable_type.titleize %>
+              <%= entry.entryable_type.titleize %>
             </span>
           <% end %>
 
           <!-- Created Date -->
           <span class="text-slate-500">
-            <%= @entry.created_at.strftime("Added on %B %-d, %Y") %>
+            <%= entry.created_at.strftime("Added on %B %-d, %Y") %>
           </span>
         </div>
 
         <!-- Visit Resource CTA Button -->
         <div class="pt-4">
-          <%= link_to @entry.url, target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" do %>
+          <%= link_to entry.url, target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" do %>
             Visit Resource
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -121,13 +121,13 @@
     </section>
 
     <!-- Author Information Section -->
-    <% if @entry.authors.any? %>
+    <% if entry.authors.any? %>
       <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
         <h2 class="mb-6 text-xl font-semibold text-slate-900">
-          <%= @entry.authors.size > 1 ? "Authors" : "Author" %>
+          <%= entry.authors.size > 1 ? "Authors" : "Author" %>
         </h2>
         <div class="flex flex-wrap gap-6">
-          <% @entry.authors.each do |author| %>
+          <% entry.authors.each do |author| %>
             <div class="flex items-center gap-4">
               <!-- Author Avatar -->
               <div class="h-12 w-12 flex-shrink-0">
@@ -153,7 +153,7 @@
     <% end %>
   <% end %>
 
-  <% if @author_resources.any? %>
+  <% if author_resources.any? %>
     <section class="space-y-6">
       <div class="space-y-2">
         <h2 class="text-2xl font-semibold text-slate-900">Other resources by the same author</h2>
@@ -161,14 +161,14 @@
       </div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <% @author_resources.each do |entry| %>
+        <% author_resources.each do |entry| %>
           <%= render "related_entry_card", entry: entry %>
         <% end %>
       </div>
     </section>
   <% end %>
 
-  <% if @related_resources.any? %>
+  <% if related_resources.any? %>
     <section class="space-y-6">
       <div class="space-y-2">
         <h2 class="text-2xl font-semibold text-slate-900">Related resources</h2>
@@ -176,7 +176,7 @@
       </div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <% @related_resources.each do |entry| %>
+        <% related_resources.each do |entry| %>
           <%= render "related_entry_card", entry: entry %>
         <% end %>
       </div>

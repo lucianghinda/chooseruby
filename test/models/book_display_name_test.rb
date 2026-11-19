@@ -3,6 +3,8 @@
 require "test_helper"
 
 class BookDisplayNameTest < ActiveSupport::TestCase
+  cover "Book#display_name"
+
   test "display_name returns entry title when entry exists" do
     book = Book.create!(publisher: "Test Publisher")
     entry = Entry.create!(

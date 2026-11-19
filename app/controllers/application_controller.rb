@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Shares request authentication, authorization, and curated navigation data.
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -9,8 +10,8 @@ class ApplicationController < ActionController::Base
 
   # Authentication and authorization
   include SetCurrentRequest
-  include BlockBannedRequests
   include Authentication
+  include BlockBannedRequests
   include Authorization
 
   helper_method :curated_collections_data, :experience_tracks_data

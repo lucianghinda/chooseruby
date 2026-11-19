@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Records request metadata for the current request context.
 module SetCurrentRequest
   extend ActiveSupport::Concern
 

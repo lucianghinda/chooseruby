@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Makes the selected entries publicly visible.
 class Avo::Actions::PublishEntries < Avo::BaseAction
   self.name = "Publish Resources"
   self.message = "Are you sure you want to publish the selected resources?"
@@ -7,11 +8,22 @@ class Avo::Actions::PublishEntries < Avo::BaseAction
   self.cancel_button_label = "Cancel"
   self.no_confirmation = false
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |resource|
-      resource.update(published: true)
-    end
+  def handle(records:, **)
+    @entries = records
+    publish_entries
+    report_count
+  end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} published successfully!"
+  private
+
+  attr_reader :entries
+
+  def publish_entries
+    entries.each { |entry| entry.update(published: true) }
+  end
+
+  def report_count
+    count = entries.count
+    succeed "#{count} #{'resource'.pluralize(count)} published successfully!"
   end
 end

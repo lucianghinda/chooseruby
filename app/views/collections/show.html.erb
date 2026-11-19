@@ -1,10 +1,10 @@
-<% content_for :title, "#{@collection[:title]} | ChooseRuby Collections" %>
-<% content_for :meta_description, @collection[:description] %>
+<% content_for :title, "#{collection[:title]} | ChooseRuby Collections" %>
+<% content_for :meta_description, collection[:description] %>
 
-<% icon = @collection[:icon] %>
-<% active_level = @directory_query.level %>
-<% active_category = @directory_query.category %>
-<% query = @directory_query.query %>
+<% icon = collection[:icon] %>
+<% active_level = directory_query.level %>
+<% active_category = directory_query.category %>
+<% query = directory_query.query %>
 
 <div class="space-y-12 pb-16">
   <section class="rounded-3xl bg-white p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
@@ -13,10 +13,10 @@
         <span class="inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-rose-500/10 text-4xl"><%= icon %></span>
       </div>
       <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
-        <%= @collection[:title] %>
+        <%= collection[:title] %>
       </h1>
       <p class="text-lg text-slate-600">
-        <%= @collection[:description] %>
+        <%= collection[:description] %>
       </p>
     </div>
   </section>
@@ -30,7 +30,7 @@
         </p>
       </header>
 
-      <%= form_with url: collection_path(@collection[:slug]), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
+      <%= form_with url: collection_path(collection[:slug]), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
         <div class="space-y-2">
           <%= form.label :q, "Search within this collection", class: "text-sm font-semibold text-slate-700" %>
           <div class="relative">
@@ -53,14 +53,14 @@
           <div class="flex items-center justify-between">
             <%= form.label :category, "Focus on a category", class: "text-sm font-semibold text-slate-700" %>
             <% if active_category.present? %>
-              <%= link_to "Clear category", collection_path(@collection[:slug], params.permit(:q, :level).to_h), class: "text-xs font-semibold text-rose-500 hover:text-rose-400" %>
+              <%= link_to "Clear category", collection_path(collection[:slug], params.permit(:q, :level).to_h), class: "text-xs font-semibold text-rose-500 hover:text-rose-400" %>
             <% end %>
           </div>
           <div class="flex flex-wrap gap-3">
-            <% @categories.each do |category| %>
+            <% categories.each do |category| %>
               <% selected = active_category == category %>
               <%= link_to category.name,
-                          collection_path(@collection[:slug], params.permit(:q, :level).to_h.merge(category: selected ? nil : category.slug).compact_blank),
+                          collection_path(collection[:slug], params.permit(:q, :level).to_h.merge(category: selected ? nil : category.slug).compact_blank),
                           class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{selected ? "bg-slate-900 text-white shadow-sm hover:bg-slate-800" : "bg-slate-100 text-slate-600 hover:bg-rose-100"}" %>
             <% end %>
           </div>
@@ -78,15 +78,15 @@
       <%= link_to "Browse the full directory", entries_path, class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
     </div>
 
-    <% if @entries.any? %>
+    <% if entries.any? %>
       <div class="grid gap-6 lg:grid-cols-3">
-        <% @entries.each do |entry| %>
+        <% entries.each do |entry| %>
           <%= render "entries/card", entry: entry %>
         <% end %>
       </div>
 
       <div class="mt-8 flex justify-center">
-        <%= paginate @entries %>
+        <%= paginate entries %>
       </div>
     <% else %>
       <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">

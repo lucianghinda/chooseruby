@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Configures the admin form and listing for Video records.
 class Avo::Resources::Video < Avo::BaseResource
   self.title = :display_name
   self.includes = [ :entry ]

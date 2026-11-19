@@ -183,4 +183,36 @@ class ResourcesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", text: /Related resources/
     assert_select "a", text: "Category Related Entry"
   end
+
+  test "related resources stop at five category matches" do
+    category = categories(:testing)
+    entry = Entry.create!(title: "Main Topic Resource", url: "https://example.com/main-topic", status: :approved, published: true)
+    entry.categories << category
+    6.times do |index|
+      candidate = Entry.create!(title: "Topic Match #{index}", url: "https://example.com/topic-#{index}", status: :approved, published: true)
+      candidate.categories << category
+    end
+
+    get resource_path(entry.slug)
+
+    assert_response :success
+    assert_select "h3", text: /Topic Match/, count: 5
+  end
+
+  test "related resources fill available slots with the same type without repeating category matches" do
+    category = categories(:testing)
+    primary = Entry.create!(title: "Main Typed Resource", url: "https://example.com/main-type", status: :approved, published: true, entryable: Book.create!)
+    primary.categories << category
+    topic_match = Entry.create!(title: "Unique Topic Match", url: "https://example.com/topic-match", status: :approved, published: true, entryable: Book.create!)
+    topic_match.categories << category
+    Entry.create!(title: "Same Type Fallback", url: "https://example.com/type-match", status: :approved, published: true, entryable: Book.create!)
+    Entry.create!(title: "Hidden Type Fallback", url: "https://example.com/hidden-type", status: :approved, published: false, entryable: Book.create!)
+
+    get resource_path(primary.slug)
+
+    assert_response :success
+    assert_select "h3", text: "Unique Topic Match", count: 1
+    assert_select "h3", text: "Same Type Fallback", count: 1
+    assert_select "h3", text: "Hidden Type Fallback", count: 0
+  end
 end

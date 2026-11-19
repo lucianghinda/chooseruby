@@ -166,7 +166,7 @@ class EntrySubmissionTest < ActiveSupport::TestCase
     )
 
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    assert_same false, entry.published
   end
 
   test "validates image_url format for external URLs" do

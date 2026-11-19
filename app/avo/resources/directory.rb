@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Configures the admin form and listing for Directory records.
 class Avo::Resources::Directory < Avo::BaseResource
   self.title = :display_name
   self.includes = [ :entry ]

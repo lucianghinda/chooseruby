@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Removes the selected entries from public listings.
 class Avo::Actions::UnpublishEntries < Avo::BaseAction
   self.name = "Unpublish Resources"
   self.message = "Are you sure you want to unpublish the selected resources?"
@@ -7,11 +8,22 @@ class Avo::Actions::UnpublishEntries < Avo::BaseAction
   self.cancel_button_label = "Cancel"
   self.no_confirmation = false
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |resource|
-      resource.update(published: false)
-    end
+  def handle(records:, **)
+    @entries = records
+    unpublish_entries
+    report_count
+  end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} unpublished successfully!"
+  private
+
+  attr_reader :entries
+
+  def unpublish_entries
+    entries.each { |entry| entry.update(published: false) }
+  end
+
+  def report_count
+    count = entries.count
+    succeed "#{count} #{'resource'.pluralize(count)} unpublished successfully!"
   end
 end

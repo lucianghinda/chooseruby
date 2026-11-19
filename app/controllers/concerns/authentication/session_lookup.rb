@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Authentication
+  # Finds a valid session and refreshes its activity timestamp.
   module SessionLookup
     extend ActiveSupport::Concern
 
@@ -11,14 +12,7 @@ module Authentication
       return nil unless token
 
       # Eager load user to prevent N+1 queries
-      session = Session.includes(:user).find_by(token: token)
-      return nil unless session
-      return nil if session.expired?
-
-      # Touch last_active_at to keep session alive
-      session.touch_last_active
-
-      session
+      Session.strict_loading.includes(:user).find_by(token: token)&.resume
     end
   end
 end

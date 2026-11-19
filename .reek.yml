@@ -1,0 +1,10 @@
+exclude_paths:
+  - bin
+  - config
+  - db
+  - log
+  - public
+  - test
+  - storage
+  - tmp
+  - vendor

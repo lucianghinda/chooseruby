@@ -21,6 +21,31 @@ class AuthorProposalsControllerTest < ActionDispatch::IntegrationTest
     assert_select "input#author_proposal_author_name"
   end
 
+  test "GET new returns not found for missing or unapproved authors" do
+    pending_author = Author.create!(name: "Awaiting review", status: :pending)
+
+    [ pending_author.id, Author.maximum(:id) + 1 ].each do |author_id|
+      get propose_author_edit_path(author_id: author_id)
+
+      assert_response :not_found
+    end
+  end
+
+  test "GET success returns not found for a missing proposal" do
+    get author_proposal_success_path(id: 998_001)
+
+    assert_response :not_found
+  end
+
+  test "POST invalid new author proposal renders the new author form" do
+    assert_no_difference "AuthorProposal.count" do
+      post author_proposals_path, params: { author_proposal: { author_name: "", submitter_email: "" } }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "input#author_proposal_author_name"
+  end
+
   test "POST create validates required fields" do
     author = Author.create!(name: "Test Author", status: :approved)
 

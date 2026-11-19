@@ -5,6 +5,24 @@ require "test_helper"
 # Tests for AuthorProposalMailer
 # Verifies email delivery for author proposal notifications
 class AuthorProposalMailerTest < ActionMailer::TestCase
+  test "new author proposals receive confirmation before an author exists" do
+    proposal = AuthorProposal.new(author_name: "Proposed Author", submitter_email: "new@example.com")
+
+    email = AuthorProposalMailer.submission_confirmation(proposal)
+
+    assert_equal [ "new@example.com" ], email.to
+    assert_match "Proposed Author", email.text_part.body.to_s
+  end
+
+  test "new author proposals receive rejection feedback before an author exists" do
+    proposal = AuthorProposal.new(author_name: "Proposed Author", submitter_email: "new@example.com", admin_comment: "More detail needed")
+
+    email = AuthorProposalMailer.rejection_notification(proposal)
+
+    assert_equal [ "new@example.com" ], email.to
+    assert_match "More detail needed", email.text_part.body.to_s
+  end
+
   test "submission_confirmation sends email to submitter_email with proposal ID" do
     author = Author.create!(name: "Jane Developer")
     proposal = AuthorProposal.create!(

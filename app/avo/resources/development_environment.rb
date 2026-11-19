@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Configures the admin form and listing for DevelopmentEnvironment records.
 class Avo::Resources::DevelopmentEnvironment < Avo::BaseResource
   self.title = :display_name
   self.includes = [ :entry ]

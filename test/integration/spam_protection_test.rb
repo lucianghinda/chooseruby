@@ -9,7 +9,7 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
   end
 
   test "rack attack middleware is loaded" do
-    assert Rails.application.config.middleware.include?(Rack::Attack), "Rack::Attack middleware should be loaded"
+    assert_includes Rails.application.config.middleware, Rack::Attack, "Rack::Attack middleware should be loaded"
   end
 
   test "rack attack cache store is configured" do

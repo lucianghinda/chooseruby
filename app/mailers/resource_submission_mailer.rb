@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+
+# Notifies contributors and the editorial team about resource submissions.
 class ResourceSubmissionMailer < ApplicationMailer
   default to: -> { ENV.fetch("RESOURCE_SUBMISSION_RECIPIENT", "hello@chooseruby.com") }
   default from: -> { ENV.fetch("RESOURCE_SUBMISSION_SENDER", "hello@chooseruby.com") }
@@ -7,12 +9,7 @@ class ResourceSubmissionMailer < ApplicationMailer
   def notify_team(submission)
     @submission = submission
 
-    # Handle both Entry and ResourceSubmission models
-    @categories = if submission.respond_to?(:selected_categories)
-                    submission.selected_categories
-    else
-                    submission.categories
-    end
+    @categories = submission.try(:selected_categories) || submission.categories
 
     mail(subject: "New resource submission: #{submission.title}")
   end

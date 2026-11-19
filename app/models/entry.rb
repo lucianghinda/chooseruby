@@ -176,6 +176,12 @@ class Entry < ApplicationRecord
   scope :visible, -> { published.approved }
   scope :recently_curated, -> { order(updated_at: :desc) }
   scope :with_directory_includes, -> { preload(:entryable, :categories, :authors, :rich_text_description) }
+  scope :with_resource_includes, -> {
+    strict_loading.includes(
+      :categories, :rich_text_description, :entryable,
+      { image_attachment: :blob }, authors: { avatar_attachment: :blob }
+    )
+  }
 
   # Task 2.5: Featured scope - returns entries with featured_at set, ordered by most recent
   scope :featured, -> { where.not(featured_at: nil).order(featured_at: :desc) }
@@ -269,21 +275,28 @@ class Entry < ApplicationRecord
     Entry::VALID_TYPES.key(entryable_type)
   end
 
+  def approve_with_review
+    transaction do
+      update!(status: :approved, published: true)
+      EntryReview.create!(entry: self, status: :approved)
+      ResourceSubmissionMailer.approval_notification(self).deliver_later
+    end
+  end
+
+  def reject_with_review(comment:)
+    transaction do
+      update!(status: :rejected)
+      EntryReview.create!(entry: self, status: :rejected, comment: comment)
+      ResourceSubmissionMailer.rejection_notification(self).deliver_later
+    end
+  end
+
   private
 
   # Generate URL-friendly slug from title
   # Ensures uniqueness by appending number if needed
   def generate_slug
-    base_slug = title.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Entry.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
+    self.slug = UniqueSlug.new(self, title).to_s
   end
 
   # Determine if FTS sync should be triggered
@@ -300,24 +313,15 @@ class Entry < ApplicationRecord
   # We check saved changes on the rich_text_description association
   def description_was_changed?
     # If rich_text_description was saved in this transaction, it changed
-    rich_text_description&.previous_changes&.any? || false
+    (rich_text_description&.previous_changes).present?
   end
 
   # Sync entry data to FTS5 virtual table for full-text search
   # Called after save when title, description, or tags changed
   def sync_to_fts
-    # Extract plain text from ActionText description
-    description_text = if description.present?
-                        description.to_plain_text
-    else
-                        ""
-    end
-
-    # Convert tags array to space-separated string
-    tags_text = tags.to_a.join(" ")
-
     # Delete existing FTS row first (FTS5 tables don't support proper upserts)
-    ActiveRecord::Base.connection.execute(
+    connection = ActiveRecord::Base.connection
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "DELETE FROM entries_fts WHERE entry_id = ?",
         id
@@ -325,15 +329,19 @@ class Entry < ApplicationRecord
     )
 
     # Insert new FTS row
-    ActiveRecord::Base.connection.execute(
+    connection.execute(
       ActiveRecord::Base.sanitize_sql_array([
         "INSERT INTO entries_fts (entry_id, title, description, tags) VALUES (?, ?, ?, ?)",
         id,
         title || "",
-        description_text,
-        tags_text
+        search_description,
+        tags.to_a.join(" ")
       ])
     )
+  end
+
+  def search_description
+    description.present? ? description.to_plain_text : ""
   end
 
   # Remove entry from FTS5 virtual table

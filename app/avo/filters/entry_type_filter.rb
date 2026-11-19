@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
+# Limits the admin entry listing to a selected resource type.
 class Avo::Filters::EntryTypeFilter < Avo::Filters::SelectFilter
   self.name = "Resource Type"
 
-  def apply(request, query, value)
-    return query if value.blank?
+  def apply(_request, query, value)
+    return query unless options.key?(value)
     query.where(entryable_type: value)
   end
 
@@ -16,16 +17,16 @@ class Avo::Filters::EntryTypeFilter < Avo::Filters::SelectFilter
       "Channel" => "Channel",
       "Community" => "Community",
       "Course" => "Course",
-      "Development Environment" => "DevelopmentEnvironment",
+      "DevelopmentEnvironment" => "Development Environment",
       "Directory" => "Directory",
       "Documentation" => "Documentation",
       "Framework" => "Framework",
-      "Job Board" => "JobBoard",
+      "JobBoard" => "Job Board",
       "Newsletter" => "Newsletter",
       "Podcast" => "Podcast",
       "Product" => "Product",
-      "Ruby Gem" => "RubyGem",
-      "Testing Resource" => "TestingResource",
+      "RubyGem" => "Ruby Gem",
+      "TestingResource" => "Testing Resource",
       "Tool" => "Tool",
       "Tutorial" => "Tutorial",
       "Video" => "Video"

@@ -1,4 +1,8 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 APP_PATH = File.expand_path("../config/application", __dir__)
 require_relative "../config/boot"
+# test:prepare can load application code before test_helper is required.
+require_relative "../test/coverage_setup" if ARGV.any? { |argument| /\Atest(?::|\z)/.match?(argument) }
 require "rails/commands"

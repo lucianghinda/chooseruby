@@ -3,6 +3,10 @@
 require "test_helper"
 
 class GithubAvatarServiceTest < ActiveSupport::TestCase
+  test "returns nil when an invalid input cannot be parsed" do
+    assert_nil GithubAvatarService.call(42)
+  end
+
   test "extracts username from standard GitHub URL" do
     url = "https://github.com/matz"
     avatar_url = GithubAvatarService.call(url)

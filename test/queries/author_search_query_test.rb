@@ -3,6 +3,12 @@
 require "test_helper"
 
 class AuthorSearchQueryTest < ActiveSupport::TestCase
+  test "search ignores punctuation-only words" do
+    author = Author.create!(name: "Punctuation Author", status: :approved)
+
+    assert_includes AuthorSearchQuery.new({ q: "Punctuation -" }).call, author
+  end
+
   setup do
     # Create approved authors with different names
     @author_matz = Author.create!(

@@ -1,3 +1,6 @@
+<% query = directory_query.query %>
+<% active_level = directory_query.level %>
+<% active_type = directory_query.type %>
 <% content_for :title, "Ruby on Rails Resources Directory | ChooseRuby" %>
 <% content_for :meta_description, "Comprehensive directory of curated Ruby on Rails resources including gems, books, tutorials, tools, and more. Filter by type, experience level, and category." %>
 
@@ -9,17 +12,17 @@
         Resources Directory
       </h1>
       <p class="text-lg text-slate-600">
-        Explore <%= @entries.total_count %> curated Ruby on Rails resources. Filter by type, experience level, and category to find exactly what you need.
+        Explore <%= entries.total_count %> curated Ruby on Rails resources. Filter by type, experience level, and category to find exactly what you need.
       </p>
     </div>
   </section>
 
   <%# Featured Resources Section %>
-  <% if @featured_entries.any? %>
+  <% if featured_entries.any? %>
     <section class="space-y-6">
       <h2 class="text-2xl font-semibold text-slate-900">Featured Resources</h2>
       <div class="grid gap-6 lg:grid-cols-3">
-        <% @featured_entries.each do |entry| %>
+        <% featured_entries.each do |entry| %>
           <%= render "entries/card", entry: entry %>
         <% end %>
       </div>
@@ -40,7 +43,7 @@
           <div class="space-y-2">
             <%= form.label :type, "Resource Type", class: "text-sm font-semibold text-slate-700" %>
             <%= form.select :type,
-                            options_for_select([["All types", nil]] + Entry::VALID_TYPES.keys.map { |type_key| [type_name(type_key), type_key] }, @active_type),
+                            options_for_select([["All types", nil]] + Entry::VALID_TYPES.keys.map { |type_key| [type_name(type_key), type_key] }, active_type),
                             {},
                             class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-300" %>
           </div>
@@ -54,7 +57,7 @@
                   <path fill-rule="evenodd" d="M9 4a5 5 0 013.995 8.326l3.84 3.84a1 1 0 01-1.414 1.415l-3.84-3.84A5 5 0 119 4zm0 2a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
                 </svg>
               </div>
-              <%= form.text_field :q, value: @query, class: "w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-300", placeholder: "Search resources..." %>
+              <%= form.text_field :q, value: query, class: "w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-300", placeholder: "Search resources..." %>
             </div>
           </div>
 
@@ -62,7 +65,7 @@
           <div class="space-y-2">
             <%= form.label :level, "Experience Level", class: "text-sm font-semibold text-slate-700" %>
             <%= form.select :level,
-                            experience_level_options_for_select(@active_level),
+                            experience_level_options_for_select(active_level),
                             { include_blank: "Any level" },
                             class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-300" %>
           </div>
@@ -70,7 +73,7 @@
 
         <%# Submit Button and Clear Filters %>
         <div class="flex items-center justify-end gap-4">
-          <% if @query.present? || @active_level.present? || @active_type.present? %>
+          <% if query.present? || active_level.present? || active_type.present? %>
             <%= link_to "Clear all filters", resources_path, class: "text-sm font-semibold text-slate-600 transition hover:text-rose-500" %>
           <% end %>
           <%= form.submit "Apply Filters", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-300 focus:ring-offset-2" %>
@@ -83,21 +86,21 @@
   <section class="space-y-6">
     <div class="flex items-center justify-between">
       <h2 class="text-xl font-semibold text-slate-900">All Resources</h2>
-      <% total_count = @entries.total_count %>
+      <% total_count = entries.total_count %>
       <p class="text-sm text-slate-500">
         <%= pluralize(total_count, "resource") %> found
       </p>
     </div>
 
-    <% if @entries.any? %>
+    <% if entries.any? %>
       <div class="grid gap-6 lg:grid-cols-3">
-        <% @entries.each do |entry| %>
+        <% entries.each do |entry| %>
           <%= render "entries/card", entry: entry %>
         <% end %>
       </div>
 
       <div class="mt-8 flex justify-center">
-        <%= paginate @entries %>
+        <%= paginate entries %>
       </div>
     <% else %>
       <div class="rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-12 text-center">

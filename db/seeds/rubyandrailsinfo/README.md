@@ -11,7 +11,9 @@ The import system reads data from `tmp/latest.sql` (a PostgreSQL database dump) 
 ```
 lib/imports/rubyandrailsinfo/
 ├── sql_parser.rb          # Parses PostgreSQL COPY format
-└── helpers.rb             # Utilities for ID mapping and data conversion
+├── helpers.rb             # Per-import context for sequential seed files
+├── id_mapper.rb           # Legacy IDs mapped to imported records
+└── values.rb              # Timestamp, boolean, integer, and COPY value conversion
 
 db/seeds/rubyandrailsinfo/
 ├── 01_categories.rb       # tags → Category (55 records)
@@ -92,7 +94,7 @@ Each seed file:
 The import handles complex polymorphic associations by:
 1. Registering entries during entity import
 2. Looking up entries by old ID during join table import
-3. Using module-level instance variables for cross-file sharing
+3. Sharing a `Helpers` instance across seed files for one import run; separate imports have independent mappings
 
 ### Full-Text Search (FTS)
 Entry and Author models automatically sync to FTS tables via `after_save` callbacks - no manual intervention needed.
@@ -102,7 +104,7 @@ Entry descriptions use ActionText - HTML content is assigned directly and Action
 
 ## Module Structure
 
-### Rubyandrailsinfo::SqlParser
+### Imports::Rubyandrailsinfo::SqlParser
 
 Parses PostgreSQL COPY format:
 - Extracts table data from tab-delimited format
@@ -111,15 +113,17 @@ Parses PostgreSQL COPY format:
 
 **Usage:**
 ```ruby
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 books_data = parser.extract_table('books')
 ```
 
-### Rubyandrailsinfo::Helpers
+### Imports::Rubyandrailsinfo::Helpers
+
+Instantiate once per import with `Imports::Rubyandrailsinfo::Helpers.new`. Its `load_seed(path)` method runs each trusted seed file in that instance, preserving mappings and seed helper methods for the following files.
 
 Provides utilities for:
 - **ID Mapping**: Store and retrieve old IDs → new records
-- **Data Conversion**: Parse timestamps, booleans, integers
+- **Data Conversion**: `Imports::Rubyandrailsinfo::Values` parses timestamps, booleans, and integers
 - **Progress Display**: Show import progress
 
 **Key Methods:**
@@ -129,9 +133,9 @@ Provides utilities for:
 - `find_author(old_id)` - Find author by old ID
 - `register_category(old_tag_id, category)` - Map tag to category
 - `find_category(old_tag_id)` - Find category by old tag ID
-- `parse_time(str)` - Convert PostgreSQL timestamps
-- `parse_bool(str)` - Convert `t`/`f` to boolean
-- `to_int(str)` - Safe integer conversion
+- `Values.parse_time(str)` - Convert PostgreSQL timestamps
+- `Values.parse_bool(str)` - Convert `t`/`f` to boolean
+- `Values.to_int(str)` - Safe integer conversion
 
 ## Testing
 

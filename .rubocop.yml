@@ -4,11 +4,33 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+plugins:
+  - rubocop-performance
+  - rubocop-minitest
+  - rubocop-thread_safety
+
+# Omakase loads Performance but disables all except Performance/FlatMap.
+Performance:
+  Enabled: true
+
+# Catch tests that silently stop running or checking the intended behavior.
+Minitest/Focus:
+  Enabled: true
+
+Minitest/NonExecutableTestMethod:
+  Enabled: true
+
+Minitest/NonPublicTestMethod:
+  Enabled: true
+
+Minitest/UnreachableAssertion:
+  Enabled: true
+
+Minitest/UnspecifiedException:
+  Enabled: true
+
+Minitest/UselessAssertion:
+  Enabled: true
 
 Style/FrozenStringLiteralComment:
   Enabled: true
