@@ -7,11 +7,15 @@ class Avo::Actions::PublishEntries < Avo::BaseAction
   self.cancel_button_label = "Cancel"
   self.no_confirmation = false
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |resource|
-      resource.update(published: true)
+  def handle(records:, **)
+    # Counted up front: `records` may be a relation whose scope no longer
+    # matches the entries once they have been published.
+    published_count = records.count
+
+    records.each do |entry|
+      entry.update(published: true)
     end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} published successfully!"
+    succeed "#{published_count} #{'resource'.pluralize(published_count)} published successfully!"
   end
 end

@@ -3,7 +3,7 @@
 class Avo::Filters::EntryCategoryFilter < Avo::Filters::SelectFilter
   self.name = "Category"
 
-  def apply(request, query, value)
+  def apply(_request, query, value)
     return query if value.blank?
 
     # Filter entries that belong to the selected category

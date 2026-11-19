@@ -2,7 +2,7 @@
 
 puts "Importing taggings (category-entry associations)..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 taggings_data = parser.extract_table('taggings')
 
 success_count = 0
@@ -12,14 +12,14 @@ skipped_count = 0
 taggings_data.each_with_index do |tagging, index|
   begin
     # Find category (was tag) by old tag ID
-    category = Rubyandrailsinfo::Helpers.find_category(tagging['tag_id'])
+    category = Imports::Rubyandrailsinfo::Helpers.find_category(tagging['tag_id'])
     if category.nil?
       skipped_count += 1
       next
     end
 
     # Find entry by old polymorphic reference
-    entry = Rubyandrailsinfo::Helpers.find_entry(
+    entry = Imports::Rubyandrailsinfo::Helpers.find_entry(
       tagging['taggable_type'],
       tagging['taggable_id']
     )
@@ -38,7 +38,7 @@ taggings_data.each_with_index do |tagging, index|
     end
 
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, taggings_data.count, "Taggings")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, taggings_data.count, "Taggings")
   rescue StandardError => e
     puts "\n  ✗ ERROR: #{e.message}"
     puts "    Data: #{tagging.inspect}"

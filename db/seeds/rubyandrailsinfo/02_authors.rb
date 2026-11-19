@@ -2,7 +2,7 @@
 
 puts "Importing authors..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 authors_data = parser.extract_table('authors')
 
 success_count = 0
@@ -24,15 +24,15 @@ authors_data.each_with_index do |author_data, index|
       a.github_url = author_data['github_url']
       a.website_url = author_data['website_url']
       a.status = :approved # All imported authors are approved
-      a.created_at = Rubyandrailsinfo::Helpers.parse_time(author_data['created_at'])
-      a.updated_at = Rubyandrailsinfo::Helpers.parse_time(author_data['updated_at'])
+      a.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(author_data['created_at'])
+      a.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(author_data['updated_at'])
     end
 
     # Register for authorings import
-    Rubyandrailsinfo::Helpers.register_author(author_data['id'], author)
+    Imports::Rubyandrailsinfo::Helpers.register_author(author_data['id'], author)
 
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, authors_data.count, "Authors")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, authors_data.count, "Authors")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing author: #{e.message}"
     puts "    Data: #{author_data.inspect}"

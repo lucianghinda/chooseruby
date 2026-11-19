@@ -2,7 +2,7 @@
 
 puts "Importing podcasts..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 podcasts_data = parser.extract_table('podcasts')
 
 success_count = 0
@@ -19,8 +19,8 @@ podcasts_data.each_with_index do |podcast_data, index|
 
     # Step 1: Create Podcast record
     podcast = Podcast.create! do |p|
-      p.created_at = Rubyandrailsinfo::Helpers.parse_time(podcast_data['created_at'])
-      p.updated_at = Rubyandrailsinfo::Helpers.parse_time(podcast_data['updated_at'])
+      p.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(podcast_data['created_at'])
+      p.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(podcast_data['updated_at'])
     end
 
     # Step 2: Create Entry record
@@ -33,17 +33,17 @@ podcasts_data.each_with_index do |podcast_data, index|
       e.published = true
       e.experience_level = :all_levels
       e.tags = []
-      e.featured_at = Rubyandrailsinfo::Helpers.parse_bool(podcast_data['featured']) ?
-                      Rubyandrailsinfo::Helpers.parse_time(podcast_data['created_at']) : nil
-      e.created_at = Rubyandrailsinfo::Helpers.parse_time(podcast_data['created_at'])
-      e.updated_at = Rubyandrailsinfo::Helpers.parse_time(podcast_data['updated_at'])
+      e.featured_at = Imports::Rubyandrailsinfo::Helpers.parse_bool(podcast_data['featured']) ?
+                      Imports::Rubyandrailsinfo::Helpers.parse_time(podcast_data['created_at']) : nil
+      e.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(podcast_data['created_at'])
+      e.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(podcast_data['updated_at'])
     end
 
     # Step 3: Register for join table lookup
-    Rubyandrailsinfo::Helpers.register_entry('Podcast', podcast_data['id'], entry)
+    Imports::Rubyandrailsinfo::Helpers.register_entry('Podcast', podcast_data['id'], entry)
 
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, podcasts_data.count, "Podcasts")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, podcasts_data.count, "Podcasts")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing podcast: #{e.message}"
     puts "    Data: #{podcast_data.inspect}"

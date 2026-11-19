@@ -4,6 +4,48 @@
 # Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
+plugins:
+  - rubocop-minitest
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-thread_safety
+
+# Omakase disables these two departments wholesale, which silently turns the
+# gems below into no-ops. Turn them back on.
+Rails:
+  Enabled: true
+
+Performance:
+  Enabled: true
+  Exclude: []
+
+# Seed and import scripts report their progress on stdout; that is their
+# interface, not stray debugging.
+Rails/Output:
+  Exclude:
+    - db/seeds.rb
+    - db/seeds/**/*
+    - lib/imports/**/*
+
+# Skipping validations is deliberate in the places that are left: `update_all` is a
+# bulk statement over a relation, and the two exclusions below are a callback that
+# would recurse through a validated write and tests that age a timestamp to reach an
+# expiry path without rewriting updated_at.
+Rails/SkipsModelValidations:
+  AllowedMethods:
+    - update_all
+  Exclude:
+    - app/models/author.rb
+    - test/**/*
+
+# Thread safety is a property of the running application. Test scaffolding is
+# single-threaded per process, and lib/imports holds one-off import scripts that
+# are run by hand, never served.
+ThreadSafety:
+  Exclude:
+    - test/**/*
+    - lib/imports/**/*
+
 # Overwrite or add rules to create your own house style
 #
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`

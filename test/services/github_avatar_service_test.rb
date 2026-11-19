@@ -50,6 +50,14 @@ class GithubAvatarServiceTest < ActiveSupport::TestCase
     assert_nil avatar_url
   end
 
+  test "logs a warning and returns nil when extraction raises" do
+    log = capture_warn_log do
+      assert_nil GithubAvatarService.call(Object.new)
+    end
+
+    assert_match(/GitHub avatar fetch failed/, log)
+  end
+
   test "integration: author fetches avatar on creation with github_url" do
     author = Author.create(
       name: "Yukihiro Matsumoto",
@@ -66,5 +74,17 @@ class GithubAvatarServiceTest < ActiveSupport::TestCase
     author.update(github_url: "https://github.com/dhh")
 
     assert_equal "https://github.com/dhh.png", author.reload.avatar_url
+  end
+
+  private
+
+  def capture_warn_log
+    buffer = StringIO.new
+    original_logger = Rails.logger
+    Rails.logger = ActiveSupport::Logger.new(buffer)
+    yield
+    buffer.string
+  ensure
+    Rails.logger = original_logger
   end
 end

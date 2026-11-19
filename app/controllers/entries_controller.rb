@@ -1,31 +1,34 @@
 # frozen_string_literal: true
 
 class EntriesController < ApplicationController
+  # A submitted entry may be filed under at most this many categories.
+  MAX_CATEGORIES = 3
+
   before_action :load_form_data, only: %i[new create]
 
   def index
     @categories = Category.order(:display_order, :name)
     permitted_params = params.permit(:q, :level, :category, :sort).to_h
-    @directory_query = EntryDirectoryQuery.new(permitted_params)
-    @query = @directory_query.query
-    @active_level = @directory_query.level
-    @active_category = @directory_query.category
-    @active_sort = @directory_query.sort
+    directory_query = EntryDirectoryQuery.new(permitted_params)
+    @query = directory_query.query
+    @active_level = directory_query.level
+    @active_category = directory_query.category
+    @active_sort = directory_query.sort
     @popular_queries = popular_queries
-    @entries = @directory_query.call.page(params[:page]).per(25)
+    @entries = directory_query.call.page(params[:page]).per(25)
   end
 
   def start
     @categories = Category.order(:display_order, :name)
     level_param = params[:level].presence || "beginner"
     permitted_params = params.permit(:q, :category, :sort, :level).to_h.merge(level: level_param)
-    @directory_query = EntryDirectoryQuery.new(permitted_params)
-    @query = @directory_query.query
+    directory_query = EntryDirectoryQuery.new(permitted_params)
+    @query = directory_query.query
     @active_level = level_param
-    @active_category = @directory_query.category
-    @active_sort = @directory_query.sort
+    @active_category = directory_query.category
+    @active_sort = directory_query.sort
     @popular_queries = popular_queries
-    @entries = @directory_query.call.page(params[:page]).per(25)
+    @entries = directory_query.call.page(params[:page]).per(25)
   end
 
   def suggestions
@@ -54,47 +57,11 @@ class EntriesController < ApplicationController
   end
 
   def create
-    # Validate category limit before processing
-    category_ids = all_permitted_params[:category_ids].to_a.reject(&:blank?)
-    if category_ids.length > 3
-      @entry = Entry.new(common_entry_params)
-      @entry.errors.add(:categories, "You can select a maximum of 3 categories")
-      flash.now[:alert] = "Please review the highlighted fields."
-      render :new, status: :unprocessable_entity
-      return
-    end
+    build_submitted_entry
+    return render_invalid_entry if @entry.errors.any?
 
-    # Build entry with only Entry attributes
-    @entry = Entry.new(common_entry_params)
-    @entry.status = :pending
-    @entry.published = false
-
-    ActiveRecord::Base.transaction do
-      # Build the appropriate delegated type
-      entryable = build_entryable
-      @entry.entryable = entryable
-
-      if @entry.save
-        # Handle author association if author_id is provided
-        if all_permitted_params[:author_id].present?
-          author = Author.find_by(id: all_permitted_params[:author_id])
-          @entry.authors << author if author
-        end
-
-        # Send notification emails asynchronously
-        ResourceSubmissionMailer.notify_team(@entry).deliver_later
-        ResourceSubmissionMailer.confirm_submitter(@entry).deliver_later
-
-        redirect_to entry_success_path
-      else
-        raise ActiveRecord::Rollback
-      end
-    end
-
-    unless @entry.persisted?
-      flash.now[:alert] = "Please review the highlighted fields."
-      render :new, status: :unprocessable_entity
-    end
+    submit_entry
+    @entry.persisted? ? redirect_to(entry_success_path) : render_invalid_entry
   end
 
   def success
@@ -102,6 +69,50 @@ class EntriesController < ApplicationController
   end
 
   private
+
+  # A publicly submitted entry always starts out pending and unpublished. The
+  # category limit is enforced here because Entry does not validate it itself.
+  def build_submitted_entry
+    @entry = Entry.new(common_entry_params)
+    @entry.status = :pending
+    @entry.published = false
+    @entry.errors.add(:categories, "You can select a maximum of #{MAX_CATEGORIES} categories") if too_many_categories?
+  end
+
+  def too_many_categories?
+    all_permitted_params[:category_ids].to_a.count(&:present?) > MAX_CATEGORIES
+  end
+
+  # Persists the entry together with the delegated type it describes. Leaves
+  # the entry unsaved when either of the two cannot be stored.
+  def submit_entry
+    ActiveRecord::Base.transaction do
+      @entry.entryable = build_entryable
+      raise ActiveRecord::Rollback unless @entry.save
+
+      attach_submitted_author
+    end
+
+    notify_submission if @entry.persisted?
+  end
+
+  def attach_submitted_author
+    author_id = all_permitted_params[:author_id]
+    return if author_id.blank?
+
+    author = Author.find_by(id: author_id)
+    @entry.authors << author if author
+  end
+
+  def notify_submission
+    ResourceSubmissionMailer.notify_team(@entry).deliver_later
+    ResourceSubmissionMailer.confirm_submitter(@entry).deliver_later
+  end
+
+  def render_invalid_entry
+    flash.now[:alert] = "Please review the highlighted fields."
+    render :new, status: :unprocessable_entity
+  end
 
   def popular_queries
     Category.order(:display_order, :name).limit(5).pluck(:name)
@@ -241,9 +252,8 @@ class EntriesController < ApplicationController
     )
 
     # Convert price from dollars to cents
-    if all_permitted_params[:price].present?
-      params_hash[:price_cents] = (all_permitted_params[:price].to_f * 100).to_i
-    end
+    price = all_permitted_params[:price]
+    params_hash[:price_cents] = (price.to_f * 100).to_i if price.present?
 
     params_hash
   end

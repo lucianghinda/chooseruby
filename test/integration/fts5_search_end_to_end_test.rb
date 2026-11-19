@@ -261,7 +261,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
       "SELECT name FROM sqlite_master WHERE type='table' AND name='entries_fts'"
     ).first
 
-    unless result.present?
+    if result.blank?
       # Create entries_fts table
       ActiveRecord::Base.connection.execute(<<-SQL)
         CREATE VIRTUAL TABLE entries_fts USING fts5(
@@ -279,7 +279,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
       "SELECT name FROM sqlite_master WHERE type='table' AND name='authors_fts'"
     ).first
 
-    unless result.present?
+    if result.blank?
       # Create authors_fts table
       ActiveRecord::Base.connection.execute(<<-SQL)
         CREATE VIRTUAL TABLE authors_fts USING fts5(

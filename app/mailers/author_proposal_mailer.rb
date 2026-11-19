@@ -22,8 +22,7 @@ class AuthorProposalMailer < ApplicationMailer
   # @return [Mail::Message] the email to be delivered
   def submission_confirmation(author_proposal)
     @proposal = author_proposal
-    # Eager load author to avoid strict loading violation
-    @author = author_proposal.author_id.present? ? Author.find(author_proposal.author_id) : nil
+    @author = author_proposal.loaded_author
 
     mail(
       to: @proposal.submitter_email,
@@ -42,8 +41,7 @@ class AuthorProposalMailer < ApplicationMailer
   # @return [Mail::Message] the email to be delivered
   def approval_notification(author_proposal)
     @proposal = author_proposal
-    # Eager load author to avoid strict loading violation
-    @author = author_proposal.author_id.present? ? Author.find(author_proposal.author_id) : nil
+    @author = author_proposal.loaded_author
 
     mail(
       to: @proposal.submitter_email,
@@ -62,8 +60,7 @@ class AuthorProposalMailer < ApplicationMailer
   # @return [Mail::Message] the email to be delivered
   def rejection_notification(author_proposal)
     @proposal = author_proposal
-    # Eager load author to avoid strict loading violation
-    @author = author_proposal.author_id.present? ? Author.find(author_proposal.author_id) : nil
+    @author = author_proposal.loaded_author
     @admin_comment = author_proposal.admin_comment
 
     mail(

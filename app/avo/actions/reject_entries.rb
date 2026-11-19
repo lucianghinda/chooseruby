@@ -13,24 +13,20 @@ class Avo::Actions::RejectEntries < Avo::BaseAction
           placeholder: "Explain why this submission was rejected..."
   end
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |resource|
+  def handle(records:, fields:, **)
+    comment = fields[:comment]
+    # Counted up front: `records` may be a relation whose scope no longer
+    # matches the entries once their status has changed.
+    rejected_count = records.count
+
+    records.each do |entry|
       ActiveRecord::Base.transaction do
-        # Update entry: status to rejected
-        resource.update!(status: :rejected)
-
-        # Create EntryReview record with status: :rejected and comment
-        EntryReview.create!(
-          entry: resource,
-          status: :rejected,
-          comment: fields[:comment]
-        )
-
-        # Queue rejection notification email
-        ResourceSubmissionMailer.rejection_notification(resource).deliver_later
+        entry.update!(status: :rejected)
+        EntryReview.create!(entry: entry, status: :rejected, comment: comment)
+        ResourceSubmissionMailer.rejection_notification(entry).deliver_later
       end
     end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} rejected successfully!"
+    succeed "#{rejected_count} #{'resource'.pluralize(rejected_count)} rejected successfully!"
   end
 end

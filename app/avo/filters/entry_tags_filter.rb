@@ -3,7 +3,7 @@
 class Avo::Filters::EntryTagsFilter < Avo::Filters::SelectFilter
   self.name = "Tags"
 
-  def apply(request, query, value)
+  def apply(_request, query, value)
     return query if value.blank?
 
     # Filter entries that have the selected tag in their tags array
@@ -19,7 +19,6 @@ class Avo::Filters::EntryTagsFilter < Avo::Filters::SelectFilter
          .compact
          .uniq
          .sort
-         .map { |tag| [ tag.titleize, tag ] }
-         .to_h
+         .index_by { |tag| tag.titleize }
   end
 end

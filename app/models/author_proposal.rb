@@ -104,6 +104,12 @@ class AuthorProposal < ApplicationRecord
   # JSON serialization for link_updates hash
   serialize :link_updates, coder: JSON
 
+  # Author fields a proposal is allowed to suggest a link for
+  VALID_LINK_FIELDS = %w[
+    github_url gitlab_url website_url bluesky_url ruby_social_url
+    twitter_url linkedin_url youtube_url twitch_url blog_url
+  ].freeze
+
   # Status enum
   enum :status, { pending: 0, approved: 1, rejected: 2 }, default: :pending
 
@@ -159,24 +165,7 @@ class AuthorProposal < ApplicationRecord
   #   proposal.author.reload.bio # => "Updated bio text"
   def approve!
     ActiveRecord::Base.transaction do
-      # Eager load author to avoid strict loading violations
-      existing_author = author_id.present? ? Author.find(author_id) : nil
-      target_author = existing_author || create_new_author!
-
-      # Apply bio changes if present (note: Author does not have description field)
-      target_author.bio = bio_text if bio_text.present?
-
-      # Apply link_updates to author
-      apply_link_updates_to_author(target_author) if link_updates.present?
-
-      # Save author with validations
-      target_author.save!
-
-      # Update proposal's author_id if this was a new author
-      self.author_id = target_author.id if author_id.nil?
-
-      # Create EntriesAuthor association if matched entry exists
-      create_entries_author_association(target_author) if matched_entry_id.present?
+      apply_to_author
 
       # Mark proposal as approved
       update!(
@@ -228,11 +217,19 @@ class AuthorProposal < ApplicationRecord
   # Domain Query Methods
   # ========================================
 
+  # Returns the author this proposal is about, loaded outside the strict-loading
+  # association so that callers such as the mailers can render it
+  #
+  # @return [Author, nil] the proposed author, or nil for a new author proposal
+  def loaded_author
+    Author.find(author_id) if author_id.present?
+  end
+
   # Returns true if this is a proposal to create a new author
   #
-  # @return [Boolean] true when author_id is nil
+  # @return [Boolean] true when no author is set yet
   def new_author_proposal?
-    author_id.nil?
+    !existing_author_proposal?
   end
 
   # Returns true if this is a proposal to edit an existing author
@@ -304,30 +301,50 @@ class AuthorProposal < ApplicationRecord
   # Private Helper Methods - Approval Workflow
   # ========================================
 
-  # Creates a new Author from proposal data
+  # Applies every proposed change to the author, creating them when needed
   #
-  # @return [Author] newly created author instance (unsaved)
+  # @return [void]
   # @raise [ActiveRecord::RecordInvalid] if author validation fails
-  def create_new_author!
-    new_author = Author.new(name: author_name)
-    new_author
+  def apply_to_author
+    target_author = loaded_author || build_new_author
+    update_author(target_author)
+
+    # Update proposal's author_id if this was a new author
+    self.author_id = target_author.id if new_author_proposal?
+
+    # Create EntriesAuthor association if matched entry exists
+    create_entries_author_association(target_author) if matched_entry?
+  end
+
+  # Writes the proposed bio and links onto the author
+  #
+  # @param target_author [Author] the author to update
+  # @return [void]
+  # @raise [ActiveRecord::RecordInvalid] if author validation fails
+  def update_author(target_author)
+    # Apply bio changes if present (note: Author does not have description field)
+    target_author.bio = bio_text if bio_text.present?
+    apply_link_updates_to_author(target_author) if link_updates.present?
+    target_author.save!
+  end
+
+  # Builds a new Author from proposal data
+  #
+  # @return [Author] newly built author instance (unsaved)
+  def build_new_author
+    Author.new(name: author_name)
   end
 
   # Applies link_updates hash to author's link fields
   #
-  # Only updates fields that are present in the link_updates hash.
-  # Validates that all link fields are valid Author attributes.
+  # Only updates fields that carry a value; validation has already restricted
+  # the field names to VALID_LINK_FIELDS.
   #
   # @param target_author [Author] the author to update
   # @return [void]
   def apply_link_updates_to_author(target_author)
     link_updates.each do |field_name, url_value|
       next if url_value.blank?
-
-      # Validate field exists on Author model
-      unless target_author.respond_to?("#{field_name}=")
-        raise ArgumentError, "Invalid link field: #{field_name}"
-      end
 
       target_author.send("#{field_name}=", url_value)
     end
@@ -370,28 +387,27 @@ class AuthorProposal < ApplicationRecord
   def validate_link_urls
     return if link_updates.blank?
 
-    valid_link_fields = %w[
-      github_url gitlab_url website_url bluesky_url ruby_social_url
-      twitter_url linkedin_url youtube_url twitch_url blog_url
-    ]
-
     link_updates.each do |field_name, url|
       next if url.blank?
 
-      unless valid_link_fields.include?(field_name)
-        errors.add(:link_updates, "#{field_name} is not a valid link field")
-        next
-      end
+      validate_link_url(field_name, url)
+    end
+  end
 
-      unless url.match?(URI::DEFAULT_PARSER.make_regexp(%w[http https]))
-        errors.add(:link_updates, "#{field_name} must be a valid URL starting with http:// or https://")
-      end
+  # Validates a single proposed link: known field, and a usable http(s) URL
+  def validate_link_url(field_name, url)
+    unless VALID_LINK_FIELDS.include?(field_name)
+      return errors.add(:link_updates, "#{field_name} is not a valid link field")
+    end
+
+    unless url.match?(URI::DEFAULT_PARSER.make_regexp(%w[http https]))
+      errors.add(:link_updates, "#{field_name} must be a valid URL starting with http:// or https://")
     end
   end
 
   # Prevents duplicate pending proposals for same author by same email within 24 hours
   def prevent_duplicate_pending_proposals
-    return if author_id.nil?  # Skip for new author proposals
+    return if new_author_proposal?  # Skip for new author proposals
     return unless status == "pending"
 
     duplicate = AuthorProposal
@@ -411,36 +427,27 @@ class AuthorProposal < ApplicationRecord
 
   # Normalizes resource_url and attempts to match with existing Entry
   # Stores original URL and sets matched_entry_id if found
+  # Only runs when resource_url is present (see the before_validation condition)
   def normalize_and_match_resource_url
-    return if resource_url.blank?
-
     # Store original URL before normalization
     self.original_resource_url = resource_url.dup
 
     # Normalize the URL
-    self.resource_url = normalize_url(resource_url)
+    self.resource_url = normalized_resource_url
 
     # Attempt to match with existing entries
     match_entry_by_url
   end
 
-  # Normalizes a URL for consistent matching
+  # The resource_url normalized for consistent matching
   # Handles: whitespace, http/https, trailing slashes, www prefix, case
-  def normalize_url(url)
-    return nil if url.blank?
-
-    normalized = url.strip.downcase
-
-    # Normalize protocol to http://
-    normalized = normalized.sub(/\Ahttps:\/\//, "http://")
-
-    # Remove www prefix
-    normalized = normalized.sub(/\Ahttp:\/\/www\./, "http://")
-
-    # Remove trailing slash
-    normalized = normalized.sub(/\/\z/, "")
-
-    normalized
+  def normalized_resource_url
+    resource_url
+      .strip
+      .downcase
+      .sub(/\Ahttps:\/\//, "http://")
+      .sub(/\Ahttp:\/\/www\./, "http://")
+      .delete_suffix("/")
   end
 
   # Searches for matching Entry by normalized URL

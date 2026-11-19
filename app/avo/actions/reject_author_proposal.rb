@@ -14,10 +14,9 @@ class Avo::Actions::RejectAuthorProposal < Avo::BaseAction
           required: true
   end
 
-  def handle(records:, fields:, current_user:, resource:, **args)
+  def handle(records:, fields:, **)
     admin_comment = fields[:admin_comment]
 
-    # Validate that admin_comment is provided
     if admin_comment.blank?
       error "Admin comment is required when rejecting proposals"
       return
@@ -27,15 +26,11 @@ class Avo::Actions::RejectAuthorProposal < Avo::BaseAction
     error_messages = []
 
     records.each do |proposal|
-      begin
-        # Call the reject! method with admin_comment
-        proposal.reject!(admin_comment: admin_comment)
-        success_count += 1
-      rescue ArgumentError => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      rescue StandardError => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      end
+      # AuthorProposal#reject! owns the whole rejection workflow.
+      proposal.reject!(admin_comment: admin_comment)
+      success_count += 1
+    rescue StandardError => exception
+      error_messages << "Proposal ##{proposal.id}: #{exception.message}"
     end
 
     if error_messages.any?

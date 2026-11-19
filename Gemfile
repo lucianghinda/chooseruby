@@ -73,8 +73,23 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
+  # Extra RuboCop cops on top of omakase
+  gem "rubocop-minitest", require: false
+  gem "rubocop-performance", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-thread_safety", require: false
+
   # A Ruby Gem that adds annotations to your Rails models and route files.
   gem "annotaterb"
+
+  # Code smell detector [https://github.com/troessner/reek]
+  gem "reek", require: false
+
+  # Code coverage analysis [https://github.com/simplecov-ruby/simplecov]
+  gem "simplecov", "~> 1.3", require: false
+
+  # Mutation testing [https://github.com/mbj/mutant]
+  gem "mutant-minitest", "~> 0.17.0", require: false
 end
 
 group :development do

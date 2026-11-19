@@ -94,4 +94,41 @@ class UserTest < ActiveSupport::TestCase
       user.destroy
     end
   end
+
+  # Ban tests
+  test "ban! records the ban, suspends the user and closes every session" do
+    user = User.create!(email_address: "ban@example.com", name: "Ban Me", password: "password123")
+    user.sessions.create!(token: SecureRandom.urlsafe_base64(32), last_active_at: Time.current)
+    expires_at = 3.days.from_now
+
+    user.ban!(reason: "Spamming", ip_address: "10.0.0.1", expires_at: expires_at)
+
+    ban = user.bans.sole
+    assert_equal "Spamming", ban.reason
+    assert_equal "10.0.0.1", ban.ip_address
+    assert_equal expires_at.to_i, ban.expires_at.to_i
+    assert user.reload.banned?, "Banned user should be suspended"
+    assert_equal 0, user.sessions.count, "Ban should close every session"
+  end
+
+  test "ban! without an expiry bans the user indefinitely" do
+    user = User.create!(email_address: "forever@example.com", name: "Ban Me", password: "password123")
+
+    user.ban!(reason: "Spamming")
+
+    ban = user.bans.sole
+    assert_nil ban.expires_at
+    assert_nil ban.ip_address
+    assert ban.active?
+  end
+
+  test "unban! expires the active bans and reactivates the user" do
+    user = users(:suspended)
+    ban = bans(:active_ban)
+
+    user.unban!
+
+    assert_not user.reload.banned?, "Unbanned user should be active again"
+    assert_not ban.reload.active?, "unban! should expire the active ban"
+  end
 end

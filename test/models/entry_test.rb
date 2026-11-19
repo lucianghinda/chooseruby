@@ -63,7 +63,7 @@ class EntryTest < ActiveSupport::TestCase
     gems = Entry.gems
 
     assert_includes gems, gem_entry
-    refute_includes gems, book_entry
+    assert_not_includes gems, book_entry
     assert_equal "RubyGem", gems.first.entryable_type
   end
 
@@ -93,7 +93,7 @@ class EntryTest < ActiveSupport::TestCase
     books = Entry.books
 
     assert_includes books, book_entry
-    refute_includes books, course_entry
+    assert_not_includes books, course_entry
     assert_equal "Book", books.first.entryable_type
   end
 
@@ -123,7 +123,7 @@ class EntryTest < ActiveSupport::TestCase
     chained_scope = Entry.gems.visible.recently_curated
 
     assert_includes chained_scope, visible_gem
-    refute_includes chained_scope, pending_gem
+    assert_not_includes chained_scope, pending_gem
   end
 
   test "courses scope returns only Course entries" do
@@ -334,13 +334,13 @@ class EntryTest < ActiveSupport::TestCase
     # Test newsletters scope
     newsletters = Entry.newsletters
     assert_includes newsletters, newsletter_entry
-    refute_includes newsletters, blog_entry
+    assert_not_includes newsletters, blog_entry
     assert_equal "Newsletter", newsletters.first.entryable_type
 
     # Test blogs scope
     blogs = Entry.blogs
     assert_includes blogs, blog_entry
-    refute_includes blogs, newsletter_entry
+    assert_not_includes blogs, newsletter_entry
     assert_equal "Blog", blogs.first.entryable_type
   end
 
@@ -390,7 +390,7 @@ class EntryTest < ActiveSupport::TestCase
     featured_entries = Entry.featured
 
     assert_includes featured_entries, featured_entry
-    refute_includes featured_entries, regular_entry
+    assert_not_includes featured_entries, regular_entry
   end
 
   test "featured scope orders by featured_at descending" do
@@ -493,6 +493,6 @@ class EntryTest < ActiveSupport::TestCase
     chained_scope = Entry.newsletters.visible.recently_curated
 
     assert_includes chained_scope, visible_newsletter
-    refute_includes chained_scope, pending_newsletter
+    assert_not_includes chained_scope, pending_newsletter
   end
 end

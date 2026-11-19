@@ -7,20 +7,16 @@ class Avo::Actions::ApproveAuthorProposal < Avo::BaseAction
   self.cancel_button_label = "Cancel"
   self.no_confirmation = false
 
-  def handle(records:, fields:, current_user:, resource:, **args)
+  def handle(records:, **)
     success_count = 0
     error_messages = []
 
     records.each do |proposal|
-      begin
-        # Call the approve! method which handles all the logic
-        proposal.approve!
-        success_count += 1
-      rescue ActiveRecord::RecordInvalid => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      rescue StandardError => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      end
+      # AuthorProposal#approve! owns the whole approval workflow.
+      proposal.approve!
+      success_count += 1
+    rescue StandardError => exception
+      error_messages << "Proposal ##{proposal.id}: #{exception.message}"
     end
 
     if error_messages.any?

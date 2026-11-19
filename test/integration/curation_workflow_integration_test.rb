@@ -30,7 +30,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
 
     # Verify starting state
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    assert_not entry.published
     assert_equal 0, entry.entry_reviews.count
 
     # Perform approval action and process enqueued jobs
@@ -83,7 +83,7 @@ class CurationWorkflowIntegrationTest < ActiveSupport::TestCase
     # Verify entry was updated
     entry.reload
     assert_equal "rejected", entry.status
-    assert_equal false, entry.published
+    assert_not entry.published
 
     # Verify EntryReview was created with comment
     assert_equal 1, entry.entry_reviews.count

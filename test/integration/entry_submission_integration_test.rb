@@ -41,14 +41,14 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
 
     entry = Entry.last
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    assert_not entry.published
     assert_equal "Course", entry.entryable_type
     assert_equal "Udemy", entry.entryable.platform
     assert_equal "John Doe", entry.entryable.instructor
     assert_equal 40, entry.entryable.duration_hours
     assert_equal 9999, entry.entryable.price_cents # Converted from 99.99 dollars
     assert_equal "USD", entry.entryable.currency
-    assert_equal false, entry.entryable.is_free
+    assert_not entry.entryable.is_free
     assert_redirected_to entry_success_path
   end
 
@@ -134,7 +134,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
           # Tutorial-specific fields
           author_name: "Manual Author Name",
           reading_time_minutes: 15,
-          publication_date: Date.today - 30.days,
+          publication_date: Time.zone.today - 30.days,
           platform: "Dev.to"
         }
       }
@@ -173,7 +173,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     assert_equal "CLI", entry.entryable.tool_type
     assert_equal "https://github.com/user/formatter", entry.entryable.github_url
     assert_equal "MIT", entry.entryable.license
-    assert_equal true, entry.entryable.is_open_source
+    assert entry.entryable.is_open_source
   end
 
   # Test 7: Complete submission flow for Podcast type
@@ -217,7 +217,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
           # Article-specific fields
           author_name: "Jane Writer",
           reading_time_minutes: 8,
-          publication_date: Date.today - 7.days,
+          publication_date: Time.zone.today - 7.days,
           platform: "Medium"
         }
       }

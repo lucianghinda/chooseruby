@@ -80,4 +80,25 @@ class AuthorTest < ActiveSupport::TestCase
     author.github_url = "https://github.com/testuser"
     assert author.save, "Did not save author with valid github_url"
   end
+
+  # Avatar fetching tests
+  test "should fetch the avatar of the github profile" do
+    author = Author.create!(name: "Avatar Owner", github_url: "https://github.com/matz")
+
+    assert_equal "https://github.com/matz.png", author.reload.avatar_url
+  end
+
+  test "should keep the fetched avatar when github_url is cleared" do
+    author = Author.create!(name: "Avatar Owner", github_url: "https://github.com/matz")
+
+    author.update!(github_url: "")
+
+    assert_equal "https://github.com/matz.png", author.reload.avatar_url
+  end
+
+  test "should leave avatar_url empty when the github_url holds no profile" do
+    author = Author.create!(name: "Repo Linker", github_url: "https://github.com/matz/awesome-gem")
+
+    assert_nil author.reload.avatar_url
+  end
 end

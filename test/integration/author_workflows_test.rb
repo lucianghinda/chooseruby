@@ -118,7 +118,7 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     # Slug should change based on implementation
     # (current implementation regenerates slug when name changes)
     assert_equal "new-name", author.slug
-    refute_equal original_slug, author.slug
+    assert_not_equal original_slug, author.slug
   end
 
   test "pagination works correctly for authors with many entries" do
@@ -187,6 +187,6 @@ class AuthorWorkflowsTest < ActionDispatch::IntegrationTest
     # The bio paragraph has specific text-lg and max-w-2xl classes
     # When bio is absent, this p tag shouldn't exist
     response_body = response.body
-    refute_includes response_body, "text-lg text-gray-600 max-w-2xl"
+    assert_not_includes response_body, "text-lg text-gray-600 max-w-2xl"
   end
 end

@@ -7,20 +7,19 @@ class Avo::Actions::ApproveEntries < Avo::BaseAction
   self.cancel_button_label = "Cancel"
   self.no_confirmation = false
 
-  def handle(records:, fields:, current_user:, resource:, **args)
-    records.each do |resource|
+  def handle(records:, **)
+    # Counted up front: `records` may be a relation whose scope no longer
+    # matches the entries once their status has changed.
+    approved_count = records.count
+
+    records.each do |entry|
       ActiveRecord::Base.transaction do
-        # Update entry: status to approved AND published to true
-        resource.update!(status: :approved, published: true)
-
-        # Create EntryReview record with status: :approved
-        EntryReview.create!(entry: resource, status: :approved)
-
-        # Queue approval notification email
-        ResourceSubmissionMailer.approval_notification(resource).deliver_later
+        entry.update!(status: :approved, published: true)
+        EntryReview.create!(entry: entry, status: :approved)
+        ResourceSubmissionMailer.approval_notification(entry).deliver_later
       end
     end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} approved successfully!"
+    succeed "#{approved_count} #{'resource'.pluralize(approved_count)} approved successfully!"
   end
 end

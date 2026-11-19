@@ -52,7 +52,7 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
 
     related = @main_entry.related_resources
 
-    refute_includes related, @main_entry, "Should not include the current entry in results"
+    assert_not_includes related, @main_entry, "Should not include the current entry in results"
   end
 
   test "distributes 2 resources from each of first 3 categories" do
@@ -179,9 +179,9 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
     related = @main_entry.related_resources
 
     assert_includes related, visible_entry, "Should include visible entry"
-    refute_includes related, unpublished_entry, "Should not include unpublished entry"
-    refute_includes related, pending_entry, "Should not include pending entry"
-    refute_includes related, rejected_entry, "Should not include rejected entry"
+    assert_not_includes related, unpublished_entry, "Should not include unpublished entry"
+    assert_not_includes related, pending_entry, "Should not include pending entry"
+    assert_not_includes related, rejected_entry, "Should not include rejected entry"
   end
 
   test "orders by updated_at desc recently curated" do
@@ -271,5 +271,25 @@ class EntryRelatedResourcesTest < ActiveSupport::TestCase
     related = entry.related_resources(limit: 6)
 
     assert_equal 3, related.length, "Should return 3 resources when only 1 per category available"
+  end
+
+  test "stops visiting categories once the limit is filled" do
+    Entry.create!(
+      title: "Cat1 Only Resource",
+      url: "https://example.com/cat1-only",
+      published: true,
+      status: :approved
+    ).categories << @category1
+
+    Entry.create!(
+      title: "Cat2 Only Resource",
+      url: "https://example.com/cat2-only",
+      published: true,
+      status: :approved
+    ).categories << @category2
+
+    related = @main_entry.related_resources(limit: 1)
+
+    assert_equal [ "Cat1 Only Resource" ], related.map(&:title)
   end
 end

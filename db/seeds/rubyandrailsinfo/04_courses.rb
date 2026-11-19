@@ -2,7 +2,7 @@
 
 puts "Importing courses..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 courses_data = parser.extract_table('courses')
 
 success_count = 0
@@ -20,9 +20,9 @@ courses_data.each_with_index do |course_data, index|
     # Step 1: Create Course record
     # Use slug-based temp ID for uniqueness (Course model has no unique fields)
     course = Course.create! do |c|
-      c.is_free = Rubyandrailsinfo::Helpers.parse_bool(course_data['free'])
-      c.created_at = Rubyandrailsinfo::Helpers.parse_time(course_data['created_at'])
-      c.updated_at = Rubyandrailsinfo::Helpers.parse_time(course_data['updated_at'])
+      c.is_free = Imports::Rubyandrailsinfo::Helpers.parse_bool(course_data['free'])
+      c.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(course_data['created_at'])
+      c.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(course_data['updated_at'])
     end
 
     # Step 2: Create Entry record
@@ -35,17 +35,17 @@ courses_data.each_with_index do |course_data, index|
       e.published = true
       e.experience_level = :intermediate
       e.tags = []
-      e.featured_at = Rubyandrailsinfo::Helpers.parse_bool(course_data['featured']) ?
-                      Rubyandrailsinfo::Helpers.parse_time(course_data['created_at']) : nil
-      e.created_at = Rubyandrailsinfo::Helpers.parse_time(course_data['created_at'])
-      e.updated_at = Rubyandrailsinfo::Helpers.parse_time(course_data['updated_at'])
+      e.featured_at = Imports::Rubyandrailsinfo::Helpers.parse_bool(course_data['featured']) ?
+                      Imports::Rubyandrailsinfo::Helpers.parse_time(course_data['created_at']) : nil
+      e.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(course_data['created_at'])
+      e.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(course_data['updated_at'])
     end
 
     # Step 3: Register for join table lookup
-    Rubyandrailsinfo::Helpers.register_entry('Course', course_data['id'], entry)
+    Imports::Rubyandrailsinfo::Helpers.register_entry('Course', course_data['id'], entry)
 
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, courses_data.count, "Courses")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, courses_data.count, "Courses")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing course: #{e.message}"
     puts "    Data: #{course_data.inspect}"

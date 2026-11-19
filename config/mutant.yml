@@ -1,0 +1,27 @@
+---
+# Mutation testing (issue #47). Free for open source; this repo is public and
+# Apache-2.0, so `usage: opensource` is the licence.
+usage: opensource
+
+integration:
+  name: minitest
+
+environment_variables:
+  RAILS_ENV: test
+  SKIP_COVERAGE_CHECK: "1"
+
+includes:
+  # The test files require "test_helper" by name.
+  - test
+
+requires:
+  - ./config/environment
+  - ./test/test_helper
+
+# The value objects first. They are pure, fast to mutate and the place where a
+# weak assertion does the most damage. Add a subject when its tests can survive
+# mutation, never remove one to make a run pass.
+matcher:
+  subjects:
+    - Slug
+    - FtsQuery

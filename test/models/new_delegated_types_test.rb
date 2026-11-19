@@ -127,4 +127,33 @@ class NewDelegatedTypesTest < ActiveSupport::TestCase
     assert entry.updated_at > original_updated_at,
            "Expected entry.updated_at (#{entry.updated_at}) to be greater than original (#{original_updated_at})"
   end
+
+  # `name` arrived as a nullable column with no backfill, so rows that predate it
+  # carry no name and display_name has to fall back.
+  NAMELESS_TYPES = [
+    Newsletter, Blog, Video, Channel, Documentation, TestingResource,
+    DevelopmentEnvironment, JobBoard, Framework, Directory, Product
+  ].freeze
+
+  NAMELESS_TYPES.each do |type|
+    test "#{type} without a name shows the title of its entry" do
+      record = type.create!(name: "Placeholder")
+      record.update_column(:name, nil)
+      Entry.create!(
+        title: "#{type} Of The Week",
+        url: "https://example.com/#{type.name.underscore}-of-the-week",
+        entryable: record,
+        status: :approved
+      )
+
+      assert_equal "#{type} Of The Week", record.reload.display_name
+    end
+
+    test "#{type} without a name and without an entry shows its id" do
+      record = type.create!(name: "Placeholder")
+      record.update_column(:name, nil)
+
+      assert_equal "#{type} ##{record.id}", record.display_name
+    end
+  end
 end

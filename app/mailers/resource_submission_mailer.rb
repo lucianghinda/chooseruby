@@ -6,13 +6,7 @@ class ResourceSubmissionMailer < ApplicationMailer
 
   def notify_team(submission)
     @submission = submission
-
-    # Handle both Entry and ResourceSubmission models
-    @categories = if submission.respond_to?(:selected_categories)
-                    submission.selected_categories
-    else
-                    submission.categories
-    end
+    @categories = submission.categories
 
     mail(subject: "New resource submission: #{submission.title}")
   end
@@ -20,11 +14,8 @@ class ResourceSubmissionMailer < ApplicationMailer
   def confirm_submitter(submission)
     @submission = submission
 
-    # Get email from submitter_email (Entry) or contact_email (ResourceSubmission)
-    email = submission.try(:submitter_email) || submission.try(:contact_email)
-
     mail(
-      to: email,
+      to: submission.submitter_email,
       subject: "We received your resource submission for ChooseRuby"
     )
   end

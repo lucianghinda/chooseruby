@@ -103,35 +103,11 @@ module Imports
             "created_at" => record["created_at"],
             "updated_at" => record["updated_at"]
           }
-        when "newsletters"
-          {
-            "id" => record["id"],
-            "created_at" => record["created_at"],
-            "updated_at" => record["updated_at"]
-          }
-        when "podcasts"
-          {
-            "id" => record["id"],
-            "created_at" => record["created_at"],
-            "updated_at" => record["updated_at"]
-          }
         when "communities"
           {
             "id" => record["id"],
             "platform_type" => record["platform_type"],
             "members" => record["members"],
-            "created_at" => record["created_at"],
-            "updated_at" => record["updated_at"]
-          }
-        when "youtubes"
-          {
-            "id" => record["id"],
-            "created_at" => record["created_at"],
-            "updated_at" => record["updated_at"]
-          }
-        when "screencasts"
-          {
-            "id" => record["id"],
             "created_at" => record["created_at"],
             "updated_at" => record["updated_at"]
           }
@@ -143,7 +119,7 @@ module Imports
             "updated_at" => record["updated_at"]
           }
         else
-          # Default: include id and timestamps
+          # Newsletters, podcasts, youtubes, screencasts: id and timestamps only
           {
             "id" => record["id"],
             "created_at" => record["created_at"],
@@ -165,11 +141,7 @@ module Imports
         when "lessons"
           # Lessons use 'url' field instead of 'website_url'
           base_fields.merge("url" => record["url"])
-        when "youtubes"
-          # Youtubes use 'website_url'
-          base_fields.merge("website_url" => record["website_url"])
         else
-          # All others use 'website_url'
           base_fields.merge("website_url" => record["website_url"])
         end
       end

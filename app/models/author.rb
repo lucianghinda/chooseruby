@@ -73,7 +73,9 @@ class Author < ApplicationRecord
   enum :status, { pending: 0, approved: 1 }, default: :pending
 
   # Callbacks
-  before_validation :generate_slug, if: -> { name.present? && (slug.blank? || name_changed?) }
+  # A slug given on create is kept: the rubyandrailsinfo import carries the legacy
+  # slugs so old URLs keep working, and looks records up by them.
+  before_validation :generate_slug, if: -> { name.present? && (slug.blank? || (persisted? && name_changed?)) }
   after_save :fetch_github_avatar, if: :saved_change_to_github_url?
   after_save :sync_to_fts, if: :saved_change_to_name?
   after_destroy :remove_from_fts
@@ -87,16 +89,7 @@ class Author < ApplicationRecord
   # Generate URL-friendly slug from name
   # Ensures uniqueness by appending number if needed
   def generate_slug
-    base_slug = name.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Author.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
+    self.slug = Slug.new(name, taken_by: Author.where.not(id: id)).to_s
   end
 
   # Fetch GitHub avatar URL when github_url changes
@@ -111,35 +104,17 @@ class Author < ApplicationRecord
   # Sync author data to FTS5 virtual table for full-text search
   # Called after save when name changed
   def sync_to_fts
-    # Handle nil or empty name
-    name_text = name.to_s
-
-    # Delete existing FTS row first (FTS5 tables don't support proper upserts)
-    ActiveRecord::Base.connection.execute(
-      ActiveRecord::Base.sanitize_sql_array([
-        "DELETE FROM authors_fts WHERE author_id = ?",
-        id
-      ])
-    )
-
-    # Insert new FTS row
-    ActiveRecord::Base.connection.execute(
-      ActiveRecord::Base.sanitize_sql_array([
-        "INSERT INTO authors_fts (author_id, name) VALUES (?, ?)",
-        id,
-        name_text
-      ])
-    )
+    fts_index.replace(name: name.to_s)
   end
 
   # Remove author from FTS5 virtual table
   # Called after destroy
   def remove_from_fts
-    ActiveRecord::Base.connection.execute(
-      ActiveRecord::Base.sanitize_sql_array([
-        "DELETE FROM authors_fts WHERE author_id = ?",
-        id
-      ])
-    )
+    fts_index.delete
+  end
+
+  # The author's row in the FTS5 virtual table backing author search
+  def fts_index
+    FtsIndex.new(table: "authors_fts", key_column: "author_id", key: id)
   end
 end

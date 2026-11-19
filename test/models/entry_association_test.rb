@@ -74,8 +74,8 @@ class EntryAssociationTest < ActiveSupport::TestCase
     )
 
     assert entry.approved?
-    refute entry.pending?
-    refute entry.rejected?
+    assert_not entry.pending?
+    assert_not entry.rejected?
   end
 
   test "enums work correctly for experience_level" do
@@ -87,8 +87,8 @@ class EntryAssociationTest < ActiveSupport::TestCase
     )
 
     assert entry.intermediate?
-    refute entry.beginner?
-    refute entry.advanced?
+    assert_not entry.beginner?
+    assert_not entry.advanced?
   end
 
   test "tags serialize and deserialize as JSON array" do

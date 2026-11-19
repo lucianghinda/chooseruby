@@ -3,7 +3,7 @@
 class Avo::Filters::AuthorProposalStatusFilter < Avo::Filters::SelectFilter
   self.name = "Status"
 
-  def apply(request, query, value)
+  def apply(_request, query, value)
     status = value.to_s.downcase
 
     case status

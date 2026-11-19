@@ -2,7 +2,7 @@
 
 puts "Importing newsletters..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 newsletters_data = parser.extract_table('newsletters')
 
 success_count = 0
@@ -20,8 +20,8 @@ newsletters_data.each_with_index do |newsletter_data, index|
     # Step 1: Create Newsletter record
     newsletter = Newsletter.create! do |n|
       n.name = newsletter_data['title']
-      n.created_at = Rubyandrailsinfo::Helpers.parse_time(newsletter_data['created_at'])
-      n.updated_at = Rubyandrailsinfo::Helpers.parse_time(newsletter_data['updated_at'])
+      n.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(newsletter_data['created_at'])
+      n.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(newsletter_data['updated_at'])
     end
 
     # Step 2: Create Entry record
@@ -34,17 +34,17 @@ newsletters_data.each_with_index do |newsletter_data, index|
       e.published = true
       e.experience_level = :all_levels
       e.tags = []
-      e.featured_at = Rubyandrailsinfo::Helpers.parse_bool(newsletter_data['featured']) ?
-                      Rubyandrailsinfo::Helpers.parse_time(newsletter_data['created_at']) : nil
-      e.created_at = Rubyandrailsinfo::Helpers.parse_time(newsletter_data['created_at'])
-      e.updated_at = Rubyandrailsinfo::Helpers.parse_time(newsletter_data['updated_at'])
+      e.featured_at = Imports::Rubyandrailsinfo::Helpers.parse_bool(newsletter_data['featured']) ?
+                      Imports::Rubyandrailsinfo::Helpers.parse_time(newsletter_data['created_at']) : nil
+      e.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(newsletter_data['created_at'])
+      e.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(newsletter_data['updated_at'])
     end
 
     # Step 3: Register for join table lookup
-    Rubyandrailsinfo::Helpers.register_entry('Newsletter', newsletter_data['id'], entry)
+    Imports::Rubyandrailsinfo::Helpers.register_entry('Newsletter', newsletter_data['id'], entry)
 
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, newsletters_data.count, "Newsletters")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, newsletters_data.count, "Newsletters")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing newsletter: #{e.message}"
     puts "    Data: #{newsletter_data.inspect}"

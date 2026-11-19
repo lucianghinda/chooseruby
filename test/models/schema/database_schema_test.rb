@@ -27,7 +27,7 @@ class DatabaseSchemaTest < ActiveSupport::TestCase
 
     # Test cascade delete when category is deleted
     category.destroy
-    refute CategoriesEntry.exists?(join_record.id)
+    assert_not CategoriesEntry.exists?(join_record.id)
   end
 
   test "categories_entries has unique composite index on category_id and entry_id" do

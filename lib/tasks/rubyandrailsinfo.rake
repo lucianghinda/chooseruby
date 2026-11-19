@@ -8,7 +8,7 @@ require_relative "../imports/rubyandrailsinfo/yaml_importer"
 namespace :rubyandrailsinfo do
   desc "Convert PostgreSQL SQL dump to YAML files"
   task sql_to_yaml: :environment do
-    converter = Rubyandrailsinfo::SqlToYamlConverter.new(
+    converter = Imports::Rubyandrailsinfo::SqlToYamlConverter.new(
       sql_file: Rails.root.join("tmp/latest.sql"),
       output_dir: Rails.root.join("data/rubyandrailsinfo")
     )
@@ -18,7 +18,7 @@ namespace :rubyandrailsinfo do
 
   desc "Import YAML files into database (idempotent)"
   task yaml_to_db: :environment do
-    importer = Rubyandrailsinfo::YamlImporter.new(
+    importer = Imports::Rubyandrailsinfo::YamlImporter.new(
       yaml_dir: Rails.root.join("data/rubyandrailsinfo")
     )
 

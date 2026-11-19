@@ -320,6 +320,38 @@ class EntryDirectoryQueryTest < ActiveSupport::TestCase
     assert_includes results, @entry4
   end
 
+  test "sorts by the scope the sort parameter names" do
+    # Fix the timestamps so the expected order does not depend on creation timing
+    @entry1.update_column(:updated_at, 4.days.ago)
+    @entry2.update_column(:updated_at, 3.days.ago)
+    @entry3.update_column(:updated_at, 2.days.ago)
+    @entry4.update_column(:updated_at, 1.day.ago)
+
+    results = EntryDirectoryQuery.new({ sort: "oldest" }).call.to_a
+
+    assert_equal [ @entry1.id, @entry2.id, @entry3.id, @entry4.id ], results.map(&:id)
+  end
+
+  test "falls back to most recently curated when the sort parameter is unknown" do
+    @entry1.update_column(:updated_at, 4.days.ago)
+    @entry2.update_column(:updated_at, 3.days.ago)
+    @entry3.update_column(:updated_at, 2.days.ago)
+    @entry4.update_column(:updated_at, 1.day.ago)
+
+    results = EntryDirectoryQuery.new({ sort: "nonsense" }).call.to_a
+
+    assert_equal [ @entry4.id, @entry3.id, @entry2.id, @entry1.id ], results.map(&:id)
+  end
+
+  test "handles unknown experience level parameter gracefully" do
+    @entry1.update!(experience_level: :beginner)
+    @entry2.update!(experience_level: :advanced)
+
+    results = EntryDirectoryQuery.new({ level: "expert" }).call
+
+    assert_equal 4, results.count, "Should return all entries with an unknown level"
+  end
+
   # Test 15: Invalid type parameter is handled gracefully
   test "handles invalid type parameter gracefully" do
     query = EntryDirectoryQuery.new({ type: "invalid_type" })

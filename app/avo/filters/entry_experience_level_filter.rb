@@ -3,7 +3,7 @@
 class Avo::Filters::EntryExperienceLevelFilter < Avo::Filters::SelectFilter
   self.name = "Experience Level"
 
-  def apply(request, query, value)
+  def apply(_request, query, value)
     return query if value.blank?
     query.where(experience_level: value)
   end

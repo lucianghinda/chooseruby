@@ -3,7 +3,7 @@
 class Avo::Filters::EntryTypeFilter < Avo::Filters::SelectFilter
   self.name = "Resource Type"
 
-  def apply(request, query, value)
+  def apply(_request, query, value)
     return query if value.blank?
     query.where(entryable_type: value)
   end

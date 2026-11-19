@@ -195,7 +195,7 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
   test "notify_team email displays submitter information correctly" do
     article = Article.create!(
       author_name: "DHH",
-      publication_date: Date.today - 30.days
+      publication_date: Time.zone.today - 30.days
     )
 
     entry = Entry.create!(
@@ -323,5 +323,24 @@ class ResourceSubmissionMailerTest < ActionMailer::TestCase
     assert_match "Ruby Community", html_body
     assert_match "Community", html_body
     assert_match "Ruby Community", text_body
+  end
+
+  test "rejection_notification falls back when no rejection review exists" do
+    tool = Tool.create!(tool_type: "CLI", license: "MIT")
+    entry = Entry.create!(
+      title: "Unreviewed Tool",
+      url: "https://example.com/unreviewed",
+      description: "A tool",
+      entryable: tool,
+      submitter_email: "developer@example.com",
+      status: :rejected
+    )
+
+    assert_empty entry.entry_reviews, "Entry should have no review to read a comment from"
+
+    email = ResourceSubmissionMailer.rejection_notification(entry)
+
+    assert_match "While we don't have specific feedback to share at this time", email.html_part.body.to_s
+    assert_match "While we don't have specific feedback to share at this time", email.text_part.body.to_s
   end
 end

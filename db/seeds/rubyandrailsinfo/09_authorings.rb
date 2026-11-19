@@ -2,7 +2,7 @@
 
 puts "Importing authorings (author-entry associations)..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 authorings_data = parser.extract_table('authorings')
 
 success_count = 0
@@ -12,7 +12,7 @@ skipped_count = 0
 authorings_data.each_with_index do |authoring, index|
   begin
     # Find author by old ID
-    author = Rubyandrailsinfo::Helpers.find_author(authoring['author_id'])
+    author = Imports::Rubyandrailsinfo::Helpers.find_author(authoring['author_id'])
     if author.nil?
       skipped_count += 1
       next
@@ -20,7 +20,7 @@ authorings_data.each_with_index do |authoring, index|
 
     # Find entry by old polymorphic reference
     # Note: SQL has "authorabble_type" with double 'b'
-    entry = Rubyandrailsinfo::Helpers.find_entry(
+    entry = Imports::Rubyandrailsinfo::Helpers.find_entry(
       authoring['authorabble_type'], # "Book", "Course", etc.
       authoring['authorabble_id']    # old ID
     )
@@ -33,7 +33,7 @@ authorings_data.each_with_index do |authoring, index|
     EntriesAuthor.find_or_create_by!(author: author, entry: entry)
 
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, authorings_data.count, "Authorings")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, authorings_data.count, "Authorings")
   rescue StandardError => e
     puts "\n  ✗ ERROR: #{e.message}"
     puts "    Data: #{authoring.inspect}"

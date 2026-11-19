@@ -11,14 +11,19 @@ module ApplicationCable
     private
 
     def find_verified_user
-      token = cookies.signed[:session_token]
-      return reject_unauthorized_connection unless token
-
-      session = Session.includes(:user).find_by(token: token)
+      session = verified_session
       return reject_unauthorized_connection unless session
-      return reject_unauthorized_connection if session.expired?
 
       session.user
+    end
+
+    # The session the cookie points at, as long as it is still usable
+    def verified_session
+      token = cookies.signed[:session_token]
+      return unless token
+
+      session = Session.includes(:user).find_by(token: token)
+      session unless session&.expired?
     end
   end
 end

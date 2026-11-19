@@ -1,12 +1,34 @@
 # frozen_string_literal: true
 
 class EntryDirectoryQuery
+  # Sort parameter values mapped onto the ordering they ask for
+  SORT_SCOPES = {
+    "popular" => :by_popularity,
+    "oldest" => :oldest_first,
+    "beginner_first" => :beginner_first
+  }.freeze
+
+  # Entry search also drops apostrophes, which FTS5 cannot match across the
+  # titles and descriptions it indexes
+  IGNORED_SEARCH_CHARACTERS = /[()\-']/
+
   attr_reader :category, :type
 
-  def initialize(params = {}, scope: default_scope)
+  # The entries a directory listing runs against unless the caller narrows it down
+  def self.default_scope
+    Entry.visible.with_directory_includes
+  end
+
+  # @param slug [String, nil] category slug from the request
+  # @return [Category, nil] the category to filter by, if the slug names one
+  def self.locate_category(slug)
+    Category.find_by(slug:) if slug.present?
+  end
+
+  def initialize(params = {}, scope: EntryDirectoryQuery.default_scope)
     @params = params.to_h.symbolize_keys
     @scope = scope
-    @category = locate_category(@params[:category])
+    @category = EntryDirectoryQuery.locate_category(@params[:category])
     @type = @params[:type].to_s.strip.presence
     @sort = @params[:sort].to_s.strip.presence
   end
@@ -31,32 +53,26 @@ class EntryDirectoryQuery
 
   attr_reader :scope
 
-  def default_scope
-    Entry.visible.with_directory_includes
+  def filtered_scope
+    apply_sort(filtered_entries).distinct
   end
 
-  def filtered_scope
-    # Apply filters in chain, with FTS5 search ordering by relevance when query present
+  def filtered_entries
     scope
       .yield_self { |current| filter_by_query(current) }
       .yield_self { |current| filter_by_type(current) }
       .yield_self { |current| filter_by_level(current) }
       .yield_self { |current| filter_by_category(current) }
-      .yield_self { |current| apply_sort(current) }
-      .distinct
   end
 
+  # Joins the FTS5 virtual table and orders by BM25 relevance (rank),
+  # then by updated_at for ties
   def filter_by_query(current_scope)
     return current_scope if query.blank?
 
-    # Sanitize query for FTS5
-    sanitized_query = sanitize_fts_query(query)
-
-    # Join to FTS5 virtual table and filter by MATCH query
-    # Order by FTS5 BM25 relevance (rank), then by updated_at for ties
     current_scope
       .joins("JOIN entries_fts ON entries_fts.entry_id = entries.id")
-      .where("entries_fts MATCH ?", sanitized_query)
+      .where("entries_fts MATCH ?", FtsQuery.new(query, ignored_characters: IGNORED_SEARCH_CHARACTERS).to_s)
       .order("entries_fts.rank, entries.updated_at DESC")
   end
 
@@ -64,18 +80,14 @@ class EntryDirectoryQuery
     return current_scope if type.blank?
     return current_scope unless Entry::VALID_TYPES.key?(type)
 
-    mapped_type = Entry::VALID_TYPES[type]
-    current_scope.where(entryable_type: mapped_type)
+    current_scope.where(entryable_type: Entry::VALID_TYPES[type])
   end
 
   def filter_by_level(current_scope)
     return current_scope if level.blank?
     return current_scope unless Entry.experience_levels.key?(level)
 
-    selected_level_value = Entry.experience_levels[level]
-    all_levels_value = Entry.experience_levels["all_levels"]
-
-    current_scope.where(experience_level: [ selected_level_value, all_levels_value ])
+    current_scope.for_experience_level(level)
   end
 
   def filter_by_category(current_scope)
@@ -85,84 +97,14 @@ class EntryDirectoryQuery
   end
 
   def apply_sort(current_scope)
-    case sort
-    when "recent", "newest"
-      query.present? ? current_scope : current_scope.order(updated_at: :desc)
-    when "popular"
-      current_scope.reorder(Arel.sql(popularity_order_sql))
-    when "oldest"
-      current_scope.reorder(updated_at: :asc)
-    when "beginner_first"
-      current_scope.reorder(Arel.sql("experience_level = 'beginner' DESC, experience_level = 'intermediate' DESC, experience_level = 'advanced' DESC, entries.updated_at DESC"))
-    else
-      query.present? ? current_scope : current_scope.order(updated_at: :desc)
-    end
+    sort_scope = SORT_SCOPES[sort]
+    return default_order(current_scope) unless sort_scope
+
+    current_scope.public_send(sort_scope)
   end
 
-  def popularity_order_sql
-    <<~SQL.squish
-      COALESCE(
-        CASE entries.entryable_type
-          WHEN 'RubyGem' THEN (SELECT downloads_count FROM ruby_gems WHERE ruby_gems.id = entries.entryable_id)
-          WHEN 'Community' THEN (SELECT member_count FROM communities WHERE communities.id = entries.entryable_id)
-          WHEN 'Podcast' THEN (SELECT episode_count FROM podcasts WHERE podcasts.id = entries.entryable_id)
-          ELSE NULL
-        END,
-        0
-      ) DESC,
-      entries.updated_at DESC
-    SQL
-  end
-
-  def locate_category(slug)
-    return if slug.blank?
-
-    Category.find_by(slug:)
-  end
-
-  # Sanitize FTS5 query string to handle special characters and add wildcards
-  # Detects quoted phrases and preserves them for exact matching
-  # Adds wildcard suffix (*) to non-phrase words for partial matching
-  # Escapes FTS5 special characters: ", -, *, (, )
-  #
-  # Examples:
-  #   "rails" => "rails*"
-  #   "rails framework" => "rails* framework*"
-  #   '"web framework"' => '"web framework"'
-  #   'rails "web framework"' => 'rails* "web framework"'
-  def sanitize_fts_query(query_string)
-    return "" if query_string.blank?
-
-    # Extract quoted phrases and their positions
-    phrases = []
-    query_without_phrases = query_string.gsub(/"([^"]*)"/) do |match|
-      phrases << match
-      "__PHRASE_#{phrases.length - 1}__"
-    end
-
-    # Process non-phrase words: escape special chars and add wildcards
-    processed_words = query_without_phrases.split(/\s+/).map do |word|
-      # Skip placeholder tokens
-      if word.start_with?("__PHRASE_")
-        word
-      else
-        # Remove FTS5 special characters (not quotes since those are for phrase search)
-        # We'll just remove problematic chars: (, ), -
-        # For wildcard *, we'll remove existing ones and add our own
-        cleaned = word.gsub(/[\(\)\-']/, "")
-        # Remove any existing wildcards to prevent double-wildcarding
-        cleaned = cleaned.gsub(/\*+$/, "")
-        # Add wildcard suffix for partial matching (unless word is empty)
-        cleaned.present? ? "#{cleaned}*" : ""
-      end
-    end.reject(&:blank?)
-
-    # Reconstruct query by replacing placeholders with original phrases
-    result = processed_words.join(" ")
-    phrases.each_with_index do |phrase, index|
-      result = result.gsub("__PHRASE_#{index}__", phrase)
-    end
-
-    result
+  # Most recently curated first, unless FTS5 relevance ordering should stand
+  def default_order(current_scope)
+    query.present? ? current_scope : current_scope.order(updated_at: :desc)
   end
 end

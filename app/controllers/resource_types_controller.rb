@@ -9,12 +9,12 @@ class ResourceTypesController < ApplicationController
 
     # Prepare query parameters including type
     query_params = params.permit(:q, :level, :category, :type).to_h.merge(type: @type)
-    @directory_query = EntryDirectoryQuery.new(query_params)
+    directory_query = EntryDirectoryQuery.new(query_params)
 
     # Set instance variables for filters
-    @query = @directory_query.query
-    @active_level = @directory_query.level
-    @active_category = @directory_query.category
+    @query = directory_query.query
+    @active_level = directory_query.level
+    @active_category = directory_query.category
 
     # Fetch featured entries for this type (limit 5)
     @featured_entries = fetch_featured_entries
@@ -23,7 +23,7 @@ class ResourceTypesController < ApplicationController
     @category_stats = fetch_category_stats
 
     # Paginate results at 25 per page
-    @entries = @directory_query.call.page(params[:page]).per(25)
+    @entries = directory_query.call.page(params[:page]).per(25)
   end
 
   private

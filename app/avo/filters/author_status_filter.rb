@@ -3,7 +3,7 @@
 class Avo::Filters::AuthorStatusFilter < Avo::Filters::SelectFilter
   self.name = "Status"
 
-  def apply(request, query, value)
+  def apply(_request, query, value)
     case value
     when "approved"
       query.approved

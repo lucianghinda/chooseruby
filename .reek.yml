@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/troessner/reek/master/docs/schema.json
+---
+exclude_paths:
+  - bin
+  - config
+  - db
+  - log
+  - public
+  - test
+  - storage
+  - tmp
+  - vendor
+  # One-off import scripts, run by hand and never served. Deferred by explicit
+  # decision so the effort goes into code that actually runs in production.
+  - lib/imports
+
+detectors:
+  # Rails class names are self-documenting and the project does not use
+  # class-level doc comments as a convention.
+  IrresponsibleModule:
+    enabled: false

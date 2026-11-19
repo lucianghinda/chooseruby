@@ -2,7 +2,7 @@
 
 puts "Importing communities..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 communities_data = parser.extract_table('communities')
 
 success_count = 0
@@ -38,10 +38,10 @@ communities_data.each_with_index do |community_data, index|
       # Map platform_type (might be numeric in SQL) to platform name
       c.platform = PLATFORM_MAP[community_data['platform_type'].to_s] || 'Other'
       c.join_url = community_data['website_url']
-      c.member_count = Rubyandrailsinfo::Helpers.to_int(community_data['members'])
+      c.member_count = Imports::Rubyandrailsinfo::Helpers.to_int(community_data['members'])
       c.is_official = false # Default, not in source data
-      c.created_at = Rubyandrailsinfo::Helpers.parse_time(community_data['created_at'])
-      c.updated_at = Rubyandrailsinfo::Helpers.parse_time(community_data['updated_at'])
+      c.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(community_data['created_at'])
+      c.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(community_data['updated_at'])
     end
 
     # Step 2: Create Entry record
@@ -54,17 +54,17 @@ communities_data.each_with_index do |community_data, index|
       e.published = true
       e.experience_level = :all_levels
       e.tags = []
-      e.featured_at = Rubyandrailsinfo::Helpers.parse_bool(community_data['featured']) ?
-                      Rubyandrailsinfo::Helpers.parse_time(community_data['created_at']) : nil
-      e.created_at = Rubyandrailsinfo::Helpers.parse_time(community_data['created_at'])
-      e.updated_at = Rubyandrailsinfo::Helpers.parse_time(community_data['updated_at'])
+      e.featured_at = Imports::Rubyandrailsinfo::Helpers.parse_bool(community_data['featured']) ?
+                      Imports::Rubyandrailsinfo::Helpers.parse_time(community_data['created_at']) : nil
+      e.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(community_data['created_at'])
+      e.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(community_data['updated_at'])
     end
 
     # Step 3: Register for join table lookup
-    Rubyandrailsinfo::Helpers.register_entry('Community', community_data['id'], entry)
+    Imports::Rubyandrailsinfo::Helpers.register_entry('Community', community_data['id'], entry)
 
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, communities_data.count, "Communities")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, communities_data.count, "Communities")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing community: #{e.message}"
     puts "    Data: #{community_data.inspect}"

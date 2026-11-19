@@ -2,7 +2,7 @@
 
 puts "Importing videos (from youtubes, screencasts, and lessons)..."
 
-parser = Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
+parser = Imports::Rubyandrailsinfo::SqlParser.new(Rails.root.join('tmp/latest.sql'))
 
 success_count = 0
 error_count = 0
@@ -15,8 +15,8 @@ def create_video_and_entry(video_data, type_name)
   # Step 1: Create Video record
   video = Video.create! do |v|
     v.name = video_data['title']
-    v.created_at = Rubyandrailsinfo::Helpers.parse_time(video_data['created_at'])
-    v.updated_at = Rubyandrailsinfo::Helpers.parse_time(video_data['updated_at'])
+    v.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(video_data['created_at'])
+    v.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(video_data['updated_at'])
   end
 
   # Step 2: Create Entry record
@@ -35,12 +35,12 @@ def create_video_and_entry(video_data, type_name)
     e.published = true
     e.experience_level = :all_levels
     e.tags = []
-    e.created_at = Rubyandrailsinfo::Helpers.parse_time(video_data['created_at'])
-    e.updated_at = Rubyandrailsinfo::Helpers.parse_time(video_data['updated_at'])
+    e.created_at = Imports::Rubyandrailsinfo::Helpers.parse_time(video_data['created_at'])
+    e.updated_at = Imports::Rubyandrailsinfo::Helpers.parse_time(video_data['updated_at'])
   end
 
   # Step 3: Register for join table lookup
-  Rubyandrailsinfo::Helpers.register_entry(type_name, video_data['id'], entry)
+  Imports::Rubyandrailsinfo::Helpers.register_entry(type_name, video_data['id'], entry)
 
   { video: video, entry: entry }
 end
@@ -52,7 +52,7 @@ youtubes_data.each_with_index do |youtube_data, index|
   begin
     create_video_and_entry(youtube_data, 'Youtube')
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, youtubes_data.count, "Youtubes")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, youtubes_data.count, "Youtubes")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing youtube: #{e.message}"
     puts "    Data: #{youtube_data.inspect}"
@@ -67,7 +67,7 @@ screencasts_data.each_with_index do |screencast_data, index|
   begin
     create_video_and_entry(screencast_data, 'Screencast')
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, screencasts_data.count, "Screencasts")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, screencasts_data.count, "Screencasts")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing screencast: #{e.message}"
     puts "    Data: #{screencast_data.inspect}"
@@ -82,7 +82,7 @@ lessons_data.each_with_index do |lesson_data, index|
   begin
     create_video_and_entry(lesson_data, 'Lesson')
     success_count += 1
-    Rubyandrailsinfo::Helpers.progress(index + 1, lessons_data.count, "Lessons")
+    Imports::Rubyandrailsinfo::Helpers.progress(index + 1, lessons_data.count, "Lessons")
   rescue StandardError => e
     puts "\n  ✗ ERROR importing lesson: #{e.message}"
     puts "    Data: #{lesson_data.inspect}"

@@ -167,6 +167,16 @@ class AuthorProposalTest < ActiveSupport::TestCase
     assert_includes proposal.errors[:link_updates], "github_url must be a valid URL starting with http:// or https://"
   end
 
+  test "should reject link_updates for fields that are not links" do
+    proposal = AuthorProposal.new(
+      author: @author,
+      link_updates: { "name" => "https://example.com" },
+      submitter_email: "test@example.com"
+    )
+    assert_not proposal.save, "Saved proposal proposing a link for a field that holds no link"
+    assert_includes proposal.errors[:link_updates], "name is not a valid link field"
+  end
+
   test "should allow valid URLs in link_updates" do
     proposal = AuthorProposal.new(
       author: @author,
@@ -417,6 +427,80 @@ class AuthorProposalTest < ActiveSupport::TestCase
     end
 
     assert proposal.pending?, "Proposal should remain pending without admin_comment"
+  end
+
+  test "reject! should refuse a blank admin_comment" do
+    proposal = AuthorProposal.create!(
+      author: @author,
+      bio_text: "Some bio text",
+      submitter_email: "test@example.com"
+    )
+
+    error = assert_raises(ArgumentError) do
+      proposal.reject!(admin_comment: "   ")
+    end
+
+    assert_equal "admin_comment is required for rejection", error.message
+    assert proposal.reload.pending?, "Proposal should remain pending with a blank admin_comment"
+    assert_nil proposal.reviewed_at
+  end
+
+  test "approve! should skip blank link_updates values instead of clearing the author field" do
+    @author.update!(website_url: "https://matz.example.com")
+
+    proposal = AuthorProposal.create!(
+      author: @author,
+      link_updates: {
+        "github_url" => "https://github.com/matz",
+        "website_url" => ""
+      },
+      submitter_email: "test@example.com"
+    )
+
+    assert proposal.persisted?, "Blank link values should not fail URL validation"
+
+    proposal.approve!
+
+    @author.reload
+    assert_equal "https://github.com/matz", @author.github_url
+    assert_equal "https://matz.example.com", @author.website_url, "Blank value must not wipe the existing link"
+  end
+
+  test "approve! should keep the existing EntriesAuthor when one is already there" do
+    entry = Entry.create!(
+      title: "RSpec Testing",
+      url: "https://rspec.info",
+      status: :approved,
+      published: true,
+      submitter_email: "creator@example.com"
+    )
+    existing = EntriesAuthor.create!(author: @author, entry: entry)
+
+    proposal = AuthorProposal.create!(
+      author: @author,
+      resource_url: "https://rspec.info",
+      submitter_email: "test@example.com"
+    )
+
+    assert_no_difference "EntriesAuthor.count" do
+      proposal.approve!
+    end
+
+    assert proposal.approved?
+    assert EntriesAuthor.exists?(existing.id), "Existing association should be left untouched"
+  end
+
+  test "normalization can empty the resource_url, which then matches no entry" do
+    proposal = AuthorProposal.create!(
+      author: @author,
+      resource_url: "/",
+      bio_text: "Some bio text",
+      submitter_email: "test@example.com"
+    )
+
+    assert_equal "/", proposal.original_resource_url
+    assert_predicate proposal.resource_url, :blank?
+    assert_nil proposal.matched_entry_id
   end
 
   # Test 2.1.6: New author creation flow via approve!

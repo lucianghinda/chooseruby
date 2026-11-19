@@ -126,7 +126,7 @@ class ResourceTypeWorkflowsTest < ActionDispatch::IntegrationTest
       entries.each do |e|
         e.categories.to_a
         e.authors.to_a
-        e.entryable.gem_name if e.entryable.present?
+        e.entryable.presence&.gem_name
       end
     end
 

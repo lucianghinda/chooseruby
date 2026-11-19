@@ -3,6 +3,21 @@
 require "test_helper"
 
 class ResourcesControllerTest < ActionDispatch::IntegrationTest
+  test "index lists the visible entries that match the filters" do
+    matching = Entry.create!(
+      title: "Sidekiq Background Jobs",
+      url: "https://example.com/sidekiq",
+      published: true,
+      status: :approved,
+      experience_level: :intermediate
+    )
+
+    get resources_path, params: { q: "Sidekiq", level: "intermediate" }
+
+    assert_response :success
+    assert_includes response.body, matching.title
+  end
+
   test "should find entry by slug and render show template for visible entry" do
     entry = Entry.create!(
       title: "RSpec Testing Guide",
@@ -182,5 +197,33 @@ class ResourcesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h2", text: /Related resources/
     assert_select "a", text: "Category Related Entry"
+  end
+
+  test "related resources stop at five entries from the same categories" do
+    category = Category.create!(name: "Related Cap", slug: "related-cap")
+
+    entry = Entry.create!(
+      title: "Entry With Many Neighbours",
+      url: "https://example.com/many-neighbours",
+      published: true,
+      status: :approved
+    )
+    entry.categories << category
+
+    neighbour_titles = Array.new(5) do |index|
+      neighbour = Entry.create!(
+        title: "Neighbour Entry #{index}",
+        url: "https://example.com/neighbour-#{index}",
+        published: true,
+        status: :approved
+      )
+      neighbour.categories << category
+      neighbour.title
+    end
+
+    get "/resources/#{entry.slug}"
+
+    assert_response :success
+    neighbour_titles.each { |title| assert_includes response.body, title }
   end
 end

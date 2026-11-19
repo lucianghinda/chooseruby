@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Refuses requests coming from a banned ip address or from a banned user.
+#
+# Include this after Authentication: block_if_banned asks for the current user,
+# which the authentication callback resolves from the session cookie.
 module BlockBannedRequests
   extend ActiveSupport::Concern
 
@@ -20,6 +24,6 @@ module BlockBannedRequests
   end
 
   def banned_user?
-    Current.user&.banned?
+    current_user&.banned?
   end
 end

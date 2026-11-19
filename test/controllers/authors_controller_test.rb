@@ -3,6 +3,28 @@
 require "test_helper"
 
 class AuthorsControllerTest < ActionDispatch::IntegrationTest
+  test "index lists approved authors and hides pending ones" do
+    approved = Author.create!(name: "Indexed Author", status: :approved)
+    pending = Author.create!(name: "Unindexed Author", status: :pending)
+
+    get authors_path
+
+    assert_response :success
+    assert_match approved.name, response.body
+    assert_no_match(/#{pending.name}/, response.body)
+  end
+
+  test "index narrows the directory down to the searched authors" do
+    matching = Author.create!(name: "Searchable Matz", status: :approved)
+    other = Author.create!(name: "Unrelated Person", status: :approved)
+
+    get authors_path, params: { q: "Searchable" }
+
+    assert_response :success
+    assert_match matching.name, response.body
+    assert_no_match(/#{other.name}/, response.body)
+  end
+
   test "should show approved author profile" do
     author = Author.create(name: "Yukihiro Matsumoto", status: :approved)
     get author_path(slug: author.slug)

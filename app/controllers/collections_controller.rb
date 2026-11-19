@@ -10,10 +10,10 @@ class CollectionsController < ApplicationController
 
   def show
     @categories = Category.order(:display_order, :name)
-    @base_filters = @collection.fetch(:filters, {}).symbolize_keys
+    base_filters = @collection.fetch(:filters, {}).symbolize_keys
     override_filters = params.permit(:q, :level, :category).to_h.symbolize_keys
-    merged_filters = @base_filters.merge(override_filters) do |_key, base, override|
-      override.present? ? override : base
+    merged_filters = base_filters.merge(override_filters) do |_key, base, override|
+      override.presence || base
     end
 
     @directory_query = EntryDirectoryQuery.new(merged_filters)

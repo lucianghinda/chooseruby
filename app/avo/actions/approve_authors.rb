@@ -7,11 +7,15 @@ class Avo::Actions::ApproveAuthors < Avo::BaseAction
   self.cancel_button_label = "Cancel"
   self.no_confirmation = false
 
-  def handle(records:, fields:, current_user:, resource:, **args)
+  def handle(records:, **)
+    # Counted up front: `records` may be a relation whose scope no longer
+    # matches the authors once their status has changed.
+    approved_count = records.count
+
     records.each do |author|
       author.update(status: :approved)
     end
 
-    succeed "#{records.count} #{'author'.pluralize(records.count)} approved successfully!"
+    succeed "#{approved_count} #{'author'.pluralize(approved_count)} approved successfully!"
   end
 end

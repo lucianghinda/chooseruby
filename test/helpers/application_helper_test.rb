@@ -43,7 +43,7 @@ class ApplicationHelperTest < ActionView::TestCase
     result = breadcrumbs(items)
 
     # Last item should NOT be a link
-    refute_match(/<a[^>]*>Current Page<\/a>/, result)
+    assert_no_match(/<a[^>]*>Current Page<\/a>/, result)
     # Last item should be bold
     assert_match(/font-semibold.*Current Page/, result)
   end
@@ -69,7 +69,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
     assert_match(/Home/, result)
     # Should not have chevron separator
-    refute_match(/›/, result)
+    assert_no_match(/›/, result)
   end
 
   test "breadcrumbs handles two items with single separator" do

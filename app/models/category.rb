@@ -51,7 +51,9 @@ class Category < ApplicationRecord
   validates :description, length: { maximum: 500 }, allow_blank: true
 
   # Callbacks
-  before_validation :generate_slug, if: -> { name.present? && (slug.blank? || name_changed?) }
+  # A slug given on create is kept: the rubyandrailsinfo import carries the legacy
+  # slugs so old URLs keep working, and looks records up by them.
+  before_validation :generate_slug, if: -> { name.present? && (slug.blank? || (persisted? && name_changed?)) }
 
   # Returns the count of visible (published and approved) entries in this category
   #
@@ -88,15 +90,6 @@ class Category < ApplicationRecord
   # Generate URL-friendly slug from name
   # Ensures uniqueness by appending number if needed
   def generate_slug
-    base_slug = name.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Category.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
+    self.slug = Slug.new(name, taken_by: Category.where.not(id: id)).to_s
   end
 end

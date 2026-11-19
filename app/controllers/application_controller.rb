@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
 
   # Authentication and authorization
   include SetCurrentRequest
-  include BlockBannedRequests
   include Authentication
+  include BlockBannedRequests
   include Authorization
 
   helper_method :curated_collections_data, :experience_tracks_data

@@ -125,7 +125,7 @@ class DelegatedTypesTest < ActiveSupport::TestCase
     entry_id = entry.id
     ruby_gem.destroy
 
-    refute Entry.exists?(entry_id)
+    assert_not Entry.exists?(entry_id)
   end
 
   test "type checking helpers work correctly" do
@@ -138,12 +138,12 @@ class DelegatedTypesTest < ActiveSupport::TestCase
     )
 
     assert entry.ruby_gem?
-    refute entry.book?
-    refute entry.course?
-    refute entry.tutorial?
-    refute entry.article?
-    refute entry.tool?
-    refute entry.podcast?
-    refute entry.community?
+    assert_not entry.book?
+    assert_not entry.course?
+    assert_not entry.tutorial?
+    assert_not entry.article?
+    assert_not entry.tool?
+    assert_not entry.podcast?
+    assert_not entry.community?
   end
 end

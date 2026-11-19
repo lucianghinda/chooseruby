@@ -73,7 +73,7 @@ class CategoriesEntryTest < ActiveSupport::TestCase
       is_primary: true
     )
 
-    refute categories_entry2.valid?
+    assert_not categories_entry2.valid?
     assert_includes categories_entry2.errors[:is_primary], "An entry can only have one primary category"
   end
 

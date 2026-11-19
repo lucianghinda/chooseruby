@@ -13,6 +13,29 @@ class AuthorProposalsControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", text: /#{author.name}/
   end
 
+  test "GET new renders the 404 page for an unknown author" do
+    get propose_author_edit_path(author_id: 999_999)
+
+    assert_response :not_found
+    assert_match "The page you were looking for doesn't exist", response.body
+  end
+
+  test "GET new renders the 404 page for an author still pending approval" do
+    author = Author.create!(name: "Pending Author", status: :pending)
+
+    get propose_author_edit_path(author_id: author.id)
+
+    assert_response :not_found
+    assert_match "The page you were looking for doesn't exist", response.body
+  end
+
+  test "GET success renders the 404 page for an unknown proposal" do
+    get author_proposal_success_path(id: 999_999)
+
+    assert_response :not_found
+    assert_match "The page you were looking for doesn't exist", response.body
+  end
+
   test "GET new_author displays new author form" do
     get new_author_proposal_path
 
@@ -37,6 +60,22 @@ class AuthorProposalsControllerTest < ActionDispatch::IntegrationTest
     assert_select "div.text-rose-700", text: /couldn't save/
   end
 
+  test "POST create redisplays the new author form when a new author proposal is invalid" do
+    assert_no_difference "AuthorProposal.count" do
+      post author_proposals_path, params: {
+        author_proposal: {
+          author_name: "Brand New Author",
+          resource_url: "https://example.com/resource",
+          submitter_name: "John Doe"
+          # Missing submitter_email (required)
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "input#author_proposal_author_name"
+  end
+
   test "POST create successfully creates pending proposal" do
     author = Author.create!(name: "Test Author", status: :approved)
 
@@ -56,6 +95,27 @@ class AuthorProposalsControllerTest < ActionDispatch::IntegrationTest
     assert_equal author.id, proposal.author_id
     assert_equal "user@example.com", proposal.submitter_email
     assert_redirected_to author_proposal_success_path(proposal)
+  end
+
+  test "POST create keeps the submitted links and drops the blank ones" do
+    author = Author.create!(name: "Test Author", status: :approved)
+
+    post author_proposals_path, params: {
+      author_proposal: {
+        author_id: author.id,
+        submitter_email: "user@example.com",
+        link_updates: {
+          github_url: "https://github.com/testauthor",
+          website_url: "",
+          blog_url: "https://blog.example.com"
+        }
+      }
+    }
+
+    proposal = AuthorProposal.last
+    assert_redirected_to author_proposal_success_path(proposal)
+    assert_equal({ "github_url" => "https://github.com/testauthor", "blog_url" => "https://blog.example.com" },
+                 proposal.link_updates)
   end
 
   test "POST create prevents duplicate submissions within 24 hours" do

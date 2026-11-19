@@ -244,7 +244,38 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
     assert_equal original_result["tags"], updated_result["tags"]
   end
 
+  # Test 10: an entry without a description has no description change to sync
+  test "does not sync to FTS when an entry without a description changes an unrelated field" do
+    gem = RubyGem.create!(gem_name: "plain-gem", rubygems_url: "https://rubygems.org/gems/plain-gem")
+    entry = Entry.create!(
+      title: "No Description",
+      url: "https://example.com",
+      entryable: gem,
+      status: :approved,
+      published: true
+    )
+    stale_fts_title(entry)
+
+    # A freshly loaded entry has not touched its description association yet.
+    Entry.find(entry.id).update!(published: false)
+
+    assert_equal "stale", fts_title(entry), "Entry without a description should not re-sync"
+  end
+
   private
+
+  # Overwrites the indexed title so a later sync is visible
+  def stale_fts_title(entry)
+    ActiveRecord::Base.connection.execute(
+      "UPDATE entries_fts SET title = 'stale' WHERE entry_id = #{entry.id}"
+    )
+  end
+
+  def fts_title(entry)
+    ActiveRecord::Base.connection.execute(
+      "SELECT title FROM entries_fts WHERE entry_id = #{entry.id}"
+    ).first["title"]
+  end
 
   # Create FTS5 tables if they don't exist
   # This is needed for parallel test runs where each worker has its own database

@@ -30,7 +30,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
 
     entry = Entry.last
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    assert_not entry.published
     assert_equal "Test Resource", entry.title
     assert_redirected_to entry_success_path
   end
@@ -105,7 +105,7 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil entry.entryable
     assert_equal "Slack", entry.entryable.platform
     assert_equal "https://www.rubyonrails.link", entry.entryable.join_url
-    assert_equal true, entry.entryable.is_official
+    assert entry.entryable.is_official
   end
 
   # Test 3.1.6: POST create with validation failure renders form with errors (422 status)
@@ -124,6 +124,47 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select "form[action=?]", entries_path
+  end
+
+  test "POST create stores the entry when the submitted author no longer exists" do
+    missing_author_id = Author.maximum(:id).to_i + 1
+
+    assert_difference("Entry.count", 1) do
+      post entries_path, params: {
+        entry: {
+          title: "Entry with a stale author reference",
+          url: "https://example.com/stale-author",
+          description: "Test description",
+          resource_type: "RubyGem",
+          submitter_email: "john@example.com",
+          gem_name: "stale-author-gem",
+          author_id: missing_author_id
+        }
+      }
+    end
+
+    assert_empty Entry.last.authors
+    assert_redirected_to entry_success_path
+  end
+
+  test "POST create leaves the price unset for a Course submitted without one" do
+    assert_difference([ "Entry.count", "Course.count" ], 1) do
+      post entries_path, params: {
+        entry: {
+          title: "Free Ruby Course",
+          url: "https://example.com/free-course",
+          description: "Test description",
+          resource_type: "Course",
+          submitter_email: "john@example.com",
+          platform: "YouTube",
+          instructor: "Jane Doe",
+          is_free: true
+        }
+      }
+    end
+
+    assert_nil Entry.last.entryable.price_cents
+    assert_redirected_to entry_success_path
   end
 
   # Test 3.1.7: POST create successful submission redirects and sends emails
@@ -168,6 +209,219 @@ class EntriesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 2, entry.categories.count
     assert_includes entry.categories, category1
     assert_includes entry.categories, category2
+  end
+
+  test "POST create with Tutorial type creates Entry and Tutorial" do
+    assert_difference([ "Entry.count", "Tutorial.count" ], 1) do
+      post entries_path, params: {
+        entry: {
+          title: "Build a Rails App",
+          url: "https://example.com/tutorial",
+          description: "Step by step tutorial",
+          resource_type: "Tutorial",
+          submitter_email: "submitter@example.com",
+          platform: "GoRails",
+          author_name: "Tom Tutorialwriter",
+          reading_time_minutes: 15
+        }
+      }
+    end
+
+    entry = Entry.last
+    assert_equal "Tutorial", entry.entryable_type
+    assert_equal "Tom Tutorialwriter", entry.entryable.author_name
+    assert_equal 15, entry.entryable.reading_time_minutes
+  end
+
+  test "POST create with Article type creates Entry and Article" do
+    assert_difference([ "Entry.count", "Article.count" ], 1) do
+      post entries_path, params: {
+        entry: {
+          title: "Why Ruby Still Wins",
+          url: "https://example.com/article",
+          description: "An opinion piece",
+          resource_type: "Article",
+          submitter_email: "submitter@example.com",
+          platform: "Dev.to",
+          author_name: "Ada Articlewriter",
+          reading_time_minutes: 7
+        }
+      }
+    end
+
+    entry = Entry.last
+    assert_equal "Article", entry.entryable_type
+    assert_equal "Ada Articlewriter", entry.entryable.author_name
+    assert_equal "Dev.to", entry.entryable.platform
+  end
+
+  test "POST create with Tool type creates Entry and Tool" do
+    assert_difference([ "Entry.count", "Tool.count" ], 1) do
+      post entries_path, params: {
+        entry: {
+          title: "RuboCop",
+          url: "https://example.com/tool",
+          description: "A Ruby linter",
+          resource_type: "Tool",
+          submitter_email: "submitter@example.com",
+          tool_type: "Linter",
+          license: "MIT",
+          is_open_source: true,
+          github_url: "https://github.com/rubocop/rubocop"
+        }
+      }
+    end
+
+    entry = Entry.last
+    assert_equal "Tool", entry.entryable_type
+    assert_equal "Linter", entry.entryable.tool_type
+    assert_equal "MIT", entry.entryable.license
+    assert entry.entryable.is_open_source
+  end
+
+  test "POST create with Podcast type creates Entry and Podcast" do
+    assert_difference([ "Entry.count", "Podcast.count" ], 1) do
+      post entries_path, params: {
+        entry: {
+          title: "Remote Ruby",
+          url: "https://example.com/podcast",
+          description: "A Ruby podcast",
+          resource_type: "Podcast",
+          submitter_email: "submitter@example.com",
+          host: "Pat Podcasthost",
+          episode_count: 120,
+          frequency: "Weekly",
+          rss_feed_url: "https://example.com/feed.xml"
+        }
+      }
+    end
+
+    entry = Entry.last
+    assert_equal "Podcast", entry.entryable_type
+    assert_equal "Pat Podcasthost", entry.entryable.host
+    assert_equal 120, entry.entryable.episode_count
+  end
+
+  test "POST create converts a submitted Course price into cents" do
+    post entries_path, params: {
+      entry: {
+        title: "Paid Ruby Course",
+        url: "https://example.com/paid-course",
+        description: "Test description",
+        resource_type: "Course",
+        submitter_email: "john@example.com",
+        platform: "Avo Academy",
+        instructor: "Jane Doe",
+        currency: "USD",
+        price: "49.99"
+      }
+    }
+
+    assert_equal 4999, Entry.last.entryable.price_cents
+    assert_redirected_to entry_success_path
+  end
+
+  test "POST create rejects a submission filed under more than three categories" do
+    category_ids = Category.order(:id).limit(4).pluck(:id)
+    assert_equal 4, category_ids.size
+
+    assert_no_difference("Entry.count") do
+      post entries_path, params: {
+        entry: {
+          title: "Over-categorised Resource",
+          url: "https://example.com/over-categorised",
+          description: "Test description",
+          resource_type: "RubyGem",
+          submitter_email: "submitter@example.com",
+          gem_name: "over-categorised-gem",
+          category_ids: category_ids
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_match "You can select a maximum of 3 categories", response.body
+  end
+
+  test "POST create attaches the submitted author to the entry" do
+    author = Author.create!(name: "Submitting Author", status: :approved)
+
+    post entries_path, params: {
+      entry: {
+        title: "Entry with an author",
+        url: "https://example.com/with-author",
+        description: "Test description",
+        resource_type: "RubyGem",
+        submitter_email: "john@example.com",
+        gem_name: "with-author-gem",
+        author_id: author.id
+      }
+    }
+
+    assert_equal [ author ], Entry.last.authors.to_a
+    assert_redirected_to entry_success_path
+  end
+
+  test "POST create refuses to build an entryable for an unknown resource type" do
+    error = assert_raises(ArgumentError) do
+      post entries_path, params: {
+        entry: {
+          title: "Mystery Resource",
+          url: "https://example.com/mystery",
+          description: "Test description",
+          resource_type: "Grimoire",
+          submitter_email: "submitter@example.com"
+        }
+      }
+    end
+
+    assert_equal "Unknown resource type: Grimoire", error.message
+    assert_equal 0, Entry.where(title: "Mystery Resource").count
+  end
+
+  # ====================================================================
+  # Typeahead suggestion tests
+  # ====================================================================
+
+  test "GET suggestions returns an empty body for a query below two characters" do
+    get entries_suggestions_path, params: { q: "p" }
+
+    assert_response :success
+    assert_empty response.body.strip
+  end
+
+  test "GET suggestions lists matching entries, categories and types" do
+    category = Category.create!(name: "Podcasting", slug: "podcasting")
+    entry = Entry.create!(
+      title: "Podcast Playbook",
+      url: "https://example.com/podcast-playbook",
+      description: "A guide to Ruby podcasts",
+      status: :approved,
+      published: true
+    )
+
+    get entries_suggestions_path, params: { q: "podcast" }
+
+    assert_response :success
+    assert_match entry.title, response.body
+    assert_match category.name, response.body
+    assert_match "Podcasts", response.body
+  end
+
+  test "GET suggestions hides entries that are not visible" do
+    Entry.create!(
+      title: "Unapproved Podcast Draft",
+      url: "https://example.com/unapproved-podcast",
+      description: "Still pending review",
+      status: :pending,
+      published: false,
+      submitter_email: "draft@example.com"
+    )
+
+    get entries_suggestions_path, params: { q: "podcast" }
+
+    assert_response :success
+    assert_no_match(/Unapproved Podcast Draft/, response.body)
   end
 
   # ====================================================================

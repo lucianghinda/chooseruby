@@ -36,16 +36,19 @@ class GithubAvatarService
   def call
     return nil if @github_url.blank?
 
-    username = extract_username
-    return nil if username.blank?
-
-    construct_avatar_url(username)
-  rescue => e
-    Rails.logger.warn("GitHub avatar fetch failed for #{@github_url}: #{e.message}")
+    avatar_url
+  rescue => error
+    Rails.logger.warn("GitHub avatar fetch failed for #{@github_url}: #{error.message}")
     nil
   end
 
   private
+
+  # The avatar URL of the profile the GitHub URL points at
+  def avatar_url
+    username = extract_username
+    construct_avatar_url(username) if username.present?
+  end
 
   # Extract username from various GitHub URL formats
   def extract_username
