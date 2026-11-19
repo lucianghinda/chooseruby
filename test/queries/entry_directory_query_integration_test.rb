@@ -23,7 +23,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
       description: "Ruby on Rails is a web application framework",
       url: "https://rubyonrails.org",
       entryable: @gem1,
-      tags: [ "web", "mvc" ],
+      tags: ["web", "mvc"],
       status: :approved,
       published: true,
       experience_level: :intermediate
@@ -36,7 +36,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
       description: "Lightweight web microframework",
       url: "https://sinatrarb.com",
       entryable: @gem2,
-      tags: [ "web", "dsl" ],
+      tags: ["web", "dsl"],
       status: :approved,
       published: true,
       experience_level: :beginner
@@ -49,7 +49,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
       description: "Testing tool for behavior-driven development",
       url: "https://rspec.info",
       entryable: @gem3,
-      tags: [ "testing", "bdd" ],
+      tags: ["testing", "bdd"],
       status: :approved,
       published: true,
       experience_level: :intermediate
@@ -66,7 +66,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
 
   # Test 1: FTS search + category filter
   test "filters by FTS search and category" do
-    query = EntryDirectoryQuery.new({ q: "web", category: "web-development" })
+    query = EntryDirectoryQuery.new({q: "web", category: "web-development"})
     results = query.call.to_a
 
     assert_equal 2, results.count, "Should find 2 web entries in web development category"
@@ -77,7 +77,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
 
   # Test 2: FTS search + level filter
   test "filters by FTS search and experience level" do
-    query = EntryDirectoryQuery.new({ q: "rails", level: "intermediate" })
+    query = EntryDirectoryQuery.new({q: "rails", level: "intermediate"})
     results = query.call.to_a
 
     assert_equal 1, results.count, "Should find 1 intermediate Rails entry"
@@ -104,7 +104,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
   test "level filter includes all_levels entries" do
     @entry3.update!(experience_level: :all_levels)
 
-    query = EntryDirectoryQuery.new({ level: "beginner" })
+    query = EntryDirectoryQuery.new({level: "beginner"})
     results = query.call.to_a
 
     assert_includes results, @entry2
@@ -115,7 +115,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
     @entry3.update!(experience_level: :all_levels)
     @entry3.categories << @web_category
 
-    query = EntryDirectoryQuery.new({ category: "web-development", level: "intermediate" })
+    query = EntryDirectoryQuery.new({category: "web-development", level: "intermediate"})
     results = query.call.to_a
 
     assert_includes results, @entry1
@@ -125,7 +125,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
 
   # Test 4: Only category filter (no FTS search)
   test "filters by category without FTS search" do
-    query = EntryDirectoryQuery.new({ category: "web-development" })
+    query = EntryDirectoryQuery.new({category: "web-development"})
     results = query.call.to_a
 
     assert_equal 2, results.count, "Should find 2 web development entries"
@@ -136,7 +136,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
 
   # Test 5: Only level filter (no FTS search)
   test "filters by level without FTS search" do
-    query = EntryDirectoryQuery.new({ level: "intermediate" })
+    query = EntryDirectoryQuery.new({level: "intermediate"})
     results = query.call.to_a
 
     assert_equal 2, results.count, "Should find 2 intermediate entries"
@@ -170,7 +170,7 @@ class EntryDirectoryQueryIntegrationTest < ActiveSupport::TestCase
       submitter_email: "pending@example.com"
     )
 
-    query = EntryDirectoryQuery.new({ q: "web" })
+    query = EntryDirectoryQuery.new({q: "web"})
     results = query.call.to_a
 
     assert_not_includes results, unpublished, "Should not include unpublished entries"

@@ -21,6 +21,6 @@ class Avo::Actions::ApproveEntries < Avo::BaseAction
       end
     end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} approved successfully!"
+    succeed "#{records.count} #{"resource".pluralize(records.count)} approved successfully!"
   end
 end

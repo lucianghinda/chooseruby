@@ -95,7 +95,6 @@ Avo.configure do |config|
   ## == Response messages dismiss time ==
   # config.alert_dismiss_time = 5000
 
-
   ## == Number of search results to display ==
   # config.search_results_count = 8
 

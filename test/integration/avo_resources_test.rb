@@ -15,8 +15,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: newsletter,
       status: :approved
     )
-    assert entry1.persisted?
-    assert entry1.newsletter?
+
+    assert_predicate entry1, :persisted?
+    assert_predicate entry1, :newsletter?
     assert_equal "Newsletter", entry1.entryable_type
 
     # Blog
@@ -28,8 +29,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: blog,
       status: :approved
     )
-    assert entry2.persisted?
-    assert entry2.blog?
+
+    assert_predicate entry2, :persisted?
+    assert_predicate entry2, :blog?
     assert_equal "Blog", entry2.entryable_type
 
     # Video
@@ -41,8 +43,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: video,
       status: :approved
     )
-    assert entry3.persisted?
-    assert entry3.video?
+
+    assert_predicate entry3, :persisted?
+    assert_predicate entry3, :video?
     assert_equal "Video", entry3.entryable_type
 
     # Channel
@@ -54,8 +57,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: channel,
       status: :approved
     )
-    assert entry4.persisted?
-    assert entry4.channel?
+
+    assert_predicate entry4, :persisted?
+    assert_predicate entry4, :channel?
     assert_equal "Channel", entry4.entryable_type
 
     # Documentation
@@ -67,8 +71,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: documentation,
       status: :approved
     )
-    assert entry5.persisted?
-    assert entry5.documentation?
+
+    assert_predicate entry5, :persisted?
+    assert_predicate entry5, :documentation?
     assert_equal "Documentation", entry5.entryable_type
 
     # TestingResource
@@ -80,8 +85,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: testing_resource,
       status: :approved
     )
-    assert entry6.persisted?
-    assert entry6.testing_resource?
+
+    assert_predicate entry6, :persisted?
+    assert_predicate entry6, :testing_resource?
     assert_equal "TestingResource", entry6.entryable_type
 
     # DevelopmentEnvironment
@@ -93,8 +99,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: development_environment,
       status: :approved
     )
-    assert entry7.persisted?
-    assert entry7.development_environment?
+
+    assert_predicate entry7, :persisted?
+    assert_predicate entry7, :development_environment?
     assert_equal "DevelopmentEnvironment", entry7.entryable_type
 
     # JobBoard
@@ -106,8 +113,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: job_board,
       status: :approved
     )
-    assert entry8.persisted?
-    assert entry8.job_board?
+
+    assert_predicate entry8, :persisted?
+    assert_predicate entry8, :job_board?
     assert_equal "JobBoard", entry8.entryable_type
 
     # Framework
@@ -119,8 +127,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: framework,
       status: :approved
     )
-    assert entry9.persisted?
-    assert entry9.framework?
+
+    assert_predicate entry9, :persisted?
+    assert_predicate entry9, :framework?
     assert_equal "Framework", entry9.entryable_type
 
     # Directory
@@ -132,8 +141,9 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: directory,
       status: :approved
     )
-    assert entry10.persisted?
-    assert entry10.directory?
+
+    assert_predicate entry10, :persisted?
+    assert_predicate entry10, :directory?
     assert_equal "Directory", entry10.entryable_type
 
     # Product
@@ -145,43 +155,55 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: product,
       status: :approved
     )
-    assert entry11.persisted?
-    assert entry11.product?
+
+    assert_predicate entry11, :persisted?
+    assert_predicate entry11, :product?
     assert_equal "Product", entry11.entryable_type
   end
 
   test "new delegated types have display_name method" do
     newsletter = Newsletter.create!(name: "Test Newsletter")
+
     assert_match(/Test Newsletter/, newsletter.display_name)
 
     blog = Blog.create!(name: "Test Blog")
+
     assert_match(/Test Blog/, blog.display_name)
 
     video = Video.create!(name: "Test Video")
+
     assert_match(/Test Video/, video.display_name)
 
     channel = Channel.create!(name: "Test Channel")
+
     assert_match(/Test Channel/, channel.display_name)
 
     documentation = Documentation.create!(name: "Test Documentation")
+
     assert_match(/Test Documentation/, documentation.display_name)
 
     testing_resource = TestingResource.create!(name: "Test Testing Resource")
+
     assert_match(/Test Testing Resource/, testing_resource.display_name)
 
     development_environment = DevelopmentEnvironment.create!(name: "Test Dev Environment")
+
     assert_match(/Test Dev Environment/, development_environment.display_name)
 
     job_board = JobBoard.create!(name: "Test Job Board")
+
     assert_match(/Test Job Board/, job_board.display_name)
 
     framework = Framework.create!(name: "Test Framework")
+
     assert_match(/Test Framework/, framework.display_name)
 
     directory = Directory.create!(name: "Test Directory")
+
     assert_match(/Test Directory/, directory.display_name)
 
     product = Product.create!(name: "Test Product")
+
     assert_match(/Test Product/, product.display_name)
   end
 
@@ -194,6 +216,7 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: newsletter,
       status: :approved
     )
+
     assert_equal entry, newsletter.entry
 
     blog = Blog.create!(name: "Test Blog")
@@ -204,6 +227,7 @@ class AvoResourcesTest < ActionDispatch::IntegrationTest
       entryable: blog,
       status: :approved
     )
+
     assert_equal entry, blog.entry
   end
 end

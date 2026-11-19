@@ -29,50 +29,59 @@ class BanTest < ActiveSupport::TestCase
   # Validation tests
   test "should not save ban without user_id or ip_address" do
     ban = Ban.new(reason: "Test ban")
+
     assert_not ban.save, "Saved ban without user_id or ip_address"
   end
 
   test "should save ban with user_id only" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
     ban = Ban.new(user: user, reason: "Test ban")
+
     assert ban.save, "Did not save ban with user_id"
   end
 
   test "should save ban with ip_address only" do
     ban = Ban.new(ip_address: "192.168.1.100", reason: "Test ban")
+
     assert ban.save, "Did not save ban with ip_address"
   end
 
   test "should save ban with both user_id and ip_address" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
     ban = Ban.new(user: user, ip_address: "192.168.1.100", reason: "Test ban")
+
     assert ban.save, "Did not save ban with both user_id and ip_address"
   end
 
   # active? tests
   test "should be active when expires_at is nil" do
     ban = Ban.create!(ip_address: "192.168.1.100", reason: "Test ban", expires_at: nil)
-    assert ban.active?, "Ban with nil expires_at should be active"
+
+    assert_predicate ban, :active?, "Ban with nil expires_at should be active"
   end
 
   test "should be active when expires_at is in the future" do
     ban = Ban.create!(ip_address: "192.168.1.100", reason: "Test ban", expires_at: 1.day.from_now)
-    assert ban.active?, "Ban with future expires_at should be active"
+
+    assert_predicate ban, :active?, "Ban with future expires_at should be active"
   end
 
   test "should not be active when expires_at is in the past" do
     ban = Ban.create!(ip_address: "192.168.1.100", reason: "Test ban", expires_at: 1.day.ago)
+
     assert_not ban.active?, "Ban with past expires_at should not be active"
   end
 
   # expired? tests
   test "should be expired when expires_at is in the past" do
     ban = Ban.create!(ip_address: "192.168.1.100", reason: "Test ban", expires_at: 1.day.ago)
-    assert ban.expired?, "Ban with past expires_at should be expired"
+
+    assert_predicate ban, :expired?, "Ban with past expires_at should be expired"
   end
 
   test "should not be expired when active" do
     ban = Ban.create!(ip_address: "192.168.1.100", reason: "Test ban", expires_at: 1.day.from_now)
+
     assert_not ban.expired?, "Active ban should not be expired"
   end
 
@@ -83,6 +92,7 @@ class BanTest < ActiveSupport::TestCase
     expired_ban = Ban.create!(ip_address: "192.168.1.102", reason: "Expired", expires_at: 1.day.ago)
 
     active_bans = Ban.active
+
     assert_includes active_bans, active_ban
     assert_includes active_bans, permanent_ban
     assert_not_includes active_bans, expired_ban
@@ -93,6 +103,7 @@ class BanTest < ActiveSupport::TestCase
     ban2 = Ban.create!(ip_address: "192.168.1.101", reason: "Test 2")
 
     bans = Ban.by_ip("192.168.1.100")
+
     assert_includes bans, ban1
     assert_not_includes bans, ban2
   end
@@ -105,7 +116,7 @@ class BanTest < ActiveSupport::TestCase
   # Cascade delete test
   test "should be destroyed when user is destroyed" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
-    ban = user.bans.create!(reason: "Test ban")
+    user.bans.create!(reason: "Test ban")
 
     assert_difference "Ban.count", -1 do
       user.destroy

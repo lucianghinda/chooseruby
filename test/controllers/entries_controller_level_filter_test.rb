@@ -44,7 +44,7 @@ class EntriesControllerLevelFilterTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "body", /Beginner Guide/
     assert_select "body", /For Everyone/
-    assert_select "body", { text: /Advanced Guide/, count: 0 }
+    assert_select "body", {text: /Advanced Guide/, count: 0}
   end
 
   test "index with advanced level shows advanced and all_levels" do
@@ -53,7 +53,7 @@ class EntriesControllerLevelFilterTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "body", /Advanced Guide/
     assert_select "body", /For Everyone/
-    assert_select "body", { text: /Beginner Guide/, count: 0 }
+    assert_select "body", {text: /Beginner Guide/, count: 0}
   end
 
   test "index with no level shows everything" do

@@ -7,7 +7,7 @@ class Avo::Resources::User < Avo::BaseResource
     field :id, as: :id
     field :email_address, as: :text, required: true
     field :name, as: :text, required: true
-    field :password, as: :password, only_on: [ :new, :edit ], required: true, help: "Leave blank to keep current password"
+    field :password, as: :password, only_on: [:new, :edit], required: true, help: "Leave blank to keep current password"
     field :role, as: :select, enum: ::User.roles, required: true
     field :status, as: :select, enum: ::User.statuses, required: true
     field :sessions, as: :has_many

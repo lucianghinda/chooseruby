@@ -48,7 +48,7 @@ class ResourceSubmissionMailerPreview < ActionMailer::Preview
     )
 
     # Create a sample review with comment
-    review = EntryReview.new(
+    EntryReview.new(
       entry: entry,
       status: :rejected,
       comment: "Thank you for your submission. Unfortunately, this resource lacks sufficient detail and examples. We'd encourage you to expand the content and resubmit."

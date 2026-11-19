@@ -26,26 +26,26 @@ class Avo::Resources::Author < Avo::BaseResource
 
     # Avatar handling
     field :avatar, as: :file, help: "Manual upload (fallback if no GitHub URL)"
-    field :avatar_url, as: :text, readonly: true, help: "Auto-fetched from GitHub URL", hide_on: [ :index ]
+    field :avatar_url, as: :text, readonly: true, help: "Auto-fetched from GitHub URL", hide_on: [:index]
 
     # Social/Web links
-    field :github_url, as: :text, hide_on: [ :index ]
-    field :gitlab_url, as: :text, hide_on: [ :index ]
-    field :website_url, as: :text, hide_on: [ :index ]
-    field :bluesky_url, as: :text, hide_on: [ :index ]
-    field :ruby_social_url, as: :text, hide_on: [ :index ]
-    field :twitter_url, as: :text, hide_on: [ :index ]
-    field :linkedin_url, as: :text, hide_on: [ :index ]
-    field :youtube_url, as: :text, hide_on: [ :index ]
-    field :twitch_url, as: :text, hide_on: [ :index ]
-    field :blog_url, as: :text, hide_on: [ :index ]
+    field :github_url, as: :text, hide_on: [:index]
+    field :gitlab_url, as: :text, hide_on: [:index]
+    field :website_url, as: :text, hide_on: [:index]
+    field :bluesky_url, as: :text, hide_on: [:index]
+    field :ruby_social_url, as: :text, hide_on: [:index]
+    field :twitter_url, as: :text, hide_on: [:index]
+    field :linkedin_url, as: :text, hide_on: [:index]
+    field :youtube_url, as: :text, hide_on: [:index]
+    field :twitch_url, as: :text, hide_on: [:index]
+    field :blog_url, as: :text, hide_on: [:index]
 
     # Associations
-    field :entries, as: :has_many, through: :entries_authors, hide_on: [ :index ]
+    field :entries, as: :has_many, through: :entries_authors, hide_on: [:index]
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 
   def filters

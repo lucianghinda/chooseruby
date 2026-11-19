@@ -30,8 +30,8 @@ class User < ApplicationRecord
 
   # Validations
   validates :email_address, presence: true,
-                            uniqueness: { case_sensitive: false },
-                            format: { with: URI::MailTo::EMAIL_REGEXP }
+    uniqueness: {case_sensitive: false},
+    format: {with: URI::MailTo::EMAIL_REGEXP}
   validates :name, presence: true
 
   # Normalize email to lowercase

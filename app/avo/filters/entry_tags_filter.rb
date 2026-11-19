@@ -14,12 +14,12 @@ class Avo::Filters::EntryTagsFilter < Avo::Filters::SelectFilter
   def options
     # Get all unique tags from all entries
     Entry.where.not(tags: nil)
-         .pluck(:tags)
-         .flatten
-         .compact
-         .uniq
-         .sort
-         .map { |tag| [ tag.titleize, tag ] }
-         .to_h
+      .pluck(:tags)
+      .flatten
+      .compact
+      .uniq
+      .sort
+      .map { |tag| [tag.titleize, tag] }
+      .to_h
   end
 end

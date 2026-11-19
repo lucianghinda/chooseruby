@@ -26,7 +26,7 @@ gem "tailwindcss-rails", "~> 3.0"
 gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem "tzinfo-data", platforms: %i[windows jruby]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
@@ -59,10 +59,12 @@ gem "active_hashcash"
 
 gem "aws-sdk-s3"
 
-
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+
+  # Test coverage reporting [https://github.com/simplecov-ruby/simplecov]
+  gem "simplecov", require: false
 
   # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
   gem "bundler-audit", require: false
@@ -70,16 +72,101 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
-  gem "rubocop-rails-omakase", require: false
+  # Code smell detector [https://github.com/troessner/reek]
+  gem "reek", require: false
+
+  # Ruby style linter/formatter. Compared against staying on
+  # rubocop-rails-omakase: both are "just pick one, stop bikeshedding"
+  # configs, but Standard is the more actively-adopted community default
+  # (2.9k GitHub stars vs. omakase's few hundred), ships its own performance
+  # plugin, and its `--generate-todo`/`ignore:` give the same adoption path
+  # omakase's `.rubocop_todo.yml` did. [https://github.com/standardrb/standard]
+  gem "standard", ">= 1.35.1", require: false
+
+  # Standard's official Rails plugin (Rails-specific cops - the closest
+  # thing to what rubocop-rails-omakase's bundled rubocop-rails gave us).
+  # [https://github.com/standardrb/standard-rails]
+  gem "standard-rails", require: false
+
+  # Minitest/thread-safety cops layered on top via .standard_ext.yml (see
+  # docs/llms/development.md): standard-minitest/standard-thread_safety
+  # exist but are single-maintainer wrappers stale since March 2025, which
+  # fails our own "actively maintained" bar - using the real, official
+  # rubocop-minitest/rubocop-thread_safety gems directly instead.
+  gem "rubocop-minitest", require: false
+  gem "rubocop-thread_safety", require: false
 
   # A Ruby Gem that adds annotations to your Rails models and route files.
   gem "annotaterb"
+
+  # HTML+ERB linter. `herb lint` itself shells out to `npx @herb-tools/linter` (Node), which
+  # doesn't fit an app that deliberately keeps Node off its stack (importmap-rails +
+  # tailwindcss-ruby). herb-embedded runs the same upstream rule engine inside Ruby via an
+  # embedded JS runtime instead. [https://github.com/defmethodinc/herb-embedded]
+  gem "herb-embedded", require: false
+
+  # Detects likely-unused methods (static analysis) [https://github.com/seattlerb/debride]
+  gem "debride", require: false
+
+  # Finds Rails routes with no matching controller action, or vice versa.
+  # No `require: false`: its Railtie needs to load for `rake traceroute` to exist.
+  gem "traceroute"
+
+  # Ranks files by (churn * complexity * code smells) to find hotspots worth refactoring first
+  gem "skunk", require: false
+
+  # Structural duplication detector (already a transitive dep of skunk;
+  # listed directly for its own bin/flay, since Reek doesn't catch
+  # duplication *across* files/classes - see docs/llms/development.md)
+  gem "flay", require: false
+
+  # Architecture linter: declares component boundaries in Archspec.rb and
+  # checks them via static analysis (no app boot, no AI) [https://archspecrb.dev]
+  gem "archspec", require: false
+
+  # Detects N+1 queries at runtime by flagging them during the test run.
+  # Its default non-MySQL fingerprinting needs the `pg_query` gem (Postgres-only
+  # syntax), which can't parse SQLite's already-parameterized queries anyway -
+  # config/initializers/prosopite.rb overrides fingerprinting for SQLite
+  # instead, so no extra gem needed here. [https://github.com/charkost/prosopite]
+  gem "prosopite"
+
+  # Property-based testing. Compared against Rantly: both have zero external
+  # deps, but PropCheck's shrinking (reducing a failing case to its simplest
+  # form) is the more complete implementation, and it documents first-class
+  # Minitest/RSpec/test-unit integration - Rantly needs a hand-rolled Minitest
+  # adapter. Actively released (1.0 reached in 2026); Rantly's shrinking gaps
+  # are a known, unaddressed limitation. [https://github.com/Qqwy/ruby-prop_check]
+  gem "prop_check", require: false
+
+  # Mutation testing. Compared against mutant, the category's best-known tool:
+  # mutant carries 6 runtime deps and needs a separate mutant-minitest adapter,
+  # and its free tier's license explicitly excludes closed-source/commercial
+  # use. Mutineer is Prism + Ruby stdlib only (zero runtime deps, Ruby >= 3.4),
+  # ships first-class `--rails`/`--daemon` support with a fork-safe per-worker
+  # SQLite test DB (our adapter), and `--since`/`--baseline` scope a run to a
+  # diff - relevant for adopting this on an existing app instead of mutating
+  # everything at once. [https://github.com/davidteren/mutineer]
+  gem "mutineer", require: false
+
+  # Dependency health / "gem smell" checks: last-commit activity, archived
+  # repos, OpenSSF Scorecard, poison-pill transitive caps - none of which
+  # bundler-audit or `bundle outdated` cover (CVEs and version drift only).
+  # Compared against holepicker: holepicker only re-covers bundler-audit's CVE
+  # ground (last released 2016, unmaintained) with none of the maintenance
+  # signals. still_active is actively released (3.x in 2026), has 6 CI gate
+  # flags and a --baseline diff mode built for exactly this use.
+  # [https://github.com/SeanLF/still_active]
+  gem "still_active", require: false
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Git hooks runner: blocks bad commits/pushes before they use any CI time
+  # [https://github.com/evilmartians/lefthook]
+  gem "lefthook", require: false
 end
 
 group :test do

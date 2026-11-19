@@ -76,7 +76,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     # We expect exactly 4 entries (the limit) to be displayed
     # Count links that point to resource_path
     gem_links = css_select("a[href*='/resources/']")
-    assert gem_links.count >= 4, "Expected at least 4 gem entries"
+
+    assert_operator gem_links.count, :>=, 4, "Expected at least 4 gem entries"
   end
 
   # Test 5.1.3: Sections appear after "Freshly curated resources"
@@ -119,7 +120,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
   # Test 5.1.6: Sections only show visible (published + approved) entries
   test "type sections only display visible entries" do
     # Create visible gem
-    visible_gem = create_visible_gem(title: "Visible Gem")
+    create_visible_gem(title: "Visible Gem")
 
     # Create non-visible gems (unpublished, pending, rejected)
     create_entry(
@@ -187,8 +188,8 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     # Should not show sections for types with no entries
-    assert_select "h2", { text: /Newsletters/i, count: 0 }
-    assert_select "h2", { text: /Blogs/i, count: 0 }
+    assert_select "h2", {text: /Newsletters/i, count: 0}
+    assert_select "h2", {text: /Blogs/i, count: 0}
   end
 
   # Test 4.1.4: HomeController assigns instance variables for new types
@@ -261,7 +262,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     # Should display the section
     assert_select "h2", text: /Newsletters/i
     # Should display submission message
-    assert_match /Know a great Ruby newsletter/i, response.body
+    assert_match(/Know a great Ruby newsletter/i, response.body)
     assert_select "a[href=?]", new_resource_submission_path, text: /Submit it here/i
   end
 
@@ -278,7 +279,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     # Should display the section
     assert_select "h2", text: /Newsletters/i
     # Should NOT display submission message
-    assert_no_match /Know a great Ruby newsletter/i, response.body
+    assert_no_match(/Know a great Ruby newsletter/i, response.body)
   end
 
   private

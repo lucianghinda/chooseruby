@@ -5,14 +5,14 @@ class RenameJobToJobBoard < ActiveRecord::Migration[8.2]
     rename_table :jobs, :job_boards
     reversible do |dir|
       dir.up do
-        execute <<-SQL.squish
+        execute <<~SQL.squish
           UPDATE entries
           SET entryable_type = 'JobBoard'
           WHERE entryable_type = 'Job'
         SQL
       end
       dir.down do
-        execute <<-SQL.squish
+        execute <<~SQL.squish
           UPDATE entries
           SET entryable_type = 'Job'
           WHERE entryable_type = 'JobBoard'

@@ -70,7 +70,7 @@ class ResourceTypesController < ApplicationController
     Category
       .where(id: category_counts.keys)
       .index_by(&:id)
-      .transform_values { |category| { category: category, count: category_counts[category.id] } }
+      .transform_values { |category| {category: category, count: category_counts[category.id]} }
       .values
       .sort_by { |stat| -stat[:count] } # Sort by count descending
   end

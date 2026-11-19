@@ -15,6 +15,6 @@ class Avo::Filters::EntryPublishedFilter < Avo::Filters::BooleanFilter
   end
 
   def options
-    { "true" => "Published", "false" => "Unpublished" }
+    {"true" => "Published", "false" => "Unpublished"}
   end
 end

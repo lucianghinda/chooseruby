@@ -3,8 +3,6 @@
 module Authentication
   extend ActiveSupport::Concern
 
-  include Authentication::SessionLookup
-
   included do
     before_action :set_current_user
     helper_method :current_user, :authenticated?
@@ -13,10 +11,28 @@ module Authentication
   private
 
   def set_current_user
-    if session = find_session_by_cookie
+    if (session = find_session_by_cookie)
       Current.user = session.user
       Current.session = session
     end
+  end
+
+  # Only caller is set_current_user above - was its own
+  # Authentication::SessionLookup concern in a separate file for no reason
+  # (a Concern with exactly one includer doesn't need to be a Concern).
+  def find_session_by_cookie
+    token = cookies.signed[:session_token]
+    return nil unless token
+
+    # Eager load user to prevent N+1 queries
+    session = Session.includes(:user).find_by(token: token)
+    return nil unless session
+    return nil if session.expired?
+
+    # Touch last_active_at to keep session alive
+    session.touch_last_active
+
+    session
   end
 
   def current_user

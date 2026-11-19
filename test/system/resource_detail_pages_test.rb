@@ -26,7 +26,7 @@ class ResourceDetailPagesTest < ApplicationSystemTestCase
       experience_level: :intermediate
     )
     @entry.description = "This is a comprehensive guide to testing in Ruby with detailed examples and best practices."
-    @entry.categories << [ @category1, @category2 ]
+    @entry.categories << [@category1, @category2]
     @entry.authors << @author
 
     # Create related resources
@@ -59,6 +59,7 @@ class ResourceDetailPagesTest < ApplicationSystemTestCase
 
     # Verify "Visit Resource" button is present
     visit_resource_button = find("a", text: /Visit Resource/i)
+
     assert_equal @entry.url, visit_resource_button[:href]
     assert_equal "_blank", visit_resource_button[:target]
     assert_equal "noopener noreferrer", visit_resource_button[:rel]

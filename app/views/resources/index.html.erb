@@ -2,7 +2,6 @@
 <% content_for :meta_description, "Comprehensive directory of curated Ruby on Rails resources including gems, books, tutorials, tools, and more. Filter by type, experience level, and category." %>
 
 <div class="space-y-12 pb-16">
-  <%# Hero Section %>
   <section class="rounded-3xl bg-gradient-to-br from-white to-slate-50 p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
     <div class="mx-auto max-w-4xl space-y-4 text-center">
       <h1 class="text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl">
@@ -14,7 +13,6 @@
     </div>
   </section>
 
-  <%# Featured Resources Section %>
   <% if @featured_entries.any? %>
     <section class="space-y-6">
       <h2 class="text-2xl font-semibold text-slate-900">Featured Resources</h2>
@@ -26,7 +24,6 @@
     </section>
   <% end %>
 
-  <%# Filters Section %>
   <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
     <div class="space-y-6">
       <header>
@@ -36,7 +33,6 @@
 
       <%= form_with url: resources_path, method: :get, local: true, class: "space-y-6" do |form| %>
         <div class="grid gap-6 md:grid-cols-3">
-          <%# Type Dropdown %>
           <div class="space-y-2">
             <%= form.label :type, "Resource Type", class: "text-sm font-semibold text-slate-700" %>
             <%= form.select :type,
@@ -45,7 +41,6 @@
                             class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-300" %>
           </div>
 
-          <%# Search Box %>
           <div class="space-y-2">
             <%= form.label :q, "Search", class: "text-sm font-semibold text-slate-700" %>
             <div class="relative">
@@ -58,7 +53,6 @@
             </div>
           </div>
 
-          <%# Experience Level Dropdown %>
           <div class="space-y-2">
             <%= form.label :level, "Experience Level", class: "text-sm font-semibold text-slate-700" %>
             <%= form.select :level,
@@ -68,7 +62,6 @@
           </div>
         </div>
 
-        <%# Submit Button and Clear Filters %>
         <div class="flex items-center justify-end gap-4">
           <% if @query.present? || @active_level.present? || @active_type.present? %>
             <%= link_to "Clear all filters", resources_path, class: "text-sm font-semibold text-slate-600 transition hover:text-rose-500" %>
@@ -79,7 +72,6 @@
     </div>
   </section>
 
-  <%# Results Section %>
   <section class="space-y-6">
     <div class="flex items-center justify-between">
       <h2 class="text-xl font-semibold text-slate-900">All Resources</h2>

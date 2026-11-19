@@ -61,6 +61,7 @@ class GithubAvatarServiceTest < ActiveSupport::TestCase
 
   test "integration: author updates avatar when github_url changes" do
     author = Author.create(name: "Test Author")
+
     assert_nil author.avatar_url
 
     author.update(github_url: "https://github.com/dhh")

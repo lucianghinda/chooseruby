@@ -14,7 +14,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
   test "complete submission flow creates Course entry and sends emails" do
     category = categories(:testing)
 
-    assert_difference [ "Entry.count", "Course.count" ], 1 do
+    assert_difference ["Entry.count", "Course.count"], 1 do
       assert_emails 2 do
         post entries_path, params: {
           entry: {
@@ -24,7 +24,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
             resource_type: "Course",
             submitter_name: "Course Creator",
             submitter_email: "creator@example.com",
-            category_ids: [ category.id ],
+            category_ids: [category.id],
             experience_level: "intermediate",
             # Course-specific fields
             platform: "Udemy",
@@ -40,21 +40,22 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "pending", entry.status
-    assert_equal false, entry.published
+    refute entry.published
     assert_equal "Course", entry.entryable_type
     assert_equal "Udemy", entry.entryable.platform
     assert_equal "John Doe", entry.entryable.instructor
     assert_equal 40, entry.entryable.duration_hours
     assert_equal 9999, entry.entryable.price_cents # Converted from 99.99 dollars
     assert_equal "USD", entry.entryable.currency
-    assert_equal false, entry.entryable.is_free
+    refute entry.entryable.is_free
     assert_redirected_to entry_success_path
   end
 
   # Test 2: Transaction rollback when Entry validation fails (missing required fields)
   test "transaction rollback when Entry validation fails" do
-    assert_no_difference [ "Entry.count", "RubyGem.count" ] do
+    assert_no_difference ["Entry.count", "RubyGem.count"] do
       post entries_path, params: {
         entry: {
           title: "", # Missing required title - should fail Entry validation
@@ -117,13 +118,14 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_includes entry.authors, author
     assert_equal 1, entry.authors.count
   end
 
   # Test 5: Author dual input - manual text entry for Tutorial
   test "submission with manual author name stores in Tutorial author_name field" do
-    assert_difference [ "Entry.count", "Tutorial.count" ], 1 do
+    assert_difference ["Entry.count", "Tutorial.count"], 1 do
       post entries_path, params: {
         entry: {
           title: "Tutorial with Manual Author",
@@ -134,13 +136,14 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
           # Tutorial-specific fields
           author_name: "Manual Author Name",
           reading_time_minutes: 15,
-          publication_date: Date.today - 30.days,
+          publication_date: Time.zone.today - 30.days,
           platform: "Dev.to"
         }
       }
     end
 
     entry = Entry.last
+
     assert_equal "Tutorial", entry.entryable_type
     assert_equal "Manual Author Name", entry.entryable.author_name
     assert_equal 15, entry.entryable.reading_time_minutes
@@ -149,7 +152,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
 
   # Test 6: Complete submission flow for Tool type
   test "complete submission flow creates Tool entry with all fields" do
-    assert_difference [ "Entry.count", "Tool.count" ], 1 do
+    assert_difference ["Entry.count", "Tool.count"], 1 do
       post entries_path, params: {
         entry: {
           title: "Ruby Formatter Tool",
@@ -169,16 +172,17 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Tool", entry.entryable_type
     assert_equal "CLI", entry.entryable.tool_type
     assert_equal "https://github.com/user/formatter", entry.entryable.github_url
     assert_equal "MIT", entry.entryable.license
-    assert_equal true, entry.entryable.is_open_source
+    assert entry.entryable.is_open_source
   end
 
   # Test 7: Complete submission flow for Podcast type
   test "complete submission flow creates Podcast entry" do
-    assert_difference [ "Entry.count", "Podcast.count" ], 1 do
+    assert_difference ["Entry.count", "Podcast.count"], 1 do
       post entries_path, params: {
         entry: {
           title: "Ruby Rogues",
@@ -198,6 +202,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     entry = Entry.last
+
     assert_equal "Podcast", entry.entryable_type
     assert_equal "Panel of Ruby experts", entry.entryable.host
     assert_equal 500, entry.entryable.episode_count
@@ -206,7 +211,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
 
   # Test 8: Complete submission flow for Article type
   test "complete submission flow creates Article entry" do
-    assert_difference [ "Entry.count", "Article.count" ], 1 do
+    assert_difference ["Entry.count", "Article.count"], 1 do
       post entries_path, params: {
         entry: {
           title: "Understanding Ruby Blocks",
@@ -217,13 +222,14 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
           # Article-specific fields
           author_name: "Jane Writer",
           reading_time_minutes: 8,
-          publication_date: Date.today - 7.days,
+          publication_date: Time.zone.today - 7.days,
           platform: "Medium"
         }
       }
     end
 
     entry = Entry.last
+
     assert_equal "Article", entry.entryable_type
     assert_equal "Jane Writer", entry.entryable.author_name
     assert_equal 8, entry.entryable.reading_time_minutes
@@ -243,7 +249,7 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
         submitter_name: "Test User",
         submitter_email: "test@example.com",
         gem_name: "test-gem",
-        category_ids: [ category.id ]
+        category_ids: [category.id]
       }
     }
 
@@ -271,14 +277,15 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
           submitter_email: "tester@example.com",
           gem_name: "email-test-gem",
           github_url: "https://github.com/test/gem",
-          category_ids: [ category.id ]
+          category_ids: [category.id]
         }
       }
     end
 
     # Check team notification email
     team_email = ActionMailer::Base.deliveries[-2]
-    assert_equal [ ENV.fetch("RESOURCE_SUBMISSION_RECIPIENT", "hello@chooseruby.com") ], team_email.to
+
+    assert_equal [ENV.fetch("RESOURCE_SUBMISSION_RECIPIENT", "hello@chooseruby.com")], team_email.to
     assert_match "Test Email Details", team_email.html_part.body.to_s
     assert_match "RubyGem", team_email.html_part.body.to_s
     assert_match "email-test-gem", team_email.html_part.body.to_s
@@ -286,7 +293,8 @@ class EntrySubmissionIntegrationTest < ActionDispatch::IntegrationTest
 
     # Check submitter confirmation email
     submitter_email = ActionMailer::Base.deliveries.last
-    assert_equal [ "tester@example.com" ], submitter_email.to
+
+    assert_equal ["tester@example.com"], submitter_email.to
     assert_match "Email Tester", submitter_email.html_part.body.to_s
     assert_match "Test Email Details", submitter_email.html_part.body.to_s
   end

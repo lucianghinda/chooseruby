@@ -39,9 +39,9 @@ class Podcast < ApplicationRecord
   end
 
   # Validations
-  validates :episode_count, numericality: { greater_than: 0 }, allow_blank: true
+  validates :episode_count, numericality: {greater_than: 0}, allow_blank: true
   validates :rss_feed_url, :spotify_url, :apple_podcasts_url,
-            format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                     message: "must be a valid URL starting with http:// or https://" },
-            allow_blank: true
+    format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+             message: "must be a valid URL starting with http:// or https://"},
+    allow_blank: true
 end

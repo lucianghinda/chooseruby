@@ -4,8 +4,8 @@ class CreateAuthorProposals < ActiveRecord::Migration[8.1]
   def change
     create_table :author_proposals do |t|
       # Foreign key associations
-      t.references :author, foreign_key: { on_delete: :cascade }, null: true, index: true
-      t.references :matched_entry, foreign_key: { to_table: :entries, on_delete: :nullify }, null: true, index: true
+      t.references :author, foreign_key: {on_delete: :cascade}, null: true, index: true
+      t.references :matched_entry, foreign_key: {to_table: :entries, on_delete: :nullify}, null: true, index: true
 
       # Resource URL fields
       t.text :resource_url, null: true

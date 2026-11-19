@@ -41,7 +41,7 @@
         </p>
       <% end %>
 
-      <%= render partial: "entries/filter_chips", locals: { base_path: start_path } %>
+      <%= render partial: "entries/filter_chips", locals: { base_path: start_path, query: @query, active_level: @active_level, active_category: @active_category, active_sort: @active_sort } %>
     </div>
   </section>
 
@@ -106,7 +106,7 @@
           · <span class="font-medium text-slate-700"><%= @active_category.name %></span>
         <% end %>
       </p>
-      <span class="sr-only" aria-live="polite"><%= "#{total_count} beginner resources available" %></span>
+      <span class="sr-only" aria-live="polite"><%= total_count %> beginner resources available</span>
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
         <%= form_with url: start_path, method: :get, local: true, class: "flex items-center gap-2" do |form| %>
           <%= form.hidden_field :q, value: @query if @query.present? %>

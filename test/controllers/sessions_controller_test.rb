@@ -5,6 +5,7 @@ require "test_helper"
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   test "GET new renders login form" do
     get new_session_url
+
     assert_response :success
   end
 
@@ -13,6 +14,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       email_address: "admin@test.com",
       password: "password"
     }
+
     assert_redirected_to "/avo/"
   end
 
@@ -21,7 +23,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       email_address: "admin@test.com",
       password: "password"
     }
-    assert cookies[:session_token].present?
+
+    assert_predicate cookies[:session_token], :present?
   end
 
   test "POST create with invalid email shows error" do
@@ -29,6 +32,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       email_address: "wrong@test.com",
       password: "password"
     }
+
     assert_response :unprocessable_entity
     assert_select "div", text: /Invalid email or password/
   end
@@ -38,6 +42,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       email_address: "admin@test.com",
       password: "wrongpassword"
     }
+
     assert_response :unprocessable_entity
     assert_select "div", text: /Invalid email or password/
   end
@@ -47,6 +52,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       email_address: "suspended@test.com",
       password: "password"
     }
+
     assert_response :unprocessable_entity
     assert_select "div", text: /Invalid email or password/
   end
@@ -57,10 +63,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       email_address: "admin@test.com",
       password: "password"
     }
-    assert cookies[:session_token].present?
+
+    assert_predicate cookies[:session_token], :present?
 
     # Then logout
     delete session_url
+
     assert_empty cookies[:session_token]
   end
 
@@ -73,6 +81,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     # Then logout
     delete session_url
+
     assert_redirected_to root_path
   end
 end

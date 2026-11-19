@@ -12,11 +12,13 @@
           <%= @category.name %>
         </h1>
       </div>
-      <% if @category.description.present? %>
-        <p class="text-lg text-slate-600"><%= @category.description %></p>
-      <% else %>
-        <p class="text-lg text-slate-600">Recommended gems, tools, and guides related to this topic.</p>
-      <% end %>
+      <p class="text-lg text-slate-600">
+        <% if @category.description.present? %>
+          <%= @category.description %>
+        <% else %>
+          Recommended gems, tools, and guides related to this topic.
+        <% end %>
+      </p>
       <% resource_count = @category.entries_count %>
       <p class="text-sm font-medium text-slate-500">
         <%= pluralize(resource_count, 'resource') %> in this category

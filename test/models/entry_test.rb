@@ -138,6 +138,7 @@ class EntryTest < ActiveSupport::TestCase
     )
 
     courses = Entry.courses
+
     assert_includes courses, course_entry
     assert_equal "Course", courses.first.entryable_type
   end
@@ -154,6 +155,7 @@ class EntryTest < ActiveSupport::TestCase
     )
 
     tutorials = Entry.tutorials
+
     assert_includes tutorials, tutorial_entry
     assert_equal "Tutorial", tutorials.first.entryable_type
   end
@@ -170,6 +172,7 @@ class EntryTest < ActiveSupport::TestCase
     )
 
     articles = Entry.articles
+
     assert_includes articles, article_entry
     assert_equal "Article", articles.first.entryable_type
   end
@@ -186,6 +189,7 @@ class EntryTest < ActiveSupport::TestCase
     )
 
     tools = Entry.tools
+
     assert_includes tools, tool_entry
     assert_equal "Tool", tools.first.entryable_type
   end
@@ -202,6 +206,7 @@ class EntryTest < ActiveSupport::TestCase
     )
 
     podcasts = Entry.podcasts
+
     assert_includes podcasts, podcast_entry
     assert_equal "Podcast", podcasts.first.entryable_type
   end
@@ -221,6 +226,7 @@ class EntryTest < ActiveSupport::TestCase
     )
 
     communities = Entry.communities
+
     assert_includes communities, community_entry
     assert_equal "Community", communities.first.entryable_type
   end
@@ -278,8 +284,9 @@ class EntryTest < ActiveSupport::TestCase
       status: :approved,
       published: true
     )
+
     assert_equal "Newsletter", newsletter_entry.entryable_type
-    assert newsletter_entry.newsletter?
+    assert_predicate newsletter_entry, :newsletter?
 
     # Test Blog
     blog = Blog.create!(name: "Ruby Blog")
@@ -291,8 +298,9 @@ class EntryTest < ActiveSupport::TestCase
       status: :approved,
       published: true
     )
+
     assert_equal "Blog", blog_entry.entryable_type
-    assert blog_entry.blog?
+    assert_predicate blog_entry, :blog?
 
     # Test Framework
     framework = Framework.create!(name: "Test Framework")
@@ -304,8 +312,9 @@ class EntryTest < ActiveSupport::TestCase
       status: :approved,
       published: true
     )
+
     assert_equal "Framework", framework_entry.entryable_type
-    assert framework_entry.framework?
+    assert_predicate framework_entry, :framework?
   end
 
   test "new type scopes return correct entries" do
@@ -333,12 +342,14 @@ class EntryTest < ActiveSupport::TestCase
 
     # Test newsletters scope
     newsletters = Entry.newsletters
+
     assert_includes newsletters, newsletter_entry
     refute_includes newsletters, blog_entry
     assert_equal "Newsletter", newsletters.first.entryable_type
 
     # Test blogs scope
     blogs = Entry.blogs
+
     assert_includes blogs, blog_entry
     refute_includes blogs, newsletter_entry
     assert_equal "Blog", blogs.first.entryable_type

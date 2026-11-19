@@ -13,7 +13,7 @@ class CollectionsController < ApplicationController
     @base_filters = @collection.fetch(:filters, {}).symbolize_keys
     override_filters = params.permit(:q, :level, :category).to_h.symbolize_keys
     merged_filters = @base_filters.merge(override_filters) do |_key, base, override|
-      override.present? ? override : base
+      override.presence || base
     end
 
     @directory_query = EntryDirectoryQuery.new(merged_filters)

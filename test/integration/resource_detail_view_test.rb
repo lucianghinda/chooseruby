@@ -31,8 +31,8 @@ class ResourceDetailViewTest < ActionDispatch::IntegrationTest
       published: true,
       experience_level: :intermediate
     )
-    @entry.categories << [ @category1, @category2 ]
-    @entry.authors << [ @author1, @author2 ]
+    @entry.categories << [@category1, @category2]
+    @entry.authors << [@author1, @author2]
 
     # Create related resources for testing
     @related_gem1 = RubyGem.create!(gem_name: "minitest-#{SecureRandom.hex(4)}")
@@ -125,6 +125,6 @@ class ResourceDetailViewTest < ActionDispatch::IntegrationTest
     get resource_path(@entry.slug)
 
     assert_response :success
-    assert_select "h2", { text: /Author/, count: 0 }
+    assert_select "h2", {text: /Author/, count: 0}
   end
 end

@@ -9,9 +9,9 @@ class Avo::Actions::RejectAuthorProposal < Avo::BaseAction
 
   def fields
     field :admin_comment, as: :textarea,
-          help: "Required: Explain why this proposal is being rejected",
-          placeholder: "Provide feedback for the submitter...",
-          required: true
+      help: "Required: Explain why this proposal is being rejected",
+      placeholder: "Provide feedback for the submitter...",
+      required: true
   end
 
   def handle(records:, fields:, current_user:, resource:, **args)
@@ -27,21 +27,19 @@ class Avo::Actions::RejectAuthorProposal < Avo::BaseAction
     error_messages = []
 
     records.each do |proposal|
-      begin
-        # Call the reject! method with admin_comment
-        proposal.reject!(admin_comment: admin_comment)
-        success_count += 1
-      rescue ArgumentError => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      rescue StandardError => e
-        error_messages << "Proposal ##{proposal.id}: #{e.message}"
-      end
+      # Call the reject! method with admin_comment
+      proposal.reject!(admin_comment: admin_comment)
+      success_count += 1
+    rescue ArgumentError => e
+      error_messages << "Proposal ##{proposal.id}: #{e.message}"
+    rescue => e
+      error_messages << "Proposal ##{proposal.id}: #{e.message}"
     end
 
     if error_messages.any?
-      error "#{success_count} rejected, #{error_messages.count} failed: #{error_messages.join('; ')}"
+      error "#{success_count} rejected, #{error_messages.count} failed: #{error_messages.join("; ")}"
     else
-      succeed "#{success_count} #{'proposal'.pluralize(success_count)} rejected successfully!"
+      succeed "#{success_count} #{"proposal".pluralize(success_count)} rejected successfully!"
     end
   end
 

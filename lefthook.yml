@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/evilmartians/lefthook/master/schema.json
+---
+# Harness-level gate: catches what the linters below already know how to
+# catch, before it costs anyone (human or agent) a CI run or a review
+# comment. Install once per clone with `bin/setup` (calls `lefthook install`).
+#
+# Keep pre-commit fast (only staged files, only fast tools) and pre-push
+# thorough (whole repo, the same checks bin/ci runs) - a slow pre-commit
+# gets skipped with --no-verify, a slow pre-push is still faster than
+# waiting for CI to fail.
+pre-commit:
+  parallel: true
+  jobs:
+    - name: standardrb
+      glob: "*.rb"
+      run: bin/standardrb {staged_files}
+
+    # Scoped to app/models: the only part of app/ that's actually reek-clean
+    # so far (see AGENTS.md's Reek acceptance criteria). Widen the glob (and
+    # the pre-push/config/ci.rb runs below) as each other directory reaches
+    # zero warnings - don't widen it by suppressing what's left instead.
+    - name: reek
+      glob: "app/models/**/*.rb"
+      run: bin/reek {staged_files}
+
+    - name: herb-lint
+      glob: "*.html.erb"
+      run: bin/herb-lint {staged_files}
+
+    # "Does this gem still smell fresh?" - runs only when Gemfile/Gemfile.lock
+    # is staged, so adding/bumping a gem gets instant feedback instead of
+    # finding out from still_active_baseline.json going stale in review.
+    # Compares against the committed baseline, not an absolute bar, so this
+    # only fails on a NEW regression (see docs/llms/dependency_selection.md).
+    - name: gem-health
+      glob: "Gemfile*"
+      run: bin/still_active --baseline=still_active_baseline.json
+
+pre-push:
+  parallel: false
+  jobs:
+    - name: standardrb
+      run: bin/standardrb
+
+    - name: reek
+      run: bin/reek app/models
+
+    - name: herb-lint
+      run: bin/herb-lint
+
+    - name: archspec
+      run: bundle exec archspec check
+
+    - name: brakeman
+      run: bin/brakeman --quiet --no-pager --exit-on-warn --exit-on-error
+
+    - name: bundler-audit
+      run: bin/bundler-audit
+
+    - name: test
+      run: bin/rails test

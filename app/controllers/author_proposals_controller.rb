@@ -20,8 +20,6 @@ class AuthorProposalsController < ApplicationController
   def new
     @author = Author.approved.find(params[:author_id])
     @author_proposal = AuthorProposal.new(author: @author)
-  rescue ActiveRecord::RecordNotFound
-    render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
   end
 
   # Display proposal form for new author
@@ -41,9 +39,9 @@ class AuthorProposalsController < ApplicationController
       # Reload author for existing author proposals to display form correctly
       if @author_proposal.author_id.present?
         @author = Author.find_by(id: @author_proposal.author_id)
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       else
-        render :new_author, status: :unprocessable_entity
+        render :new_author, status: :unprocessable_content
       end
     end
   end
@@ -52,8 +50,6 @@ class AuthorProposalsController < ApplicationController
   # GET /author_proposals/:id/success
   def success
     @author_proposal = AuthorProposal.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
   end
 
   private
@@ -84,7 +80,7 @@ class AuthorProposalsController < ApplicationController
     ).tap do |permitted|
       # Convert link_updates array to hash, removing blank values
       if permitted[:link_updates].present?
-        link_hash = permitted[:link_updates].to_h.reject { |_k, v| v.blank? }
+        link_hash = permitted[:link_updates].to_h.compact_blank
         permitted[:link_updates] = link_hash.presence
       end
     end

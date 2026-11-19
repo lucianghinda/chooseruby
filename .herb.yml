@@ -1,0 +1,18 @@
+version: "0.10.3"
+files:
+  include:
+    - "**/*.html.erb"
+    - "**/*.herb"
+  exclude: []
+linter:
+  fail_level: error
+  rules: {}
+  # Note: erb-no-unused-expressions has a confirmed false positive on plain
+  # <%# two-word comment %> markers (a bare `<%# Hero Section %>` alone trips
+  # it - not a real discarded expression, an ERB *comment*). Tried disabling
+  # it here via `rules: { erb-no-unused-expressions: { enabled: false } }`
+  # per herb-embedded's own documented schema, but its Config#enabled_rule_names
+  # is dead code - never called from cli.rb/runner.rb in 0.10.3.0, so per-rule
+  # config does nothing yet. Worked around by editing the flagged comments
+  # instead (see docs/llms/development.md); re-add the config once a herb-
+  # embedded release actually wires this up.

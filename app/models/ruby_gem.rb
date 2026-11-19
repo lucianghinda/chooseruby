@@ -53,8 +53,8 @@ class RubyGem < ApplicationRecord
   # Validations
   validates :gem_name, presence: true, uniqueness: true
   validates :rubygems_url, :github_url, :documentation_url,
-            format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                     message: "must be a valid URL starting with http:// or https://" },
-            allow_blank: true
-  validates :downloads_count, numericality: { greater_than_or_equal_to: 0 }, allow_blank: true
+    format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+             message: "must be a valid URL starting with http:// or https://"},
+    allow_blank: true
+  validates :downloads_count, numericality: {greater_than_or_equal_to: 0}, allow_blank: true
 end

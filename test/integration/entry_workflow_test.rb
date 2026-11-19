@@ -4,7 +4,7 @@ require "test_helper"
 
 class EntryWorkflowTest < ActionDispatch::IntegrationTest
   test "creating entry with delegated type in single transaction" do
-    assert_difference [ "Entry.count", "RubyGem.count" ], 1 do
+    assert_difference ["Entry.count", "RubyGem.count"], 1 do
       ruby_gem = RubyGem.create!(gem_name: "transaction-gem")
       Entry.create!(
         title: "Transaction Test",
@@ -62,8 +62,9 @@ class EntryWorkflowTest < ActionDispatch::IntegrationTest
     )
 
     entry.reload
+
     assert_not_nil entry.description
-    assert entry.description.to_s.include?("Rich Text")
+    assert_includes entry.description.to_s, "Rich Text"
   end
 
   test "image URL can be set as string" do
@@ -127,7 +128,7 @@ class EntryWorkflowTest < ActionDispatch::IntegrationTest
     )
 
     assert_not entry.valid?
-    assert entry.errors[:url].present?
+    assert_predicate entry.errors[:url], :present?
   end
 
   test "entry can have multiple categories and authors" do
@@ -145,8 +146,8 @@ class EntryWorkflowTest < ActionDispatch::IntegrationTest
       status: :approved # Skip submitter_email validation
     )
 
-    entry.categories << [ category1, category2 ]
-    entry.authors << [ author1, author2 ]
+    entry.categories << [category1, category2]
+    entry.authors << [author1, author2]
 
     assert_equal 2, entry.categories.count
     assert_equal 2, entry.authors.count
@@ -166,20 +167,20 @@ class EntryWorkflowTest < ActionDispatch::IntegrationTest
       status: :approved # Skip submitter_email validation
     )
 
-    assert entry.ruby_gem?
+    assert_predicate entry, :ruby_gem?
 
     # Change to a book
     book = Book.create!(format: :ebook)
     entry.update!(entryable: book)
 
-    assert entry.book?
+    assert_predicate entry, :book?
     assert_not entry.ruby_gem?
     assert_equal "Book", entry.entryable_type
   end
 
   test "deleting delegated type removes entry due to dependent destroy" do
     ruby_gem = RubyGem.create!(gem_name: "delegate-delete-gem")
-    entry = Entry.create!(
+    Entry.create!(
       title: "Delegate Delete Test",
       description: "Test",
       url: "https://example.com",

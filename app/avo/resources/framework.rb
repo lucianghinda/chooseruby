@@ -2,7 +2,7 @@
 
 class Avo::Resources::Framework < Avo::BaseResource
   self.title = :display_name
-  self.includes = [ :entry ]
+  self.includes = [:entry]
   self.description = "Create a Framework first, then create an Entry and select this Framework as the entryable"
 
   def fields
@@ -10,14 +10,14 @@ class Avo::Resources::Framework < Avo::BaseResource
 
     # Framework information
     field :name, as: :text, required: true, sortable: true,
-          help: "Name of the framework"
+      help: "Name of the framework"
 
     # Association to base entry resource
     field :entry, as: :has_one,
-          help: "After creating this Framework, go to Entries → New and select this Framework"
+      help: "After creating this Framework, go to Entries → New and select this Framework"
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

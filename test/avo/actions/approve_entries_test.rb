@@ -18,9 +18,10 @@ class Avo::Actions::ApproveEntriesTest < ActiveSupport::TestCase
     )
 
     action = Avo::Actions::ApproveEntries.new(record: entry, resource: nil, user: nil, view: :index)
-    action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
+    action.handle(records: [entry], fields: {}, current_user: nil, resource: nil)
 
     entry.reload
+
     assert_equal "approved", entry.status
     assert entry.published
   end
@@ -39,10 +40,11 @@ class Avo::Actions::ApproveEntriesTest < ActiveSupport::TestCase
 
     assert_difference "EntryReview.count", 1 do
       action = Avo::Actions::ApproveEntries.new(record: entry, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
+      action.handle(records: [entry], fields: {}, current_user: nil, resource: nil)
     end
 
     review = entry.entry_reviews.last
+
     assert_equal "approved", review.status
   end
 
@@ -60,7 +62,7 @@ class Avo::Actions::ApproveEntriesTest < ActiveSupport::TestCase
 
     assert_enqueued_jobs 1, only: ActionMailer::MailDeliveryJob do
       action = Avo::Actions::ApproveEntries.new(record: entry, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry ], fields: {}, current_user: nil, resource: nil)
+      action.handle(records: [entry], fields: {}, current_user: nil, resource: nil)
     end
   end
 
@@ -89,11 +91,12 @@ class Avo::Actions::ApproveEntriesTest < ActiveSupport::TestCase
 
     assert_difference "EntryReview.count", 2 do
       action = Avo::Actions::ApproveEntries.new(record: entry1, resource: nil, user: nil, view: :index)
-      action.handle(records: [ entry1, entry2 ], fields: {}, current_user: nil, resource: nil)
+      action.handle(records: [entry1, entry2], fields: {}, current_user: nil, resource: nil)
     end
 
     entry1.reload
     entry2.reload
+
     assert_equal "approved", entry1.status
     assert_equal "approved", entry2.status
     assert entry1.published

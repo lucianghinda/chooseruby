@@ -4,24 +4,24 @@ Rails.application.routes.draw do
   mount_avo
 
   # Authentication
-  resource :session, only: [ :new, :create, :destroy ]
+  resource :session, only: [:new, :create, :destroy]
 
   # Author proposal routes (specific routes must come before dynamic author routes)
   get "/author_proposals/new_author", to: "author_proposals#new_author", as: :new_author_proposal
   get "/author_proposals/:id/success", to: "author_proposals#success", as: :author_proposal_success
-  resources :author_proposals, only: [ :new, :create, :show ]
+  resources :author_proposals, only: [:new, :create, :show]
 
   # Author pages
   get "/authors/search", to: "authors#search", as: :authors_search
   get "/authors/:author_id/propose_edit", to: "author_proposals#new", as: :propose_author_edit
-  resources :authors, only: [ :index ], param: :slug
+  resources :authors, only: [:index], param: :slug
   get "/authors/:slug", to: "authors#show", as: :author
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  get "up" => "rails/health#show", :as => :rails_health_check
 
   # CSP violation reporting
   post "/csp-violation-report", to: "csp_reports#create"

@@ -20,7 +20,7 @@
   <%= simple_format(@submission.description.to_s) %>
 <% end %>
 
-<%# Type-specific fields for RubyGem %>
+<%# Type-specific details for RubyGem %>
 <% if @submission.entryable_type == "RubyGem" && @submission.entryable.present? %>
   <h2>RubyGem Details</h2>
   <p><strong>Gem name:</strong> <%= @submission.entryable.gem_name %></p>
@@ -38,7 +38,7 @@
   <% end %>
 <% end %>
 
-<%# Type-specific fields for Book %>
+<%# Type-specific details for Book %>
 <% if @submission.entryable_type == "Book" && @submission.entryable.present? %>
   <h2>Book Details</h2>
   <% if @submission.entryable.isbn.present? %>
@@ -61,7 +61,7 @@
   <% end %>
 <% end %>
 
-<%# Type-specific fields for Course %>
+<%# Type-specific details for Course %>
 <% if @submission.entryable_type == "Course" && @submission.entryable.present? %>
   <h2>Course Details</h2>
   <% if @submission.entryable.platform.present? %>
@@ -83,7 +83,7 @@
   <% end %>
 <% end %>
 
-<%# Type-specific fields for Tutorial %>
+<%# Type-specific details for Tutorial %>
 <% if @submission.entryable_type == "Tutorial" && @submission.entryable.present? %>
   <h2>Tutorial Details</h2>
   <% if @submission.entryable.reading_time_minutes.present? %>
@@ -100,7 +100,7 @@
   <% end %>
 <% end %>
 
-<%# Type-specific fields for Article %>
+<%# Type-specific details for Article %>
 <% if @submission.entryable_type == "Article" && @submission.entryable.present? %>
   <h2>Article Details</h2>
   <% if @submission.entryable.reading_time_minutes.present? %>
@@ -117,7 +117,7 @@
   <% end %>
 <% end %>
 
-<%# Type-specific fields for Tool %>
+<%# Type-specific details for Tool %>
 <% if @submission.entryable_type == "Tool" && @submission.entryable.present? %>
   <h2>Tool Details</h2>
   <% if @submission.entryable.tool_type.present? %>
@@ -137,7 +137,7 @@
   <% end %>
 <% end %>
 
-<%# Type-specific fields for Podcast %>
+<%# Type-specific details for Podcast %>
 <% if @submission.entryable_type == "Podcast" && @submission.entryable.present? %>
   <h2>Podcast Details</h2>
   <% if @submission.entryable.host.present? %>
@@ -160,7 +160,7 @@
   <% end %>
 <% end %>
 
-<%# Type-specific fields for Community %>
+<%# Type-specific details for Community %>
 <% if @submission.entryable_type == "Community" && @submission.entryable.present? %>
   <h2>Community Details</h2>
   <% if @submission.entryable.platform.present? %>

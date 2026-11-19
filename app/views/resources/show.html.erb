@@ -5,26 +5,24 @@
 <% end %>
 
 <% content_for :head do %>
-  <%# Open Graph tags %>
-  <meta property="og:title" content="<%= @entry.title %>" />
-  <meta property="og:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="<%= request.original_url %>" />
-  <meta property="og:site_name" content="ChooseRuby" />
+  <meta property="og:title" content="<%= @entry.title %>">
+  <meta property="og:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="<%= request.original_url %>">
+  <meta property="og:site_name" content="ChooseRuby">
   <% if @entry.image.attached? %>
-    <meta property="og:image" content="<%= url_for(@entry.image) %>" />
+    <meta property="og:image" content="<%= url_for(@entry.image) %>">
   <% elsif @entry.image_url.present? %>
-    <meta property="og:image" content="<%= @entry.image_url %>" />
+    <meta property="og:image" content="<%= @entry.image_url %>">
   <% end %>
 
-  <%# Twitter Card tags %>
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="<%= @entry.title %>" />
-  <meta name="twitter:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= @entry.title %>">
+  <meta name="twitter:description" content="<%= truncate(@entry.description.to_plain_text, length: 160) %>">
   <% if @entry.image.attached? %>
-    <meta name="twitter:image" content="<%= url_for(@entry.image) %>" />
+    <meta name="twitter:image" content="<%= url_for(@entry.image) %>">
   <% elsif @entry.image_url.present? %>
-    <meta name="twitter:image" content="<%= @entry.image_url %>" />
+    <meta name="twitter:image" content="<%= @entry.image_url %>">
   <% end %>
 <% end %>
 
@@ -43,12 +41,10 @@
   <%= breadcrumbs(breadcrumb_items) %>
 
   <% if @entry.book? %>
-    <%# Enhanced Book Layout %>
     <%= render "entries/book_hero", entry: @entry %>
     <%= render "entries/book_description", entry: @entry %>
     <%= render "entries/book_author", entry: @entry %>
   <% else %>
-    <%# Generic Layout for other entry types %>
     <!-- Main Content Section -->
     <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
       <div class="space-y-6">
@@ -63,7 +59,6 @@
             <% primary_category = @entry.primary_category %>
             <% remaining_categories = @entry.categories.reject { |c| c.id == primary_category&.id } %>
 
-            <%# Display primary category first with rose-500 background %>
             <% if primary_category %>
               <%= link_to category_path(primary_category.slug), class: "inline-flex items-center gap-1.5 rounded-full bg-rose-500 px-3 py-1 text-xs font-medium text-white hover:bg-rose-600 transition-colors" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -73,7 +68,6 @@
               <% end %>
             <% end %>
 
-            <%# Display remaining categories with slate-100 background %>
             <% remaining_categories.each do |category| %>
               <%= link_to category.name, category_path(category.slug), class: "inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-200 transition-colors" %>
             <% end %>

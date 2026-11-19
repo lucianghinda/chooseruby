@@ -46,7 +46,7 @@ class EntriesController < ApplicationController
       .order(updated_at: :desc)
       .limit(5)
 
-    render partial: "entries/suggestions"
+    render partial: "entries/suggestions", locals: {entries: @entries, categories: @categories, types: @types, popular_queries: @popular_queries}
   end
 
   def new
@@ -55,12 +55,12 @@ class EntriesController < ApplicationController
 
   def create
     # Validate category limit before processing
-    category_ids = all_permitted_params[:category_ids].to_a.reject(&:blank?)
+    category_ids = all_permitted_params[:category_ids].to_a.compact_blank
     if category_ids.length > 3
       @entry = Entry.new(common_entry_params)
       @entry.errors.add(:categories, "You can select a maximum of 3 categories")
       flash.now[:alert] = "Please review the highlighted fields."
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
       return
     end
 
@@ -93,7 +93,7 @@ class EntriesController < ApplicationController
 
     unless @entry.persisted?
       flash.now[:alert] = "Please review the highlighted fields."
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -183,116 +183,41 @@ class EntriesController < ApplicationController
     )
   end
 
+  # Which class and fields each entryable type maps to. One data structure
+  # instead of a case statement plus one near-identical *_params method per
+  # type - see docs/llms/development.md's over-engineering pass. The classes
+  # are real constants here (not `resource_type.constantize`, which Brakeman
+  # flags as unsafe reflection on request params - rightly, since a class
+  # name alone doesn't prove it's meant to be entryable). Extending to the
+  # other 11 delegated types Entry supports (see Entry::VALID_TYPES) is just
+  # adding entries here.
+  ENTRYABLE_ATTRIBUTES = {
+    "RubyGem" => [RubyGem, %i[gem_name github_url documentation_url rubygems_url current_version downloads_count]],
+    "Book" => [Book, %i[isbn publisher publication_year page_count format purchase_url]],
+    "Course" => [Course, %i[platform instructor duration_hours currency is_free enrollment_url]],
+    "Tutorial" => [Tutorial, %i[reading_time_minutes publication_date author_name platform]],
+    "Article" => [Article, %i[reading_time_minutes publication_date author_name platform]],
+    "Tool" => [Tool, %i[tool_type github_url documentation_url license is_open_source]],
+    "Podcast" => [Podcast, %i[host episode_count frequency rss_feed_url spotify_url apple_podcasts_url]],
+    "Community" => [Community, %i[platform join_url member_count is_official]]
+  }.freeze
+
   def build_entryable
     resource_type = params.dig(:entry, :resource_type)
+    klass, attributes = ENTRYABLE_ATTRIBUTES[resource_type]
+    raise ArgumentError, "Unknown resource type: #{resource_type}" unless klass
 
-    case resource_type
-    when "RubyGem"
-      RubyGem.new(ruby_gem_params)
-    when "Book"
-      Book.new(book_params)
-    when "Course"
-      Course.new(course_params)
-    when "Tutorial"
-      Tutorial.new(tutorial_params)
-    when "Article"
-      Article.new(article_params)
-    when "Tool"
-      Tool.new(tool_params)
-    when "Podcast"
-      Podcast.new(podcast_params)
-    when "Community"
-      Community.new(community_params)
-    else
-      raise ArgumentError, "Unknown resource type: #{resource_type}"
-    end
+    entryable_attributes = all_permitted_params.slice(*attributes)
+    entryable_attributes.merge!(course_price_cents) if resource_type == "Course"
+
+    klass.new(entryable_attributes)
   end
 
-  def ruby_gem_params
-    all_permitted_params.slice(
-      :gem_name,
-      :github_url,
-      :documentation_url,
-      :rubygems_url,
-      :current_version,
-      :downloads_count
-    )
-  end
+  # Course is the only type with a unit conversion (dollars -> cents), so it
+  # gets one small exception rather than a conversions-per-field mini-DSL.
+  def course_price_cents
+    return {} if all_permitted_params[:price].blank?
 
-  def book_params
-    all_permitted_params.slice(
-      :isbn,
-      :publisher,
-      :publication_year,
-      :page_count,
-      :format,
-      :purchase_url
-    )
-  end
-
-  def course_params
-    params_hash = all_permitted_params.slice(
-      :platform,
-      :instructor,
-      :duration_hours,
-      :currency,
-      :is_free,
-      :enrollment_url
-    )
-
-    # Convert price from dollars to cents
-    if all_permitted_params[:price].present?
-      params_hash[:price_cents] = (all_permitted_params[:price].to_f * 100).to_i
-    end
-
-    params_hash
-  end
-
-  def tutorial_params
-    all_permitted_params.slice(
-      :reading_time_minutes,
-      :publication_date,
-      :author_name,
-      :platform
-    )
-  end
-
-  def article_params
-    all_permitted_params.slice(
-      :reading_time_minutes,
-      :publication_date,
-      :author_name,
-      :platform
-    )
-  end
-
-  def tool_params
-    all_permitted_params.slice(
-      :tool_type,
-      :github_url,
-      :documentation_url,
-      :license,
-      :is_open_source
-    )
-  end
-
-  def podcast_params
-    all_permitted_params.slice(
-      :host,
-      :episode_count,
-      :frequency,
-      :rss_feed_url,
-      :spotify_url,
-      :apple_podcasts_url
-    )
-  end
-
-  def community_params
-    all_permitted_params.slice(
-      :platform,
-      :join_url,
-      :member_count,
-      :is_official
-    )
+    {price_cents: (all_permitted_params[:price].to_f * 100).to_i}
   end
 end

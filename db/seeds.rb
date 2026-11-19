@@ -18,7 +18,7 @@ if Rails.env.development? && User.count.zero?
 end
 
 # Check if we should run the rubyandrailsinfo import
-if ENV['IMPORT_RUBYANDRAILSINFO'] == 'true' && File.exist?(Rails.root.join('tmp/latest.sql'))
+if ENV["IMPORT_RUBYANDRAILSINFO"] == "true" && Rails.root.join("tmp/latest.sql").exist?
   puts "Starting data import from PostgreSQL dump..."
   puts ""
 
@@ -37,16 +37,16 @@ if ENV['IMPORT_RUBYANDRAILSINFO'] == 'true' && File.exist?(Rails.root.join('tmp/
   ]
 
   seed_files.each do |seed_file|
-    puts "\n" + "="*80
+    puts "\n" + "=" * 80
     puts "Running: seeds/rubyandrailsinfo/#{seed_file}.rb"
-    puts "="*80
-    load Rails.root.join('db', 'seeds', 'rubyandrailsinfo', "#{seed_file}.rb")
+    puts "=" * 80
+    load Rails.root.join("db", "seeds", "rubyandrailsinfo", "#{seed_file}.rb")
   end
 
   # Verification
-  puts "\n" + "="*80
+  puts "\n" + "=" * 80
   puts "Import Complete - Verification Summary"
-  puts "="*80
+  puts "=" * 80
   puts "Categories: #{Category.count}"
   puts "Authors: #{Author.count}"
   puts "Books: #{Book.count}"
@@ -69,20 +69,20 @@ puts "Seeding database with sample data..."
 puts "Creating categories..."
 
 categories_data = [
-  { name: "Testing", description: "Testing frameworks, tools, and best practices for Ruby applications" },
-  { name: "Authentication", description: "User authentication and authorization solutions" },
-  { name: "Background Jobs", description: "Background job processing and task queues" },
-  { name: "DevOps", description: "Deployment, infrastructure, and operations tools" },
-  { name: "Web Development", description: "Web frameworks and web development tools" },
-  { name: "API Development", description: "Building and consuming APIs" },
-  { name: "Database", description: "Database tools, ORMs, and data persistence" },
-  { name: "Security", description: "Security tools and best practices" },
-  { name: "Performance", description: "Performance optimization and monitoring" },
-  { name: "Learning Resources", description: "Educational materials for learning Ruby" },
-  { name: "Data Processing", description: "Data manipulation, ETL, and analysis" },
-  { name: "UI/Frontend", description: "Frontend tools and UI libraries" },
-  { name: "Email", description: "Email sending and processing" },
-  { name: "File Handling", description: "File uploads, processing, and storage" }
+  {name: "Testing", description: "Testing frameworks, tools, and best practices for Ruby applications"},
+  {name: "Authentication", description: "User authentication and authorization solutions"},
+  {name: "Background Jobs", description: "Background job processing and task queues"},
+  {name: "DevOps", description: "Deployment, infrastructure, and operations tools"},
+  {name: "Web Development", description: "Web frameworks and web development tools"},
+  {name: "API Development", description: "Building and consuming APIs"},
+  {name: "Database", description: "Database tools, ORMs, and data persistence"},
+  {name: "Security", description: "Security tools and best practices"},
+  {name: "Performance", description: "Performance optimization and monitoring"},
+  {name: "Learning Resources", description: "Educational materials for learning Ruby"},
+  {name: "Data Processing", description: "Data manipulation, ETL, and analysis"},
+  {name: "UI/Frontend", description: "Frontend tools and UI libraries"},
+  {name: "Email", description: "Email sending and processing"},
+  {name: "File Handling", description: "File uploads, processing, and storage"}
 ]
 
 categories = categories_data.map do |cat_data|
@@ -116,7 +116,7 @@ Entry.find_or_create_by!(entryable: rspec_gem) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :beginner
-  resource.tags = [ "testing", "bdd", "tdd", "unit-testing" ]
+  resource.tags = ["testing", "bdd", "tdd", "unit-testing"]
   resource.categories = find_categories("Testing")
 end
 
@@ -135,7 +135,7 @@ Entry.find_or_create_by!(entryable: devise_gem) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :intermediate
-  resource.tags = [ "authentication", "security", "user-management" ]
+  resource.tags = ["authentication", "security", "user-management"]
   resource.categories = find_categories("Authentication", "Security")
 end
 
@@ -154,7 +154,7 @@ Entry.find_or_create_by!(entryable: sidekiq_gem) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :intermediate
-  resource.tags = [ "background-jobs", "async", "redis", "workers" ]
+  resource.tags = ["background-jobs", "async", "redis", "workers"]
   resource.categories = find_categories("Background Jobs", "Performance")
 end
 
@@ -178,7 +178,7 @@ Entry.find_or_create_by!(entryable: well_grounded_book) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :beginner
-  resource.tags = [ "ruby", "programming", "fundamentals", "oop" ]
+  resource.tags = ["ruby", "programming", "fundamentals", "oop"]
   resource.categories = find_categories("Learning Resources")
 end
 
@@ -197,7 +197,7 @@ Entry.find_or_create_by!(entryable: eloquent_ruby) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :intermediate
-  resource.tags = [ "ruby", "best-practices", "idiomatic", "style" ]
+  resource.tags = ["ruby", "best-practices", "idiomatic", "style"]
   resource.categories = find_categories("Learning Resources")
 end
 
@@ -216,7 +216,7 @@ Entry.find_or_create_by!(entryable: practical_ood) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :advanced
-  resource.tags = [ "oop", "design", "patterns", "architecture" ]
+  resource.tags = ["oop", "design", "patterns", "architecture"]
   resource.categories = find_categories("Learning Resources")
 end
 
@@ -243,7 +243,7 @@ Entry.find_or_create_by!(entryable: rails_tutorial) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :beginner
-  resource.tags = [ "rails", "tutorial" ]
+  resource.tags = ["rails", "tutorial"]
   resource.categories = find_categories("Learning Resources", "Web Development")
 end
 
@@ -260,7 +260,7 @@ Entry.find_or_create_by!(entryable: gorails) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :intermediate
-  resource.tags = [ "rails", "screencasts" ]
+  resource.tags = ["rails", "screencasts"]
   resource.categories = find_categories("Learning Resources")
 end
 
@@ -277,7 +277,7 @@ Entry.find_or_create_by!(entryable: free_course) do |resource|
   resource.status = :approved
   resource.published = true
   resource.experience_level = :beginner
-  resource.tags = [ "ruby", "free" ]
+  resource.tags = ["ruby", "free"]
   resource.categories = find_categories("Learning Resources")
 end
 
@@ -297,7 +297,7 @@ Entry.find_or_create_by!(entryable: tut1) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :beginner
-  r.tags = [ "rails", "tutorial" ]
+  r.tags = ["rails", "tutorial"]
   r.categories = find_categories("Learning Resources")
 end
 
@@ -312,7 +312,7 @@ Entry.find_or_create_by!(entryable: tut2) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :intermediate
-  r.tags = [ "testing" ]
+  r.tags = ["testing"]
   r.categories = find_categories("Testing")
 end
 
@@ -327,7 +327,7 @@ Entry.find_or_create_by!(entryable: tut3) do |r|
   r.status = :approved
   r.published = false
   r.experience_level = :intermediate
-  r.tags = [ "api" ]
+  r.tags = ["api"]
   r.categories = find_categories("API Development")
 end
 
@@ -348,7 +348,7 @@ Entry.find_or_create_by!(entryable: art1) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :intermediate
-  r.tags = [ "ruby" ]
+  r.tags = ["ruby"]
   r.categories = find_categories("Learning Resources")
 end
 
@@ -361,7 +361,7 @@ Entry.find_or_create_by!(entryable: art2) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :advanced
-  r.tags = [ "performance" ]
+  r.tags = ["performance"]
   r.categories = find_categories("Performance")
 end
 
@@ -374,7 +374,7 @@ Entry.find_or_create_by!(entryable: art3) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :intermediate
-  r.tags = [ "security" ]
+  r.tags = ["security"]
   r.categories = find_categories("Security")
 end
 
@@ -395,7 +395,7 @@ Entry.find_or_create_by!(entryable: tool1) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :beginner
-  r.tags = [ "linter" ]
+  r.tags = ["linter"]
   r.categories = find_categories("DevOps")
 end
 
@@ -410,7 +410,7 @@ Entry.find_or_create_by!(entryable: tool2) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :beginner
-  r.tags = [ "dependencies" ]
+  r.tags = ["dependencies"]
   r.categories = find_categories("DevOps")
 end
 
@@ -426,7 +426,7 @@ Entry.find_or_create_by!(entryable: tool3) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :intermediate
-  r.tags = [ "debugging" ]
+  r.tags = ["debugging"]
   r.categories = find_categories("DevOps")
 end
 
@@ -444,7 +444,7 @@ Entry.find_or_create_by!(entryable: pod1) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :beginner
-  r.tags = [ "podcast" ]
+  r.tags = ["podcast"]
   r.categories = find_categories("Learning Resources")
 end
 
@@ -457,7 +457,7 @@ Entry.find_or_create_by!(entryable: pod2) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :intermediate
-  r.tags = [ "podcast" ]
+  r.tags = ["podcast"]
   r.categories = find_categories("Learning Resources")
 end
 
@@ -470,7 +470,7 @@ Entry.find_or_create_by!(entryable: pod3) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :intermediate
-  r.tags = [ "podcast" ]
+  r.tags = ["podcast"]
   r.categories = find_categories("Learning Resources")
 end
 
@@ -490,7 +490,7 @@ Entry.find_or_create_by!(entryable: comm1) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :beginner
-  r.tags = [ "community" ]
+  r.tags = ["community"]
   r.categories = find_categories("Learning Resources")
 end
 
@@ -505,7 +505,7 @@ Entry.find_or_create_by!(entryable: comm2) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :beginner
-  r.tags = [ "community" ]
+  r.tags = ["community"]
   r.categories = find_categories("Learning Resources")
 end
 
@@ -520,7 +520,7 @@ Entry.find_or_create_by!(entryable: comm3) do |r|
   r.status = :approved
   r.published = true
   r.experience_level = :beginner
-  r.tags = [ "community" ]
+  r.tags = ["community"]
   r.categories = find_categories("Learning Resources")
 end
 

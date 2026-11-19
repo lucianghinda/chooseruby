@@ -39,6 +39,7 @@ class ResourceTypeHelperTest < ActionView::TestCase
   # Test 4: submission_message_for_type returns correct message for newsletter (singular)
   test "submission_message_for_type returns correct message for newsletter" do
     message = submission_message_for_type("newsletters")
+
     assert_includes message, "Know a great Ruby newsletter?"
     assert_includes message, "Submit it here"
   end
@@ -46,6 +47,7 @@ class ResourceTypeHelperTest < ActionView::TestCase
   # Test 5: submission_message_for_type returns correct message for videos (plural)
   test "submission_message_for_type returns correct message for videos" do
     message = submission_message_for_type("videos")
+
     assert_includes message, "Know a great Ruby video?"
     assert_includes message, "Submit it here"
   end
@@ -53,6 +55,7 @@ class ResourceTypeHelperTest < ActionView::TestCase
   # Test 6: submission_message_for_type returns correct message for testing resources
   test "submission_message_for_type returns correct message for testing resources" do
     message = submission_message_for_type("testing-resources")
+
     assert_includes message, "Know a great Ruby testing resource?"
     assert_includes message, "Submit it here"
   end

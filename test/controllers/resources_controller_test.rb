@@ -90,7 +90,7 @@ class ResourcesControllerTest < ActionDispatch::IntegrationTest
       published: true,
       status: :approved
     )
-    entry.categories << [ category1, category2 ]
+    entry.categories << [category1, category2]
     entry.authors << author
     entry.description = "Framework guide content"
     entry.save!
@@ -115,7 +115,7 @@ class ResourcesControllerTest < ActionDispatch::IntegrationTest
     get "/resources/#{entry.slug}"
 
     assert_response :success
-    assert_select "h2", { text: /Other resources by the same author/, count: 0 }
+    assert_select "h2", {text: /Other resources by the same author/, count: 0}
   end
 
   test "author resources section shows when related author resources exist" do
@@ -155,7 +155,7 @@ class ResourcesControllerTest < ActionDispatch::IntegrationTest
     get "/resources/#{entry.slug}"
 
     assert_response :success
-    assert_select "h2", { text: /Related resources/, count: 0 }
+    assert_select "h2", {text: /Related resources/, count: 0}
   end
 
   test "related resources section shows when related resources exist" do

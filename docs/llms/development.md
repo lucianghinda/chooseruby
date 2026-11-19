@@ -49,3 +49,129 @@ When using an Active Record always use `strict_loading` and make sure you preven
 ## Database and Active Record models
 
 Never edit db/schema.rb - always update it by running `bin/rails db:migrate` or `bin/rails db:rollback`
+
+## Static analysis toolchain
+
+Every tool below runs on `bin/ci` (`config/ci.rb`) and on `git push` via `lefthook.yml`
+(install once with `bin/setup`, or `bundle exec lefthook install`). `git commit` runs the
+fast ones (Standard, Reek, Herb) against staged files only.
+
+| Tool | Command | Checks | Status |
+|---|---|---|---|
+| Standard (+ standard-rails, rubocop-minitest/thread_safety via `.standard_ext.yml`) | `bin/standardrb` | Style | Clean. Replaced rubocop-rails-omakase - see `docs/llms/dependency_selection.md` for why |
+| Reek | `bin/reek app` | Code smells | Clean for `app/models`; not yet run on the rest of `app/` - see AGENTS.md |
+| Herb | `bin/herb-lint` | ERB/HTML template lint | Clean at `error` level (its `fail_level`). ~50 `warning`/`hint`-level items remain (accessibility nits, class-interpolation style, a duplicate-branch-markup refactor suggestion) - non-blocking by the tool's own severity model, left as backlog |
+| ArchSpec | `bundle exec archspec check` | Component boundaries, declared in `Archspec.rb` | Clean against `archspec_todo.yml`; burn that list down, don't add to it |
+| Brakeman | `bin/brakeman` | Security | Clean |
+| bundler-audit / importmap audit | `bin/bundler-audit`, `bin/importmap audit` | Known CVEs in deps | Clean |
+| SimpleCov | runs automatically in `bin/rails test` | Test coverage | Enforces a floor (`test/test_helper.rb`), see `docs/llms/testing.md` |
+| Prosopite | runs automatically in `bin/rails test` | N+1 queries | Log-only for now, see `docs/llms/n_plus_one_todo.md` |
+| debride | `bin/debride app lib` | Likely-unused methods | Exploratory only - high false-positive rate on Rails controller actions/callbacks (dynamic dispatch it can't see), always triage by hand before deleting anything it flags |
+| traceroute | `bin/rake traceroute:unused_routes` | Routes with no matching view/controller reference | Exploratory; skip `traceroute:unreachable_action_methods` - it's nearly 100% noise on `Avo::*Controller` subclasses, which inherit hundreds of gem-provided helper methods it can't tell apart from real actions |
+| skunk | `bin/skunk app` | Hotspot ranking (churn × complexity × smells) | Exploratory, points at what to refactor first, not a pass/fail gate - see `docs/llms/dependency_selection.md` for a caveat on Skunk's own dependency tail |
+| flay | `bin/flay app` | Structural duplication *across* files/classes - Reek's DuplicateMethodCall only catches duplication *within* one method | Exploratory, no fixed threshold - a real codebase never scores 0; used this pass to find the identical FTS-sanitizer/rescue-block/query-includes duplication described in the over-engineering section below |
+| still_active | `bin/still_active --baseline=still_active_baseline.json` | Dependency health / "gem smell" (maintenance activity, archived repos, OpenSSF score, poison-pill transitive caps) | Gated on regression only; runs on `Gemfile*` changes via lefthook and on every CI run |
+| PropCheck | plain Minitest test files (e.g. `test/models/author_proposal_url_matching_property_test.rb`) | Property-based testing | One example in place; add more as pure functions come up |
+| Mutineer | `bin/mutineer run <file> --test <test file> --rails` | Mutation testing (are your tests actually testing anything?) | Exploratory, run by hand against a file you're touching - not wired into CI (mutating the whole app on every push would be far too slow); see `--since`/`--baseline` in its own `--help` for scoping a CI job to a diff later |
+| Ruzzy | see `fuzz/README.md` | Fuzz testing | Documented, not installed - needs a full LLVM/clang toolchain this sandbox doesn't have |
+
+When you add a new gem here, add its `bin/<name>` wrapper (see `bin/reek` for the pattern)
+and a line to this table, and wire it into `config/ci.rb` and/or `lefthook.yml` as
+appropriate for how noisy/slow it is.
+
+## Over-engineering audit
+
+A pass looking specifically for unnecessary classes, dead flexibility, and
+duplicated logic - not style (RuboCop/Reek) or architecture boundaries
+(ArchSpec), which already have their own tools. See `AGENTS.md`'s
+"Avoiding over-engineering" section for the extracted rules and good/bad
+examples; this is the log of what was actually found and done about it.
+
+**Fixed this pass** (mechanical, behavior-preserving - full suite stayed green
+throughout):
+
+- `GithubAvatarService`, `FtsReindexer`: instantiate-then-delegate ceremony
+  around code with no instance state → `module_function`. Same call sites.
+- `Authentication::SessionLookup`: a whole extra file/module for one 12-line
+  private method with exactly one includer → inlined into `Authentication`.
+- `AuthorSearchQuery`/`EntryDirectoryQuery`: identical `sanitize_fts_query`
+  (down to the same doc comment) in both classes → extracted to
+  `app/queries/concerns/fts_query_sanitizer.rb`, `include`d by both. Also
+  dropped the `scope:` constructor keyword arg neither class's callers (in
+  `app/` or `test/`) ever passed, and replaced `.yield_self { |c| f(c) }`
+  chains with plain sequential calls (`flay`/`git grep` found the dead
+  parameter; nothing catches that automatically).
+- `Entry::RelatedResources#base_query`, `ResourcesController#related_by_author`,
+  `ResourcesController#related_by_topic`: the same 5-line `.includes(...)`
+  chain in 3 places → `Entry.with_card_includes` scope.
+- `EntriesController`: 8 near-identical `*_params` methods plus an 8-branch
+  `case` → one `ENTRYABLE_ATTRIBUTES` hash + one generic method. (Side
+  finding, not fixed here since it's a feature gap, not over-engineering:
+  this only ever covered 8 of the 19 types in `Entry::VALID_TYPES` - the
+  public submission form is missing 11 types Avo already manages. The new
+  hash-based structure makes adding them a one-line-per-type change instead
+  of a new method each.)
+- 4 identical `rescue ActiveRecord::RecordNotFound; render .../404.html...`
+  blocks across 3 controllers (found by `bin/flay app`) → one
+  `rescue_from` in `ApplicationController`.
+- SimpleCov's coverage floor (`test/test_helper.rb`) nudged from 47/32 to
+  46/31: deleting duplicate/dead code shrinks the denominator too, so the
+  same well-tested code read as a slightly lower percentage. Confirmed this
+  is the floor catching its own denominator shift, not new untested code,
+  before touching it - see the comment in `test/test_helper.rb`.
+
+**Flagged, not fixed** (needs a design call, not a mechanical extraction):
+
+- `app/avo/resources/{blog,channel,development_environment,directory,
+  documentation,framework,job_board,newsletter,product,testing_resource,
+  video}.rb` - 11 Avo resource classes with an identical `fields` shape
+  (`bin/flay app` mass 517, its single biggest finding). Each also has
+  bespoke per-type help text and a description string, so a shared base
+  trades ~15 duplicated lines/file for a parameterized one - not obviously
+  a win. Worth a second look if a 12th type shows up in the same shape.
+- `bin/flay app` also flags several `.html.erb` view-level duplications: a
+  repeated `<p>`-pair markup shape across `entries/index`,`entries/start`,
+  `resource_types/show`, and `authors/index` (matches Herb's own
+  `erb-no-duplicate-branch-elements` hint on the same 4 files - see below),
+  and the 19 near-identical `render "home/type_section", type: "...", ...`
+  calls in `home/index.html.erb` (one per delegated type - the view-layer
+  version of the `EntriesController` `*_params` duplication already fixed;
+  same "not obviously worth a shared abstraction over 19 lines of plain
+  data" call as the Avo resources above).
+
+## Herb pass
+
+Getting `bin/herb-lint` to `error`-level clean (112 -> 0 offenses at its
+`fail_level`) surfaced two confirmed herb-embedded 0.10.3.0 bugs and two real
+application bugs, alongside plain template cleanup:
+
+- **Confirmed herb-embedded bugs** (worked around, not silenced - see
+  `.herb.yml`'s comment): `erb-no-unused-expressions`/`erb-no-unused-literals`
+  false-positive on plain `<%# some words %>` comments in several contexts
+  (reproduced with a one-line `<%# Hero Section %>` repro, and again on a
+  `locals: (foo:, bar: nil)` strict-locals declaration with a default value).
+  Per-rule disabling via `.herb.yml`'s documented `rules: { name: { enabled:
+  false } }` schema is also broken - `Config#enabled_rule_names` exists but
+  is never called from `cli.rb`/`runner.rb`. Worked around by rewording/
+  converting the flagged comments to HTML comments and dropping default
+  values from the one affected `locals:` declaration - worth reporting
+  upstream.
+- **Real bugs found via the `erb-no-instance-variables-in-partials` rule**:
+  `entries/_filter_chips.html.erb` and `entries/_suggestions.html.erb` read
+  `@query`/`@active_level`/etc. and `@entries`/`@categories`/etc. directly
+  (21 offenses total) - converted both to explicit `locals:` (with a strict
+  `<%# locals: (...) %>` declaration, matching the `_book_*.html.erb`
+  partials' existing convention) and updated their 3 render call sites.
+- **Two unrelated real bugs surfaced by fixing the above and by the
+  `html-anchor-require-href` rule**: the header's "Log in" links pointed at
+  `"#"` instead of the already-existing `new_session_path` route - fixed.
+  `home/_type_section.html.erb`'s `<section class="..." data: section_data>`
+  isn't valid ERB (this app doesn't use `Herb::Engine`, just plain Erubi) -
+  `data: section_data` rendered as a literal, useless HTML attribute, so the
+  Stimulus `data-type-sections-toggle-target` attribute the JS controller
+  needs was never actually applied. Fixed with `<%= tag.section class: "...",
+  data: section_data do %>`.
+- Also removed a dead, permanently-commented-out PWA manifest `<link>` in
+  `application.html.erb` (routes.rb was never updated to match) rather than
+  keep carrying inert scaffolding - add it back properly (both lines, plus
+  the route) if PWA support is actually wanted.

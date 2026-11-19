@@ -27,7 +27,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
       description: "Ruby on Rails is a web application framework for building web applications",
       url: "https://rubyonrails.org",
       entryable: @gem1,
-      tags: [ "web", "mvc", "framework" ],
+      tags: ["web", "mvc", "framework"],
       status: :approved,
       published: true,
       experience_level: :intermediate
@@ -40,7 +40,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
       description: "A comprehensive guide to testing Ruby on Rails applications with RSpec and Minitest",
       url: "https://example.com/testing-book",
       entryable: @book1,
-      tags: [ "testing", "rspec", "minitest" ],
+      tags: ["testing", "rspec", "minitest"],
       status: :approved,
       published: true,
       experience_level: :beginner
@@ -53,7 +53,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
       description: "Learn to build web apps from scratch",
       url: "https://example.com/bootcamp",
       entryable: @course1,
-      tags: [ "beginner", "web", "fullstack" ],
+      tags: ["beginner", "web", "fullstack"],
       status: :approved,
       published: true,
       experience_level: :beginner
@@ -105,7 +105,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
         description: "Testing pagination functionality with search term",
         url: "https://example.com/pagination-#{i}",
         entryable: gem,
-        tags: [ "pagination" ],
+        tags: ["pagination"],
         status: :approved,
         published: true
       )
@@ -125,6 +125,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
 
     # Navigate to page 2
     get entries_path(q: "pagination", page: 2)
+
     assert_response :success
 
     # Second page should show remaining entries (at least 1)
@@ -188,8 +189,9 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
     )
 
     # Test various special character scenarios (avoiding FTS5 special chars like ! & etc)
-    [ "Rails Version", "framework", "fast reliable", "rails best" ].each do |query|
+    ["Rails Version", "framework", "fast reliable", "rails best"].each do |query|
       get entries_path(q: query)
+
       assert_response :success, "Failed for query: #{query}"
     end
   end
@@ -208,6 +210,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
   test "complete workflow from search to viewing results" do
     # Step 1: User searches for "Rails"
     get entries_path(q: "Rails")
+
     assert_response :success
 
     # Step 2: User sees search results
@@ -224,6 +227,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
   test "complete workflow from author search to author detail page" do
     # Step 1: User searches for author
     get authors_path(q: "Aaron")
+
     assert_response :success
 
     # Step 2: User sees search results with entry count
@@ -231,6 +235,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
 
     # Step 3: Navigate to author detail page
     get author_path(slug: @author2.slug)
+
     assert_response :success
 
     # Step 4: Verify author page shows entries
@@ -261,7 +266,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
       "SELECT name FROM sqlite_master WHERE type='table' AND name='entries_fts'"
     ).first
 
-    unless result.present?
+    if result.blank?
       # Create entries_fts table
       ActiveRecord::Base.connection.execute(<<-SQL)
         CREATE VIRTUAL TABLE entries_fts USING fts5(
@@ -279,7 +284,7 @@ class Fts5SearchEndToEndTest < ActionDispatch::IntegrationTest
       "SELECT name FROM sqlite_master WHERE type='table' AND name='authors_fts'"
     ).first
 
-    unless result.present?
+    if result.blank?
       # Create authors_fts table
       ActiveRecord::Base.connection.execute(<<-SQL)
         CREATE VIRTUAL TABLE authors_fts USING fts5(

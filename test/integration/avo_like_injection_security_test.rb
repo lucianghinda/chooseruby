@@ -8,7 +8,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
 
   def setup
     # Use unique names/slugs to avoid conflicts across test runs
-    timestamp = Time.now.to_f.to_s.gsub(".", "")
+    timestamp = Time.now.to_f.to_s.delete(".")
 
     # Create test data for searches
     @entry1 = Entry.create!(
@@ -42,7 +42,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
     search_lambda = Avo::Resources::Entry.search[:query]
 
     # Simulate Avo search context with params containing wildcard
-    context = OpenStruct.new(params: { q: "%" }, query: Entry.all)
+    context = OpenStruct.new(params: {q: "%"}, query: Entry.all)
     results = context.instance_exec(&search_lambda)
 
     # Should not return all entries (sanitized % becomes literal % which matches nothing)
@@ -54,7 +54,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
     # Test that searching for "___" doesn't act as wildcard pattern
     search_lambda = Avo::Resources::Entry.search[:query]
 
-    context = OpenStruct.new(params: { q: "___" }, query: Entry.all)
+    context = OpenStruct.new(params: {q: "___"}, query: Entry.all)
     results = context.instance_exec(&search_lambda)
 
     # Should not match entries with 3-character words (sanitized _ becomes literal _)
@@ -65,7 +65,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   test "Entry resource search works correctly with normal text" do
     search_lambda = Avo::Resources::Entry.search[:query]
 
-    context = OpenStruct.new(params: { q: "Rails Guide" }, query: Entry.all)
+    context = OpenStruct.new(params: {q: "Rails Guide"}, query: Entry.all)
     results = context.instance_exec(&search_lambda)
 
     assert_includes results, @entry1, "Should find entry with 'Rails Guide' in title"
@@ -76,7 +76,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
     # Test query with both wildcards and normal text
     search_lambda = Avo::Resources::Entry.search[:query]
 
-    context = OpenStruct.new(params: { q: "Rails Guide%" }, query: Entry.all)
+    context = OpenStruct.new(params: {q: "Rails Guide%"}, query: Entry.all)
     results = context.instance_exec(&search_lambda)
 
     # Should look for literal "Rails Guide%" string, not "Rails Guide" followed by anything
@@ -88,7 +88,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   test "Author resource search sanitizes percent wildcard" do
     search_lambda = Avo::Resources::Author.search[:query]
 
-    context = OpenStruct.new(params: { q: "%" }, query: Author.all)
+    context = OpenStruct.new(params: {q: "%"}, query: Author.all)
     results = context.instance_exec(&search_lambda)
 
     assert_operator results.count, :<, Author.count,
@@ -98,7 +98,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   test "Author resource search sanitizes underscore wildcard" do
     search_lambda = Avo::Resources::Author.search[:query]
 
-    context = OpenStruct.new(params: { q: "___" }, query: Author.all)
+    context = OpenStruct.new(params: {q: "___"}, query: Author.all)
     results = context.instance_exec(&search_lambda)
 
     assert_equal 0, results.count,
@@ -108,7 +108,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   test "Author resource search works correctly with normal text" do
     search_lambda = Avo::Resources::Author.search[:query]
 
-    context = OpenStruct.new(params: { q: "David Test" }, query: Author.all)
+    context = OpenStruct.new(params: {q: "David Test"}, query: Author.all)
     results = context.instance_exec(&search_lambda)
 
     assert_includes results, @author1, "Should find author with 'David Test' in name"
@@ -119,7 +119,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   test "Category resource search sanitizes percent wildcard" do
     search_lambda = Avo::Resources::Category.search[:query]
 
-    context = OpenStruct.new(params: { q: "%" }, query: Category.all)
+    context = OpenStruct.new(params: {q: "%"}, query: Category.all)
     results = context.instance_exec(&search_lambda)
 
     assert_operator results.count, :<, Category.count,
@@ -129,7 +129,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   test "Category resource search sanitizes underscore wildcard" do
     search_lambda = Avo::Resources::Category.search[:query]
 
-    context = OpenStruct.new(params: { q: "___" }, query: Category.all)
+    context = OpenStruct.new(params: {q: "___"}, query: Category.all)
     results = context.instance_exec(&search_lambda)
 
     assert_equal 0, results.count,
@@ -139,7 +139,7 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   test "Category resource search works correctly with normal text" do
     search_lambda = Avo::Resources::Category.search[:query]
 
-    context = OpenStruct.new(params: { q: "Testing" }, query: Category.all)
+    context = OpenStruct.new(params: {q: "Testing"}, query: Category.all)
     results = context.instance_exec(&search_lambda)
 
     assert_includes results, @category1, "Should find category with 'Testing' in name (partial match)"
@@ -149,8 +149,8 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   # EntryTagsFilter tests
   test "EntryTagsFilter sanitizes percent wildcard in filter value" do
     # Create entries with tags
-    @entry1.update!(tags: [ "ruby", "rails" ])
-    @entry2.update!(tags: [ "postgresql", "database" ])
+    @entry1.update!(tags: ["ruby", "rails"])
+    @entry2.update!(tags: ["postgresql", "database"])
 
     filter = Avo::Filters::EntryTagsFilter.new
     query = Entry.all
@@ -164,8 +164,8 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   end
 
   test "EntryTagsFilter sanitizes underscore wildcard in filter value" do
-    @entry1.update!(tags: [ "ruby", "rails" ])
-    @entry2.update!(tags: [ "postgresql", "database" ])
+    @entry1.update!(tags: ["ruby", "rails"])
+    @entry2.update!(tags: ["postgresql", "database"])
 
     filter = Avo::Filters::EntryTagsFilter.new
     query = Entry.all
@@ -178,8 +178,8 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   end
 
   test "EntryTagsFilter works correctly with normal tag value" do
-    @entry1.update!(tags: [ "ruby", "rails" ])
-    @entry2.update!(tags: [ "postgresql", "database" ])
+    @entry1.update!(tags: ["ruby", "rails"])
+    @entry2.update!(tags: ["postgresql", "database"])
 
     filter = Avo::Filters::EntryTagsFilter.new
     query = Entry.all
@@ -204,10 +204,10 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
   # Cross-cutting security tests
   test "all Avo resources use sanitize_sql_like" do
     # Verify that the code contains sanitization
-    entry_code = File.read(Rails.root.join("app/avo/resources/entry.rb"))
-    author_code = File.read(Rails.root.join("app/avo/resources/author.rb"))
-    category_code = File.read(Rails.root.join("app/avo/resources/category.rb"))
-    filter_code = File.read(Rails.root.join("app/avo/filters/entry_tags_filter.rb"))
+    entry_code = Rails.root.join("app/avo/resources/entry.rb").read
+    author_code = Rails.root.join("app/avo/resources/author.rb").read
+    category_code = Rails.root.join("app/avo/resources/category.rb").read
+    filter_code = Rails.root.join("app/avo/filters/entry_tags_filter.rb").read
 
     assert_match(/sanitize_sql_like/, entry_code,
       "Entry resource should use sanitize_sql_like")
@@ -221,10 +221,10 @@ class AvoLikeInjectionSecurityTest < ActionDispatch::IntegrationTest
 
   test "no unsanitized LIKE patterns exist in Avo resources" do
     # This test ensures we don't regress by adding new unsanitized LIKE queries
-    entry_code = File.read(Rails.root.join("app/avo/resources/entry.rb"))
-    author_code = File.read(Rails.root.join("app/avo/resources/author.rb"))
-    category_code = File.read(Rails.root.join("app/avo/resources/category.rb"))
-    filter_code = File.read(Rails.root.join("app/avo/filters/entry_tags_filter.rb"))
+    entry_code = Rails.root.join("app/avo/resources/entry.rb").read
+    author_code = Rails.root.join("app/avo/resources/author.rb").read
+    category_code = Rails.root.join("app/avo/resources/category.rb").read
+    filter_code = Rails.root.join("app/avo/filters/entry_tags_filter.rb").read
 
     # Pattern: LIKE query with interpolation before sanitization
     # This is a simplified check - looking for params[:q] or value in LIKE without prior sanitize_sql_like

@@ -37,7 +37,7 @@ class Community < ApplicationRecord
   # Validations
   validates :platform, presence: true
   validates :join_url, presence: true,
-                       format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
-                                message: "must be a valid URL starting with http:// or https://" }
-  validates :member_count, numericality: { greater_than: 0 }, allow_blank: true
+    format: {with: URI::DEFAULT_PARSER.make_regexp(%w[http https]),
+             message: "must be a valid URL starting with http:// or https://"}
+  validates :member_count, numericality: {greater_than: 0}, allow_blank: true
 end

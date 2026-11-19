@@ -2,7 +2,7 @@
 
 class Avo::Resources::Tool < Avo::BaseResource
   self.title = :display_name
-  self.includes = [ :entry ]
+  self.includes = [:entry]
   self.description = "Create a Tool first, then create an Entry and select this Tool as the entryable"
 
   def fields
@@ -17,10 +17,10 @@ class Avo::Resources::Tool < Avo::BaseResource
 
     # Association to base resource
     field :entry, as: :has_one,
-          help: "After creating this Tool, go to Entries → New and select this Tool"
+      help: "After creating this Tool, go to Entries → New and select this Tool"
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

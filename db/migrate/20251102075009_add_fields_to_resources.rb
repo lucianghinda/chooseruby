@@ -20,6 +20,6 @@ class AddFieldsToResources < ActiveRecord::Migration[8.1]
     add_index :resources, :status
     add_index :resources, :published
     add_index :resources, :experience_level
-    add_index :resources, [ :resourceable_type, :resourceable_id ]
+    add_index :resources, [:resourceable_type, :resourceable_id]
   end
 end

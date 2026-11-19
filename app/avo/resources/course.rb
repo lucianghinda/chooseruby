@@ -2,7 +2,7 @@
 
 class Avo::Resources::Course < Avo::BaseResource
   self.title = :display_name
-  self.includes = [ :entry ]
+  self.includes = [:entry]
   self.description = "Create a Course first, then create an Entry and select this Course as the entryable"
 
   def fields
@@ -19,10 +19,10 @@ class Avo::Resources::Course < Avo::BaseResource
 
     # Association to base resource
     field :entry, as: :has_one,
-          help: "After creating this Course, go to Entries → New and select this Course"
+      help: "After creating this Course, go to Entries → New and select this Course"
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

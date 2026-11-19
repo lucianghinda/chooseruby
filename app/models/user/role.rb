@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Editor/admin role and the permission checks that depend on it.
 module User::Role
   extend ActiveSupport::Concern
 

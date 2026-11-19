@@ -17,8 +17,6 @@ class AuthorsController < ApplicationController
 
     # Eager load resources to avoid N+1 queries and paginate
     @entries = @author.entries.page(params[:page]).per(20)
-  rescue ActiveRecord::RecordNotFound
-    render file: "#{Rails.root}/public/404.html", status: :not_found, layout: false
   end
 
   # API endpoint for author autocomplete search
@@ -33,7 +31,7 @@ class AuthorsController < ApplicationController
     end
 
     # Use AuthorSearchQuery to search with FTS5
-    search_results = AuthorSearchQuery.new({ q: query }).call
+    search_results = AuthorSearchQuery.new({q: query}).call
 
     # Limit to 10 results for autocomplete
     authors = search_results.limit(10)

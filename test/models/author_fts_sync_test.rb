@@ -66,6 +66,7 @@ class AuthorFtsSyncTest < ActiveSupport::TestCase
     result_before = ActiveRecord::Base.connection.execute(
       "SELECT author_id FROM authors_fts WHERE author_id = #{author_id}"
     ).first
+
     assert_not_nil result_before, "FTS row should exist before deletion"
 
     # Delete the author
@@ -75,13 +76,14 @@ class AuthorFtsSyncTest < ActiveSupport::TestCase
     result_after = ActiveRecord::Base.connection.execute(
       "SELECT author_id FROM authors_fts WHERE author_id = #{author_id}"
     ).first
+
     assert_nil result_after, "FTS row should be deleted after author destruction"
   end
 
   # Test 4: Nil name handling
   test "handles nil name gracefully" do
     # Create author with minimal attributes (name will be empty string)
-    author = Author.new(name: "")
+    Author.new(name: "")
 
     # This will fail validation since name must be at least 2 characters
     # So we test with a valid name instead and verify empty string handling

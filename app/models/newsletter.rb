@@ -28,7 +28,7 @@ class Newsletter < ApplicationRecord
   has_one :entry, as: :entryable, touch: true, dependent: :destroy
 
   # Validations
-  validates :name, presence: true, length: { minimum: 2, maximum: 200 }
+  validates :name, presence: true, length: {minimum: 2, maximum: 200}
 
   # Display name for Avo dropdown
   def display_name

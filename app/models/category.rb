@@ -41,17 +41,18 @@
 #  index_categories_on_slug  (slug) UNIQUE
 #
 class Category < ApplicationRecord
+  include Sluggable
+
   # Associations
   has_many :categories_entries, dependent: :destroy
   has_many :entries, through: :categories_entries
 
   # Validations
-  validates :name, presence: true, uniqueness: true, length: { minimum: 2, maximum: 100 }
+  validates :name, presence: true, uniqueness: true, length: {minimum: 2, maximum: 100}
   validates :slug, presence: true, uniqueness: true
-  validates :description, length: { maximum: 500 }, allow_blank: true
+  validates :description, length: {maximum: 500}, allow_blank: true
 
-  # Callbacks
-  before_validation :generate_slug, if: -> { name.present? && (slug.blank? || name_changed?) }
+  sluggable_from :name
 
   # Returns the count of visible (published and approved) entries in this category
   #
@@ -77,26 +78,9 @@ class Category < ApplicationRecord
     entries
       .visible
       .joins(:categories_entries)
-      .where(categories_entries: { category_id: id, is_featured: true })
+      .where(categories_entries: {category_id: id, is_featured: true})
       .with_directory_includes
       .recently_curated
       .limit(limit)
-  end
-
-  private
-
-  # Generate URL-friendly slug from name
-  # Ensures uniqueness by appending number if needed
-  def generate_slug
-    base_slug = name.parameterize
-    candidate_slug = base_slug
-    counter = 1
-
-    while Category.where(slug: candidate_slug).where.not(id: id).exists?
-      candidate_slug = "#{base_slug}-#{counter}"
-      counter += 1
-    end
-
-    self.slug = candidate_slug
   end
 end

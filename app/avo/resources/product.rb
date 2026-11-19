@@ -2,7 +2,7 @@
 
 class Avo::Resources::Product < Avo::BaseResource
   self.title = :display_name
-  self.includes = [ :entry ]
+  self.includes = [:entry]
   self.description = "Create a Product first, then create an Entry and select this Product as the entryable"
 
   def fields
@@ -10,14 +10,14 @@ class Avo::Resources::Product < Avo::BaseResource
 
     # Product information
     field :name, as: :text, required: true, sortable: true,
-          help: "Name of the product"
+      help: "Name of the product"
 
     # Association to base entry resource
     field :entry, as: :has_one,
-          help: "After creating this Product, go to Entries → New and select this Product"
+      help: "After creating this Product, go to Entries → New and select this Product"
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

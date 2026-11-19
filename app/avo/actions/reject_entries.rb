@@ -9,8 +9,8 @@ class Avo::Actions::RejectEntries < Avo::BaseAction
 
   def fields
     field :comment, as: :textarea,
-          help: "Optional feedback for the submitter",
-          placeholder: "Explain why this submission was rejected..."
+      help: "Optional feedback for the submitter",
+      placeholder: "Explain why this submission was rejected..."
   end
 
   def handle(records:, fields:, current_user:, resource:, **args)
@@ -31,6 +31,6 @@ class Avo::Actions::RejectEntries < Avo::BaseAction
       end
     end
 
-    succeed "#{records.count} #{'resource'.pluralize(records.count)} rejected successfully!"
+    succeed "#{records.count} #{"resource".pluralize(records.count)} rejected successfully!"
   end
 end

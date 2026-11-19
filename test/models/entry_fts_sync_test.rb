@@ -28,7 +28,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
       description: "A test gem for testing",
       url: "https://example.com",
       entryable: gem,
-      tags: [ "testing", "gem" ],
+      tags: ["testing", "gem"],
       status: :approved,
       published: true
     )
@@ -53,7 +53,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
       description: "Original description",
       url: "https://example.com",
       entryable: gem,
-      tags: [ "original" ],
+      tags: ["original"],
       status: :approved,
       published: true
     )
@@ -62,7 +62,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
     entry.update!(
       title: "Updated Title",
       description: "Updated description",
-      tags: [ "updated", "new" ]
+      tags: ["updated", "new"]
     )
 
     # Query FTS table to verify row was updated
@@ -93,6 +93,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
     result_before = ActiveRecord::Base.connection.execute(
       "SELECT entry_id FROM entries_fts WHERE entry_id = #{entry_id}"
     ).first
+
     assert_not_nil result_before, "FTS row should exist before deletion"
 
     # Delete the entry
@@ -102,6 +103,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
     result_after = ActiveRecord::Base.connection.execute(
       "SELECT entry_id FROM entries_fts WHERE entry_id = #{entry_id}"
     ).first
+
     assert_nil result_after, "FTS row should be deleted after entry destruction"
   end
 
@@ -137,7 +139,7 @@ class EntryFtsSyncTest < ActiveSupport::TestCase
       description: "Testing tags serialization",
       url: "https://example.com",
       entryable: gem,
-      tags: [ "ruby", "rails", "web-framework" ],
+      tags: ["ruby", "rails", "web-framework"],
       status: :approved,
       published: true
     )

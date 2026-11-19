@@ -32,7 +32,7 @@ class SessionTest < ActiveSupport::TestCase
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
     session = user.sessions.create!
 
-    assert session.token.present?, "Token was not generated"
+    assert_predicate session.token, :present?, "Token was not generated"
     assert_equal 32, Base64.urlsafe_decode64(session.token).length, "Token should be 32 bytes"
   end
 
@@ -50,7 +50,7 @@ class SessionTest < ActiveSupport::TestCase
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
     session = user.sessions.create!
 
-    assert session.last_active_at.present?, "last_active_at was not set"
+    assert_predicate session.last_active_at, :present?, "last_active_at was not set"
     assert_in_delta Time.current, session.last_active_at, 2.seconds
   end
 
@@ -62,7 +62,8 @@ class SessionTest < ActiveSupport::TestCase
 
     travel 2.hours do
       session.touch_last_active
-      assert session.last_active_at > original_time, "last_active_at was not updated"
+
+      assert_operator session.last_active_at, :>, original_time, "last_active_at was not updated"
       assert_in_delta Time.current, session.last_active_at, 2.seconds
     end
   end
@@ -75,7 +76,7 @@ class SessionTest < ActiveSupport::TestCase
     # Set last_active_at to 31 days ago
     session.update_column(:last_active_at, 31.days.ago)
 
-    assert session.expired?, "Session should be expired after 30 days"
+    assert_predicate session, :expired?, "Session should be expired after 30 days"
   end
 
   test "should return false when session is not expired (within 30 days)" do
@@ -96,7 +97,7 @@ class SessionTest < ActiveSupport::TestCase
   # Cascade delete test
   test "should be destroyed when user is destroyed" do
     user = User.create!(email_address: "test@example.com", name: "Test User", password: "password123")
-    session = user.sessions.create!
+    user.sessions.create!
 
     assert_difference "Session.count", -1 do
       user.destroy

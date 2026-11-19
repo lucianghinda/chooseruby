@@ -2,7 +2,7 @@
 
 class Avo::Resources::Community < Avo::BaseResource
   self.title = :display_name
-  self.includes = [ :entry ]
+  self.includes = [:entry]
   self.description = "Create a Community first, then create an Entry and select this Community as the entryable"
 
   def fields
@@ -16,10 +16,10 @@ class Avo::Resources::Community < Avo::BaseResource
 
     # Association to base resource
     field :entry, as: :has_one,
-          help: "After creating this Community, go to Entries → New and select this Community"
+      help: "After creating this Community, go to Entries → New and select this Community"
 
     # Timestamps
-    field :created_at, as: :date_time, readonly: true, hide_on: [ :index ]
-    field :updated_at, as: :date_time, readonly: true, hide_on: [ :index ]
+    field :created_at, as: :date_time, readonly: true, hide_on: [:index]
+    field :updated_at, as: :date_time, readonly: true, hide_on: [:index]
   end
 end

@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
-class FtsReindexer
+# Rebuilds the entries_fts/authors_fts virtual tables from scratch.
+# No instance state, so plain module functions rather than an object to
+# instantiate - see docs/llms/development.md's over-engineering pass.
+module FtsReindexer
   DEFAULT_BATCH_SIZE = 1000
+
+  module_function
 
   def reindex_all
     reindex_entries

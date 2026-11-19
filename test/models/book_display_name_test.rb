@@ -5,7 +5,7 @@ require "test_helper"
 class BookDisplayNameTest < ActiveSupport::TestCase
   test "display_name returns entry title when entry exists" do
     book = Book.create!(publisher: "Test Publisher")
-    entry = Entry.create!(
+    Entry.create!(
       title: "The Ruby Programming Language",
       url: "https://example.com/book",
       entryable: book,

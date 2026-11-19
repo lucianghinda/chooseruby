@@ -42,3 +42,9 @@
 
 # Agent skills and planning docs
 agents/
+
+# Ignore test coverage reports.
+/coverage/
+
+# Mutineer's coverage-guided cache (per-machine, rebuilds automatically).
+/.mutineer/

@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/standardrb/standard/main/config/schema.json
+---
+plugins:
+  - standard-rails
+
+extend_config:
+  - .standard_ext.yml
+
+ignore:
+  # One-off rake-task import script (bin/rails runner), never run concurrently.
+  - "lib/imports/rubyandrailsinfo/helpers.rb":
+      - ThreadSafety/ClassInstanceVariable
+      - ThreadSafety/MutableClassInstanceVariable
+
+  # Progress output in seed/import scripts is the point, not a smell.
+  - "db/seeds.rb":
+      - Rails/Output
+  - "db/seeds/**/*":
+      - Rails/Output
+  - "lib/imports/**/*":
+      - Rails/Output
+
+  # Browsers POST here automatically from the CSP report-to header - no
+  # session, shouldn't require CSRF, and ApplicationController's browser-
+  # version gate/auth/ban checks would only ever reject the report.
+  - "app/controllers/csp_reports_controller.rb":
+      - Rails/ApplicationController
+
+  # Deliberately enumerate every delegated/resource type in one test; splitting
+  # would just duplicate the same setup per type for no added safety.
+  - "test/integration/avo_resources_test.rb":
+      - Minitest/MultipleAssertions
+  - "test/integration/resource_type_workflows_test.rb":
+      - Minitest/MultipleAssertions
+  - "test/views/layouts/application_navigation_test.rb":
+      - Minitest/MultipleAssertions

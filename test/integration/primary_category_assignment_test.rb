@@ -50,6 +50,7 @@ class PrimaryCategoryAssignmentTest < ActiveSupport::TestCase
 
     # Reload entry and verify category2 is now primary
     entry.reload
+
     assert_equal category2.id, entry.primary_category.id
   end
 end

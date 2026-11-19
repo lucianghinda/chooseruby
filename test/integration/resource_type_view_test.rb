@@ -135,6 +135,7 @@ class ResourceTypeViewTest < ActionDispatch::IntegrationTest
     assert_select "h3", text: "Ruby Best Practices"
     # Book should show publisher and publication year
     response_body = response.body
+
     assert_match(/OReilly Media/, response_body)
     assert_match(/2023/, response_body)
   end
@@ -147,6 +148,7 @@ class ResourceTypeViewTest < ActionDispatch::IntegrationTest
     assert_select "h3", text: "Complete Ruby Course"
     # Course should show platform and instructor
     response_body = response.body
+
     assert_match(/Udemy/, response_body)
   end
 end
