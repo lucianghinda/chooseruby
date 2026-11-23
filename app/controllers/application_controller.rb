@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+  # Tailwind CSS v4 requires Firefox 128; keep Rails' modern browser policy for other browsers.
   allow_browser versions: :modern
+  allow_browser versions: { firefox: 128 }
 
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
