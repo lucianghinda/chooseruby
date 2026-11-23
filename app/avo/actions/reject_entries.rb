@@ -5,7 +5,7 @@ class Avo::Actions::RejectEntries < Avo::BaseAction
   self.message = "Are you sure you want to reject the selected resources?"
   self.confirm_button_label = "Reject"
   self.cancel_button_label = "Cancel"
-  self.no_confirmation = false
+  self.confirmation = true
 
   def fields
     field :comment, as: :textarea,

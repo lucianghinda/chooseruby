@@ -47,7 +47,7 @@ gem "image_processing", "~> 2.2"
 gem "ruby-vips", "~> 2.3", require: false
 
 # Admin framework for managing authors and resources
-gem "avo", "~> 3.0"
+gem "avo", "~> 4.4"
 
 # Pagination for author resource lists
 gem "kaminari", "~> 1.2"
