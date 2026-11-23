@@ -11,7 +11,7 @@
   "communities" => "bg-emerald-50 text-emerald-800"
 }[type_slug] || "bg-slate-100 text-slate-800" %>
 
-<% card_classes = +"relative block h-full rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400" %>
+<% card_classes = +"relative block h-full rounded-3xl border border-slate-100 bg-white shadow-xs transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400" %>
 <% card_classes << (variant == :compact ? " p-4" : " p-6") %>
 
 <a href="<%= resource_path(entry.slug) %>" class="<%= card_classes %>">

@@ -13,7 +13,7 @@
         <% @entries.each_with_index do |entry, idx| %>
           <li>
             <%= link_to resource_path(entry.slug),
-                        class: "flex items-center justify-between rounded-xl px-2 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-50 focus:bg-slate-50 focus:outline-none",
+                        class: "flex items-center justify-between rounded-xl px-2 py-2 text-sm font-medium text-slate-800 transition hover:bg-slate-50 focus:bg-slate-50 focus:outline-hidden",
                         role: "option",
                         data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown", index: idx } do %>
               <span class="truncate"><%= entry.title %></span>
@@ -38,7 +38,7 @@
           <li>
             <%= link_to category.name,
                         category_path(category.slug),
-                        class: "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-200 focus:bg-slate-200 focus:outline-none",
+                        class: "inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-200 focus:bg-slate-200 focus:outline-hidden",
                         role: "option",
                         data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown" } %>
           </li>
@@ -54,7 +54,7 @@
         <% @types.each do |type_slug| %>
           <li>
             <%= link_to resource_type_path(type_slug),
-                        class: "inline-flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1 text-[11px] font-semibold text-rose-600 ring-1 ring-rose-100 transition hover:bg-rose-100 focus:bg-rose-100 focus:outline-none",
+                        class: "inline-flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1 text-[11px] font-semibold text-rose-600 ring-1 ring-rose-100 transition hover:bg-rose-100 focus:bg-rose-100 focus:outline-hidden",
                         role: "option",
                         data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown" } do %>
               <span><%= type_emoji(type_slug) %></span>
@@ -72,7 +72,7 @@
       <div class="mt-2 flex flex-wrap gap-2">
         <% @popular_queries.each do |query| %>
           <%= link_to entries_path(q: query),
-                      class: "inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-semibold text-white transition hover:bg-slate-800 focus:bg-slate-800 focus:outline-none",
+                      class: "inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-semibold text-white transition hover:bg-slate-800 focus:bg-slate-800 focus:outline-hidden",
                       role: "option",
                       data: { typeahead_target: "option", action: "mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown", query: query } do %>
             <span><%= query %></span>

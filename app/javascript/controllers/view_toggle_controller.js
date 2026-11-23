@@ -40,7 +40,7 @@ export default class extends Controller {
       const isActive = button.dataset.view === this.currentView
       button.classList.toggle("bg-slate-900", isActive)
       button.classList.toggle("text-white", isActive)
-      button.classList.toggle("shadow-sm", isActive)
+      button.classList.toggle("shadow-xs", isActive)
       button.classList.toggle("bg-slate-100", !isActive)
       button.classList.toggle("text-slate-600", !isActive)
     })

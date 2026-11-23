@@ -3,7 +3,7 @@
 
 <div class="space-y-12 pb-16">
   <!-- Authors Directory Hero -->
-  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
+  <section class="rounded-3xl bg-white p-8 shadow-xs ring-1 ring-slate-100 sm:p-12">
     <div class="mx-auto max-w-3xl text-center">
       <h1 class="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
         Meet the people behind Ruby
@@ -21,7 +21,7 @@
           </div>
           <%= form.text_field :q,
             value: @query,
-            class: "h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-base text-slate-900 placeholder:text-slate-400 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300 focus:outline-none",
+            class: "h-14 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-base text-slate-900 placeholder:text-slate-400 shadow-inner focus:border-rose-400 focus:ring-2 focus:ring-rose-300 focus:outline-hidden",
             placeholder: "Search by author name…" %>
         </div>
       <% end %>
@@ -55,10 +55,10 @@
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <% @authors.each do |author| %>
           <%= link_to author_path(author.slug), class: "block" do %>
-            <article class="flex h-full flex-col rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <article class="flex h-full flex-col rounded-3xl border border-slate-100 bg-white p-6 shadow-xs transition hover:-translate-y-1 hover:shadow-xl">
               <div class="flex items-start gap-4">
                 <!-- Avatar -->
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                   <% if author.avatar.attached? %>
                     <%= image_tag author.avatar, alt: author.name, class: "h-16 w-16 rounded-full object-cover" %>
                   <% elsif author.avatar_url.present? %>

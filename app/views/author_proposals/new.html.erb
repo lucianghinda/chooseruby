@@ -15,8 +15,8 @@
     </div>
   </section>
 
-  <section class="grid gap-10 lg:grid-cols-[1.2fr,1fr]">
-    <div class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+  <section class="grid gap-10 lg:grid-cols-[1.2fr_1fr]">
+    <div class="rounded-3xl bg-white p-8 shadow-xs ring-1 ring-slate-100">
       <% if @author_proposal.errors.any? %>
         <div class="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">
           <p class="font-semibold">We couldn't save the proposal.</p>
@@ -37,7 +37,7 @@
           <h2 class="text-xl font-semibold text-slate-900">Suggest a Resource</h2>
           <div class="space-y-2">
             <%= form.label :resource_url, "Resource URL (optional)", class: "text-sm font-semibold text-slate-700" %>
-            <%= form.url_field :resource_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com/resource" %>
+            <%= form.url_field :resource_url, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com/resource" %>
             <p class="text-xs text-slate-500">Suggest a gem, tutorial, article, or other resource to associate with this author.</p>
           </div>
         </div>
@@ -54,7 +54,7 @@
               <% if @author.github_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.github_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][github_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://github.com/username" %>
+              <%= url_field_tag "author_proposal[link_updates][github_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://github.com/username" %>
             </div>
 
             <!-- GitLab URL -->
@@ -63,7 +63,7 @@
               <% if @author.gitlab_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.gitlab_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][gitlab_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://gitlab.com/username" %>
+              <%= url_field_tag "author_proposal[link_updates][gitlab_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://gitlab.com/username" %>
             </div>
 
             <!-- Website URL -->
@@ -72,7 +72,7 @@
               <% if @author.website_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.website_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][website_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com" %>
+              <%= url_field_tag "author_proposal[link_updates][website_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://example.com" %>
             </div>
 
             <!-- Bluesky URL -->
@@ -81,7 +81,7 @@
               <% if @author.bluesky_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.bluesky_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][bluesky_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://bsky.app/profile/username" %>
+              <%= url_field_tag "author_proposal[link_updates][bluesky_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://bsky.app/profile/username" %>
             </div>
 
             <!-- Ruby.social URL -->
@@ -90,7 +90,7 @@
               <% if @author.ruby_social_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.ruby_social_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][ruby_social_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://ruby.social/@username" %>
+              <%= url_field_tag "author_proposal[link_updates][ruby_social_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://ruby.social/@username" %>
             </div>
 
             <!-- Twitter URL -->
@@ -99,7 +99,7 @@
               <% if @author.twitter_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.twitter_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][twitter_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://twitter.com/username" %>
+              <%= url_field_tag "author_proposal[link_updates][twitter_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://twitter.com/username" %>
             </div>
 
             <!-- LinkedIn URL -->
@@ -108,7 +108,7 @@
               <% if @author.linkedin_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.linkedin_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][linkedin_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://linkedin.com/in/username" %>
+              <%= url_field_tag "author_proposal[link_updates][linkedin_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://linkedin.com/in/username" %>
             </div>
 
             <!-- YouTube URL -->
@@ -117,7 +117,7 @@
               <% if @author.youtube_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.youtube_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][youtube_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://youtube.com/@username" %>
+              <%= url_field_tag "author_proposal[link_updates][youtube_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://youtube.com/@username" %>
             </div>
 
             <!-- Twitch URL -->
@@ -126,7 +126,7 @@
               <% if @author.twitch_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.twitch_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][twitch_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://twitch.tv/username" %>
+              <%= url_field_tag "author_proposal[link_updates][twitch_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://twitch.tv/username" %>
             </div>
 
             <!-- Blog URL -->
@@ -135,7 +135,7 @@
               <% if @author.blog_url.present? %>
                 <p class="text-xs text-slate-500 mb-1">Current: <%= @author.blog_url %></p>
               <% end %>
-              <%= url_field_tag "author_proposal[link_updates][blog_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://blog.example.com" %>
+              <%= url_field_tag "author_proposal[link_updates][blog_url]", "", class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "https://blog.example.com" %>
             </div>
           </div>
         </div>
@@ -152,7 +152,7 @@
                 <p><%= @author.bio %></p>
               </div>
             <% end %>
-            <%= form.text_area :bio_text, rows: 3, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Proposed bio text (leave blank to keep current)" %>
+            <%= form.text_area :bio_text, rows: 3, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Proposed bio text (leave blank to keep current)" %>
           </div>
 
           <div class="space-y-2">
@@ -163,7 +163,7 @@
                 <p><%= @author.description %></p>
               </div>
             <% end %>
-            <%= form.text_area :description_text, rows: 4, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Proposed description (leave blank to keep current)" %>
+            <%= form.text_area :description_text, rows: 4, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Proposed description (leave blank to keep current)" %>
           </div>
         </div>
 
@@ -174,17 +174,17 @@
           <div class="grid gap-6 md:grid-cols-2">
             <div class="space-y-2">
               <%= form.label :submitter_name, "Your name (optional)", class: "text-sm font-semibold text-slate-700" %>
-              <%= form.text_field :submitter_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "How should we address you?" %>
+              <%= form.text_field :submitter_name, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "How should we address you?" %>
             </div>
             <div class="space-y-2">
               <%= form.label :submitter_email, "Email (required)", class: "text-sm font-semibold text-slate-700" %>
-              <%= form.email_field :submitter_email, required: true, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "you@example.com" %>
+              <%= form.email_field :submitter_email, required: true, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "you@example.com" %>
             </div>
           </div>
 
           <div class="space-y-2">
             <%= form.label :submission_notes, "Additional notes (optional)", class: "text-sm font-semibold text-slate-700" %>
-            <%= form.text_area :submission_notes, rows: 3, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Any additional context for the review team" %>
+            <%= form.text_area :submission_notes, rows: 3, class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300", placeholder: "Any additional context for the review team" %>
           </div>
         </div>
 
@@ -193,13 +193,13 @@
           <p class="text-xs text-slate-500">
             Your proposal will be reviewed by our team. You'll receive an email notification when it's processed.
           </p>
-          <%= form.submit "Submit Proposal for Review", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
+          <%= form.submit "Submit Proposal for Review", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-rose-400" %>
         </div>
       <% end %>
     </div>
 
     <!-- Tips Sidebar -->
-    <aside class="space-y-6 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+    <aside class="space-y-6 rounded-3xl bg-white p-8 shadow-xs ring-1 ring-slate-100">
       <h2 class="text-xl font-semibold text-slate-900">Tips for a quick review</h2>
       <ul class="space-y-4 text-sm text-slate-600">
         <li class="flex items-start gap-3">

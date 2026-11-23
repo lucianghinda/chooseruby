@@ -7,7 +7,7 @@
 <% query = @directory_query.query %>
 
 <div class="space-y-12 pb-16">
-  <section class="rounded-3xl bg-white p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
+  <section class="rounded-3xl bg-white p-10 shadow-xs ring-1 ring-slate-100 sm:p-12">
     <div class="mx-auto max-w-4xl text-center space-y-6">
       <div class="flex justify-center">
         <span class="inline-flex h-16 w-16 items-center justify-center rounded-3xl bg-rose-500/10 text-4xl"><%= icon %></span>
@@ -21,7 +21,7 @@
     </div>
   </section>
 
-  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+  <section class="rounded-3xl bg-white p-8 shadow-xs ring-1 ring-slate-100">
     <div class="space-y-6">
       <header class="space-y-2 text-center sm:text-left">
         <h2 class="text-2xl font-semibold text-slate-900">Fine-tune this collection</h2>
@@ -30,7 +30,7 @@
         </p>
       </header>
 
-      <%= form_with url: collection_path(@collection[:slug]), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
+      <%= form_with url: collection_path(@collection[:slug]), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr_0.8fr]" do |form| %>
         <div class="space-y-2">
           <%= form.label :q, "Search within this collection", class: "text-sm font-semibold text-slate-700" %>
           <div class="relative">
@@ -47,7 +47,7 @@
           <%= form.select :level,
                           experience_level_options_for_select(active_level),
                           { include_blank: "Any level" },
-                          class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
+                          class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
         </div>
         <div class="space-y-2 md:col-span-2">
           <div class="flex items-center justify-between">
@@ -61,12 +61,12 @@
               <% selected = active_category == category %>
               <%= link_to category.name,
                           collection_path(@collection[:slug], params.permit(:q, :level).to_h.merge(category: selected ? nil : category.slug).compact_blank),
-                          class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{selected ? "bg-slate-900 text-white shadow-sm hover:bg-slate-800" : "bg-slate-100 text-slate-600 hover:bg-rose-100"}" %>
+                          class: "inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition #{selected ? "bg-slate-900 text-white shadow-xs hover:bg-slate-800" : "bg-slate-100 text-slate-600 hover:bg-rose-100"}" %>
             <% end %>
           </div>
         </div>
         <div class="flex justify-end md:col-span-2">
-          <%= form.submit "Update recommendations", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
+          <%= form.submit "Update recommendations", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-rose-400" %>
         </div>
       <% end %>
     </div>

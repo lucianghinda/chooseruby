@@ -4,7 +4,7 @@
 <% icon = @category.icon.presence || "💎" %>
 
 <div class="space-y-12 pb-16">
-  <section class="rounded-3xl bg-gradient-to-br from-white to-slate-50 p-10 shadow-sm ring-1 ring-slate-100 sm:p-12">
+  <section class="rounded-3xl bg-linear-to-br from-white to-slate-50 p-10 shadow-xs ring-1 ring-slate-100 sm:p-12">
     <div class="mx-auto max-w-4xl space-y-4 text-center sm:text-left">
       <div class="flex items-center justify-center gap-4 sm:justify-start">
         <span class="inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-rose-500/10 text-3xl"><%= icon %></span>
@@ -30,7 +30,7 @@
       <h2 class="text-2xl font-semibold text-slate-900">Featured Resources</h2>
       <div class="grid gap-6 lg:grid-cols-3">
         <% featured_resources.each do |entry| %>
-          <article class="flex h-full flex-col justify-between rounded-3xl border-2 border-rose-50 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+          <article class="flex h-full flex-col justify-between rounded-3xl border-2 border-rose-50 bg-white p-6 shadow-xs transition hover:-translate-y-1 hover:shadow-xl">
             <div class="space-y-4">
               <div class="flex flex-wrap gap-2">
                 <% entry.categories.first(3).each do |category| %>
@@ -74,7 +74,7 @@
     </section>
   <% end %>
 
-  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+  <section class="rounded-3xl bg-white p-8 shadow-xs ring-1 ring-slate-100">
     <div class="space-y-6">
       <header class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -84,7 +84,7 @@
         <%= link_to "Browse other categories", categories_path, class: "text-sm font-semibold text-rose-500 hover:text-rose-400" %>
       </header>
 
-      <%= form_with url: category_path(@category.slug), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr,0.8fr]" do |form| %>
+      <%= form_with url: category_path(@category.slug), method: :get, local: true, class: "grid gap-6 md:grid-cols-[1.2fr_0.8fr]" do |form| %>
         <div class="space-y-2">
           <%= form.label :q, "Search within this category", class: "text-sm font-semibold text-slate-700" %>
           <div class="relative">
@@ -101,10 +101,10 @@
           <%= form.select :level,
                           experience_level_options_for_select(@active_level),
                           { include_blank: "Any level" },
-                          class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
+                          class: "w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-rose-400 focus:ring-2 focus:ring-rose-300" %>
         </div>
         <div class="flex justify-end md:col-span-2">
-          <%= form.submit "Update results", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-400" %>
+          <%= form.submit "Update results", class: "inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 text-sm font-semibold text-white shadow-xs transition hover:bg-rose-400" %>
         </div>
       <% end %>
     </div>
@@ -119,7 +119,7 @@
     <% if @entries.any? %>
       <div class="grid gap-6 lg:grid-cols-3">
         <% @entries.each do |entry| %>
-          <article class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+          <article class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-xs transition hover:-translate-y-1 hover:shadow-xl">
             <div class="space-y-4">
               <div class="flex flex-wrap gap-2">
                 <% entry.categories.first(3).each do |category| %>
