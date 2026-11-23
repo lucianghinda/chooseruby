@@ -5,7 +5,7 @@ class Avo::Actions::RejectAuthorProposal < Avo::BaseAction
   self.message = "Are you sure you want to reject the selected proposal(s)?"
   self.confirm_button_label = "Reject"
   self.cancel_button_label = "Cancel"
-  self.no_confirmation = false
+  self.confirmation = true
 
   def fields
     field :admin_comment, as: :textarea,

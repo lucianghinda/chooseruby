@@ -5,7 +5,7 @@ class Avo::Actions::ApproveAuthorProposal < Avo::BaseAction
   self.message = "Are you sure you want to approve the selected proposal(s)?"
   self.confirm_button_label = "Approve"
   self.cancel_button_label = "Cancel"
-  self.no_confirmation = false
+  self.confirmation = true
 
   def handle(records:, fields:, current_user:, resource:, **args)
     success_count = 0

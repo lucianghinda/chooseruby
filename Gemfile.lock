@@ -117,16 +117,17 @@ GEM
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
     ast (2.4.3)
-    avo (3.34.1)
+    avo (4.4.5)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
       activesupport (>= 6.1)
       addressable
       avo-icons (>= 0.1.2)
+      csv
       docile
       meta-tags
-      pagy (>= 7.0.0)
+      pagy (>= 43.0)
       prop_initializer (>= 0.3.0)
       turbo-rails (>= 2.0.0)
       turbo_power (>= 0.6.0)
@@ -180,6 +181,7 @@ GEM
     concurrent-ruby (1.3.8)
     connection_pool (3.0.3)
     crass (1.0.8)
+    csv (3.3.7)
     date (3.6.0)
     debug (1.11.1)
       irb (~> 1.10)
@@ -507,7 +509,7 @@ PLATFORMS
 DEPENDENCIES
   active_hashcash
   annotaterb
-  avo (~> 3.0)
+  avo (~> 4.4)
   aws-sdk-s3
   bcrypt (~> 3.1.7)
   bootsnap
@@ -557,7 +559,7 @@ CHECKSUMS
   addressable (2.9.2) sha256=9117c7e7d6ee07230e75ce41fb9401ae55354dc654fcd0e862ba41d539e9a610
   annotaterb (4.26.0) sha256=f884a1cca92f7894b8b9efc1505cad597e6b666ed4295037ee7f5a34a33c9516
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
-  avo (3.34.1) sha256=b0046f54486d3a55b2f84246083c00294e062c28d5a9e0fa8545a285b978dd4e
+  avo (4.4.5) sha256=3d5e4097aa4716ca494f3882cf6fbcacb5a8dfcfea1e61cfa46dfd46fad17226
   avo-icons (1.1.0) sha256=9ef06f0e6f27840a8bce6972c4edd78c75b9ea4ec73d91fabb194c887114ec18
   aws-eventstream (1.4.1) sha256=ceb6a99c61df4bb00344e54aed0351574beca24f87a0d1487d1d2ed80929ce96
   aws-partitions (1.1310.0) sha256=8f97a525563ec4803d55d02f54f9749a17f8428aa0978afe0b59e61f4ae8e3f6
@@ -579,6 +581,7 @@ CHECKSUMS
   concurrent-ruby (1.3.8) sha256=b2f1be836e968ccc78ccfce277ea79c72a88633f22306782c16ff23fb415d1e1
   connection_pool (3.0.3) sha256=e0f8ee3ee0039396753e06e8a2dde0ef028e40f7df29e97f57da7577c489cb5e
   crass (1.0.8) sha256=7a0145c7a2c59f8e7923b3a69ce819c444823a00a5127d805298fea13be24efe
+  csv (3.3.7) sha256=15a3f16f6628da8664d455eb634e7f22031bcf53044923caf56975109e71b9f8
   date (3.6.0) sha256=18ac945c4e24ebd93534f8eab8c2fd8c5604b3e977105b3798d62a1e8d27b580
   debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   docile (1.4.1) sha256=96159be799bfa73cdb721b840e9802126e4e03dfc26863db73647204c727f21e

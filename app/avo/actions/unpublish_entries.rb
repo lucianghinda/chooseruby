@@ -5,7 +5,7 @@ class Avo::Actions::UnpublishEntries < Avo::BaseAction
   self.message = "Are you sure you want to unpublish the selected resources?"
   self.confirm_button_label = "Unpublish"
   self.cancel_button_label = "Cancel"
-  self.no_confirmation = false
+  self.confirmation = true
 
   def handle(records:, fields:, current_user:, resource:, **args)
     records.each do |resource|
