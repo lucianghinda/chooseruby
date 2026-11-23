@@ -86,6 +86,11 @@ jobs:
         with:
           bundler-cache: true
 
+      - name: Install libvips for image processing tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libvips42t64
+
       - name: Run tests
         env:
           RAILS_ENV: test
