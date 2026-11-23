@@ -27,7 +27,7 @@
 
       <div class="grid gap-6 lg:grid-cols-3">
         <% entries.each do |entry| %>
-          <a href="<%= resource_path(entry.slug) %>" class="relative block h-full rounded-3xl border border-slate-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400">
+          <a href="<%= resource_path(entry.slug) %>" class="relative block h-full rounded-3xl border border-slate-100 bg-white p-6 shadow-xs transition hover:-translate-y-1 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400">
             <div>
               <% if entry.categories.any? %>
                 <div class="mb-4 flex flex-wrap gap-2">

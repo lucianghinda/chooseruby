@@ -156,7 +156,7 @@ export default class extends Controller {
               .map(
                 (term) => `
                   <button type="button"
-                          class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-200 focus:bg-slate-200 focus:outline-none"
+                          class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-200 focus:bg-slate-200 focus:outline-hidden"
                           data-typeahead-target="option"
                           data-query="${term}"
                           data-action="mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown"
@@ -180,7 +180,7 @@ export default class extends Controller {
               .map(
                 (term) => `
                   <button type="button"
-                          class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-semibold text-white transition hover:bg-slate-800 focus:bg-slate-800 focus:outline-none"
+                          class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1 text-[11px] font-semibold text-white transition hover:bg-slate-800 focus:bg-slate-800 focus:outline-hidden"
                           data-typeahead-target="option"
                           data-query="${term}"
                           data-action="mousedown->typeahead#optionClicked keydown->typeahead#optionKeydown"

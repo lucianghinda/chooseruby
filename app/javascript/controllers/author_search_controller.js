@@ -78,7 +78,7 @@ export default class extends Controller {
 
       return `
         <button type="button"
-                class="w-full text-left px-4 py-3 hover:bg-rose-50 focus:bg-rose-50 focus:outline-none transition"
+                class="w-full text-left px-4 py-3 hover:bg-rose-50 focus:bg-rose-50 focus:outline-hidden transition"
                 data-author-id="${author.id}"
                 data-author-name="${this.escapeHtml(author.name)}"
                 data-action="click->author-search#selectAuthor">

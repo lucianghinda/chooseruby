@@ -1,12 +1,12 @@
 <% type_slug = entry.type_slug %>
-<article class="flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-  <div class="relative aspect-[16/9] w-full overflow-hidden bg-slate-100">
+<article class="flex h-full flex-col overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-xs transition hover:-translate-y-1 hover:shadow-xl">
+  <div class="relative aspect-16/9 w-full overflow-hidden bg-slate-100">
     <% if entry.image.attached? %>
       <%= image_tag entry.image, class: "h-full w-full object-cover", alt: entry.title, loading: "lazy" %>
     <% elsif entry.image_url.present? %>
       <%= image_tag entry.image_url, class: "h-full w-full object-cover", alt: entry.title, loading: "lazy" %>
     <% else %>
-      <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div class="flex h-full w-full items-center justify-center bg-linear-to-br from-slate-50 via-white to-slate-100">
         <div class="text-center">
           <div class="text-3xl"><%= type_emoji(type_slug) if type_slug.present? %></div>
           <div class="mt-2 text-xs font-semibold uppercase tracking-wide text-slate-500"><%= type_name(type_slug) if type_slug.present? %></div>

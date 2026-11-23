@@ -10,7 +10,7 @@
     </div>
 
     <div class="mx-auto max-w-4xl text-center">
-      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-medium ring-1 ring-white/30 backdrop-blur">
+      <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-medium ring-1 ring-white/30 backdrop-blur-sm">
         <span class="text-rose-300">New</span>
         Rails 8 ready, curated by Ruby experts
       </span>
@@ -31,7 +31,7 @@
               </svg>
             </div>
             <%= form.text_field :q,
-              class: "h-14 w-full rounded-2xl border-0 bg-white/10 pl-12 pr-4 text-base text-white placeholder:text-slate-400 shadow-inner focus:ring-2 focus:ring-rose-400 focus:outline-none",
+              class: "h-14 w-full rounded-2xl border-0 bg-white/10 pl-12 pr-4 text-base text-white placeholder:text-slate-400 shadow-inner focus:ring-2 focus:ring-rose-400 focus:outline-hidden",
               id: "home-search-input",
               placeholder: "Search gems, topics, or questions…",
               data: { typeahead_target: "input", action: "input->typeahead#search focus->typeahead#focus blur->typeahead#blur keydown->typeahead#navigate", aria: { controls: "home-typeahead" } } %>
@@ -104,7 +104,7 @@
   </section>
 
   <!-- Beginner CTA section -->
-  <section class="rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-rose-50 p-8 ring-1 ring-slate-100 shadow-sm sm:p-12">
+  <section class="rounded-3xl bg-linear-to-br from-emerald-50 via-white to-rose-50 p-8 ring-1 ring-slate-100 shadow-xs sm:p-12">
     <div class="mx-auto max-w-3xl text-center">
       <h2 class="text-2xl font-semibold text-slate-900 sm:text-3xl">New to Rails? Start here</h2>
       <p class="mt-4 text-base text-slate-600 sm:text-lg">
@@ -119,7 +119,7 @@
   <!-- Browse mini-hub -->
   <section id="browse" class="grid gap-4 sm:grid-cols-3">
     <% featured_categories = @highlight_categories.first(3) %>
-    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-xs">
       <div class="flex items-center justify-between">
         <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
           <span aria-hidden="true">🗂️</span>
@@ -142,7 +142,7 @@
       </div>
     </div>
 
-    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-xs">
       <div class="flex items-center justify-between">
         <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
           <span aria-hidden="true">🧰</span>
@@ -161,7 +161,7 @@
       </div>
     </div>
 
-    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+    <div class="flex h-full flex-col gap-3 rounded-3xl border border-slate-100 bg-white p-6 shadow-xs">
       <div class="flex items-center justify-between">
         <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
           <span aria-hidden="true">🧭</span>
@@ -183,7 +183,7 @@
   </section>
 
   <!-- Featured resources -->
-  <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-50/50 via-amber-50/30 to-rose-50/50 px-8 py-12 ring-2 ring-rose-100 shadow-xl">
+  <section class="relative overflow-hidden rounded-3xl bg-linear-to-br from-rose-50/50 via-amber-50/30 to-rose-50/50 px-8 py-12 ring-2 ring-rose-100 shadow-xl">
     <div class="absolute -left-10 top-10 h-40 w-40 rounded-full bg-rose-200/50 blur-3xl"></div>
     <div class="absolute -right-16 bottom-6 h-48 w-48 rounded-full bg-amber-200/50 blur-3xl"></div>
     <div class="relative space-y-8">
@@ -309,7 +309,7 @@
 
     <div class="grid gap-5 lg:grid-cols-2">
       <% @curated_collections.each do |collection| %>
-        <div class="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-gradient-to-br from-white to-slate-50 p-8 shadow-sm">
+        <div class="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-linear-to-br from-white to-slate-50 p-8 shadow-xs">
           <span class="text-3xl"><%= collection[:icon] %></span>
           <h3 class="text-2xl font-semibold text-slate-900"><%= collection[:title] %></h3>
           <p class="text-base text-slate-600"><%= collection[:description] %></p>
@@ -337,7 +337,7 @@
 
     <div class="grid gap-6 lg:grid-cols-3">
       <% @experience_tracks.each do |track| %>
-        <div class="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+        <div class="flex flex-col gap-4 rounded-3xl border border-slate-100 bg-white p-6 shadow-xs">
           <span class="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold <%= track[:accent] %>">
             <span class="h-2 w-2 rounded-full bg-current"></span>
             <%= track[:level] %>
@@ -367,7 +367,7 @@
     <% if @community_channels.any? %>
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <% @community_channels.each do |community| %>
-          <div class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-sm">
+          <div class="flex h-full flex-col justify-between rounded-3xl border border-slate-100 bg-white p-6 shadow-xs">
             <div class="space-y-3">
               <span class="inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
                 <%= community.platform %>
@@ -392,7 +392,7 @@
   </section>
 
   <!-- CTA -->
-  <section class="overflow-hidden rounded-3xl bg-gradient-to-br from-rose-500 via-rose-400 to-amber-300 px-6 py-16 text-white sm:px-10 lg:px-16">
+  <section class="overflow-hidden rounded-3xl bg-linear-to-br from-rose-500 via-rose-400 to-amber-300 px-6 py-16 text-white sm:px-10 lg:px-16">
     <div class="mx-auto flex max-w-5xl flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-semibold sm:text-4xl">Contribute to the Ruby ecosystem's living directory</h2>

@@ -2,7 +2,7 @@
 <%# Enhanced author section for books %>
 
 <% if entry.authors.any? %>
-  <section class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-100 sm:p-12">
+  <section class="rounded-3xl bg-white p-8 shadow-xs ring-1 ring-slate-100 sm:p-12">
     <h2 class="text-2xl font-semibold tracking-tight text-slate-900 mb-8">
       <%= entry.authors.size > 1 ? "About the Authors" : "About the Author" %>
     </h2>
@@ -11,13 +11,13 @@
       <% entry.authors.each do |author| %>
         <div class="flex flex-col sm:flex-row items-start gap-6">
           <%# Author Avatar - larger size %>
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <% if author.avatar.attached? %>
               <%= image_tag author.avatar, alt: author.name, class: "w-24 h-24 rounded-2xl object-cover shadow-lg ring-4 ring-slate-100" %>
             <% elsif author.avatar_url.present? %>
-              <%= image_tag author.avatar_url, alt: author.name, class: "w-24 h-24 rounded-2xl object-cover shadow-lg ring-4 ring-slate-100", onerror: "this.outerHTML='<div class=\"w-24 h-24 rounded-2xl bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg\">#{author.name[0].upcase}</div>'" %>
+              <%= image_tag author.avatar_url, alt: author.name, class: "w-24 h-24 rounded-2xl object-cover shadow-lg ring-4 ring-slate-100", onerror: "this.outerHTML='<div class=\"w-24 h-24 rounded-2xl bg-linear-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg\">#{author.name[0].upcase}</div>'" %>
             <% else %>
-              <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+              <div class="w-24 h-24 rounded-2xl bg-linear-to-br from-rose-400 to-rose-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
                 <%= author.name[0].upcase %>
               </div>
             <% end %>
