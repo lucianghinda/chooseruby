@@ -12,8 +12,8 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     assert Rails.application.config.middleware.include?(Rack::Attack), "Rack::Attack middleware should be loaded"
   end
 
-  test "rack attack cache store is configured" do
-    assert_not_nil Rack::Attack.cache.store, "Rack::Attack cache store should be configured"
+  test "rack attack uses the application cache" do
+    assert_same Rails.cache, Rack::Attack.cache.store
   end
 
   test "hourly throttle is defined for entries creation" do
@@ -26,6 +26,51 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     # Check that the throttle is registered
     throttles = Rack::Attack.throttles
     assert throttles.key?("entries/create/daily"), "Daily throttle should be defined"
+  end
+
+  test "hourly throttle is defined for author proposals creation" do
+    throttles = Rack::Attack.throttles
+    assert throttles.key?("author_proposals/create/hourly"), "Hourly author proposal throttle should be defined"
+  end
+
+  test "daily throttle is defined for author proposals creation" do
+    throttles = Rack::Attack.throttles
+    assert throttles.key?("author_proposals/create/daily"), "Daily author proposal throttle should be defined"
+  end
+
+  test "entry submissions are throttled across route variants" do
+    [ "/entries", "/entries.json", "/entries/" ].each do |path|
+      assert_equal [ 200, 200, 200, 429 ], response_statuses_after_requests(path, count: 4)
+    end
+  end
+
+  test "author proposals are throttled across route variants" do
+    [ "/author_proposals", "/author_proposals.json", "/author_proposals/" ].each do |path|
+      assert_equal [ 200, 200, 200, 429 ], response_statuses_after_requests(path, count: 4)
+    end
+  end
+
+  test "sessions are throttled across route variants" do
+    [ "/session", "/session.json", "/session/" ].each do |path|
+      assert_equal [ *Array.new(10, 200), 429 ], response_statuses_after_requests(path, count: 11)
+    end
+  end
+
+  test "throttle matchers accept trailing slashes without widening request methods" do
+    {
+      "entries/create/hourly" => "/entries",
+      "entries/create/daily" => "/entries",
+      "author_proposals/create/hourly" => "/author_proposals",
+      "author_proposals/create/daily" => "/author_proposals",
+      "sessions/create" => "/session"
+    }.each do |throttle_name, route|
+      throttle = Rack::Attack.throttles.fetch(throttle_name)
+
+      [ "#{route}/", "#{route}.json/" ].each do |path|
+        assert_equal "203.0.113.1", throttle.block.call(rack_attack_request({ "REQUEST_METHOD" => "POST", "REMOTE_ADDR" => "203.0.113.1" }, path: path))
+        assert_nil throttle.block.call(rack_attack_request({ "REQUEST_METHOD" => "GET", "REMOTE_ADDR" => "203.0.113.1" }, path: path))
+      end
+    end
   end
 
   test "localhost is safelisted from rate limiting" do
@@ -52,11 +97,26 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     }
 
     # Call the throttled responder
-    status, headers, body = Rack::Attack.throttled_responder.call(env)
+    status, headers, body = Rack::Attack.throttled_responder.call(rack_attack_request(env))
 
     assert_equal 429, status, "Should return 429 status"
     assert_equal "text/html", headers["Content-Type"], "Should return HTML content type"
     assert_match(/rate limit/i, body.first, "Response should mention rate limit")
+  end
+
+  test "throttled responder names the window for author proposal limits" do
+    env = {
+      "rack.attack.matched" => "author_proposals/create/daily",
+      "rack.attack.match_type" => :throttle,
+      "rack.attack.match_data" => {
+        epoch_time: Time.now.to_i,
+        period: 1.day.to_i
+      }
+    }
+
+    _status, _headers, body = Rack::Attack.throttled_responder.call(rack_attack_request(env))
+
+    assert_match(/daily submission limit/i, body.first, "Response should name the daily window")
   end
 
   test "active hashcash gem is loaded" do
@@ -69,5 +129,25 @@ class SpamProtectionTest < ActionDispatch::IntegrationTest
     assert_not_nil ActiveHashcash.bits, "ActiveHashcash.bits should be configured"
     assert ActiveHashcash.bits >= 10, "Difficulty should be at least 10 bits"
     assert ActiveHashcash.bits <= 20, "Difficulty should be at most 20 bits"
+  end
+
+  private
+
+  def response_statuses_after_requests(path, count:)
+    original_store = Rack::Attack.cache.store
+    test_safelist = Rack::Attack.safelists.delete("allow-test-environment")
+    Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+    request = Rack::MockRequest.new(Rack::Attack.new(->(_env) { [ 200, {}, [ "OK" ] ] }))
+
+    count.times.map do
+      request.post(path, "REMOTE_ADDR" => "203.0.113.1").status
+    end
+  ensure
+    Rack::Attack.cache.store = original_store
+    Rack::Attack.safelists["allow-test-environment"] = test_safelist
+  end
+
+  def rack_attack_request(env, path: "/")
+    Rack::Attack::Request.new(Rack::MockRequest.env_for(path, env))
   end
 end
